@@ -1,0 +1,56 @@
+<div class="homeBody homeInit" id="HomeComponent">
+<div class="container px-4 px-md-4 py-5 mx-auto">
+    <div class="row d-flex justify-content-between align">
+        <div class="card card1 border-0 rounded-0 mb-5 bg-white">
+            <div class="row mt-auto justify-content-center mb-2">
+                <h5 class="mb-0">¡Tu mascota merece lo mejor! Ponele un registro aqui!</h5>
+                <p>Registrese dentro de nuestra plataforma aquí</p>
+                <div class="col-12"> <a [routerLink]="['/register-pets']" class="btn btn-block btn-yellow btn-sm">Registrarse</a> </div>
+            </div>
+        </div>
+        <div class="card p-0 border-0 rounded-0 mb-5 bg-white">
+            <div class="card card2 border-0 rounded-0 card0">
+                <h5 class="mb-0">¿Estás dentro de la plataforma?</h5>
+                <p>Inicie sesión aquí</p> 
+                <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                  <div class="form-group">
+                    <label class="font-weight-bold mb-0">Correo</label>
+                    <input type="text" name="email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" class="mb-4 form-control" placeholder="abc@xyz.com">
+                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                      <div *ngIf="f.email.errors.required">
+                        Correo es requerido</div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="font-weight-bold mb-0">Contraseña</label> 
+                    <input type="password" name="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;">
+                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                      <div *ngIf="f.password.errors.required">Password is required</div>
+                    </div>
+                  </div>
+                  <a [routerLink]="['/forgot-user']" class="text-sm ml-auto text-dim">Olvidó contraseña?</a>
+                  <div class="row mt-2">
+                    <div class="col-12">
+                      <button type="submit" class="btn btn-block btn-inverse btn-sm">
+                        <svg *ngIf="loading" class="loader" viewBox="0 0 24 24">
+                          <circle class="loader__value" cx="12" cy="12" r="10" />
+                          <circle class="loader__value" cx="12" cy="12" r="10" />
+                          <circle class="loader__value" cx="12" cy="12" r="10" />
+                          <circle class="loader__value" cx="12" cy="12" r="10" />
+                          <circle class="loader__value" cx="12" cy="12" r="10" />
+                          <circle class="loader__value" cx="12" cy="12" r="10" />
+                        </svg>
+                        Iniciar Sesión
+                      </button>
+                    </div>  
+                    <!-- <div class="col-6"> <button [routerLink]="['/register-pets']" class="btn btn-block btn-yellow btn-sm">Registrarse</button> </div> -->
+                  </div>
+                  <div *ngIf="hideMsg" class="row no-gutters alert alert-warning error-message text-center mt-2" role="alert">
+                    <i class="fas fa-times-circle mt-1 mr-3"></i> <strong class="text-center">{{ ShowMsg }}</strong>
+                  </div>
+                </form>
+            </div> <img src="https://res.cloudinary.com/ensamble/image/upload/v1609975796/pets_vjbjk2.jpg" style="height: 265px; width: 400px;" class="mt-auto">
+        </div>
+    </div>
+</div>
+</div>
