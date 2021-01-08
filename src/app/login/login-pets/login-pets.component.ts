@@ -38,32 +38,26 @@ export class LoginPetsComponent implements OnInit {
       return;
     }
     this.loading = true;
-    const company = {
+    const pet = {
       email: this.f.email.value,
       password: this.f.password.value
     }
 
-    this.petService.authenticateCompany(company).subscribe(data => {
+    this.petService.authenticatePet(pet).subscribe(data => {
         if(data.success) {
           this.loading = false;
-          switch (data.company.userState) {
+          switch (data.pet.userState) {
             case 0:
               this.router.navigate(['/admin']);
               break;
-            case 1:
-              this.router.navigate(['/dashboard-user']);
-            break;
-            case 2:
-              this.router.navigate(['/dashboard-driver']);
-            break;
             case 3:
-              this.router.navigate(['/dashboard-company']);
+              this.router.navigate(['/dashboard-pet']);
             break;
           
             default:
               break;
           }
-          this.petService.storeUserData(data.token, data.company);
+          this.petService.storeUserData(data.token, data.pet);
         } else {
           this.hideMsg = true;
           this.ShowMsg = data.msg;

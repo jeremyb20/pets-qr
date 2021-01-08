@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthServices } from '../common/services/auth.service';
+import { PetService } from '../common/services/pet.service';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   ShowMsg: string;
   timeSeconds: number =  3000;
   constructor(
-    private authService: AuthServices,
+    private petService: PetService,
     private formBuilder: FormBuilder,
     private router: Router) { }
 
@@ -37,32 +37,26 @@ export class HomeComponent implements OnInit {
       return;
     }
     this.loading = true;
-    const user = {
+    const pet = {
       email: this.f.email.value,
       password: this.f.password.value
     }
 
-    this.authService.authenticateUser(user).subscribe(data => {
+    this.petService.authenticatePet(pet).subscribe(data => {
         if(data.success) {
         this.loading = false;
-          switch (data.user.userState) {
+          switch (data.pet.userState) {
             case 0:
               this.router.navigate(['/admin']);
               break;
-            case 1:
-              this.router.navigate(['/dashboard-user']);
-            break;
-            case 2:
-              this.router.navigate(['/dashboard-driver']);
-            break;
             case 3:
-              this.router.navigate(['/dashboard-company']);
+              this.router.navigate(['/dashboard-pet']);
             break;
           
             default:
               break;
           }
-          this.authService.storeUserData(data.token, data.user);
+          this.petService.storeUserData(data.token, data.pet);
         } else {
           this.hideMsg = true;
           this.ShowMsg = data.msg;

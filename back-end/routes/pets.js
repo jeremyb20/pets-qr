@@ -97,14 +97,15 @@ router.post('/authenticate', (req, res, next) => {
           success: true,
           token: 'JWT '+token,
           pet: {
-            id: company._id,
-            petName: company.petName,
-            username: company.username,
-            email: company.email,
-            photo: company.photo,
-            userState: company.userState,
-            lat: company.lat,
-            lng: company.lng
+            id: pet._id,
+            petName: pet.petName,
+            username: pet.username,
+            phone: pet.phone,
+            email: pet.email,
+            photo: pet.photo,
+            userState: pet.userState,
+            lat: pet.lat,
+            lng: pet.lng
           }
         })
       } else {

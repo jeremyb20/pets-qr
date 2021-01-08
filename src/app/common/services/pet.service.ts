@@ -14,7 +14,7 @@ export class PetService {
   });
 
   authToken: any;
-  company: any;
+  pet: any;
   isDev: boolean = false;
 
   constructor(private httpClient: HttpClient, private jwtHelper: JwtHelperService) {
@@ -41,7 +41,7 @@ export class PetService {
     }
   }
 
-  authenticateCompany(pet:any): Observable<any> {
+  authenticatePet(pet:any): Observable<any> {
     if(this.isDev){
       return this.httpClient.post('http://localhost:8080/pet/authenticate', pet, { headers: this.headers});
     }else{
@@ -237,15 +237,15 @@ export class PetService {
 //     }
 //   }
 
-  storeUserData(token, company) {
+  storeUserData(token, pet) {
     localStorage.setItem('id_token', token);
-    localStorage.setItem('company', JSON.stringify(company));
+    localStorage.setItem('pet', JSON.stringify(pet));
     this.authToken = token;
-    this.company = company;
+    this.pet = pet;
   }
 
-  getLocalCompany(){
-    return localStorage.getItem("company");
+  getLocalPet(){
+    return localStorage.getItem("pet");
   }
 
   loadToken() {
@@ -260,7 +260,7 @@ export class PetService {
 
   logout() {
     this.authToken = null;
-    this.company = null;
+    this.pet = null;
     localStorage.clear();
   }
 }

@@ -52,7 +52,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         });
         this.userLogged = this.authService.getLocalUser();
         if(this.userLogged == null ){
-            this.userLogged = this.petService.getLocalCompany();
+            this.userLogged = this.petService.getLocalPet();
         }
         this.user = JSON.parse(this.userLogged);
         if(this.user!= null)

@@ -85,7 +85,7 @@ export class DashboardCompanyComponent implements OnInit, OnDestroy {
   public searchElementRef: ElementRef;
 
   constructor(private petService: PetService, private media: MediaService, private formBuilder: FormBuilder, private _notificationSvc: NotificationService, private router: Router) {
-      this.userLogged = this.petService.getLocalCompany()
+      this.userLogged = this.petService.getLocalPet()
       this.user = JSON.parse(this.userLogged);
       if(this.user != null){
         switch (this.user.userState) {

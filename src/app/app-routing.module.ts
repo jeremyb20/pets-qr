@@ -20,6 +20,7 @@ import { ProfileCompanyComponent } from './profile/profile-company/profile-compa
 import { AdminMasterComponent } from './admin-master/admin-master.component';
 import { MapComponent } from './map/map.component';
 import { MenusComponent } from './menus/menus.component';
+import { DashboardPetComponent } from './dashboard/dashboard-pet/dashboard-pet.component';
 
 
 const routes: Routes = [
@@ -45,6 +46,8 @@ const routes: Routes = [
         { path: 'admin', component: AdminMasterComponent },        
         { path: 'dashboard-user', component: DashboardUserComponent,canActivate: [AdminGuard] },
         { path: 'dashboard-company', component: DashboardCompanyComponent,canActivate: [AdminGuard] },
+        { path: 'dashboard-pet', component: DashboardPetComponent,canActivate: [AdminGuard] },
+
       
         { path: 'profile-user', component: ProfileUserComponent ,canActivate: [AdminGuard]},
         { path: 'profile-company', component: ProfileCompanyComponent ,canActivate: [AdminGuard]},
