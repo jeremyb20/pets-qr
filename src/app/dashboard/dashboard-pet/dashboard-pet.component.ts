@@ -65,18 +65,40 @@ export class DashboardPetComponent implements OnInit {
 
   ngOnInit() {
     this.newPetInfoForm = this.formBuilder.group({
-      petName: ['', Validators.required],
-      date: ['', [Validators.required]],
-      age: ['', [Validators.minLength(0),Validators.required,Validators.pattern(/\d/)]],
-      veterinarianContact: ['', Validators.required],
-      phoneVeterinarian: ['', Validators.required],
-      healthAndRequirements: ['', Validators.required],
-      favoriteActivities: ['', Validators.required],
+      petName: [this.pet.petName, Validators.required],
+      ownerPetName: [this.pet.ownerPetName, Validators.required],
+      birthDate: [this.pet.birthDate, [Validators.required]],
+      phone: [this.pet.phone, [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
+      address: [this.pet.address, [Validators.required]],
+      email: [this.pet.email, [Validators.required]],
+      age: [this.pet.age, [Validators.minLength(0),Validators.required,Validators.pattern(/\d/)]],
+      veterinarianContact: [this.pet.veterinarianContact, Validators.required],
+      phoneVeterinarian: [this.pet.phoneVeterinarian, [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
+      healthAndRequirements: [this.pet.healthAndRequirements, Validators.required],
+      favoriteActivities: [this.pet.favoriteActivities, Validators.required],
     });
   }
 
   addNewPetInfoSubmit() {
+    this.submitted = true;
+    if (this.newPetInfoForm.invalid) {
+      return;
+    }
+    this.loading = true;
+    const pet = {
+      petName: this.g.petName.value,
+      ownerPetName: this.g.ownerPetName.value,
+      birthDate: this.g.birthDate.value,
+      address: this.g.address.value,
+      email: this.g.email.value,
+      age: this.g.age.value,
+      veterinarianContact: this.g.veterinarianContact.value,
+      phoneVeterinarian: this.g.phoneVeterinarian.value,
+      healthAndRequirements: this.g.healthAndRequirements.value,
+      favoriteActivities: this.g.favoriteActivities.value
+    }
 
+    console.log(pet);
   }
 
 }
