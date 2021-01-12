@@ -49,6 +49,30 @@ export class PetService {
     }
   }
 
+
+  updatePetProfile(pet):Observable<any> { 
+    const fd = new FormData();
+    fd.append('petName',pet.petName);
+    fd.append('ownerPetName',pet.ownerPetName);
+    fd.append('birthDate',pet.birthDate);
+    fd.append('address',pet.address);
+    fd.append('email',pet.email);
+    fd.append('age',pet.age);
+    fd.append('veterinarianContact',pet.veterinarianContact);
+    fd.append('phoneVeterinarian',pet.phoneVeterinarian);
+    fd.append('healthAndRequirements',pet.healthAndRequirements);
+    fd.append('favoriteActivities',pet.favoriteActivities);
+
+    if(this.isDev) {
+      return this.httpClient.put<any>('http://localhost:8080/pet/update/updateProfilePet', fd);
+    }else{
+      return this.httpClient.put<any>('pet/update/updateProfilePet', fd);
+    }
+  }
+
+
+
+
   registerNewMenu(menu,  photo:any):Observable<any> {
     const fd = new FormData();
     fd.append('foodName',menu.foodName);

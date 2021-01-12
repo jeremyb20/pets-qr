@@ -115,6 +115,59 @@ router.post('/authenticate', (req, res, next) => {
   });
 });
 
+
+
+router.put('/update/updateProfilePet', async(req, res, next) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+
+  const petUpdate = {
+    petName: obj.petName,
+    ownerPetName: obj.ownerPetName,
+    birthDate: obj.birthDate,
+    address: obj.address,
+    email: obj.email,
+    age: obj.age,
+    veterinarianContact: obj.veterinarianContact,
+    phoneVeterinarian: obj.phoneVeterinarian,
+    healthAndRequirements: obj.healthAndRequirements,
+    favoriteActivities: obj.favoriteActivities
+  }
+
+  await Company.findOne({_id: req.body._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+     if(pet != null) {
+       pet.forEach(element => {
+          element["petName"] = petUpdate.petName;
+          element["ownerPetName"] = petUpdate.ownerPetName;
+          element["birthDate"] = petUpdate.birthDate;
+          element["address"] = petUpdate.address;
+          element["email"] = petUpdate.email;
+          element["age"] = petUpdate.age;
+          element["veterinarianContact"] = petUpdate.veterinarianContact;
+          element["healthAndRequirements"] = petUpdate.healthAndRequirements;
+          element["favoriteActivities"] = petUpdate.favoriteActivities;
+
+          pet.save();
+          try {
+            res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+          } catch (err) {
+            res.json({ success: false, msg: err });
+            next(err);
+          }
+         
+       })
+     }
+   });
+});
+
+
+
+
+
+
+
 router.post('/register/newMenu', async(req, res) => {
   const obj = JSON.parse(JSON.stringify(req.body));
 

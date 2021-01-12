@@ -98,7 +98,19 @@ export class DashboardPetComponent implements OnInit {
       favoriteActivities: this.g.favoriteActivities.value
     }
 
-    console.log(pet);
+    this.petService.updatePetProfile(pet).subscribe(data => {
+      if(data.success) {
+        this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
+        this.loading = false;
+      } else {
+        $('#newMenuModal').modal('hide');
+        this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
+      }
+    },
+    error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
   }
 
 }
