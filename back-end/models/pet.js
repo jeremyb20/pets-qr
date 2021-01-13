@@ -43,31 +43,35 @@ const PetSchema = mongoose.Schema ({
     require: false
   },
   ownerPetName: {
-    type: Number,
+    type: String,
     require: true
   },
   birthDate: {
-    type: Number,
+    type: String,
     require: true
   },
   address: {
-    type: Number,
+    type: String,
     require: true
   },
   age: {
     type: Number,
     require: true
   },
-  veterinarianContact: {
+  phoneVeterinarian: {
     type: Number,
+    require: true
+  },
+  veterinarianContact: {
+    type: String,
     require: true
   },
   healthAndRequirements: {
-    type: Number,
+    type: String,
     require: true
   },
   favoriteActivities: {
-    type: Number,
+    type: String,
     require: true
   }
 }, { autoIndex: false });

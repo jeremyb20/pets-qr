@@ -87,6 +87,7 @@ export class DashboardPetComponent implements OnInit {
     this.loading = true;
     const pet = {
       petName: this.g.petName.value,
+      _id: this.pet.id,
       ownerPetName: this.g.ownerPetName.value,
       birthDate: this.g.birthDate.value,
       address: this.g.address.value,
@@ -104,6 +105,7 @@ export class DashboardPetComponent implements OnInit {
         this.loading = false;
       } else {
         $('#newMenuModal').modal('hide');
+        this.loading = false;
         this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
       }
     },

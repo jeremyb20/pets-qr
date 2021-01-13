@@ -56,6 +56,7 @@ export class PetService {
     fd.append('ownerPetName',pet.ownerPetName);
     fd.append('birthDate',pet.birthDate);
     fd.append('address',pet.address);
+    fd.append('_id',pet._id);
     fd.append('email',pet.email);
     fd.append('age',pet.age);
     fd.append('veterinarianContact',pet.veterinarianContact);

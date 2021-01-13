@@ -99,13 +99,20 @@ router.post('/authenticate', (req, res, next) => {
           pet: {
             id: pet._id,
             petName: pet.petName,
-            username: pet.username,
+            ownerPetName: pet.ownerPetName,
             phone: pet.phone,
             email: pet.email,
             photo: pet.photo,
             userState: pet.userState,
             lat: pet.lat,
-            lng: pet.lng
+            lng: pet.lng,
+            birthDate: pet.birthDate,
+            address: pet.address,
+            age: pet.age,
+            veterinarianContact: pet.veterinarianContact,
+            phoneVeterinarian: pet.phoneVeterinarian,
+            healthAndRequirements: pet.healthAndRequirements,
+            favoriteActivities: pet.favoriteActivities
           }
         })
       } else {
@@ -133,12 +140,16 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
     favoriteActivities: obj.favoriteActivities
   }
 
-  await Company.findOne({_id: req.body._id }, (err, pet) => {
+  console.log(req.body);
+
+  await Pet.findOne({_id: req.body._id }, (err, pet) => {
     if (!pet) {
       return res.json({success:false,msg: 'Usuario no encontrado'});
     }
      if(pet != null) {
-       pet.forEach(element => {
+       var arrayPet = [];
+       arrayPet.push(pet);
+      arrayPet.forEach(element => {
           element["petName"] = petUpdate.petName;
           element["ownerPetName"] = petUpdate.ownerPetName;
           element["birthDate"] = petUpdate.birthDate;
@@ -146,9 +157,9 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
           element["email"] = petUpdate.email;
           element["age"] = petUpdate.age;
           element["veterinarianContact"] = petUpdate.veterinarianContact;
+          element["phoneVeterinarian"] = petUpdate.phoneVeterinarian;
           element["healthAndRequirements"] = petUpdate.healthAndRequirements;
           element["favoriteActivities"] = petUpdate.favoriteActivities;
-
           pet.save();
           try {
             res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
@@ -156,7 +167,6 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
             res.json({ success: false, msg: err });
             next(err);
           }
-         
        })
      }
    });
