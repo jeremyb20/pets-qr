@@ -73,7 +73,25 @@ const PetSchema = mongoose.Schema ({
   favoriteActivities: {
     type: String,
     require: true
-  }
+  },
+  calendar: [{
+    title: {
+      type: String,
+      require: true
+    },
+    date: {
+      type: String,
+      require: true
+    },
+    enddate: {
+      type: String,
+      require: true
+    },
+    description: {
+      type: String,
+      require: true
+    }
+  }]
 }, { autoIndex: false });
 
 PetSchema.plugin(passportLocalMongoose);

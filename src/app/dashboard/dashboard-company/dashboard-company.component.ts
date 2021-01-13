@@ -141,21 +141,21 @@ export class DashboardCompanyComponent implements OnInit, OnDestroy {
 
   getMyListMenu(){
     this.showEditMenu = false;
-    this.petService.getMyMenuList(this.user.id).subscribe(data => {
-      if(data.length>0) {
-        this.myfoodMenu = data;
-        this.showPanelMenuItem = this.myfoodMenu.slice(-1).pop();
-        this.events = [
-          { title: 'event 3', date: '2020-12-28' },
-          { title: 'event 4', date: '2020-12-29' }
-        ]
-        this.calendarOptions.events = this.events;
-      }
-    },
-    error => {
-      $('#newMenuModal').modal('hide');
-      this._notificationSvc.warning('Hola '+this.user.companyName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
-    });
+    // this.petService.getMyMenuList(this.user.id).subscribe(data => {
+    //   if(data.length>0) {
+    //     this.myfoodMenu = data;
+    //     this.showPanelMenuItem = this.myfoodMenu.slice(-1).pop();
+    //     this.events = [
+    //       { title: 'event 3', date: '2020-12-28' },
+    //       { title: 'event 4', date: '2020-12-29' }
+    //     ]
+    //     this.calendarOptions.events = this.events;
+    //   }
+    // },
+    // error => {
+    //   $('#newMenuModal').modal('hide');
+    //   this._notificationSvc.warning('Hola '+this.user.companyName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    // });
   }
 
   showPanelMenu(item:any) {
@@ -283,27 +283,27 @@ export class DashboardCompanyComponent implements OnInit, OnDestroy {
       idCompany: this.user.id
     }
 
-    this.petService.registerNewMenu(newMenu,this.file).subscribe(data => {
-      if(data.success) {
-        this.loading = false;
-        $('#newMenuModal').modal('hide');
-        this._notificationSvc.success('Hola '+this.user.companyName+'', data.msg, 6000);
-        if(this.Media.IsMobile){
-          this.showMenuSelected = false;
-          this.hideItemSeleccion = true;
-        }
-        setTimeout(() => { this.getMyListMenu(); }, this.timeSecondsrestore);
-      } else {
-        this.loading = false;
-        $('#newMenuModal').modal('hide');
-        this._notificationSvc.warning('Hola '+this.user.companyName+'', data.msg, 6000);
-      }
-    },
-    error => {
-      $('#newMenuModal').modal('hide');
-      this.loading = false;
-      this._notificationSvc.warning('Hola '+this.user.companyName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
-    });
+    // this.petService.registerNewMenu(newMenu,this.file).subscribe(data => {
+    //   if(data.success) {
+    //     this.loading = false;
+    //     $('#newMenuModal').modal('hide');
+    //     this._notificationSvc.success('Hola '+this.user.companyName+'', data.msg, 6000);
+    //     if(this.Media.IsMobile){
+    //       this.showMenuSelected = false;
+    //       this.hideItemSeleccion = true;
+    //     }
+    //     setTimeout(() => { this.getMyListMenu(); }, this.timeSecondsrestore);
+    //   } else {
+    //     this.loading = false;
+    //     $('#newMenuModal').modal('hide');
+    //     this._notificationSvc.warning('Hola '+this.user.companyName+'', data.msg, 6000);
+    //   }
+    // },
+    // error => {
+    //   $('#newMenuModal').modal('hide');
+    //   this.loading = false;
+    //   this._notificationSvc.warning('Hola '+this.user.companyName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    // });
   }
 
   handleDateClick(isNew, arg) {

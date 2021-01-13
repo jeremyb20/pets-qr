@@ -71,33 +71,42 @@ export class PetService {
     }
   }
 
-
-
-
-  registerNewMenu(menu,  photo:any):Observable<any> {
+  updatePetLocation(market):Observable<any> { 
     const fd = new FormData();
-    fd.append('foodName',menu.foodName);
-    fd.append('description',menu.description);
-    fd.append('cost',menu.cost);
-    fd.append('idCompany',menu.idCompany);
-    fd.append('image', photo);
-
+    fd.append('lat',market.lat);
+    fd.append('lng',market.lng);
+    fd.append('_id',market._id);
     if(this.isDev) {
-      return this.httpClient.post<any>('http://localhost:8080/company/register/newMenu', fd);
+      return this.httpClient.put<any>('http://localhost:8080/pet/update/updateLocationPet', fd);
     }else{
-      return this.httpClient.post<any>('company/register/newMenu', fd);
+      return this.httpClient.put<any>('pet/update/updateLocationPet', fd);
     }
   }
 
-  getMyMenuList(id):Observable<any> {
+  registerNewPetEvent(event):Observable<any> {
+    const fd = new FormData();
+    fd.append('title',event.title);
+    fd.append('date',event.date);
+    fd.append('enddate',event.enddate);
+    fd.append('description',event.description);
+    fd.append('_id',event._id);
+
+    if(this.isDev) {
+      return this.httpClient.post<any>('http://localhost:8080/pet/register/newPetEvent', fd);
+    }else{
+      return this.httpClient.post<any>('pet/register/newPetEvent', fd);
+    }
+  }
+
+  getPetDaList(id):Observable<any> {
     let headers = new Headers();
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
     if (this.isDev) {
-      return this.httpClient.get<any>('http://localhost:8080/company/getAllMenuList/' + id);
+      return this.httpClient.get<any>('http://localhost:8080/pet/getPetDataList/' + id);
     } else {
-      return this.httpClient.get<any>('company/getAllMenuList/' + id);
+      return this.httpClient.get<any>('pet/getPetDataList/' + id);
     }
   }
 

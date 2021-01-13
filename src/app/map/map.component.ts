@@ -9,6 +9,7 @@ import { MediaResponse, MediaService } from '../common/services/media.service';
 import { darkStyle, lightStyle } from '../common/constants/map-theme';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { PetService } from '../common/services/pet.service';
 
 @Component({
   selector: 'app-map',
@@ -26,8 +27,8 @@ export class MapComponent implements OnInit {
   previous;
   coords: any;
   located: boolean;
-  userLogged: any;
-  user : any;
+  petLogged: any;
+  pet : any;
   end_address: string;
   duration: string;
   start_address: string;
@@ -63,10 +64,10 @@ export class MapComponent implements OnInit {
   @ViewChild("search")
   public searchElementRef: ElementRef;
 
-  constructor(private authService: AuthServices, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private media: MediaService, private router: Router, private _location: Location) {
+  constructor(private petService: PetService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private media: MediaService, private router: Router, private _location: Location) {
       this.located = false;
-      this.userLogged = this.authService.getLocalUser()
-      this.user = JSON.parse(this.userLogged);
+      this.petLogged = this.petService.getLocalPet()
+      this.pet = JSON.parse(this.petLogged);
       this.mediaSubscription = this.media.subscribeMedia().subscribe(media => {
         this.Media = media;
       });
@@ -139,7 +140,7 @@ export class MapComponent implements OnInit {
           lng: position.coords.longitude,
           draggable: false,
           isDestination: false,
-          photo: this.user.photo
+          photo: this.pet.photo
         });
         this.showInfo = true;
         this.addDestiny = false;
@@ -195,7 +196,7 @@ export class MapComponent implements OnInit {
           lng: event.coords.lng,
           draggable: false,
           isDestination: false,
-          photo: this.user.photo
+          photo: this.pet.photo
         });
       }
     }
