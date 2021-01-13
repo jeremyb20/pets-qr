@@ -42,7 +42,31 @@ const PetSchema = mongoose.Schema ({
     type: Number,
     require: false
   },
-  genderSelected: {
+  ownerPetName: {
+    type: Number,
+    require: true
+  },
+  birthDate: {
+    type: Number,
+    require: true
+  },
+  address: {
+    type: Number,
+    require: true
+  },
+  age: {
+    type: Number,
+    require: true
+  },
+  veterinarianContact: {
+    type: Number,
+    require: true
+  },
+  healthAndRequirements: {
+    type: Number,
+    require: true
+  },
+  favoriteActivities: {
     type: Number,
     require: true
   }
