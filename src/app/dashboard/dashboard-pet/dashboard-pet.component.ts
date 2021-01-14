@@ -38,6 +38,12 @@ export class DashboardPetComponent implements OnInit {
   newEventForm: FormGroup;
   submitted = false;
   loading: boolean = false;
+  loadingQr: boolean = false;
+  file : File;
+  photoSelected: String | ArrayBuffer;
+  hideMsg: boolean = true;
+  ShowMsg: string = 'hola';
+  code: any;
 
 // calendar 
 
@@ -177,6 +183,7 @@ calendarOptions: CalendarOptions = {
         healthAndRequirements: [this.profile.healthAndRequirements, Validators.required],
         favoriteActivities: [this.profile.favoriteActivities, Validators.required],
       });
+      this.code = data.code[1].status;
 
       this.calendarOptions.events = data.calendar;
 
@@ -306,11 +313,10 @@ calendarOptions: CalendarOptions = {
 
   }
 
-
-
-
-
   // calendar 
+  editCalendar(item:any) {
+    console.log(item);
+  }
 
   handleDateClick(isNew, arg) {
     $(function(){
@@ -368,6 +374,80 @@ calendarOptions: CalendarOptions = {
     },
     error => {
       this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
+  }
+
+  //Photo
+
+  updatePhoto(){
+    $('#updatePhotoModal').modal('show');
+  }
+
+  updatePhotoSubmit(){
+    this.loading = true;
+    this.petService.updatePhotoPetProfile(this.pet.id,this.file).subscribe(data => {
+      if(data.success) {
+        $('#updatePhotoModal').modal('hide');
+        this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
+        this.loading = false;
+        this.getPetDataList();
+      } else {
+        $('#updatePhotoModal').modal('hide');
+        this.loading = false;
+        this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
+      }
+    },
+    error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
+  }
+
+  processFile(event: HtmlInputEvent): void {
+
+    if(event.target.files && event.target.files[0]){
+      this.file = <File>event.target.files[0];
+
+      const reader = new FileReader();
+
+      reader.onload = e => this.photoSelected = reader.result;
+      reader.readAsDataURL(this.file);
+    }
+  }
+  
+  
+  // generate code qr
+
+  generateQrCode() {
+    this.loadingQr = true;
+    this.petService.generateQrCodePet(this.pet.id).subscribe(data => {
+      if(data.success) {
+        Swal.fire({
+          title: 'Solicitud de Codigo Qr exitoso' ,
+          html: data.msg,
+          showCancelButton: false,
+          allowEscapeKey: false,
+          confirmButtonText: 'OK',
+          allowOutsideClick: false,
+          buttonsStyling: false,
+          reverseButtons: true,
+          position: 'top',
+          customClass: { confirmButton: 'col-auto btn btn-info m-3' }
+        })
+        .then((result) => {
+          if (result.value){
+            location.reload();
+          }   
+        });
+      } else {
+        $('#updatePhotoModal').modal('hide');
+        this.loadingQr = false;
+        this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
+      }
+    },
+    error => {
+      this.loadingQr = false;
       this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
     });
   }

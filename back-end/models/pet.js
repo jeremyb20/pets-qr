@@ -32,6 +32,16 @@ const PetSchema = mongoose.Schema ({
     type: String,
     require: false
   },
+  code: [{
+    link: {
+      type: String,
+      require: true
+    },
+    status: {
+      type: String,
+      require: true
+    }
+  }],
   resetPasswordToken: {
     type: String
   },

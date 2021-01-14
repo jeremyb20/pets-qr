@@ -83,6 +83,19 @@ export class PetService {
     }
   }
 
+  updatePhotoPetProfile(id:any, photo:any):Observable<any> { 
+    const fd = new FormData();
+    fd.append('image', photo);
+    fd.append('_id', id);
+
+    if(this.isDev) {
+      return this.httpClient.put<any>('http://localhost:8080/pet/update/updatePhotoPetProfile', fd);
+    }else{
+      return this.httpClient.put<any>('pet/update/updatePhotoPetProfile', fd);
+    }
+  }
+
+
   registerNewPetEvent(event):Observable<any> {
     const fd = new FormData();
     fd.append('title',event.title);
@@ -95,6 +108,16 @@ export class PetService {
       return this.httpClient.post<any>('http://localhost:8080/pet/register/newPetEvent', fd);
     }else{
       return this.httpClient.post<any>('pet/register/newPetEvent', fd);
+    }
+  }
+
+  generateQrCodePet(id: any):Observable<any> {
+    const fd = new FormData();
+    fd.append('_id', id);
+    if(this.isDev) {
+      return this.httpClient.post<any>('http://localhost:8080/pet/register/generateQrCodePet', fd);
+    }else{
+      return this.httpClient.post<any>('pet/register/generateQrCodePet', fd);
     }
   }
 
@@ -139,6 +162,10 @@ export class PetService {
   }
 
   deleteMenuItem(item:any):Observable<any> {
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
     const fd = new FormData();
     fd.append('_id',item._id);
     fd.append('idCompany',item.idCompany);

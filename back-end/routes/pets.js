@@ -186,6 +186,35 @@ router.put('/update/updateLocationPet', async(req, res, next) => {
    });
 });
 
+router.put('/update/updatePhotoPetProfile', async(req, res, next) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+
+  const result = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.image);
+  let newPet = {
+    photo: result.secure_url == undefined ? obj.image : result.secure_url
+  };
+
+  await Pet.findOne({_id: req.body._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+     if(pet != null) {
+       var arrayPet = [];
+      arrayPet.push(pet);
+      arrayPet.forEach(element => {
+          element["photo"] = newPet.photo;
+          pet.save();
+          try {
+            res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+          } catch (err) {
+            res.json({ success: false, msg: err });
+            next(err);
+          }
+      })
+     }
+   });
+});
+
 router.get('/getPetDataList/:id', function(req, res){
   var id = req.params.id;
   Pet.findById(id, function(err, results){
@@ -210,7 +239,8 @@ router.get('/getPetDataList/:id', function(req, res){
       phoneVeterinarian: results.phoneVeterinarian,
       healthAndRequirements: results.healthAndRequirements,
       favoriteActivities: results.favoriteActivities,
-      calendar: results.calendar
+      calendar: results.calendar,
+      code: results.code
     }
     res.json(pet)
   });
@@ -227,6 +257,20 @@ router.post('/register/newPetEvent', async(req, res) => {
   };
   Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { calendar: newCalendarEvent  }},{new: true}).then(function(data){
     res.json({success:true,msg: 'Evento registrado correctamente..!'});
+  });
+});
+
+router.post('/register/generateQrCodePet', async(req, res) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  var code = 'https://' + req.headers.host + '/myPetCode/' + obj._id;
+  var status = 'Pendiente'
+  var object = {
+    link: code,
+    status: status
+  }
+
+  Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { code: object  }},{new: true}).then(function(data){
+    res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
   });
 });
 
