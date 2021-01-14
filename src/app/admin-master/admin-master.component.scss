@@ -1,8 +1,58 @@
-html {
-    height:100%;
-}
-body {
-    height:100%;
-    margin:0px;
-    font-family: Helvetica, Arial;
+#admin-master {
+    .multi-steps>li {
+        counter-increment: stepNum;
+        text-align: center;
+        display: table-cell;
+        position: relative;
+        color: #ee0d0d;
+        
+    }
+    
+    .multi-steps {
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+    }
+    .multi-steps>li.is-active~li {
+        color: rgb(143, 143, 143);
+    }
+    .multi-steps>li::before {
+        color: rgb(143, 143, 143);
+        background-color: #222840;
+    }
+    
+    .multi-steps>li.is-active~li:before {
+        content: counter(stepNum);
+        font-family: inherit;
+        font-weight: 400;
+        color: rgb(143, 143, 143);
+    }
+    
+    .multi-steps>li:before {
+        content: '\2713';
+        display: block;
+        margin: 0 auto 4px;
+        background-color: #fff;
+        width: 25px;
+        height: 25px;
+        line-height: 22px;
+        text-align: center;
+        font-weight: 700;
+        position: relative;
+        z-index: 1;
+        border-width: 2px;
+        border-style: solid;
+        border-radius: 5px;
+        color: #ee0d0d;
+    }
+    
+    .multi-steps>li:after {
+        content: '';
+        height: 2px;
+        width: 100%;
+        background-color: #ee0d0d;
+        // position: absolute;
+        top: 12px;
+        left: 50%;
+    }
 }

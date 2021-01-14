@@ -121,7 +121,7 @@ calendarOptions: CalendarOptions = {
     if(this.pet != null){
       switch (this.pet.userState) {
         case 0:
-          this.router.navigate(['/admin-master']);
+          this.router.navigate(['/admin']);
           break;
         case 3:
           this.router.navigate(['/dashboard-pet']);
