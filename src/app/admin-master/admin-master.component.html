@@ -175,6 +175,7 @@
             <div class="card">
                 <div class="card-body top-menu">
                     <h4 class="card-title">Usuarios Registrados</h4>
+                    <input type="text" [(ngModel)]="query" />
                     <div class="table-responsive">
                         <table class="table table-hover verticle-middle table-responsive-lg mb-0">
                             <thead class="text-center thead-dark">
@@ -189,7 +190,7 @@
                                     <th scope="col">Accion</th>
                                 </tr>
                             </thead>
-                            <tbody *ngFor="let item of allUsersData; let i = index" class="text-center">
+                            <tbody *ngFor="let item of filterData(query)" class="text-center">
                                 <tr>
                                     <td>{{item.petName}}</td>
                                     <td>{{item.email}}</td>
@@ -198,7 +199,8 @@
                                     <td>{{item.birthDate}}</td>
                                     <td>{{item.ownerPetName}}</td>
                                     <td>
-                                        <span class="badge badge-xs badge-primary">Pendiente</span>
+                                        <span *ngIf="item.code[0].status != undefined" class="badge badge-xs badge-primary">{{item.code[0].status}}</span>
+                                        <span *ngIf="item.code[0].status == undefined" class="badge badge-xs badge-primary">Admin</span>
                                     </td>
                                     <td>
                                         <span class="d-flex">

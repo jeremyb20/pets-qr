@@ -23,6 +23,7 @@ export class AdminMasterComponent implements OnInit {
   public AngularxQrCode: string = null;
   id: number = 1;
   idTab: number = 1;
+  query: string;
 
   petLogged: any;
   pet : any;
@@ -31,6 +32,7 @@ export class AdminMasterComponent implements OnInit {
   loading: boolean = false;
   showCardMsgOrderList: boolean = false;
   showCardMsgOrderHistoryList: boolean = false;
+  filteredData: any;
   // order
 
   order: any;
@@ -82,6 +84,7 @@ export class AdminMasterComponent implements OnInit {
     getAllUsers() {
         this.petService.getPetsList().subscribe(data => {
             this.allUsersData = data;
+            this.filteredData = this.allUsersData;
             this.order = [];
             this.orderHistory = [];
             this.allUsersData.forEach(element => {
@@ -120,7 +123,7 @@ export class AdminMasterComponent implements OnInit {
                     status: state
                   }
               
-                  this.petService.generateQrCodePet(object).subscribe(data => {
+                  this.petService.updateStatusCodePet(object).subscribe(data => {
                     if(data.success) {
                         location.reload();
                         Swal.fire('Saved!', '', 'success');
@@ -139,6 +142,21 @@ export class AdminMasterComponent implements OnInit {
             }
           })
     }
+
+    filterData(query): any[] {
+        if (!query) {
+          this.filteredData = this.allUsersData;
+        }
+    
+        this.filteredData = this.allUsersData.filter(obj => {
+          if(!query) {
+            return obj;
+          }
+          return obj.petName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+        });
+    
+        return this.filteredData;
+      }
 
     checkQrCode(link:any){
         $('#qrCodeInfoDialog').modal('show');

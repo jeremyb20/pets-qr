@@ -18,9 +18,9 @@ app.use(fileupload({
 }));
 
 cloudinary.config({
-  cloud_name:'ensamble',
-  api_key: '218419814373569',
-  api_secret: 'xBNx-qCyqTrcAahx8ZqGEAnNpwM'
+  cloud_name:process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY_CLOUDINARY,
+  api_secret: process.env.API_SECRET
 });
 
 // Register aqui hay ebviar la foto
@@ -260,21 +260,21 @@ router.post('/register/newPetEvent', async(req, res) => {
   });
 });
 
-// router.post('/register/generateQrCodePet', async(req, res) => {
-//   const obj = JSON.parse(JSON.stringify(req.body));
-//   var code = 'https://' + req.headers.host + '/myPetCode/' + obj._id;
-//   var status = 'Ordenado'
-//   var object = {
-//     link: code,
-//     status: status
-//   }
+router.post('/register/generateQrCodePet', async(req, res) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  var code = 'https://' + req.headers.host + '/myPetCode/' + obj._id;
+  var status = 'Ordenando'
+  var object = {
+    link: code,
+    status: status
+  }
 
-//   Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { code: object  }},{new: true}).then(function(data){
-//     res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
-//   });
-// });
+  Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { code: object  }},{new: true}).then(function(data){
+    res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
+  });
+});
 
-router.put('/register/generateQrCodePet', async(req, res, next) => {
+router.put('/register/updateStatusQrCodePet', async(req, res, next) => {
   const obj = JSON.parse(JSON.stringify(req.body));
 
   var code = 'https://' + req.headers.host + '/myPetCode/' + obj._id;

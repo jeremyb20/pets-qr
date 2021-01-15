@@ -116,9 +116,20 @@ export class PetService {
     fd.append('_id', obj.id);
     fd.append('status', obj.status);
     if(this.isDev) {
-      return this.httpClient.put<any>('http://localhost:8080/pet/register/generateQrCodePet', fd);
+      return this.httpClient.post<any>('http://localhost:8080/pet/register/generateQrCodePet', fd);
     }else{
-      return this.httpClient.put<any>('pet/register/generateQrCodePet', fd);
+      return this.httpClient.post<any>('pet/register/generateQrCodePet', fd);
+    }
+  }
+  
+  updateStatusCodePet(obj: any):Observable<any> {
+    const fd = new FormData();
+    fd.append('_id', obj.id);
+    fd.append('status', obj.status);
+    if(this.isDev) {
+      return this.httpClient.put<any>('http://localhost:8080/pet/register/updateStatusQrCodePet', fd);
+    }else{
+      return this.httpClient.put<any>('pet/register/updateStatusQrCodePet', fd);
     }
   }
 
