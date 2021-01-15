@@ -199,7 +199,7 @@
                                     <td>{{item.birthDate}}</td>
                                     <td>{{item.ownerPetName}}</td>
                                     <td>
-                                        <span *ngIf="item.code[0].status != undefined" class="badge badge-xs badge-primary">{{item.code[0].status}}</span>
+                                        <span *ngIf="item.code[0].status != undefined" class="badge badge-xs badge-primary" [ngClass]="{'badge-dark': item.code[0].status == 'Ordenando','badge-info': item.code[0].status == 'Pendiente', 'badge-primary': item.code[0].status == 'Preparando', 'badge-warning': item.code[0].status == 'Entrega', 'badge-success': item.code[0].status == 'Recibido'}" >{{item.code[0].status}}</span>
                                         <span *ngIf="item.code[0].status == undefined" class="badge badge-xs badge-primary">Admin</span>
                                     </td>
                                     <td>
