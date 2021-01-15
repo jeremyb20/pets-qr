@@ -3,8 +3,8 @@
         <div class="row no-gutters">
             <div class="col-xl-3 col-12 col-sm-8 col-lg-8 text-left">
               <h5 class="page-heading"> <i class="fa fa-paw" aria-hidden="true"></i>  Bienvenido a tu perfil {{profile.petName}}!</h5>
-            </div>
-            <div *ngIf="hideMsg" class="col-xl-3 col-12 col-sm-4 col-lg-4 alert error-message text-center mt-2" [ngClass]="{'alert-primary': code === 'Aprovado', 'alert-warning':code ==='Pendiente' }" role="alert">
+            </div>                                                                                              
+            <div *ngIf="hideMsg" class="col-xl-3 col-12 col-sm-4 col-lg-4 alert error-message text-center mt-2" [ngClass]="{'alert-dark': code == 'Ordenando','alert-info': code == 'Pendiente', 'alert-primary': code == 'Preparando', 'alert-warning': code == 'Entrega', 'alert-success': code == 'Recibido'}" role="alert">
                 <i class="fa fa-paw mt-1 mr-3"></i> <strong class="text-center">QR status: {{ code }}</strong>
             </div>
           </div>
@@ -25,7 +25,7 @@
                             <span><i class="fas fa-envelope"></i> <a href="{{profile.email}}" title="{{profile.email}}"> {{profile.email}}</a></span>
                             <span><i class="fas fa-address-book"></i> {{profile.address}}</span>
                         </div>
-                        <button [disabled]="code ==='Pendiente'" (click)="generateQrCode()" type="submit" class="btn btn-yellow col-12 float-right mb-2">
+                        <button [disabled]="code == 'Ordenando' || code == 'Pendiente' || code == 'Preparando' || code == 'Enviado' || code == 'Recibido'" (click)="generateQrCode()" type="submit" class="btn btn-yellow col-12 float-right mb-2">
                             <i *ngIf="!loadingQr" class="fa fa-paw" aria-hidden="true"></i> 
                             <svg *ngIf="loadingQr" class="loader" viewBox="0 0 24 24">
                                 <circle class="loader__value" cx="12" cy="12" r="10" />
@@ -56,16 +56,15 @@
                 <div class="box">
                     <!-- Tabs -->
                     <ul class="nav nav-tabs nav-pills nav-fill" id="nav-tab" role="tablist">
-                        <li class="nav-item"><a class="nav-link active" id="nav-calendar-tab" data-toggle="tab" href="#nav-calendar" role="tab" aria-controls="nav-calendar" aria-selected="false"> <i class="fas fa-list"></i> Eventos</a></li>
-                        <li class="nav-item"><a class="nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="true"><i class="fas fa-calendar-alt"></i> Calendario</a></li>
-                        <li class="nav-item"><a class="nav-link" id="nav-activity-tab" data-toggle="tab" href="#nav-activity" role="tab" aria-controls="nav-activity" aria-selected="false"><i class="fas fa-tasks"></i> Perfil</a></li>
-                        <li class="nav-item"><a class="nav-link" id="nav-location-tab" data-toggle="tab" href="#nav-location" role="tab" aria-controls="nav-location" aria-selected="false"><i class="fas fa-location-arrow"></i> Ubicacion</a></li>
+                        <li class="nav-item" (click)="stepTrackOrder(1)" ><a class="nav-link" [ngClass]="{'active': id === 1}" (click)="stepTrackOrder(1)" id="nav-calendar-tab" data-toggle="tab" href="#nav-calendar" role="tab" aria-controls="nav-calendar" aria-selected="false"> <i class="fas fa-list"></i> Eventos</a></li>
+                        <li class="nav-item" (click)="stepTrackOrder(2)" ><a class="nav-link" [ngClass]="{'active': id === 2}" (click)="stepTrackOrder(2)" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="true"><i class="fas fa-calendar-alt"></i> Calendario</a></li>
+                        <li class="nav-item" (click)="stepTrackOrder(3)" ><a class="nav-link" [ngClass]="{'active': id === 3}" (click)="stepTrackOrder(3)" id="nav-activity-tab" data-toggle="tab" href="#nav-activity" role="tab" aria-controls="nav-activity" aria-selected="false"><i class="fas fa-tasks"></i> Perfil</a></li>
+                        <li class="nav-item" (click)="stepTrackOrder(4)" ><a class="nav-link" [ngClass]="{'active': id === 4}" (click)="stepTrackOrder(4)" id="nav-location-tab" data-toggle="tab" href="#nav-location" role="tab" aria-controls="nav-location" aria-selected="false"><i class="fas fa-location-arrow"></i> Ubicacion</a></li>
                     </ul>
     
                     <div class="tab-content">
-
                         <!-- Acerca -->
-                        <div class="tab-pane fade show active" id="nav-calendar" role="tabpanel" aria-labelledby="nav-calendar-tab">
+                        <div *ngIf="id === 1" class="tab-panel fade show "  [ngClass]="{'active': id === 1}"  id="nav-calendar" role="tabpanel" aria-labelledby="nav-calendar-tab">
                             <div class="userProfileContent">
                                 <div class="row">
                                     <div *ngFor="let item of profile.calendar" class="col-sm-4 col-md-4 col-lg-4 mt-4">
@@ -83,17 +82,30 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="p-5" *ngIf="profile.calendar.length == 0">
+                                        <div class="card box">
+                                            <div class="card-block">
+                                                <h6 class="card-title text-center col-12"><i class="fas fa-list"></i> </h6>
+                                                <div class="card-text">
+                                                    No hay eventos favor de ir a calendario para agregar uno
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <a class="nav-link " (click)="stepTrackOrder(2)" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="true"><i class="fas fa-calendar-alt"></i> Calendario</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div> 
                             </div>
                         </div>
 
                         <!-- Calendario -->
-                        <div class="tab-pane fade active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+                        <div *ngIf="id === 2" class="tab-panel fade show" [ngClass]="{'active': id === 2}" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
                             <full-calendar [options]="calendarOptions"></full-calendar>
                         </div>
     
                         <!-- Perfil -->
-                        <div class="tab-pane fade active" id="nav-activity" role="tabpanel" aria-labelledby="nav-activity-tab">
+                        <div *ngIf="id === 3" class="tab-panel fade show" [ngClass]="{'active': id === 3}"  id="nav-activity" role="tabpanel" aria-labelledby="nav-activity-tab">
                             <div class="userActivities text-center">
                                 <h2 class="boxTitle">  <i class="fa fa-paw" aria-hidden="true"></i>  Informacion personal</h2>
                                 <form  [formGroup]="newPetInfoForm" (ngSubmit)="addNewPetInfoSubmit()">
@@ -143,14 +155,6 @@
                                         </div> 
                                     </div>
 
-                         
-                                    <div class="form-group">
-                                        <label for="exampleFormControlTextarea1">Direccion exacta</label>
-                                        <textarea class="form-control" formControlName="address" placeholder="" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.address.errors }"></textarea>
-                                        <div *ngIf="submitted && g.address.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.address.errors }">
-                                            <div *ngIf="g.address.errors.required">Direccion exacta es requerido</div>
-                                        </div>
-                                    </div>
                                     <div class="form-row">
                                         <div class="form-group input-group col-6">
                                             <div class="input-group-prepend">
@@ -196,6 +200,14 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label for="exampleFormControlTextarea1">Direccion exacta</label>
+                                        <textarea class="form-control" formControlName="address" placeholder="" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.address.errors }"></textarea>
+                                        <div *ngIf="submitted && g.address.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.address.errors }">
+                                            <div *ngIf="g.address.errors.required">Direccion exacta es requerido</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="exampleFormControlTextarea1">Necesidades y requisitos de salud y dieta</label>
                                         <textarea class="form-control" formControlName="healthAndRequirements" placeholder="" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.healthAndRequirements.errors }"></textarea>
                                         <div *ngIf="submitted && g.healthAndRequirements.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.healthAndRequirements.errors }">
@@ -230,7 +242,7 @@
                         </div>
     
                         <!-- Ubicación -->
-                        <div class="tab-pane fade active" id="nav-location" role="tabpanel" aria-labelledby="nav-location-tab">
+                        <div *ngIf="id === 4" class="tab-panel fade show" [ngClass]="{'active': id === 4}" id="nav-location" role="tabpanel" aria-labelledby="nav-location-tab">
                             <div class="row no-gutters">
                                 <div class="col-12 text-center">
                                     <h4>Mi ubicacion actual</h4>

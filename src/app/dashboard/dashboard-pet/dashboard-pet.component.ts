@@ -16,7 +16,6 @@ import { MapsAPILoader } from '@agm/core';
 import {Location} from '@angular/common';
 
 declare var $: any;
-declare const google: any; 
 
 interface HtmlInputEvent extends Event {
   target: HTMLInputElement & EventTarget
@@ -44,6 +43,7 @@ export class DashboardPetComponent implements OnInit {
   hideMsg: boolean = true;
   ShowMsg: string = 'hola';
   code: any;
+  id: number = 1;
 
 // calendar 
 
@@ -166,10 +166,14 @@ calendarOptions: CalendarOptions = {
     });
   }
 
+  stepTrackOrder(step: number){
+    this.id = step;
+  }
 
   getPetDataList() {
     this.petService.getPetDaList(this.pet.id).subscribe(data => {
       this.profile = data;
+      this.code = '';
       this.newPetInfoForm = this.formBuilder.group({
         petName: [this.profile.petName, Validators.required],
         ownerPetName: [this.profile.ownerPetName, Validators.required],
@@ -183,7 +187,10 @@ calendarOptions: CalendarOptions = {
         healthAndRequirements: [this.profile.healthAndRequirements, Validators.required],
         favoriteActivities: [this.profile.favoriteActivities, Validators.required],
       });
-      this.code = data.code[1].status;
+      
+      if(this.code != undefined){
+         this.code = data.code[0].status;
+      }
 
       this.calendarOptions.events = data.calendar;
 
@@ -416,24 +423,25 @@ calendarOptions: CalendarOptions = {
     }
   }
   
-  
   // generate code qr
 
   generateQrCode() {
     this.loadingQr = true;
-    this.petService.generateQrCodePet(this.pet.id).subscribe(data => {
+    var object = {
+      id: this.pet.id,
+      status: "Ordenando"
+    }
+
+    this.petService.generateQrCodePet(object).subscribe(data => {
       if(data.success) {
         Swal.fire({
           title: 'Solicitud de Codigo Qr exitoso' ,
           html: data.msg,
-          showCancelButton: false,
+          icon: "success",
           allowEscapeKey: false,
-          confirmButtonText: 'OK',
           allowOutsideClick: false,
-          buttonsStyling: false,
-          reverseButtons: true,
           position: 'top',
-          customClass: { confirmButton: 'col-auto btn btn-info m-3' }
+          customClass: { confirmButton: 'col-auto btn btn-info' }
         })
         .then((result) => {
           if (result.value){

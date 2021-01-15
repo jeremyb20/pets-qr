@@ -260,19 +260,75 @@ router.post('/register/newPetEvent', async(req, res) => {
   });
 });
 
-router.post('/register/generateQrCodePet', async(req, res) => {
+// router.post('/register/generateQrCodePet', async(req, res) => {
+//   const obj = JSON.parse(JSON.stringify(req.body));
+//   var code = 'https://' + req.headers.host + '/myPetCode/' + obj._id;
+//   var status = 'Ordenado'
+//   var object = {
+//     link: code,
+//     status: status
+//   }
+
+//   Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { code: object  }},{new: true}).then(function(data){
+//     res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
+//   });
+// });
+
+router.put('/register/generateQrCodePet', async(req, res, next) => {
   const obj = JSON.parse(JSON.stringify(req.body));
+
   var code = 'https://' + req.headers.host + '/myPetCode/' + obj._id;
-  var status = 'Pendiente'
   var object = {
     link: code,
-    status: status
+    status: obj.status
   }
 
-  Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { code: object  }},{new: true}).then(function(data){
-    res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
+  await Pet.findOne({_id: req.body._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+     if(pet != null) {
+       var arrayPet = [];
+      arrayPet.push(pet);
+      arrayPet.forEach(element => {
+          element["code"].forEach(item => {
+            item["status"] = object.status;
+            item["link"] = object.link; 
+          }) 
+          pet.save();
+          try {
+            res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+          } catch (err) {
+            res.json({ success: false, msg: err });
+            next(err);
+          }
+      })
+     }
+   });
+});
+
+
+
+
+// admin 
+
+router.get('/admin/getAllPets', function(req, res){
+    Pet.find({}, function(err, pets){
+    if(err){
+      res.send('something went really wrong');
+      next();
+    }
+    res.json(pets)
   });
 });
+
+// admin
+
+
+
+
+
+
 
 
 

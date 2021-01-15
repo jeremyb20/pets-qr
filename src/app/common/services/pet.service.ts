@@ -111,13 +111,14 @@ export class PetService {
     }
   }
 
-  generateQrCodePet(id: any):Observable<any> {
+  generateQrCodePet(obj: any):Observable<any> {
     const fd = new FormData();
-    fd.append('_id', id);
+    fd.append('_id', obj.id);
+    fd.append('status', obj.status);
     if(this.isDev) {
-      return this.httpClient.post<any>('http://localhost:8080/pet/register/generateQrCodePet', fd);
+      return this.httpClient.put<any>('http://localhost:8080/pet/register/generateQrCodePet', fd);
     }else{
-      return this.httpClient.post<any>('pet/register/generateQrCodePet', fd);
+      return this.httpClient.put<any>('pet/register/generateQrCodePet', fd);
     }
   }
 
@@ -297,6 +298,26 @@ export class PetService {
 //       return this.http.post('users/reset', reset, {headers: headers}).map(res => res.json());
 //     }
 //   }
+
+
+
+
+// admin
+
+getPetsList():Observable<any> {
+  this.loadToken();
+  if (this.isDev) {
+    return this.httpClient.get<any>('http://localhost:8080/pet/admin/getAllPets/');
+  } else {
+    return this.httpClient.get<any>('pet/admin/getAllPets/');
+  }
+}
+
+
+// admin
+
+
+
 
   storeUserData(token, pet) {
     localStorage.setItem('id_token', token);

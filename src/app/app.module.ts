@@ -13,6 +13,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
 import interactionPlugin from '@fullcalendar/interaction'; // a plugin
+import { QRCodeModule } from 'angularx-qrcode';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -85,6 +86,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     CommonModule,
     SocialLoginModule,
     FullCalendarModule,
+    QRCodeModule,
     NgIdleModule.forRoot(),
     JwtModule.forRoot({
       config: {
