@@ -147,13 +147,17 @@ export class AdminMasterComponent implements OnInit {
         if (!query) {
           this.filteredData = this.allUsersData;
         }
-    
-        this.filteredData = this.allUsersData.filter(obj => {
-          if(!query) {
-            return obj;
-          }
-          return obj.petName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
-        });
+        
+        if(this.filteredData != undefined){
+            this.filteredData = this.filteredData.filter(obj => {
+                if (!query) {
+                    return obj;
+                }
+                return obj.petName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+            });
+        }
+
+       
     
         return this.filteredData;
       }

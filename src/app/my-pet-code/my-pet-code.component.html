@@ -1,0 +1,65 @@
+<div class="container test" id="myPetProfile">
+    <div *ngIf="profile"  class="row no-gutters">
+        <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
+            <div class="card card-inverse card-info">
+                <img class="card-img-top" src="{{profile.photo}}">
+                <div class="card-block">
+                    <figure class="profile">
+                        <img src="{{profile.photo}}" class="profile-avatar" alt="">
+                    </figure>
+                    <h4 class="card-title mt-3">Hola, me llamo {{profile.petName}}</h4>
+                    <div class="meta card-text">
+                        <a>Friends</a>
+                    </div>
+                    <div class="card-text">
+                        Tawshif is a web designer living in Bangladesh.
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <small>Last updated 3 mins ago</small>
+                    <button class="btn btn-info float-right btn-sm">Follow</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="profile"  class="row no-gutters">
+		<div class="col-lg-3 col-sm-6">
+
+            <div class="card hovercard">
+                <div class="cardheader">
+
+                </div>
+                <div class="avatar">
+                    <img alt="" src="{{profile.photo}}">
+                </div>
+                <div class="info">
+                    <div class="title">
+                        <a target="_blank" href="https://scripteden.com/">Script Eden</a>
+                    </div>
+                    <div class="desc">Passionate designer</div>
+                    <div class="desc">Curious developer</div>
+                    <div class="desc">Tech geek</div>
+                </div>
+                <div class="bottom">
+                    <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    <a class="btn btn-danger btn-sm" rel="publisher"
+                       href="https://plus.google.com/+ahmshahnuralam">
+                        <i class="fa fa-google-plus"></i>
+                    </a>
+                    <a class="btn btn-primary btn-sm" rel="publisher"
+                       href="https://plus.google.com/shahnuralam">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                    <a class="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
+                        <i class="fa fa-behance"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+	</div>
+    
+</div>
