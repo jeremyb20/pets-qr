@@ -145,7 +145,8 @@ export class RegisterPetComponent implements OnInit {
         lat: this.markers[0].lat,
         lng: this.markers[0].lng,
         genderSelected: this.f.genderSelected.value,
-        userState: 3
+        userState: 3,
+        petStatus: 'No-Lost'
       }
 
       this.petService.registerPet(newPet,this.file).subscribe(data => {

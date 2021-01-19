@@ -1,11 +1,35 @@
 #myPetProfile{
+    background: rgba(182, 228, 255, 0.342);
+    .card{
+        border-radius: 4px;
+        background: #fff;
+        box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+        transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+        cursor: pointer;
+    }
+
+    .card:hover{
+        transform: scale(1.05);
+        box-shadow: 0 6px 10px #1976D2, 0 0 6px rgba(0,0,0,.05);
+    }
     .card {
         font-size: 1em;
         overflow: hidden;
         padding: 0;
-        border: none;
-        border-radius: .28571429rem;
-        box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+        // width: 20rem;
+    }
+
+    @media (min-width: 992px) {
+        .card {
+            font-size: 1em;
+            overflow: hidden;
+            // width: 28rem;
+            margin: 5px;
+            padding: 0;
+            border: none;
+            border-radius: .28571429rem;
+            box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+        }
     }
     
     .card-block {
@@ -104,9 +128,10 @@
 }
 
 .test {
+
     .card {
         padding-top: 20px;
-        margin: 10px 0 20px 0;
+        // margin: 10px 0 20px 0;
         background-color: rgba(214, 224, 226, 0.2);
         border-top-width: 0;
         border-bottom-width: 2px;
@@ -298,22 +323,22 @@
     }
     
     .card.hovercard .cardheader {
-        background: url("https://www.scanimalshelter.org/wp-content/uploads/2018/09/LostDog.jpg");
-        background-size: cover;
-        height: 135px;
+        background-size: cover !important;
+        -webkit-filter: blur(5px) !important; /* Safari 6.0 - 9.0 */
+        filter: blur(2px) !important;
     }
     
     .card.hovercard .avatar {
         position: relative;
-        top: -50px;
-        margin-bottom: -50px;
+        top: -100px;
+        margin-bottom: -100px;
     }
     
     .card.hovercard .avatar img {
-        width: 100px;
-        height: 100px;
-        max-width: 100px;
-        max-height: 100px;
+        width: 200px;
+        height: 200px;
+        max-width: 200px;
+        max-height: 200px;
         -webkit-border-radius: 50%;
         -moz-border-radius: 50%;
         border-radius: 50%;
@@ -344,7 +369,5 @@
         padding: 0 20px;
         margin-bottom: 17px;
     }
-    
-    .btn{ border-radius: 50%; width:32px; height:32px; line-height:18px;  }
     
 }

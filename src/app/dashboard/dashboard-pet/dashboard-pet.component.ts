@@ -75,9 +75,9 @@ calendarOptions: CalendarOptions = {
 
   private localUserSubscription : Subscription;
   public searchControl: FormControl;
-  zoom: number = 12;
-  lat: number = 9.93040049002793;
-  lng: number = -84.09062837772197;
+  zoom: number = 17;
+  lat: number;
+  lng: number;
   distance: number;
   previous;
   coords: any;
@@ -201,6 +201,8 @@ calendarOptions: CalendarOptions = {
         isDestination: false,
         photo: this.profile.photo
       });
+      this.lat = this.profile.lat;
+      this.lng = this.profile.lng;
       this.showInfo = true;
     },
     error => {

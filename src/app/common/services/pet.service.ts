@@ -33,6 +33,7 @@ export class PetService {
     fd.append('lng',pet.lng);
     fd.append('bussinesSelected',pet.bussinesSelected);
     fd.append('image', photo);
+    fd.append('petStatus',pet.petStatus);
 
     if(this.isDev) {
       return this.httpClient.post<any>('http://localhost:8080/pet/register/new-pet', fd);

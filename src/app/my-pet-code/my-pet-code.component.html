@@ -1,65 +1,109 @@
-<div class="container test" id="myPetProfile">
-    <div *ngIf="profile"  class="row no-gutters">
-        <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
-            <div class="card card-inverse card-info">
-                <img class="card-img-top" src="{{profile.photo}}">
-                <div class="card-block">
-                    <figure class="profile">
-                        <img src="{{profile.photo}}" class="profile-avatar" alt="">
-                    </figure>
-                    <h4 class="card-title mt-3">Hola, me llamo {{profile.petName}}</h4>
-                    <div class="meta card-text">
-                        <a>Friends</a>
+<div class="container-fluid mx-auto test" id="myPetProfile">
+    <div *ngIf="profile && profile.petStatus === 'No-Lost' " class="">
+        <div class="row no-gutters ">
+		    <div class="col-12 col-sm-4 col-md-4 col-lg-4 mb-4">
+                <div class="card hovercard">
+                    <div class="cardheader" [ngStyle]="{'background-image': ' url(' + imageUrl  + ')','background-size': 'cover', 'background-color':'rgba(0, 0, 0, 0.452)', 'background-blend-mode':'multiply',  'height': '335px'}"></div>
+                    <div class="avatar">
+                        <img alt="{{profile.photo}}" src="{{profile.photo}}">
                     </div>
-                    <div class="card-text">
-                        Tawshif is a web designer living in Bangladesh.
+                    <div class="card-body">
+                        <h4 class="card-title mt-3">Hola, me llamo {{profile.petName}}</h4>
+                        <div class="meta card-text">
+                            <p class="card-text">Bienvenid@ a mi perfil</p>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-danger"><img style="height: 30px; width: 30px;" alt="{{profile.photo}}" src="https://cdn2.iconfinder.com/data/icons/cute-husky-emoticon/512/husky_emoji_sad-512.png"> Reportar a {{profile.petName}} </button>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <small>Last updated 3 mins ago</small>
-                    <button class="btn btn-info float-right btn-sm">Follow</button>
+            </div>
+            <div class="col-12 col-sm-8 col-md-8 col-lg-8" [ngClass]="{'p-5': Media.IsLandscape}">
+                <div class="card-deck">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title"><i class="fa fa-phone"></i> Telefono</h6>
+                            <p class="card-text">{{profile.phone}}</p>
+                            <p class="card-text pb-2">
+                                <button class="btn btn-info btn-sm">Copiar a portapapeles</button>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title"><i class="fa fa-envelope"></i> Email</h6>
+                            <p class="card-text">{{profile.email}}</p>
+                            <p class="card-text pb-2"><button class="btn btn-info btn-sm">Copiar a portapapeles</button></p>
+                        </div>
+                    </div>
+                    <div *ngIf="profile.ownerPetName" class="card">
+                        <div class="card-body">
+                            <h6 class="card-title"><i class="fa fa-user"></i> Propietari@</h6>
+                            <p class="card-text">{{profile.ownerPetName}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-deck">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title"><i class="fas fa-map-marker-alt"></i>  Mi ubicacion</h6>
+                            <div class="map" style="width:100%;height:65vh" #map>
+                                <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [styles]="currentTimer" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [zoomControl]="true" [disableDefaultUI]="false">
+                              
+                                  <agm-marker style="border-radius: 50%;" *ngFor="let m of markers; let i = index" [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [agmFitBounds]="true" [iconUrl]="{url:m.photo, scaledSize:{height:45, width:40, radius:5}}">
+                                      
+                                    <agm-info-window *ngIf="showInfo" #infowindow [isOpen]="showInfo" >
+                                      <h5>Esta es la ubicacion de {{profile.petName}}</h5>
+                                    </agm-info-window>
+                                    
+                                  </agm-marker>
+                                </agm-map>
+                              </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div *ngIf="profile"  class="row no-gutters">
-		<div class="col-lg-3 col-sm-6">
-
-            <div class="card hovercard">
-                <div class="cardheader">
-
-                </div>
-                <div class="avatar">
-                    <img alt="" src="{{profile.photo}}">
-                </div>
-                <div class="info">
-                    <div class="title">
-                        <a target="_blank" href="https://scripteden.com/">Script Eden</a>
+    <div *ngIf="profile && profile.petStatus === 'Lost' " class="row d-flex justify-content-center align">
+        <div class="row no-gutters">
+		    <div class="col-12 col-sm-12">
+                <div class="card hovercard">
+                    <div class="cardheader"></div>
+                    <div class="avatar">
+                        <img alt="{{profile.photo}}" src="{{profile.photo}}">
                     </div>
-                    <div class="desc">Passionate designer</div>
-                    <div class="desc">Curious developer</div>
-                    <div class="desc">Tech geek</div>
-                </div>
-                <div class="bottom">
-                    <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                    <a class="btn btn-danger btn-sm" rel="publisher"
-                       href="https://plus.google.com/+ahmshahnuralam">
-                        <i class="fa fa-google-plus"></i>
-                    </a>
-                    <a class="btn btn-primary btn-sm" rel="publisher"
-                       href="https://plus.google.com/shahnuralam">
-                        <i class="fa fa-facebook"></i>
-                    </a>
-                    <a class="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
-                        <i class="fa fa-behance"></i>
-                    </a>
+                    <div class="card-body">
+                        <h4 class="card-title mt-3">Hola, me llamo {{profile.petName}}</h4>
+                        <div class="meta card-text">
+                            <a>Creo que me he extraviado de mi hogar, ¿Me puedes ayudar a volver a casa?</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
-
-	</div>
-    
+        <div class="card-deck">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -37,7 +37,8 @@ router.post('/register/new-pet', async(req, res, next) => {
     lng: obj.lng,
     userState: obj.userState,
     genderSelected:obj.genderSelected,
-    photo: result.secure_url == undefined ? obj.image : result.secure_url
+    photo: result.secure_url == undefined ? obj.image : result.secure_url,
+    petStatus: obj.petStatus
   });
 
   Pet.addPet(newPet,async(user, done) => {
@@ -240,7 +241,8 @@ router.get('/getPetDataList/:id', function(req, res){
       healthAndRequirements: results.healthAndRequirements,
       favoriteActivities: results.favoriteActivities,
       calendar: results.calendar,
-      code: results.code
+      code: results.code,
+      petStatus: results.petStatus
     }
     res.json(pet)
   });

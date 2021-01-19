@@ -84,6 +84,10 @@ const PetSchema = mongoose.Schema ({
     type: String,
     require: true
   },
+  petStatus : {
+    type: String,
+    require: true
+  },
   calendar: [{
     title: {
       type: String,
