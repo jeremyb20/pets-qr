@@ -50,7 +50,7 @@ const routes: Routes = [
         { path: 'dashboard-user', component: DashboardUserComponent,canActivate: [AdminGuard] },
         { path: 'dashboard-company', component: DashboardCompanyComponent,canActivate: [AdminGuard] },
         { path: 'dashboard-pet', component: DashboardPetComponent,canActivate: [AdminGuard] },
-
+        { path: 'myPetCode', component: MyPetCodeComponent },
       
         { path: 'profile-user', component: ProfileUserComponent ,canActivate: [AdminGuard]},
         { path: 'profile-company', component: ProfileCompanyComponent ,canActivate: [AdminGuard]},

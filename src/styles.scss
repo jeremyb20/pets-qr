@@ -344,3 +344,35 @@ $loader-keyframe: 1 / (length($loader-colors) * 2) * 100;
   color: #fff;
   border: 2px solid #F57F17;
 }
+
+.swal2-title {
+  font-size: 0.875em !important;
+  text-align: left;
+  margin: 0;
+}
+
+.swal2-container.sw-leave-container {
+  .swal2-header {
+      background-color: var(--color-primary-800);
+      padding: 8px;
+      align-items: flex-start;
+  }
+  .swal2-title {
+    font-size: 0.875em !important;
+    text-align: left;
+    color: transparentize(#fff, 0.125);
+    margin: 0;
+  }
+  .swal2-content {
+      padding: 15px;
+      font-size: 16px;
+  }
+  .swal2-actions {
+      padding: 0 8px 8px 8px;
+      margin: 0;
+      align-items: flex-end;
+  }
+}
+.swal2-popup {
+  margin-top: 2em;
+}

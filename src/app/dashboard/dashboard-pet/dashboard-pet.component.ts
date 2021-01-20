@@ -431,7 +431,8 @@ calendarOptions: CalendarOptions = {
     this.loadingQr = true;
     var object = {
       id: this.pet.id,
-      status: "Ordenando"
+      status: "Ordenando",
+      petName: this.profile.petName
     }
 
     this.petService.generateQrCodePet(object).subscribe(data => {
@@ -460,6 +461,10 @@ calendarOptions: CalendarOptions = {
       this.loadingQr = false;
       this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
     });
+  }
+
+  goToProfile() {
+    this.router.navigate(['/myPetCode/'],{ queryParams: {id: this.pet.id}}); 
   }
 
 }

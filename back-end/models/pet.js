@@ -32,6 +32,28 @@ const PetSchema = mongoose.Schema ({
     type: String,
     require: false
   },
+  notifications: [{
+    message: {
+      type: String,
+      require: true
+    },
+    userPetName: {
+      type: String,
+      require: true
+    },
+    isNewMsg: {
+      type: Boolean,
+      require: true
+    },
+    dateMsg: {
+      type: String,
+      require: true
+    },
+    idPet: {
+      type: String,
+      require: true
+    }
+  }],
   code: [{
     link: {
       type: String,

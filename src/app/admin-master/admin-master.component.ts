@@ -28,6 +28,7 @@ export class AdminMasterComponent implements OnInit {
   petLogged: any;
   pet : any;
   allUsersData: any;
+  adminProfileData: any;
   Media: MediaResponse;
   loading: boolean = false;
   showCardMsgOrderList: boolean = false;
@@ -70,7 +71,29 @@ export class AdminMasterComponent implements OnInit {
 
 
     ngOnInit() {
-    
+      this.getDataAdminList();
+    }
+
+    getDataAdminList() {
+      this.petService.getAdminDataList().subscribe(data => {
+        this.adminProfileData = data;
+        console.log(this.adminProfileData);
+        // this.adminProfileData.forEach(element => {
+        //     if(element.code.length == 1){
+        //         element.code.forEach(item => {
+        //             if(item.status == 'Recibido'){
+        //                 this.orderHistory.push(element);
+        //             }else{
+        //                 this.order.push(element);
+        //             }
+        //         });
+        //     }
+        // });
+    },
+    error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor DE REVISAR', 6000);
+    });
     }
 
     stepTrackOrder(step: number){
@@ -156,9 +179,6 @@ export class AdminMasterComponent implements OnInit {
                 return obj.petName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
             });
         }
-
-       
-    
         return this.filteredData;
       }
 

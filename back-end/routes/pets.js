@@ -221,7 +221,7 @@ router.get('/getPetDataList/:id', function(req, res){
   Pet.findById(id, function(err, results){
     if(err){
       res.send('Algo ocurrio favor contactar a soporte');
-      next();
+      return;
     }
 
    var pet = {
@@ -271,8 +271,20 @@ router.post('/register/generateQrCodePet', async(req, res) => {
     status: status
   }
 
-  Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { code: object  }},{new: true}).then(function(data){
+  var notifications = {
+    message: 'El usuario '+ obj.petName+ ' ha solicitado un collar',
+    userPetName: obj.petName,
+    isNewMsg: true,
+    dateMsg: new Date(),
+    idPet: obj._id
+  }
+
+  Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { code: object }},{new: true}).then(function(data){
     res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
+  });
+
+  Pet.findOneAndUpdate({ _id: process.env.ADMIN_ID }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
+    console.log('Se ha enviado al admin');
   });
 });
 
@@ -321,6 +333,40 @@ router.get('/admin/getAllPets', function(req, res){
       next();
     }
     res.json(pets)
+  });
+});
+
+
+router.get('/admin/getAdminDataList', function(req, res){
+  var id = process.env.ADMIN_ID;
+  Pet.findById(id, function(err, results){
+    if(err){
+      res.send('Algo ocurrio favor revisar admin');
+      return;
+    }
+
+   var pet = {
+      petName: results.petName,
+      ownerPetName: results.ownerPetName,
+      phone: results.phone,
+      email: results.email,
+      photo: results.photo,
+      userState: results.userState,
+      lat: results.lat,
+      lng: results.lng,
+      birthDate: results.birthDate,
+      address: results.address,
+      age: results.age,
+      veterinarianContact: results.veterinarianContact,
+      phoneVeterinarian: results.phoneVeterinarian,
+      healthAndRequirements: results.healthAndRequirements,
+      favoriteActivities: results.favoriteActivities,
+      calendar: results.calendar,
+      code: results.code,
+      petStatus: results.petStatus,
+      notifications: results.notifications
+    }
+    res.json(pet)
   });
 });
 

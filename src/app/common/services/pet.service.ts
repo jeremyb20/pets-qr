@@ -116,6 +116,7 @@ export class PetService {
     const fd = new FormData();
     fd.append('_id', obj.id);
     fd.append('status', obj.status);
+    fd.append('petName', obj.petName);
     if(this.isDev) {
       return this.httpClient.post<any>('http://localhost:8080/pet/register/generateQrCodePet', fd);
     }else{
@@ -325,6 +326,18 @@ getPetsList():Observable<any> {
   }
 }
 
+
+getAdminDataList():Observable<any> {
+  let headers = new Headers();
+  this.loadToken();
+  headers.append('Authorization', this.authToken);
+  headers.append('Content-Type', 'application/json');
+  if (this.isDev) {
+    return this.httpClient.get<any>('http://localhost:8080/pet/admin/getAdminDataList');
+  } else {
+    return this.httpClient.get<any>('pet/admin/getAdminDataList');
+  }
+}
 
 // admin
 

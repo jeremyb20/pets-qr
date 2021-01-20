@@ -5,6 +5,7 @@ import { NotificationService } from 'src/app/common/services/notification.servic
 import { Router,ActivatedRoute } from '@angular/router';
 import { MediaResponse, MediaService } from '../common/services/media.service';
 import { darkStyle, lightStyle } from '../common/constants/map-theme';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { MapsAPILoader } from '@agm/core';
 import {Location} from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -26,7 +27,7 @@ export class MyPetCodeComponent implements OnInit {
   loading: boolean = false;
   imageUrl: any;
   Media: MediaResponse;
-
+  hideMenu: boolean = false;
   currentTimer: any;
 
 
@@ -34,6 +35,13 @@ export class MyPetCodeComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.getLinkIdParam = params.id; 
     });
+
+    if(this.getLinkIdParam == undefined) {
+      this.route.queryParams.subscribe(params => {
+        this.getLinkIdParam = params.id;
+        this.hideMenu = true;
+      });
+    }
     
     this.mediaSubscription = this.media.subscribeMedia().subscribe(media => {
       this.Media = media;
@@ -74,6 +82,31 @@ export class MyPetCodeComponent implements OnInit {
       this._notificationSvc.warning('Hola '+this.profile.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
     });
   }
+
+  copyInputMessage(inputElement:any){
+    Swal.fire({
+      position: 'top-end',
+      width: 300,
+      icon: 'success',
+      title: 'Copiado al portapapeles',
+      showConfirmButton: false,
+      timer: 1500
+    })
+
+	  let selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = inputElement;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+
+    
+	}
 
 }
 interface marker {
