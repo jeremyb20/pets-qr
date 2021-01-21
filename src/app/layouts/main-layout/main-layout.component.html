@@ -28,7 +28,7 @@
                 
             </ul>
 
-            <ul *ngIf="user.userState === 2" class="sidebar-nav">
+            <ul *ngIf="user.userState === 3" class="sidebar-nav">
                 <li class="sidebar-brand"> <a href="#">ID: {{petNameLogged}} </a> </li>
                 <li> <a href="#">Mis Viajes</a> </li>
                 <li> <a href="#">Mis Compras</a> </li>
@@ -41,7 +41,7 @@
                 </div>
             </ul>
 
-            <ul *ngIf="user.userState === 3" class="sidebar-nav">
+            <ul *ngIf="user.userState === 0" class="sidebar-nav">
                 <li class="sidebar-brand"> <a href="#">ID: {{petNameLogged}} </a> </li>
                 <li> <a href="#">Configuracion</a> </li>
                 <li> <a href="#">Eventos</a> </li>

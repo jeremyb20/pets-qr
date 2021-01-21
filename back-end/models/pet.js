@@ -52,7 +52,11 @@ const PetSchema = mongoose.Schema ({
     idPet: {
       type: String,
       require: true
-    }
+    },
+    photo: {
+      type: String,
+      require: false
+    },
   }],
   code: [{
     link: {

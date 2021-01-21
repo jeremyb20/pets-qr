@@ -117,6 +117,7 @@ export class PetService {
     fd.append('_id', obj.id);
     fd.append('status', obj.status);
     fd.append('petName', obj.petName);
+    fd.append('photo', obj.photo);
     if(this.isDev) {
       return this.httpClient.post<any>('http://localhost:8080/pet/register/generateQrCodePet', fd);
     }else{
@@ -128,10 +129,11 @@ export class PetService {
     const fd = new FormData();
     fd.append('_id', obj.id);
     fd.append('status', obj.status);
+    fd.append('photo', obj.photo);
     if(this.isDev) {
-      return this.httpClient.put<any>('http://localhost:8080/pet/register/updateStatusQrCodePet', fd);
+      return this.httpClient.put<any>('http://localhost:8080/pet/update/updateStatusQrCodePet', fd);
     }else{
-      return this.httpClient.put<any>('pet/register/updateStatusQrCodePet', fd);
+      return this.httpClient.put<any>('pet/update/updateStatusQrCodePet', fd);
     }
   }
 
@@ -342,6 +344,34 @@ getAdminDataList():Observable<any> {
 // admin
 
 
+// Notifications
+
+getNotificationsService(id):Observable<any> {
+  let headers = new Headers();
+  this.loadToken();
+  headers.append('Authorization', this.authToken);
+  headers.append('Content-Type', 'application/json');
+  if (this.isDev) {
+    return this.httpClient.get<any>('http://localhost:8080/pet/notifications/getNotificationsList/'+ id);
+  } else {
+    return this.httpClient.get<any>('pet/notificationsn/getNotificationsList/'+ id);
+  }
+}
+
+updateNotification(obj: any):Observable<any> {
+  const fd = new FormData();
+  fd.append('_id', obj.id);
+  fd.append('isNewMsg', obj.isNewMsg);
+  fd.append('idItem', obj.idItem);
+  if(this.isDev) {
+    return this.httpClient.put<any>('http://localhost:8080/pet/update/updateNotificationsList', fd);
+  }else{
+    return this.httpClient.put<any>('pet/update/updateNotificationsList', fd);
+  }
+}
+
+
+// Notifications
 
 
   storeUserData(token, pet) {

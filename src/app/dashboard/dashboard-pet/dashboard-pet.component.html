@@ -297,27 +297,27 @@
               <div class="input-group-prepend">
                   <span class="input-group-text"> <i class="fa fa-user"></i> </span>
               </div>
-              <input type="text" formControlName="title" class="form-control" placeholder="Nombre completo" [ngClass]="{ 'is-invalid': submitted && g.title.errors }" />
-              <div *ngIf="submitted && g.title.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.title.errors }">
-                  <div *ngIf="g.title.errors.required">Nuevo titulo es requerido</div>
+              <input type="text" formControlName="title" class="form-control" placeholder="Nombre completo" [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+              <div *ngIf="submitted && f.title.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.title.errors }">
+                  <div *ngIf="f.title.errors.required">Nuevo titulo es requerido</div>
               </div>
             </div> 
             <div class="form-group input-group">
               <div class="input-group-prepend">
                   <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
               </div>
-              <input type="date" id="datefield" formControlName="date" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.date.errors }" />
-              <div *ngIf="submitted && g.date.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.date.errors }">
-                  <div *ngIf="g.date.errors.required">Fecha de Inicio es requerido</div>
+              <input type="date" id="datefield" formControlName="date" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
+              <div *ngIf="submitted && f.date.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.date.errors }">
+                  <div *ngIf="f.date.errors.required">Fecha de Inicio es requerido</div>
               </div>
             </div> 
             <div class="form-group input-group">
               <div class="input-group-prepend">
                   <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
               </div>
-              <input type="date" formControlName="enddate" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.enddate.errors }" />
-              <div *ngIf="submitted && g.enddate.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.enddate.errors }">
-                  <div *ngIf="g.enddate.errors.required">Fecha de Final es requerido</div>
+              <input type="date" formControlName="enddate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.enddate.errors }" />
+              <div *ngIf="submitted && f.enddate.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.enddate.errors }">
+                  <div *ngIf="f.enddate.errors.required">Fecha de Final es requerido</div>
               </div>
             </div>  
 
@@ -325,9 +325,9 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                 </div>
-                <input type="text" formControlName="description" class="form-control" placeholder="Descripcion" [ngClass]="{ 'is-invalid': submitted && g.description.errors }" />
-                <div *ngIf="submitted && g.description.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.description.errors }">
-                    <div *ngIf="g.description.errors.required">Descripcion es requerido</div>
+                <input type="text" formControlName="description" class="form-control" placeholder="Descripcion" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
+                <div *ngIf="submitted && f.description.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.description.errors }">
+                    <div *ngIf="f.description.errors.required">Descripcion es requerido</div>
                 </div>
               </div> 
   
@@ -352,36 +352,36 @@
               <div class="input-group-prepend">
                   <span class="input-group-text"> <i class="fa fa-user"></i> </span>
               </div>
-              <input type="text" formControlName="title" class="form-control" placeholder="Nombre completo" [ngClass]="{ 'is-invalid': submitted && g.title.errors }" />
-              <div *ngIf="submitted && g.title.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.title.errors }">
-                  <div *ngIf="g.title.errors.required">Nuevo titulo es requerido</div>
+              <input type="text" formControlName="title" class="form-control" placeholder="Nombre completo" [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+              <div *ngIf="submitted && f.title.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.title.errors }">
+                  <div *ngIf="f.title.errors.required">Nuevo titulo es requerido</div>
               </div>
             </div> 
             <div class="form-group input-group">
               <div class="input-group-prepend">
                   <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
               </div>
-              <input type="date" id="datefield" formControlName="date" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.date.errors }" />
-              <div *ngIf="submitted && g.date.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.date.errors }">
-                  <div *ngIf="g.date.errors.required">Fecha de Inicio es requerido</div>
+              <input type="date" id="datefield" formControlName="date" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
+              <div *ngIf="submitted && f.date.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.date.errors }">
+                  <div *ngIf="f.date.errors.required">Fecha de Inicio es requerido</div>
               </div>
             </div> 
             <div class="form-group input-group">
               <div class="input-group-prepend">
                   <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
               </div>
-              <input type="date" formControlName="enddate" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.enddate.errors }" />
-              <div *ngIf="submitted && g.enddate.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.enddate.errors }">
-                  <div *ngIf="g.enddate.errors.required">Fecha de Final es requerido</div>
+              <input type="date" formControlName="enddate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.enddate.errors }" />
+              <div *ngIf="submitted && f.enddate.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.enddate.errors }">
+                  <div *ngIf="f.enddate.errors.required">Fecha de Final es requerido</div>
               </div>
             </div>  
             <div class="form-group input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                 </div>
-                <input type="text" formControlName="description" class="form-control" placeholder="Descripcion" [ngClass]="{ 'is-invalid': submitted && g.description.errors }" />
-                <div *ngIf="submitted && g.description.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.description.errors }">
-                    <div *ngIf="g.description.errors.required">Descripcion es requerido</div>
+                <input type="text" formControlName="description" class="form-control" placeholder="Descripcion" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
+                <div *ngIf="submitted && f.description.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.description.errors }">
+                    <div *ngIf="f.description.errors.required">Descripcion es requerido</div>
                 </div>
               </div> 
   

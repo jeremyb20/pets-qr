@@ -4,6 +4,8 @@ import { MediaService, MediaResponse } from '../common/services/media.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { PetService } from '../common/services/pet.service';
+import { NotificationService } from '../common/services/notification.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-toolbar',
@@ -13,11 +15,23 @@ import { PetService } from '../common/services/pet.service';
 export class ToolbarComponent implements OnInit {
   private mediaSubscription: Subscription;
   Media: MediaResponse;
+  userLogged: any;
+  user:any;
+  loading: boolean = false;
+  notificationsData: any;
+  isNewMsg: number = 0;
+  isFoo:boolean = false;
 
-  constructor(public authService: AuthServices, public petService: PetService, private media: MediaService,private route: Router) { 
+  constructor(public authService: AuthServices, public petService: PetService, private _notificationSvc: NotificationService, private media: MediaService,private route: Router) { 
     this.mediaSubscription = this.media.subscribeMedia().subscribe(result => {
       this.Media = result;
     });
+    this.userLogged = this.authService.getLocalUser();
+    if(this.userLogged == null ){
+        this.userLogged = this.petService.getLocalPet();
+    }
+    this.user = JSON.parse(this.userLogged);
+    this.getNotifications();
   }
 
   ngOnInit(): void {
@@ -26,6 +40,47 @@ export class ToolbarComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.route.navigate(['/home'])
+  }
+
+  getNotifications() {
+    this.notificationsData = [];
+    this.isNewMsg = 0;
+    this.petService.getNotificationsService(this.user.id).subscribe(data => {
+        this.notificationsData = data;
+        this.notificationsData.forEach(element => {
+            if(element.isNewMsg){
+                this.isNewMsg ++;
+            }
+        });
+      },
+      error => {
+        this.loading = false;
+        this._notificationSvc.warning('Hola '+'Admin'+'', 'Ocurrio un error favor DE REVISAR', 6000);
+      });
+  }
+
+  getDate(strDate) {
+    return moment(new Date(strDate)).locale('es').calendar(); 
+  }
+
+  updateNotification(item: any){
+    var object = {
+      id: this.user.id,
+      isNewMsg: false,
+      idItem: item._id
+    }
+
+    this.petService.updateNotification(object).subscribe(data => {
+      if(data.success) {
+        this.isNewMsg --;
+        this.getNotifications();
+      } else {
+        this._notificationSvc.warning('Hola '+this.user.petName+'', data.msg, 6000);
+      }
+    },
+    error => {
+      this._notificationSvc.warning('Hola '+this.user.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
   }
 
 }

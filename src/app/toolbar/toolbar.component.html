@@ -15,7 +15,7 @@
                     <a class="nav-link" href="#">Features</a>
                 </li>
                 <li class="nav-item">
-                    <div class="button mail" ><i class="fas fa-bell"></i><span  class="badge">2</span></div>
+                    <div class="button mail" (click)="isFoo = !isFoo" ><i class="fas fa-bell"></i><span *ngIf="isNewMsg > 0"  class="badge">{{isNewMsg}}</span></div>
                 </li>
                 <!-- <li class="nav-item">
         <div class="button mail d-none d-lg-block" *ngIf="AllowMailbox" (click)="goMailbox()"><i class="fas fa-envelope"></i><span *ngIf="unreadMails > 0" class="badge">{{unreadMails}}</span></div>
@@ -26,4 +26,37 @@
             </ul>
         </div>
     </nav>
+    <div *ngIf="isFoo" class="dropdown-menu p-0 dropdown-menu-right dropdown-menu-animated dropdown-lg show" style="overflow-y: scroll;">
+
+        <!-- item-->
+        <div class="sticky-top dropdown-item noti-title bg-dark text-white">
+            <h5 class="m-0">
+                <span class="float-right">
+                </span>Notification
+            </h5>
+        </div>
+
+        <div class="notifications" style="width: 360; height: 250px;" >
+            <div *ngFor="let item of notificationsData" class="row no-gutters border-bottom" [ngClass]="{'isNewMsg': item.isNewMsg}">
+                <div class="notify-icon col-3 p-3">
+                    <img src="{{item.photo}}" style="height: 50px; width: 50px;" class="img-fluid rounded-circle" alt="{{item.photo}}">
+                </div>
+                <div class="col-9">
+                    <div class="row no-gutters">
+                        <p class="mb-0 mt-3"><small>{{item.message}}</small></p>
+                        <div class="col-6">
+                            <small>{{this.getDate(item.dateMsg)}}</small>
+                        </div>
+                        <div class="col-6">
+                            <button *ngIf="item.isNewMsg" (click)="updateNotification(item)" class="btn btn-info btn-sm">Entendido</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- All-->
+            <a class="dropdown-item text-center text-primary notify-item view-all">
+                View All
+            </a>
+        </div>
+    </div>
 </div>

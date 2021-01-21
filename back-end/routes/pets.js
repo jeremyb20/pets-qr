@@ -100,6 +100,8 @@ router.post('/authenticate', (req, res, next) => {
           pet: {
             id: pet._id,
             userState: pet.userState,
+            petName: pet.petName,
+            photo: pet.photo
           }
         })
       } else {
@@ -276,6 +278,7 @@ router.post('/register/generateQrCodePet', async(req, res) => {
     userPetName: obj.petName,
     isNewMsg: true,
     dateMsg: new Date(),
+    photo: obj.photo,
     idPet: obj._id
   }
 
@@ -288,13 +291,22 @@ router.post('/register/generateQrCodePet', async(req, res) => {
   });
 });
 
-router.put('/register/updateStatusQrCodePet', async(req, res, next) => {
+router.put('/update/updateStatusQrCodePet', async(req, res, next) => {
   const obj = JSON.parse(JSON.stringify(req.body));
 
   var code = 'https://' + req.headers.host + '/myPetCode/' + obj._id;
   var object = {
     link: code,
     status: obj.status
+  }
+
+  var notifications = {
+    message: 'Se ha cambiado el estado del producto a '+ object.status+'',
+    userPetName: 'Admin',
+    isNewMsg: true,
+    dateMsg: new Date(),
+    idPet: req.body._id,
+    photo: obj.photo
   }
 
   await Pet.findOne({_id: req.body._id }, (err, pet) => {
@@ -319,6 +331,9 @@ router.put('/register/updateStatusQrCodePet', async(req, res, next) => {
       })
      }
    });
+   Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
+    console.log('Se ha enviado correctamente');
+  });
 });
 
 
@@ -372,8 +387,55 @@ router.get('/admin/getAdminDataList', function(req, res){
 
 // admin
 
+//Notifications 
+router.get('/notifications/getNotificationsList/:id', function(req, res){
+  var id = req.params.id;
+  Pet.findById(id, function(err, results){
+    if(err){
+      res.send('Algo ocurrio favor revisar admin');
+      return;
+    }
+    res.json(results.notifications)
+  });
+});
 
 
+
+router.put('/update/updateNotificationsList', async(req, res, next) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  var object = {
+    isNewMsg: obj.isNewMsg,
+    idItem: obj.idItem
+  }
+
+  await Pet.findOne({_id: req.body._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+     if(pet != null) {
+       var arrayPet = [];
+      arrayPet.push(pet);
+      arrayPet.forEach(element => {
+          element["notifications"].forEach(item => {
+            if(item._id == object.idItem){
+              item["isNewMsg"] = false;
+            }
+          }) 
+          pet.save();
+          try {
+            res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+          } catch (err) {
+            res.json({ success: false, msg: err });
+            next(err);
+          }
+      })
+     }
+   });
+});
+
+
+
+//Notifications
 
 
 

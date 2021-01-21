@@ -76,8 +76,8 @@ calendarOptions: CalendarOptions = {
   private localUserSubscription : Subscription;
   public searchControl: FormControl;
   zoom: number = 17;
-  lat: number;
-  lng: number;
+  lat: number = 9.93040049002793;
+  lng: number = -84.09062837772197;
   distance: number;
   previous;
   coords: any;
@@ -173,7 +173,6 @@ calendarOptions: CalendarOptions = {
   getPetDataList() {
     this.petService.getPetDaList(this.pet.id).subscribe(data => {
       this.profile = data;
-      this.code = '';
       this.newPetInfoForm = this.formBuilder.group({
         petName: [this.profile.petName, Validators.required],
         ownerPetName: [this.profile.ownerPetName, Validators.required],
@@ -188,8 +187,10 @@ calendarOptions: CalendarOptions = {
         favoriteActivities: [this.profile.favoriteActivities, Validators.required],
       });
       
-      if(this.code != undefined){
+      if(this.code != undefined && this.code != '' ){
          this.code = data.code[0].status;
+      }else{
+        this.code = data.code[0].status;
       }
 
       this.calendarOptions.events = data.calendar;
@@ -201,8 +202,6 @@ calendarOptions: CalendarOptions = {
         isDestination: false,
         photo: this.profile.photo
       });
-      this.lat = this.profile.lat;
-      this.lng = this.profile.lng;
       this.showInfo = true;
     },
     error => {
@@ -349,6 +348,7 @@ calendarOptions: CalendarOptions = {
         title: [arg.event._def.title, Validators.required],
         date: [start, [Validators.required]],
         enddate: [end, Validators.required],
+        description: ['', Validators.required],
       });
     }
     $('#newCalendarEventModal').modal('show');
@@ -432,7 +432,8 @@ calendarOptions: CalendarOptions = {
     var object = {
       id: this.pet.id,
       status: "Ordenando",
-      petName: this.profile.petName
+      petName: this.profile.petName,
+      photo: this.profile.photo
     }
 
     this.petService.generateQrCodePet(object).subscribe(data => {

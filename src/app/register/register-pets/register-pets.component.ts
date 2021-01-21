@@ -27,7 +27,7 @@ export class RegisterPetComponent implements OnInit {
   loading: boolean = false;
   registerForm: FormGroup;
   submitted = false;
-  zoom: number = 4;
+  zoom: number = 17;
   lat: number = 9.93040049002793;
   lng: number = -84.09062837772197;
   markers: marker[] = [];

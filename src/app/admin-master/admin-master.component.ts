@@ -71,30 +71,18 @@ export class AdminMasterComponent implements OnInit {
 
 
     ngOnInit() {
-      this.getDataAdminList();
+      //this.getDataAdminList();
     }
 
-    getDataAdminList() {
-      this.petService.getAdminDataList().subscribe(data => {
-        this.adminProfileData = data;
-        console.log(this.adminProfileData);
-        // this.adminProfileData.forEach(element => {
-        //     if(element.code.length == 1){
-        //         element.code.forEach(item => {
-        //             if(item.status == 'Recibido'){
-        //                 this.orderHistory.push(element);
-        //             }else{
-        //                 this.order.push(element);
-        //             }
-        //         });
-        //     }
-        // });
-    },
-    error => {
-      this.loading = false;
-      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor DE REVISAR', 6000);
-    });
-    }
+    // getDataAdminList() {
+    //   this.petService.getAdminDataList().subscribe(data => {
+    //     this.adminProfileData = data;
+    //   },
+    //   error => {
+    //     this.loading = false;
+    //     this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor DE REVISAR', 6000);
+    //   });
+    // }
 
     stepTrackOrder(step: number){
         this.id = step;
@@ -143,7 +131,8 @@ export class AdminMasterComponent implements OnInit {
             if (result.isConfirmed) {
                 var object = {
                     id: item._id,
-                    status: state
+                    status: state,
+                    photo: this.pet.photo
                   }
               
                   this.petService.updateStatusCodePet(object).subscribe(data => {

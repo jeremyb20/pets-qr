@@ -269,4 +269,23 @@
     .msgError {
         text-transform: capitalize;
     }
+
+    .notifications {
+        width: 360px;
+    }
+
+    .isNewMsg {
+        background-color: #d1dbe5ca;
+        border-bottom: 1px solid rgba(0,0,0,.12);
+    }
+
+    .isNewMsg:hover {
+        color: #272e37;
+        text-decoration: none;
+        background-color: #d1dbe5;
+    }
+
+    .view-all {
+        background-color: #9cbddfca ;
+    }
 }
