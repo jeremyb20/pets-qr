@@ -64,6 +64,9 @@ export class PetService {
     fd.append('phoneVeterinarian',pet.phoneVeterinarian);
     fd.append('healthAndRequirements',pet.healthAndRequirements);
     fd.append('favoriteActivities',pet.favoriteActivities);
+    fd.append('linkTwitter',pet.linkTwitter);
+    fd.append('linkFacebook',pet.linkFacebook);
+    fd.append('linkInstagram',pet.linkInstagram);
 
     if(this.isDev) {
       return this.httpClient.put<any>('http://localhost:8080/pet/update/updateProfilePet', fd);

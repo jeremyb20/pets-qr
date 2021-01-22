@@ -126,7 +126,10 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
     veterinarianContact: obj.veterinarianContact,
     phoneVeterinarian: obj.phoneVeterinarian,
     healthAndRequirements: obj.healthAndRequirements,
-    favoriteActivities: obj.favoriteActivities
+    favoriteActivities: obj.favoriteActivities,
+    linkTwitter: obj.linkTwitter,
+    linkFacebook: obj.linkFacebook,
+    linkInstagram: obj.linkInstagram
   }
 
   await Pet.findOne({_id: req.body._id }, (err, pet) => {
@@ -147,6 +150,9 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
           element["phoneVeterinarian"] = petUpdate.phoneVeterinarian;
           element["healthAndRequirements"] = petUpdate.healthAndRequirements;
           element["favoriteActivities"] = petUpdate.favoriteActivities;
+          element["linkTwitter"] = petUpdate.linkTwitter;
+          element["linkFacebook"] = petUpdate.linkFacebook;
+          element["linkInstagram"] = petUpdate.linkInstagram;
           pet.save();
           try {
             res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
@@ -244,7 +250,10 @@ router.get('/getPetDataList/:id', function(req, res){
       favoriteActivities: results.favoriteActivities,
       calendar: results.calendar,
       code: results.code,
-      petStatus: results.petStatus
+      petStatus: results.petStatus,
+      linkTwitter: results.linkTwitter,
+      linkFacebook: results.linkFacebook,
+      linkInstagram: results.linkInstagram
     }
     res.json(pet)
   });

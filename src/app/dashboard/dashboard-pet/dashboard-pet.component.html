@@ -24,6 +24,9 @@
                             <span><i class="fas fa-phone"></i> <a title="#">  (+506) {{profile.phone}}</a></span>
                             <span><i class="fas fa-envelope"></i> <a href="{{profile.email}}" title="{{profile.email}}"> {{profile.email}}</a></span>
                             <span><i class="fas fa-address-book"></i> {{profile.address}}</span>
+                            <a *ngIf="profile.linkTwitter != ''" target="_blank" href="{{profile.linkTwitter}}" class="btn btn-block btn-twitter"> <i class="fab fa-twitter"></i>   Link de Twitter</a>
+                            <a *ngIf="profile.linkFacebook != ''" target="_blank" href="{{profile.linkFacebook}}" class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i>   Link de facebook</a>
+                            <a *ngIf="profile.linkInstagram != ''" target="_blank" href="{{profile.linkInstagram}}" class="btn btn-block btn-instagram"> <i class="fab fa-instagram"></i>   Link de instagram</a>
                         </div>
                         <button [disabled]="code == 'Ordenando' || code == 'Pendiente' || code == 'Preparando' || code == 'Enviado' || code == 'Recibido'" (click)="generateQrCode()" type="submit" class="btn btn-yellow col-12 float-right mb-2">
                             <i *ngIf="!loadingQr" class="fa fa-paw" aria-hidden="true"></i> 
@@ -199,6 +202,36 @@
                                                 <div *ngIf="g.phoneVeterinarian.errors.required">Telefono es requerido</div>
                                                 <div *ngIf="g.phoneVeterinarian.errors.minlength">Telefono debe ser al menos 8 digitos</div>
                                                 <div *ngIf="g.phoneVeterinarian.errors.pattern">Solo se permiten numeros</div>
+                                            </div>
+                                        </div>  
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group input-group col-4">
+                                            <div class="input-group-prepend">
+                                              <span class="input-group-text"> <i class="fab fa-twitter"></i> </span>
+                                            </div>
+                                            <input type="text" formControlName="linkTwitter" placeholder="Link de Twitter" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.linkTwitter.errors }" />
+                                            <div *ngIf="submitted && g.linkTwitter.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.linkTwitter.errors }">
+                                                <div *ngIf="g.linkTwitter.errors.required">Link de Twitter es requerido</div>
+                                            </div>
+                                          </div>
+                                        <div class="form-group input-group col-4">
+                                            <div class="input-group-prepend">
+                                              <span class="input-group-text"> <i class="fab fa-facebook-f"></i> </span>
+                                            </div>
+                                            <input type="text" formControlName="linkFacebook" placeholder="Link de Facebook" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.linkFacebook.errors }" />
+                                            <div *ngIf="submitted && g.linkFacebook.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.linkFacebook.errors }">
+                                                <div *ngIf="g.linkFacebook.errors.required">Link de Facebook es requerido</div>
+                                            </div>
+                                        </div> 
+                                        <div class="form-group input-group col-4">
+                                            <div class="input-group-prepend">
+                                              <span class="input-group-text"> <i class="fab fa-instagram"></i></span>
+                                            </div>
+                                            <input type="text" formControlName="linkInstagram" placeholder="Link de instagram" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.linkInstagram.errors }" />
+                                            <div *ngIf="submitted && g.linkInstagram.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.linkInstagram.errors }">
+                                                <div *ngIf="g.linkInstagram.errors.required">Link de instagram es requerido</div>
                                             </div>
                                         </div>  
                                     </div>

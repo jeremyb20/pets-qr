@@ -32,6 +32,18 @@ const PetSchema = mongoose.Schema ({
     type: String,
     require: false
   },
+  linkTwitter: {
+    type: String,
+    require: false
+  },
+  linkFacebook: {
+    type: String,
+    require: false
+  },
+  linkInstagram: {
+    type: String,
+    require: false
+  },
   notifications: [{
     message: {
       type: String,

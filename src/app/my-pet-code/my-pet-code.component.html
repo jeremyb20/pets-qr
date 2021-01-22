@@ -16,7 +16,7 @@
                 <button [routerLink]="['/register-pets']" class="btn btn-block btn-yellow btn-sm">Registrarse</button> 
             </li>
           </ul>
-          <span class="navbar-text" [ngClass]="{'w-100': Media.IsMobile}">
+          <span class="navbar-text" [ngClass]="{'w-100': Media.IsMobile, 'd-none':Media.IsLandscape}">
             <button class="btn-block btn btn-danger">Reportar Problema</button>
           </span>
         </div>
@@ -33,34 +33,86 @@
                         <div class="card-body">
                             <h4 class="card-title mt-3">Hola, me llamo {{profile.petName}}</h4>
                             <div class="meta card-text">
-                                <p class="card-text">Bienvenid@ a mi perfil</p>
+                                <p class="card-text mb-2">Bienvenid@ a mi perfil</p>
+                            </div>
+                            <div>
+                                <a *ngIf="profile.linkTwitter != ''" target="_blank" href="{{profile.linkTwitter}}" class="btn btn-block btn-twitter"> <i class="fab fa-twitter"></i>   Link de Twitter</a>
+                                <a *ngIf="profile.linkFacebook != ''" target="_blank" href="{{profile.linkFacebook}}" class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i>   Link de facebook</a>
+                                <a *ngIf="profile.linkInstagram != ''" target="_blank" href="{{profile.linkInstagram}}" class="btn btn-block btn-instagram"> <i class="fab fa-instagram"></i>   Link de instagram</a>
                             </div>
                         </div>
-                        <div class="card-footer">
+                        <div *ngIf="!hideMenu" class="card-footer">
                             <button class="btn btn-danger"><img style="height: 30px; width: 30px;" alt="{{profile.photo}}" src="https://cdn2.iconfinder.com/data/icons/cute-husky-emoticon/512/husky_emoji_sad-512.png"> Reportar perfil de {{profile.petName}} </button>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-8 col-md-8 col-lg-8" [ngClass]="{'p-5': Media.IsLandscape}">
+                <div class="col-12 col-sm-8 col-md-8 col-lg-8" [ngClass]="{'pt-0 pl-5 pr-5': Media.IsLandscape}">
                     <div class="card-deck">
-                        <div class="card">
-                            <div class="card-body">
-                                <h6 class="card-title"><i class="fa fa-phone"></i> Telefono</h6>
-                                <p class="card-text">{{profile.phone}}</p>
-                                <p class="card-text pb-2"><button (click)="copyInputMessage(profile.phone)" class="btn btn-info btn-sm">Copiar a portapapeles</button></p>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h6 class="card-title"><i class="fa fa-envelope"></i> Email</h6>
-                                <p class="card-text" >{{profile.email}}</p>
-                                <p class="card-text pb-2"><button (click)="copyInputMessage(profile.email)" class="btn btn-info btn-sm">Copiar a portapapeles</button></p>
-                            </div>
-                        </div>
                         <div *ngIf="profile.ownerPetName" class="card">
                             <div class="card-body">
                                 <h6 class="card-title"><i class="fa fa-user"></i> Propietari@</h6>
                                 <p class="card-text">{{profile.ownerPetName}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="profile.phone" class="card">
+                            <div class="card-body">
+                                <h6 class="card-title"><i class="fa fa-phone"></i> Telefono</h6>
+                                <p class="card-text">{{profile.phone}}</p>
+                            </div>
+                            <div class="card-footer">
+                                <p class="card-text"><button (click)="copyInputMessage(profile.phone)" class="btn btn-info btn-sm">Copiar</button></p>
+                            </div>
+                        </div>
+                        <div *ngIf="profile.email" class="card">
+                            <div class="card-body">
+                                <h6 class="card-title"><i class="fa fa-envelope"></i> Email</h6>
+                                <p class="card-text" >{{profile.email}}</p>
+                            </div>
+                            <div class="card-footer">
+                                <p class="card-text"><button (click)="copyInputMessage(profile.email)" class="btn btn-info btn-sm">Copiar</button></p>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="card-deck">
+                        <div *ngIf="profile.age" class="card">
+                            <div class="card-body">
+                                <h6 class="card-title"> Edad</h6>
+                                <p class="card-text">{{profile.age}} años</p>
+                            </div>
+                        </div>
+                        <div *ngIf="profile.address" class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Direcion de habitacion</h6>
+                                <p class="card-text" >{{profile.address}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="profile.favoriteActivities" class="card">
+                            <div class="card-body">
+                                <h6 class="card-title"> Actividades Favoritas</h6>
+                                <p class="card-text">{{profile.favoriteActivities}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-deck">
+                        <div *ngIf="profile.healthAndRequirements" class="card">
+                            <div class="card-body">
+                                <h6 class="card-title">Salud y Cuidados</h6>
+                                <p class="card-text" >{{profile.healthAndRequirements}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="profile.veterinarianContact" class="card">
+                            <div class="card-body">
+                                <h6 class="card-title"> Nombre Veterinario</h6>
+                                <p class="card-text">{{profile.veterinarianContact}}</p>
+                            </div>
+                        </div>
+                        <div *ngIf="profile.phoneVeterinarian" class="card">
+                            <div class="card-body">
+                                <h6 class="card-title"> Telefono Veterinario</h6>
+                                <p class="card-text">{{profile.phoneVeterinarian}}</p>
+                            </div>
+                            <div class="card-footer">
+                                <p class="card-text"><button (click)="copyInputMessage(profile.phoneVeterinarian)" class="btn btn-info btn-sm">Copiar</button></p>
                             </div>
                         </div>
                     </div>
@@ -68,7 +120,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h6 class="card-title"><i class="fas fa-map-marker-alt"></i>  Mi ubicacion</h6>
-                                <div class="map" style="width:100%;height:65vh" #map>
+                                <div class="map" style="width:100%;height:35vh" #map>
                                     <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [styles]="currentTimer" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [zoomControl]="true" [disableDefaultUI]="false">
                                   
                                       <agm-marker style="border-radius: 50%;" *ngFor="let m of markers; let i = index" [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [agmFitBounds]="true" [iconUrl]="{url:m.photo, scaledSize:{height:45, width:40, radius:5}}">

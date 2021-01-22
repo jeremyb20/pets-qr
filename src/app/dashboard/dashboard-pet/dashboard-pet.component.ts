@@ -184,7 +184,10 @@ calendarOptions: CalendarOptions = {
         veterinarianContact: [this.profile.veterinarianContact, Validators.required],
         phoneVeterinarian: [this.profile.phoneVeterinarian, [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
         healthAndRequirements: [this.profile.healthAndRequirements, Validators.required],
-        favoriteActivities: [this.profile.favoriteActivities, Validators.required],
+        favoriteActivities: [this.profile.favoriteActivities],
+        linkTwitter: [this.profile.linkTwitter = (this.profile.linkTwitter == 'null')? this.profile.linkTwitter = '': this.profile.linkTwitter],
+        linkFacebook: [this.profile.linkFacebook = (this.profile.linkFacebook == 'null')? this.profile.linkFacebook = '': this.profile.linkFacebook],
+        linkInstagram: [this.profile.linkInstagram = (this.profile.linkInstagram == 'null')? this.profile.linkInstagram = '': this.profile.linkInstagram],
       });
       
       if(this.code != undefined && this.code != '' ){
@@ -227,14 +230,17 @@ calendarOptions: CalendarOptions = {
       veterinarianContact: this.g.veterinarianContact.value,
       phoneVeterinarian: this.g.phoneVeterinarian.value,
       healthAndRequirements: this.g.healthAndRequirements.value,
-      favoriteActivities: this.g.favoriteActivities.value
+      favoriteActivities: this.g.favoriteActivities.value,
+      linkTwitter: this.g.linkTwitter.value,
+      linkFacebook: this.g.linkFacebook.value,
+      linkInstagram: this.g.linkInstagram.value
     }
 
     this.petService.updatePetProfile(pet).subscribe(data => {
       if(data.success) {
         this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
         this.loading = false;
-        this.getPetDataList();
+        location.reload();
       } else {
         $('#newMenuModal').modal('hide');
         this.loading = false;
