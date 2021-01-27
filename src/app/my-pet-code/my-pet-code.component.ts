@@ -29,6 +29,7 @@ export class MyPetCodeComponent implements OnInit {
   Media: MediaResponse;
   hideMenu: boolean = false;
   currentTimer: any;
+  permissionData: any;
 
 
   constructor(private formBuilder: FormBuilder, private media: MediaService,  private petService: PetService,private _notificationSvc: NotificationService, private route: ActivatedRoute , private router: Router) {
@@ -57,11 +58,42 @@ export class MyPetCodeComponent implements OnInit {
     } else {
       this.currentTimer = darkStyle;
     }
-
+    this.getPermissionInfo();
     this.getPetDataList();
+   
    }
 
   ngOnInit() {
+  }
+
+  getPermissionInfo() {
+    this.petService.getPetPermissionsDataList(this.getLinkIdParam).subscribe(data => {
+      this.permissionData = data.permissions[0];
+      if(this.permissionData.length<=0){
+        this.permissionData = {
+          showPhoneInfo: true,
+          showEmailInfo: true,
+          showLinkTwitter: true,
+          showLinkFacebook: true,
+          showLinkInstagram: true,
+          showOwnerPetName: true,
+          showBirthDate: true,
+          showAddressInfo: true,
+          showAgeInfo: true,
+          showVeterinarianContact: true,
+          showPhoneVeterinarian: true,
+          showHealthAndRequirements: true,
+          showFavoriteActivities: true,
+          showLocationInfo: true
+        }
+      }else{
+        this.permissionData = data.permissions[0];
+      }
+    },
+    error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.profile.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
   }
 
   getPetDataList() {

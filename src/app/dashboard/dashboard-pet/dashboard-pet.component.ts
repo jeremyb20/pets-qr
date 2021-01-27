@@ -44,7 +44,9 @@ export class DashboardPetComponent implements OnInit {
   ShowMsg: string = 'hola';
   code: any;
   id: number = 1;
-
+  permissionData: any;
+  permissionDataCopy: any;
+  updatePermission: boolean = false;
 // calendar 
 
 isNewEvent: boolean = false;
@@ -152,6 +154,7 @@ calendarOptions: CalendarOptions = {
       }
 
     this.getPetDataList();
+    this.getPermissionInfo();
   }
 
   get g() { return this.newPetInfoForm.controls; }
@@ -206,6 +209,73 @@ calendarOptions: CalendarOptions = {
         photo: this.profile.photo
       });
       this.showInfo = true;
+    },
+    error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
+  }
+
+  getPermissionInfo() {
+    this.petService.getPetPermissionsDataList(this.pet.id).subscribe(data => {
+      this.updatePermission = false;
+      this.permissionData = data.permissions[0];
+      if(this.permissionData.length<=0){
+        this.permissionData = {
+          showPhoneInfo: true,
+          showEmailInfo: true,
+          showLinkTwitter: true,
+          showLinkFacebook: true,
+          showLinkInstagram: true,
+          showOwnerPetName: true,
+          showBirthDate: true,
+          showAddressInfo: true,
+          showAgeInfo: true,
+          showVeterinarianContact: true,
+          showPhoneVeterinarian: true,
+          showHealthAndRequirements: true,
+          showFavoriteActivities: true,
+          showLocationInfo:true
+        }
+      }else{
+        this.permissionData = data.permissions[0];
+      }
+    },
+    error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
+  }
+
+  changed(item:any) {
+    this.updatePermission = true;
+    console.log(item, 'nuevo');
+    this.permissionData = item;
+  }
+  
+  updatePermissionList() {
+    var object  = {
+      id: this.pet.id,
+      showPhoneInfo: this.permissionData.showPhoneInfo,
+      showEmailInfo: this.permissionData.showEmailInfo,
+      showLinkTwitter: this.permissionData.showLinkTwitter,
+      showLinkFacebook: this.permissionData.showLinkFacebook,
+      showLinkInstagram: this.permissionData.showLinkInstagram,
+      showOwnerPetName: this.permissionData.showOwnerPetName,
+      showBirthDate: this.permissionData.showBirthDate,
+      showAddressInfo: this.permissionData.showAddressInfo,
+      showAgeInfo: this.permissionData.showAgeInfo,
+      showVeterinarianContact: this.permissionData.showVeterinarianContact,
+      showPhoneVeterinarian: this.permissionData.showPhoneVeterinarian,
+      showHealthAndRequirements: this.permissionData.showHealthAndRequirements,
+      showFavoriteActivities: this.permissionData.showFavoriteActivities,
+      showLocationInfo: this.permissionData.showLocationInfo
+    }
+
+    this.petService.updatePetPermissionInfo(object).subscribe(data => {
+      if(data.success)
+      this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
+      this.getPermissionInfo()
     },
     error => {
       this.loading = false;

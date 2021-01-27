@@ -400,4 +400,65 @@
         background-color:rgba(0, 0, 0, 0.452);
         background-blend-mode : multiply;
     }
+    .card{
+        border-radius: 4px;
+        background: #fff;
+        box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+        transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+        cursor: pointer;
+    }
+
+    .card:hover{
+        transform: scale(1.05);
+        box-shadow: 0 6px 10px #1976D2, 0 0 6px rgba(0,0,0,.05);
+    }
+    .card {
+        font-size: 1em;
+        overflow: hidden;
+        padding: 0;
+        margin-bottom: 10px;
+        // width: 20rem;
+    }
+    .panelProfileContent{
+        background-color: rgb(238, 234, 234);
+       padding: 10px;
+    }
+
+    .nav-pills .nav-link {
+        border-radius: 0.25rem;
+        padding: 9px;
+        margin: 3px;
+    }
+
+    .nav-pills:hover .nav-link:hover {
+        border-radius: 0.25rem;
+        padding: 9px;
+        border-top: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        margin: 3px;
+        background-color: rgba(0, 0, 0, 0.109);
+    }
+
+    .nav-tabs .nav-item {
+        float: left;
+        margin-bottom: -4px;
+    }
+    .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+        color: #013c7cd0;
+        border-top: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        background-color: rgb(255, 255, 255);
+    }
+    .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
+        border-color: #e9ecef #e9ecef #dee2e6;
+    }
+
+    .nav-tabs .nav-link.active:hover, .nav-tabs .nav-link:focus {
+        border-color: #e9ecef #e9ecef #dee2e6;
+        background-color: #c2e3f6;
+        color: rgb(1, 129, 189);
+    }
+    
 }

@@ -38,7 +38,23 @@ router.post('/register/new-pet', async(req, res, next) => {
     userState: obj.userState,
     genderSelected:obj.genderSelected,
     photo: result.secure_url == undefined ? obj.image : result.secure_url,
-    petStatus: obj.petStatus
+    petStatus: obj.petStatus,
+    permissions : {
+      showPhoneInfo: true,
+      showEmailInfo: true,
+      showLinkTwitter: true,
+      showLinkFacebook: true,
+      showLinkInstagram: true,
+      showOwnerPetName: true,
+      showBirthDate: true,
+      showAddressInfo: true,
+      showAgeInfo: true,
+      showVeterinarianContact: true,
+      showPhoneVeterinarian: true,
+      showHealthAndRequirements: true,
+      showFavoriteActivities: true,
+      showLocationInfo: true
+    }
   });
 
   Pet.addPet(newPet,async(user, done) => {
@@ -129,7 +145,8 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
     favoriteActivities: obj.favoriteActivities,
     linkTwitter: obj.linkTwitter,
     linkFacebook: obj.linkFacebook,
-    linkInstagram: obj.linkInstagram
+    linkInstagram: obj.linkInstagram,
+    showLocationInfo: obj.showLocationInfo
   }
 
   await Pet.findOne({_id: req.body._id }, (err, pet) => {
@@ -153,6 +170,7 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
           element["linkTwitter"] = petUpdate.linkTwitter;
           element["linkFacebook"] = petUpdate.linkFacebook;
           element["linkInstagram"] = petUpdate.linkInstagram;
+          element["showLocationInfo"] = petUpdate.showLocationInfo;
           pet.save();
           try {
             res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
@@ -344,6 +362,64 @@ router.put('/update/updateStatusQrCodePet', async(req, res, next) => {
     console.log('Se ha enviado correctamente');
   });
 });
+
+
+// Permissions
+
+router.get('/getPermissionsData/:id', function(req, res){
+  var id = req.params.id;
+  Pet.findById(id, function(err, results){
+    if(err){
+      res.send('Algo ocurrio favor contactar a soporte');
+      return;
+    }
+
+   var pet = {
+     permissions: results.permissions
+    }
+    res.json(pet)
+  });
+});
+
+router.put('/update/updatePetPermissions', async(req, res, next) => {
+  const object = JSON.parse(JSON.stringify(req.body));
+  await Pet.findOne({_id: req.body._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+     if(pet != null) {
+       var arrayPet = [];
+      arrayPet.push(pet);
+      arrayPet.forEach(element => {
+          element["permissions"].forEach(item => {
+            item["showPhoneInfo"] = object.showPhoneInfo;
+            item["showEmailInfo"] = object.showEmailInfo;
+            item["showLinkTwitter"] = object.showLinkTwitter;
+            item["showLinkFacebook"] = object.showLinkFacebook;
+            item["showLinkInstagram"] = object.showLinkInstagram;
+            item["showOwnerPetName"] = object.showOwnerPetName;
+            item["showBirthDate"] = object.showBirthDate;
+            item["showAddressInfo"] = object.showAddressInfo;
+            item["showAgeInfo"] = object.showAgeInfo;
+            item["showVeterinarianContact"] = object.showVeterinarianContact;
+            item["showPhoneVeterinarian"] = object.showPhoneVeterinarian;
+            item["showHealthAndRequirements"] = object.showHealthAndRequirements;
+            item["showFavoriteActivities"] = object.showFavoriteActivities;
+            item["showLocationInfo"] = object.showLocationInfo;
+          }) 
+          pet.save();
+          try {
+            res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+          } catch (err) {
+            res.json({ success: false, msg: err });
+            next(err);
+          }
+      })
+     }
+   });
+});
+
+// Permissions
 
 
 

@@ -223,6 +223,51 @@ export class PetService {
     }
   }
 
+  
+  // Permissions
+  
+  getPetPermissionsDataList(id):Observable<any> {
+    let headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
+    if (this.isDev) {
+      return this.httpClient.get<any>('http://localhost:8080/pet/getPermissionsData/' + id);
+    } else {
+      return this.httpClient.get<any>('pet/getPermissionsData/' + id);
+    }
+  }
+
+
+  updatePetPermissionInfo(obj: any):Observable<any> {
+    const fd = new FormData();
+    fd.append('_id', obj.id);
+    fd.append('showPhoneInfo', obj.showPhoneInfo)
+    fd.append('showEmailInfo', obj.showEmailInfo)
+    fd.append('showLinkTwitter', obj.showLinkTwitter)
+    fd.append('showLinkFacebook', obj.showLinkFacebook)
+    fd.append('showLinkInstagram', obj.showLinkInstagram)
+    fd.append('showOwnerPetName', obj.showOwnerPetName)
+    fd.append('showBirthDate', obj.showBirthDate)
+    fd.append('showAddressInfo', obj.showAddressInfo)
+    fd.append('showAgeInfo', obj.showAgeInfo)
+    fd.append('showVeterinarianContact', obj.showVeterinarianContact)
+    fd.append('showPhoneVeterinarian', obj.showPhoneVeterinarian)
+    fd.append('showHealthAndRequirements', obj.showHealthAndRequirements)
+    fd.append('showFavoriteActivities', obj.showFavoriteActivities)
+    fd.append('showLocationInfo', obj.showLocationInfo)
+
+    if(this.isDev) {
+      return this.httpClient.put<any>('http://localhost:8080/pet/update/updatePetPermissions', fd);
+    }else{
+      return this.httpClient.put<any>('pet/update/updatePetPermissions', fd);
+    }
+  }
+
+  // Permissions
+
+
+
 //   getUsers() {
 //     let headers = new Headers();
 //     this.loadToken();

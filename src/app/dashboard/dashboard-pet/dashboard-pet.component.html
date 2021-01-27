@@ -1,11 +1,36 @@
 <div id="dashboard-pet" class="p-1 no-gutters justify-content-between mb-4 align-items-center mt-3">
     <div class="container-fluid" *ngIf="profile">
-        <div class="row no-gutters">
-            <div class="col-xl-3 col-12 col-sm-8 col-lg-8 text-left">
+        <div class="row">
+            <div class="col-sm">
               <h5 class="page-heading"> <i class="fa fa-paw" aria-hidden="true"></i>  Bienvenido a tu perfil {{profile.petName}}!</h5>
-            </div>                                                                                              
-            <div *ngIf="hideMsg" class="col-xl-3 col-12 col-sm-4 col-lg-4 alert error-message text-center mt-2" [ngClass]="{'alert-dark': code == 'Ordenando','alert-info': code == 'Pendiente', 'alert-primary': code == 'Preparando', 'alert-warning': code == 'Entrega', 'alert-success': code == 'Recibido'}" role="alert">
-                <i class="fa fa-paw mt-1 mr-3"></i> <strong class="text-center">QR status: {{ code }}</strong>
+            </div>
+            <div class="col-sm">
+                <div class="alert error-message text-center" *ngIf="hideMsg" [ngClass]="{'alert-dark': code == 'Ordenando','alert-info': code == 'Pendiente', 'alert-primary': code == 'Preparando', 'alert-warning': code == 'Entrega', 'alert-success': code == 'Recibido'}">
+                    <i class="fa fa-paw mt-1 mr-3"></i> <strong class="text-center">QR status: {{ code }}</strong>
+                </div>
+              </div>
+            <div class="col-sm">
+              <div class="row">
+                  <div class="col-6" >
+                      <button [disabled]="code == 'Ordenando' || code == 'Pendiente' || code == 'Preparando' || code == 'Enviado' || code == 'Recibido'" (click)="generateQrCode()" type="submit" class="btn btn-yellow btn-sm col-12 float-right mb-2">
+                          <i *ngIf="!loadingQr" class="fa fa-paw" aria-hidden="true"></i>
+                          <svg *ngIf="loadingQr" class="loader" viewBox="0 0 24 24">
+                              <circle class="loader__value" cx="12" cy="12" r="10" />
+                              <circle class="loader__value" cx="12" cy="12" r="10" />
+                              <circle class="loader__value" cx="12" cy="12" r="10" />
+                              <circle class="loader__value" cx="12" cy="12" r="10" />
+                              <circle class="loader__value" cx="12" cy="12" r="10" />
+                              <circle class="loader__value" cx="12" cy="12" r="10" />
+                          </svg>
+                          Generar QR
+                      </button>
+                  </div>
+                  <div class="col-6">
+                      <button (click)="goToProfile()" class="btn btn-yellow btn-sm col-12 float-right mb-2">
+                          Ver Perfil
+                      </button>
+                  </div>
+                 </div>
             </div>
           </div>
         <div class="row no-gutters">
@@ -28,21 +53,6 @@
                             <a *ngIf="profile.linkFacebook != ''" target="_blank" href="{{profile.linkFacebook}}" class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i>   Link de facebook</a>
                             <a *ngIf="profile.linkInstagram != ''" target="_blank" href="{{profile.linkInstagram}}" class="btn btn-block btn-instagram"> <i class="fab fa-instagram"></i>   Link de instagram</a>
                         </div>
-                        <button [disabled]="code == 'Ordenando' || code == 'Pendiente' || code == 'Preparando' || code == 'Enviado' || code == 'Recibido'" (click)="generateQrCode()" type="submit" class="btn btn-yellow col-12 float-right mb-2">
-                            <i *ngIf="!loadingQr" class="fa fa-paw" aria-hidden="true"></i> 
-                            <svg *ngIf="loadingQr" class="loader" viewBox="0 0 24 24">
-                                <circle class="loader__value" cx="12" cy="12" r="10" />
-                                <circle class="loader__value" cx="12" cy="12" r="10" />
-                                <circle class="loader__value" cx="12" cy="12" r="10" />
-                                <circle class="loader__value" cx="12" cy="12" r="10" />
-                                <circle class="loader__value" cx="12" cy="12" r="10" />
-                                <circle class="loader__value" cx="12" cy="12" r="10" />
-                            </svg>
-                            Generar QR 
-                        </button>
-                        <button (click)="goToProfile()" class="btn btn-yellow col-12 float-right mb-2">
-                            Ver mi perfil QR 
-                        </button>
                         
                         <div class="socialIcons clearfix">
                             <a href="#" title="#" class="fb">
@@ -67,6 +77,7 @@
                         <li class="nav-item" (click)="stepTrackOrder(2)" ><a class="nav-link" [ngClass]="{'active': id === 2}" (click)="stepTrackOrder(2)" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="true"><i class="fas fa-calendar-alt"></i> Calendario</a></li>
                         <li class="nav-item" (click)="stepTrackOrder(3)" ><a class="nav-link" [ngClass]="{'active': id === 3}" (click)="stepTrackOrder(3)" id="nav-activity-tab" data-toggle="tab" href="#nav-activity" role="tab" aria-controls="nav-activity" aria-selected="false"><i class="fas fa-tasks"></i> Perfil</a></li>
                         <li class="nav-item" (click)="stepTrackOrder(4)" ><a class="nav-link" [ngClass]="{'active': id === 4}" (click)="stepTrackOrder(4)" id="nav-location-tab" data-toggle="tab" href="#nav-location" role="tab" aria-controls="nav-location" aria-selected="false"><i class="fas fa-location-arrow"></i> Ubicacion</a></li>
+                        <li class="nav-item" (click)="stepTrackOrder(5)" ><a class="nav-link" [ngClass]="{'active': id === 5}" (click)="stepTrackOrder(5)" id="nav-panelControl-tab" data-toggle="tab" href="#nav-panelControl" role="tab" aria-controls="nav-panelControl" aria-selected="false"> <i class="fas fa-lock"></i> Permisos</a></li>
                     </ul>
     
                     <div class="tab-content">
@@ -75,7 +86,7 @@
                             <div class="userProfileContent">
                                 <div class="row">
                                     <div *ngFor="let item of profile.calendar" class="col-sm-4 col-md-4 col-lg-4 mt-4">
-                                        <div class="card box">
+                                        <div class="card box p-3">
                                             <div class="card-block">
                                                 <h6 class="card-title text-center col-12"><i class="fas fa-list"></i> {{ item.title }}</h6>
                                                 <p class="card-text">Comienza: {{item.date}}</p>
@@ -303,11 +314,158 @@
                                 </div>
                                 <div class="container">
                                     <div class="btn-toolbar text-center well">
-                                    <div class="col-12 pt-2 pr-0 pl-0"> <button class="btn btn-info btn-sm" (click)="setCurrentPosition()">Mi Ubicación Actual</button></div>
-                                </div>
+                                        <div class="col-12 pt-2 pr-0 pl-0"> <button class="btn btn-info btn-sm" (click)="setCurrentPosition()">Mi Ubicación Actual</button></div>
+                                    </div>
                               </div>
+                            </div>
                         </div>
-                    </div>
+
+                        <!-- Panel control -->
+                        <div *ngIf="id === 5" class="tab-panel fade show "  [ngClass]="{'active': id === 5}"  id="nav-panelControl" role="tabpanel" aria-labelledby="nav-panelControl-tab">   
+                            <div class="panelProfileContent">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <h4>  <i class="fa fa-paw" aria-hidden="true"></i> Panel de control</h4>
+                                    </div>
+                                    <div class="col-sm">
+                                        <button [disabled]="!updatePermission" (click)="updatePermissionList()" type="submit" class="btn btn-yellow btn-sm col-12 float-right mb-2">
+                                            <i *ngIf="!loadingQr" class="fa fa-paw" aria-hidden="true"></i>
+                                            <svg *ngIf="loadingQr" class="loader" viewBox="0 0 24 24">
+                                                <circle class="loader__value" cx="12" cy="12" r="10" />
+                                                <circle class="loader__value" cx="12" cy="12" r="10" />
+                                                <circle class="loader__value" cx="12" cy="12" r="10" />
+                                                <circle class="loader__value" cx="12" cy="12" r="10" />
+                                                <circle class="loader__value" cx="12" cy="12" r="10" />
+                                                <circle class="loader__value" cx="12" cy="12" r="10" />
+                                            </svg>
+                                            Actualizar permisos
+                                        </button>
+                                    </div>
+                                </div>    
+
+                                <div class="card-deck">
+                                    <div *ngIf="profile.ownerPetName" class="card">
+                                        <div class="card-body">
+                                            <span class="card-title"><i class="fa fa-user"></i> Propietari@</span>
+                                            <p class="card-text">{{profile.ownerPetName}}</p>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="profile.phone" class="card">
+                                        <div class="card-body">
+                                            <span class="card-title"><i class="fa fa-phone"></i> Telefono</span>
+                                            <p class="card-text">{{profile.phone}}</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <app-switch size="small" name="profile.phone" (change)="changed(permissionData)" [(ngModel)]="permissionData.showPhoneInfo"></app-switch>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="profile.email" class="card">
+                                        <div class="card-body">
+                                            <span class="card-title"><i class="fa fa-envelope"></i> Email</span>
+                                            <p class="card-text" >{{profile.email}}</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <app-switch size="small" name="profile.email" (change)="changed(permissionData)" [(ngModel)]="permissionData.showEmailInfo"></app-switch>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="card-deck">
+                                    <div *ngIf="profile.age" class="card">
+                                        <div class="card-body">
+                                            <span class="card-title"> Edad</span>
+                                            <p class="card-text">{{profile.age}} años</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <app-switch size="small" name="profile.age" (change)="changed(permissionData)" [(ngModel)]="permissionData.showAgeInfo"></app-switch>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="profile.address" class="card">
+                                        <div class="card-body">
+                                            <span class="card-title">Direcion de habitacion</span>
+                                            <p class="card-text" >{{profile.address}}</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <app-switch size="small" name="profile.address" (change)="changed(permissionData)" [(ngModel)]="permissionData.showAddressInfo"></app-switch>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="profile.favoriteActivities" class="card">
+                                        <div class="card-body">
+                                            <span class="card-title"> Actividades Favoritas</span>
+                                            <p class="card-text">{{profile.favoriteActivities}}</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <app-switch size="small" name="profile.favoriteActivities" (change)="changed(permissionData)" [(ngModel)]="permissionData.showFavoriteActivities"></app-switch>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-deck">
+                                    <div *ngIf="profile.healthAndRequirements" class="card">
+                                        <div class="card-body">
+                                            <span class="card-title">Salud y Cuidados</span>
+                                            <p class="card-text" >{{profile.healthAndRequirements}}</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <app-switch size="small" name="profile.healthAndRequirements" (change)="changed(permissionData)" [(ngModel)]="permissionData.showHealthAndRequirements"></app-switch>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="profile.veterinarianContact" class="card">
+                                        <div class="card-body">
+                                            <span class="card-title"> Nombre Veterinario</span>
+                                            <p class="card-text">{{profile.veterinarianContact}}</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <app-switch size="small" name="profile.veterinarianContact" (change)="changed(permissionData)" [(ngModel)]="permissionData.showVeterinarianContact"></app-switch>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="profile.phoneVeterinarian" class="card">
+                                        <div class="card-body">
+                                            <span class="card-title"> Telefono Veterinario</span>
+                                            <p class="card-text">{{profile.phoneVeterinarian}}</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <app-switch size="small" name="profile.phoneVeterinarian" (change)="changed(permissionData)" [(ngModel)]="permissionData.showPhoneVeterinarian"></app-switch>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-deck">
+                                    <div *ngIf="profile.linkTwitter" class="card">
+                                        <div class="card-body">
+                                            <a *ngIf="profile.linkTwitter != ''" class="btn btn-block btn-twitter"> <i class="fab fa-twitter"></i> Twitter</a>
+                                        </div>
+                                        <div class="card-footer">
+                                            <app-switch size="small" name="profile.linkTwitter" (change)="changed(permissionData)" [(ngModel)]="permissionData.showLinkTwitter"></app-switch>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="profile.linkFacebook" class="card">
+                                        <div class="card-body">
+                                            <a *ngIf="profile.linkFacebook != ''"  class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i> facebook</a>
+                                        </div>
+                                        <div class="card-footer">
+                                            <app-switch size="small" name="profile.linkFacebook" (change)="changed(permissionData)" [(ngModel)]="permissionData.showLinkFacebook"></app-switch>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="profile.linkInstagram" class="card">
+                                        <div class="card-body">
+                                            <a *ngIf="profile.linkInstagram != ''" class="btn btn-block btn-instagram"> <i class="fab fa-instagram"></i> instagram</a>
+                                        </div>
+                                        <div class="card-footer">
+                                            <app-switch size="small" name="profile.linkInstagram" (change)="changed(permissionData)" [(ngModel)]="permissionData.showLinkInstagram"></app-switch>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-deck">
+                                    <div  class="card">
+                                        <div class="card-body">
+                                            <a class="btn"><i class="fas fa-location-arrow"></i> Location</a>
+                                        </div>
+                                        <div class="card-footer text-center">
+                                            <app-switch size="small" name="profile.showLocationInfo" (change)="changed(permissionData)" [(ngModel)]="permissionData.showLocationInfo"></app-switch>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+
                 </div>
             </div>
         </div>

@@ -70,6 +70,66 @@ const PetSchema = mongoose.Schema ({
       require: false
     },
   }],
+
+  permissions: [{
+    showPhoneInfo: {
+      type: Boolean,
+      require: true
+    },
+    showEmailInfo: {
+      type: Boolean,
+      require: true
+    },
+    showLinkTwitter: {
+      type: Boolean,
+      require: true
+    },
+    showLinkFacebook: {
+      type: Boolean,
+      require: true
+    },
+    showLinkInstagram: {
+      type: Boolean,
+      require: true
+    },
+    showOwnerPetName: {
+      type: Boolean,
+      require: true
+    },
+    showBirthDate: {
+      type: Boolean,
+      require: true
+    },
+    showAddressInfo: {
+      type: Boolean,
+      require: true
+    },
+    showAgeInfo: {
+      type: Boolean,
+      require: true
+    },
+    showVeterinarianContact: {
+      type: Boolean,
+      require: true
+    },
+    showPhoneVeterinarian: {
+      type: Boolean,
+      require: true
+    },
+    showHealthAndRequirements: {
+      type: Boolean,
+      require: true
+    },
+    showFavoriteActivities: {
+      type: Boolean,
+      require: true
+    },
+    showLocationInfo: {
+      type:Boolean,
+      require: true
+    }
+  }],
+
   code: [{
     link: {
       type: String,
