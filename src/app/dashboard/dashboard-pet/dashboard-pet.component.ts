@@ -249,7 +249,6 @@ calendarOptions: CalendarOptions = {
 
   changed(item:any) {
     this.updatePermission = true;
-    console.log(item, 'nuevo');
     this.permissionData = item;
   }
   
@@ -275,7 +274,7 @@ calendarOptions: CalendarOptions = {
     this.petService.updatePetPermissionInfo(object).subscribe(data => {
       if(data.success)
       this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
-      this.getPermissionInfo()
+      this.getPermissionInfo();
     },
     error => {
       this.loading = false;
