@@ -115,6 +115,35 @@ export class PetService {
     }
   }
 
+  sendNewPetStatusEvent(event, status):Observable<any> {
+    const fd = new FormData();
+    fd.append('lastPlaceLost',event.lastPlaceLost);
+    fd.append('date',event.date);
+    fd.append('petStatus',status.petStatus);
+    fd.append('petName',status.petName);
+    fd.append('descriptionLost',event.descriptionLost);
+    fd.append('_id',event._id);
+
+    if(this.isDev) {
+      return this.httpClient.post<any>('http://localhost:8080/pet/report/reportLostPetStatus', fd);
+    }else{
+      return this.httpClient.post<any>('pet/report/reportLostPetStatus', fd);
+    }
+  }
+
+  updatePetStatusReport(status:any):Observable<any> { 
+    const fd = new FormData();
+    fd.append('petStatus',status.petStatus);
+    fd.append('petName',status.petName);
+    fd.append('_id', status._id);
+
+    if(this.isDev) {
+      return this.httpClient.put<any>('http://localhost:8080/pet/update/updateReportLostPetStatus', fd);
+    }else{
+      return this.httpClient.put<any>('pet/update/updateReportLostPetStatus', fd);
+    }
+  }
+
   generateQrCodePet(obj: any):Observable<any> {
     const fd = new FormData();
     fd.append('_id', obj.id);

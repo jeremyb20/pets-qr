@@ -10,6 +10,8 @@ import { MapsAPILoader } from '@agm/core';
 import {Location} from '@angular/common';
 import { Subscription } from 'rxjs';
 
+declare var $ :any
+
 @Component({
   selector: 'app-my-pet-code',
   templateUrl: './my-pet-code.component.html',

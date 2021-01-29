@@ -10,9 +10,9 @@
                 </div>
               </div>
             <div class="col-sm">
-              <div class="row">
-                  <div class="col-6" >
-                      <button [disabled]="code == 'Ordenando' || code == 'Pendiente' || code == 'Preparando' || code == 'Enviado' || code == 'Recibido'" (click)="generateQrCode()" type="submit" class="btn btn-yellow btn-sm col-12 float-right mb-2">
+                <div class="row">
+                    <div class="col-6" >
+                        <button [disabled]="code == 'Ordenando' || code == 'Pendiente' || code == 'Preparando' || code == 'Enviado' || code == 'Recibido'" (click)="generateQrCode()" type="submit" class="btn btn-yellow btn-sm col-12 float-right mb-2">
                           <i *ngIf="!loadingQr" class="fa fa-paw" aria-hidden="true"></i>
                           <svg *ngIf="loadingQr" class="loader" viewBox="0 0 24 24">
                               <circle class="loader__value" cx="12" cy="12" r="10" />
@@ -23,13 +23,13 @@
                               <circle class="loader__value" cx="12" cy="12" r="10" />
                           </svg>
                           Generar QR
-                      </button>
-                  </div>
-                  <div class="col-6">
+                        </button>
+                    </div>
+                    <div class="col-6">
                       <button (click)="goToProfile()" class="btn btn-yellow btn-sm col-12 float-right mb-2">
                           Ver Perfil
                       </button>
-                  </div>
+                    </div>
                  </div>
             </div>
           </div>
@@ -53,17 +53,8 @@
                             <a *ngIf="profile.linkFacebook != ''" target="_blank" href="{{profile.linkFacebook}}" class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i>   Link de facebook</a>
                             <a *ngIf="profile.linkInstagram != ''" target="_blank" href="{{profile.linkInstagram}}" class="btn btn-block btn-instagram"> <i class="fab fa-instagram"></i>   Link de instagram</a>
                         </div>
-                        
-                        <div class="socialIcons clearfix">
-                            <a href="#" title="#" class="fb">
-                                <i class="fa fa-facebook"></i>
-                            </a>
-                            <a href="#" title="#" class="twitter">
-                                <i class="fa fa-twitter"></i>
-                            </a>
-                            <a href="#" title="#" class="google-plus">
-                                <i class="fa fa-google-plus"></i>
-                            </a>
+                        <div>
+                            <button (click)="reportProfile()" class="btn w-100 btn-danger"><img style="height: 30px; width: 30px;" alt="{{profile.photo}}" src="https://cdn2.iconfinder.com/data/icons/cute-husky-emoticon/512/husky_emoji_sad-512.png"> Reportar perfil de {{profile.petName}} </button>
                         </div>
                     </div>
                 </div>
@@ -178,7 +169,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
                                             </div>
-                                            <input type="date" id="datefield" formControlName="birthDate" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.birthDate.errors }" />
+                                            <input type="date" formControlName="birthDate" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.birthDate.errors }" />
                                             <div *ngIf="submitted && g.birthDate.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.birthDate.errors }">
                                                 <div *ngIf="g.birthDate.errors.required">Fecha de cumpleaños es requerido</div>
                                             </div>
@@ -497,7 +488,7 @@
               <div class="input-group-prepend">
                   <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
               </div>
-              <input type="date" id="datefield" formControlName="date" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
+              <input type="date" formControlName="date" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
               <div *ngIf="submitted && f.date.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.date.errors }">
                   <div *ngIf="f.date.errors.required">Fecha de Inicio es requerido</div>
               </div>
@@ -552,7 +543,7 @@
               <div class="input-group-prepend">
                   <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
               </div>
-              <input type="date" id="datefield" formControlName="date" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
+              <input type="date" formControlName="date" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
               <div *ngIf="submitted && f.date.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.date.errors }">
                   <div *ngIf="f.date.errors.required">Fecha de Inicio es requerido</div>
               </div>
@@ -632,6 +623,84 @@
                 </button>
               </div>
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="profile" class="modal fade" id="reportProfileModal" tabindex="-1" role="dialog" aria-labelledby="reportProfileModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="reportProfileModal">Reportar a {{profile.petName}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="row no-gutters">
+                <ng-select [searchable]="false" (change)="changeLeagueOwner(petStatusInfo)" [(ngModel)]="petStatusInfo" [clearable]="false" class="rounded-0 flex-fill" id="inputGroupSelect01">
+                    <ng-option *ngFor="let item of FilteredPetStatus" [value]="item.Id">
+                        <span class="ng-option-label">{{ item.Name }}</span>
+                    </ng-option>
+                </ng-select>   
+            </div>
+          <form class="form mt-3" *ngIf="showReportForm" [formGroup]="newLostPetForm" (ngSubmit)="sendPetStatusLost()" >
+            <div class="form-group">
+                <label for="exampleInputEmail1">Ultimo lugar visto</label>
+                <input type="text" formControlName="lastPlaceLost" class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && h.lastPlaceLost.errors }" />
+                <div *ngIf="submitted && h.lastPlaceLost.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && h.lastPlaceLost.errors }">
+                    <div *ngIf="h.lastPlaceLost.errors.required">Nuevo titulo es requerido</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Dia que se perdio</label>
+                <input type="date" id="datefield" formControlName="date" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && h.date.errors }" />
+                <div *ngIf="submitted && h.date.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && h.date.errors }">
+                    <div *ngIf="h.date.errors.required">Dia que se perdio es requerido</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Describa como fue que se perdio</label>
+                <textarea class="form-control" formControlName="descriptionLost" placeholder="Esto nos ayudara para informar en el sitio" class="form-control" [ngClass]="{ 'is-invalid': submitted && h.descriptionLost.errors }"></textarea>
+                <div *ngIf="submitted && h.descriptionLost.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && h.descriptionLost.errors }">
+                    <div *ngIf="h.descriptionLost.errors.required">Descripcion es requerido</div>
+                </div>
+            </div>
+
+              <div class="modal-footer text-center">
+                <button type="button" class="btn btn-secondary float-left mr-auto" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary float-right">
+                  <i *ngIf="!loading" class="fas fa-edit"></i>
+                  <svg *ngIf="loading" class="loader" viewBox="0 0 24 24">
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                    </svg>
+                  Enviar reporte
+                </button>
+              </div>
+          </form>
+          <div *ngIf="!showReportForm">
+            <div class="modal-footer text-center">
+                <button type="button" class="btn btn-secondary float-left mr-auto" data-dismiss="modal">Cancelar</button>
+                <button (click)="updateReportStatus()" type="submit" class="btn btn-primary float-right">
+                  <i *ngIf="!loading" class="fas fa-edit"></i>
+                  <svg *ngIf="loading" class="loader" viewBox="0 0 24 24">
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                    </svg>
+                  Actualizar Status
+                </button>
+              </div>
+          </div>
         </div>
       </div>
     </div>

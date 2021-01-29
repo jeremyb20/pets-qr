@@ -35,6 +35,7 @@ export class DashboardPetComponent implements OnInit {
   Media: MediaResponse;
   newPetInfoForm: FormGroup;
   newEventForm: FormGroup;
+  newLostPetForm: FormGroup;
   submitted = false;
   loading: boolean = false;
   loadingQr: boolean = false;
@@ -47,6 +48,9 @@ export class DashboardPetComponent implements OnInit {
   permissionData: any;
   permissionDataCopy: any;
   updatePermission: boolean = false;
+  petStatusInfo: string;
+  showReportForm: boolean = false;
+  petStatus: string;
 // calendar 
 
 isNewEvent: boolean = false;
@@ -97,6 +101,7 @@ calendarOptions: CalendarOptions = {
   confirmData: any;
   origin : any;
   destination : any;
+  FilteredPetStatus: any;
 
   currentTimer: any;
 
@@ -159,6 +164,8 @@ calendarOptions: CalendarOptions = {
 
   get g() { return this.newPetInfoForm.controls; }
   get f() { return this.newEventForm.controls; }
+  get h() { return this.newLostPetForm.controls; }
+
 
   ngOnInit() {
     this.newEventForm = this.formBuilder.group({
@@ -167,6 +174,17 @@ calendarOptions: CalendarOptions = {
       enddate: ['', Validators.required],
       description: ['', Validators.required],
     });
+  
+    this.newLostPetForm = this.formBuilder.group({
+      lastPlaceLost: ['', Validators.required],
+      date: ['', [Validators.required]],
+      descriptionLost: ['', Validators.required],
+    });
+
+    this.FilteredPetStatus = [
+      {Id: 0, Name:'No-Perdido'},
+      {Id: 1, Name:'Perdido'}
+    ];
   }
 
   stepTrackOrder(step: number){
@@ -176,6 +194,8 @@ calendarOptions: CalendarOptions = {
   getPetDataList() {
     this.petService.getPetDaList(this.pet.id).subscribe(data => {
       this.profile = data;
+      this.petStatusInfo = this.profile.petStatus;
+      this.showReportForm = (this.profile.petStatus == 'Perdido')? true: false;
       this.newPetInfoForm = this.formBuilder.group({
         petName: [this.profile.petName, Validators.required],
         ownerPetName: [this.profile.ownerPetName, Validators.required],
@@ -274,7 +294,7 @@ calendarOptions: CalendarOptions = {
     this.petService.updatePetPermissionInfo(object).subscribe(data => {
       if(data.success)
       this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
-      this.getPermissionInfo();
+      setTimeout(() => { location.reload(); }, 3000);
     },
     error => {
       this.loading = false;
@@ -371,7 +391,6 @@ calendarOptions: CalendarOptions = {
 
   savePosition() {
     this.showInfo = false;
-    console.log(this.markers);
     var pet = {
       lat: this.markers[0].lat,
       lng: this.markers[0].lng,
@@ -541,6 +560,77 @@ calendarOptions: CalendarOptions = {
 
   goToProfile() {
     this.router.navigate(['/myPetCode/'],{ queryParams: {id: this.pet.id}}); 
+  }
+
+  reportProfile(){
+    $('#reportProfileModal').modal('show');
+  }
+
+  changeLeagueOwner(e:any){
+    console.log(e);
+    this.showReportForm = (e == 0)? false : true;
+  }
+
+  sendPetStatusLost() {
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.newLostPetForm.invalid) {
+        return;
+    }
+    this.loading = true;
+    var form = {
+      lastPlaceLost: this.h.lastPlaceLost.value,
+      date: this.h.date.value,
+      descriptionLost: this.h.descriptionLost.value,
+      _id: this.pet.id
+    } 
+      
+    var status =  {
+      petStatus : (this.showReportForm)? 'Perdido' : 'No-Perdido',
+      petName: this.profile.petName
+    }
+
+    this.petService.sendNewPetStatusEvent(form, status).subscribe(data => {
+      if(data.success) {
+        $('#reportProfileModal').modal('hide');
+        this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
+        this.loading = false;
+        this.getPetDataList();
+      } else {
+        $('#reportProfileModal').modal('hide');
+        this.loading = false;
+        this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
+      }
+    },
+    error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
+  }
+
+  updateReportStatus() {
+    var status =  {
+      petStatus : (!this.showReportForm)? 'No-Perdido' : 'Perdido',
+      petName: this.profile.petName,
+      _id: this.pet.id
+    }
+
+    this.petService.updatePetStatusReport(status).subscribe(data => {
+      if(data.success) {
+        $('#reportProfileModal').modal('hide');
+        this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
+        this.loading = false;
+        this.getPetDataList();
+      } else {
+        $('#reportProfileModal').modal('hide');
+        this.loading = false;
+        this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
+      }
+    },
+    error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
   }
 
 }

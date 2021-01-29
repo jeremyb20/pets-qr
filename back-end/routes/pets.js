@@ -523,7 +523,104 @@ router.put('/update/updateNotificationsList', async(req, res, next) => {
 //Notifications
 
 
+// reports
+router.post('/report/reportLostPetStatus', async(req, res) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  let reportPetLost = {
+    lastPlaceLost: obj.lastPlaceLost,
+    date: obj.date,
+    petStatus: obj.petStatus,
+    descriptionLost: obj.descriptionLost
+  };
 
+  var notifications = {
+    message: 'Se ha reportado a '+obj.petName +' como '+ reportPetLost.petStatus+'',
+    userPetName: obj.petName,
+    isNewMsg: true,
+    dateMsg: new Date(),
+    idPet: req.body._id,
+    photo: 'https://cdn2.iconfinder.com/data/icons/cute-husky-emoticon/512/husky_emoji_sad-512.png'
+  }
+
+  await Pet.findOne({_id: req.body._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+     if(pet != null) {
+       var arrayPet = [];
+      arrayPet.push(pet);
+      arrayPet.forEach(element => {
+          element["petStatus"] = reportPetLost.petStatus;
+          if(element["petStatusReport"].length> 0){
+            var indexToRemove = 0;
+            var numberToRemove = 1;
+            element["petStatusReport"].splice(indexToRemove, numberToRemove);
+          }
+          element["petStatusReport"].push(reportPetLost)
+          
+          pet.save();
+          try {
+            res.json({success:true,msg: 'Se ha reportado correctamente.. al administrador del sitio!'});
+          } catch (err) {
+            res.json({ success: false, msg: err });
+            next(err);
+          }
+      })
+     }
+   });
+
+  Pet.findOneAndUpdate({ _id: process.env.ADMIN_ID }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
+    console.log('Se ha enviado correctamente');
+  });
+});
+
+
+router.put('/update/updateReportLostPetStatus', async(req, res, next) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  let newPet = {
+    status: obj.petStatus 
+  };
+
+  var notifications = {
+    message: 'Se ha reportado a '+obj.petName +' como '+ newPet.status+'',
+    userPetName: obj.petName,
+    isNewMsg: true,
+    dateMsg: new Date(),
+    idPet: req.body._id,
+    photo: 'https://cdn2.iconfinder.com/data/icons/cute-husky-emoticon/512/husky_emoji_happy-512.png'
+  }
+
+  await Pet.findOne({_id: req.body._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+     if(pet != null) {
+       var arrayPet = [];
+      arrayPet.push(pet);
+      arrayPet.forEach(element => {
+          element["petStatus"] = newPet.status;
+          if(element["petStatusReport"].length> 0){
+            var indexToRemove = 0;
+            var numberToRemove = 1;
+            element["petStatusReport"].splice(indexToRemove, numberToRemove);
+          }
+          pet.save();
+          try {
+            res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+          } catch (err) {
+            res.json({ success: false, msg: err });
+            next(err);
+          }
+      })
+     }
+   });
+
+   Pet.findOneAndUpdate({ _id: process.env.ADMIN_ID }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
+    console.log('Se ha enviado correctamente');
+  });
+});
+
+// reports
 
 
 

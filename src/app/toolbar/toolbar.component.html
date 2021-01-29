@@ -37,7 +37,7 @@
         </div>
 
         <div class="notifications" style="width: 360; height: 250px;" >
-            <div *ngFor="let item of notificationsData" class="row no-gutters border-bottom" [ngClass]="{'isNewMsg': item.isNewMsg}">
+            <div *ngFor="let item of notificationsData.slice().reverse()" class="row no-gutters border-bottom" [ngClass]="{'isNewMsg': item.isNewMsg}">
                 <div class="notify-icon col-3 p-3">
                     <img src="{{item.photo}}" style="height: 50px; width: 50px;" class="img-fluid rounded-circle" alt="{{item.photo}}">
                 </div>

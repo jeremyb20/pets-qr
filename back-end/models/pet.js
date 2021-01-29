@@ -186,6 +186,24 @@ const PetSchema = mongoose.Schema ({
     type: String,
     require: true
   },
+  petStatusReport :[{
+    lastPlaceLost: {
+      type: String,
+      require: true
+    },
+    date: {
+      type: String,
+      require: true
+    },
+    petStatus: {
+      type: String,
+      require: true
+    },
+    descriptionLost: {
+      type: String,
+      require: true
+    }
+  }],
   calendar: [{
     title: {
       type: String,

@@ -22,7 +22,7 @@
         </div>
       </nav>
     <div class="container-fluid mx-auto test" id="myPetProfile">
-        <div *ngIf="profile && profile.petStatus === 'No-Lost' " class="">
+        <div *ngIf="profile && profile.petStatus === 'No-Perdido' " class="">
             <div class="row no-gutters ">
                 <div class="col-12 col-sm-4 col-md-4 col-lg-4 mb-4">
                     <div class="card hovercard">
@@ -36,9 +36,9 @@
                                 <p class="card-text mb-2">Bienvenid@ a mi perfil</p>
                             </div>
                             <div *ngIf="permissionData">
-                                <a *ngIf="profile.linkTwitter != '' && permissionData.showLinkTwitter" target="_blank" href="{{profile.linkTwitter}}" class="btn btn-block btn-twitter"> <i class="fab fa-twitter"></i>   Link de Twitter</a>
-                                <a *ngIf="profile.linkFacebook != ''  && permissionData.showLinkFacebook" target="_blank" href="{{profile.linkFacebook}}" class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i>   Link de facebook</a>
-                                <a *ngIf="profile.linkInstagram != ''  && permissionData.showLinkInstagram" target="_blank" href="{{profile.linkInstagram}}" class="btn btn-block btn-instagram"> <i class="fab fa-instagram"></i>   Link de instagram</a>
+                                <a *ngIf="profile.linkTwitter != '' && permissionData.showLinkTwitter" target="_blank" href="{{profile.linkTwitter}}" class="btn mr-2 btn-twitter"> <i class="fab fa-twitter"></i> </a>
+                                <a *ngIf="profile.linkFacebook != ''  && permissionData.showLinkFacebook" target="_blank" href="{{profile.linkFacebook}}" class="btn mr-2 btn-facebook"> <i class="fab fa-facebook-f"></i> </a>
+                                <a *ngIf="profile.linkInstagram != ''  && permissionData.showLinkInstagram" target="_blank" href="{{profile.linkInstagram}}" class="btn  btn-instagram"> <i class="fab fa-instagram"></i> </a>
                             </div> 
                         </div>
                         <div *ngIf="!hideMenu" class="card-footer">
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-sm-8 col-md-8 col-lg-8" *ngIf="permissionData" [ngClass]="{'pt-0 pl-5 pr-5': Media.IsLandscape}">
-                    <div class="card-deck">
+                    <div class="card-deck m-2" >
                         <div *ngIf="profile.ownerPetName" class="card">
                             <div *ngIf="permissionData.showOwnerPetName">
                                 <div class="card-body">
@@ -57,7 +57,7 @@
                             </div>
                             
                         </div>
-                        <div *ngIf="profile.phone" class="card">
+                        <div *ngIf="permissionData.showPhoneInfo && profile.phone" class="card">
                             <div *ngIf="permissionData.showPhoneInfo">
                                 <div class="card-body">
                                     <h6 class="card-title"><i class="fa fa-phone"></i> Telefono</h6>
@@ -70,7 +70,7 @@
                             </div>
                            
                         </div>
-                        <div *ngIf="profile.email" class="card">
+                        <div *ngIf="permissionData.showEmailInfo && profile.email" class="card">
                             <div *ngIf="permissionData.showEmailInfo">
                                 <div class="card-body">
                                     <h6 class="card-title"><i class="fa fa-envelope"></i> Email</h6>
@@ -83,51 +83,63 @@
                             </div>
                         </div>
                     </div> 
-                    <div class="card-deck">
-                        <div *ngIf="profile.age" class="card">
+                    <div class="card-deck m-2" >
+                        <div *ngIf="permissionData.showAgeInfo && profile.age" class="card">
                             <div *ngIf="permissionData.showAgeInfo">
                                 <div class="card-body">
                                     <h6 class="card-title"> Edad</h6>
+                                </div>
+                                <div class="card-footer">
                                     <p class="card-text">{{profile.age}} años</p>
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="profile.address" class="card">
+                        <div *ngIf=" permissionData.showAddressInfo && profile.address" class="card">
                             <div *ngIf="permissionData.showAddressInfo">
                                 <div class="card-body">
                                     <h6 class="card-title">Direcion de habitacion</h6>
+                                    
+                                </div>
+                                <div class="card-footer">
                                     <p class="card-text">{{profile.address}}</p>
                                 </div>
                             </div>
-                            
                         </div>
-                        <div *ngIf="profile.favoriteActivities" class="card">
+                        <div *ngIf="permissionData.showFavoriteActivities && profile.favoriteActivities" class="card">
                             <div *ngIf="permissionData.showFavoriteActivities">
                                 <div class="card-body">
                                     <h6 class="card-title"> Actividades Favoritas</h6>
+                                </div>
+                                <div class="card-footer">
                                     <p class="card-text">{{profile.favoriteActivities}}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card-deck">
-                        <div *ngIf="profile.healthAndRequirements" class="card">
+                    <div class="card-deck m-2" >
+                        <div *ngIf="permissionData.showHealthAndRequirements && profile.healthAndRequirements" class="card">
                             <div *ngIf="permissionData.showHealthAndRequirements">
                                 <div class="card-body">
                                     <h6 class="card-title">Salud y Cuidados</h6>
+                                   
+                                </div>
+                                <div class="card-footer">
                                     <p class="card-text" >{{profile.healthAndRequirements}}</p>
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="profile.veterinarianContact" class="card">
+                        <div *ngIf="permissionData.showVeterinarianContact && profile.veterinarianContact" class="card">
                             <div *ngIf="permissionData.showVeterinarianContact">
                                 <div class="card-body">
                                     <h6 class="card-title"> Nombre Veterinario</h6>
+                                    
+                                </div>
+                                <div class="card-footer">
                                     <p class="card-text">{{profile.veterinarianContact}}</p>
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="profile.phoneVeterinarian" class="card">
+                        <div *ngIf="permissionData.showPhoneVeterinarian && profile.phoneVeterinarian" class="card">
                             <div *ngIf="permissionData.showPhoneVeterinarian">
                                 <div class="card-body">
                                     <h6 class="card-title"> Telefono Veterinario</h6>
@@ -139,8 +151,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-deck">
-                        <div class="card">
+                    <div class="card-deck m-2" >
+                        <div *ngIf="permissionData.showLocationInfo" class="card">
                             <div class="card-body">
                                 <h6 class="card-title"><i class="fas fa-map-marker-alt"></i>  Mi ubicacion</h6>
                                 <div class="map" style="width:100%;height:35vh" #map>
@@ -154,14 +166,14 @@
                                         
                                       </agm-marker>
                                     </agm-map>
-                                  </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div *ngIf="profile && profile.petStatus === 'Lost' " class="row d-flex justify-content-center align">
+        <div *ngIf="profile && profile.petStatus === 'Perdido' " class="row d-flex justify-content-center align">
             <div class="row no-gutters">
                 <div class="col-12 col-sm-12">
                     <div class="card hovercard">
