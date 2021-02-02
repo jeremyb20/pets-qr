@@ -405,6 +405,15 @@ getPetsList():Observable<any> {
   }
 }
 
+getPetsLostList():Observable<any> {
+  this.loadToken();
+  if (this.isDev) {
+    return this.httpClient.get<any>('http://localhost:8080/pet/lost/getAllLostPets/');
+  } else {
+    return this.httpClient.get<any>('pet/lost/getAllLostPets/');
+  }
+}
+
 
 getAdminDataList():Observable<any> {
   let headers = new Headers();

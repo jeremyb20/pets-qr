@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PetService } from '../common/services/pet.service';
+import { NotificationService } from '../common/services/notification.service';
 
 @Component({
   selector: 'app-home',
@@ -18,8 +19,14 @@ export class HomeComponent implements OnInit {
   hideMsg: boolean = false; 
   ShowMsg: string;
   timeSeconds: number =  3000;
+  query: string;
+  allUsersData: any;
+  filteredData: any;
+  imageUrl: any;
+
   constructor(
     private petService: PetService,
+    private _notificationSvc: NotificationService,
     private formBuilder: FormBuilder,
     private router: Router) { }
 
@@ -28,6 +35,7 @@ export class HomeComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+    this.getAllUsers();
   }
   get f() { return this.loginForm.controls; }
 
@@ -65,5 +73,34 @@ export class HomeComponent implements OnInit {
         }
     });
   }
+
+  getAllUsers() {
+    this.petService.getPetsLostList().subscribe(data => {
+        this.allUsersData = data;
+        this.filteredData = this.allUsersData;
+        // this.imageUrl = this.profile.photo;
+    },
+    error => {
+    this.loading = false;
+    this._notificationSvc.warning('Hola'+',', 'Ocurrio un error favor DE REVISAR', 6000);
+    });
+}
+
+  filterData(query): any[] {
+    if (!query) {
+      this.filteredData = this.allUsersData;
+    }
+    
+    if(this.filteredData != undefined){
+        this.filteredData = this.filteredData.filter(obj => {
+            if (!query) {
+                return obj;
+            }
+            return obj.petName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+        });
+    }
+    return this.filteredData;
+  }
+
 
 }

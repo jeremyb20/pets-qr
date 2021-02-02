@@ -216,7 +216,10 @@ calendarOptions: CalendarOptions = {
       if(this.code != undefined && this.code != '' ){
          this.code = data.code[0].status;
       }else{
-        this.code = data.code[0].status;
+        if(data.code.length != 0)
+          this.code = data.code[0].status;
+        else 
+        this.hideMsg = false;  
       }
 
       this.calendarOptions.events = data.calendar;
@@ -240,7 +243,7 @@ calendarOptions: CalendarOptions = {
     this.petService.getPetPermissionsDataList(this.pet.id).subscribe(data => {
       this.updatePermission = false;
       this.permissionData = data.permissions[0];
-      if(this.permissionData.length<=0){
+      if(this.permissionData == undefined || this.permissionData.length<=0){
         this.permissionData = {
           showPhoneInfo: true,
           showEmailInfo: true,
@@ -567,7 +570,6 @@ calendarOptions: CalendarOptions = {
   }
 
   changeLeagueOwner(e:any){
-    console.log(e);
     this.showReportForm = (e == 0)? false : true;
   }
 

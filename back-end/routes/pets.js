@@ -436,6 +436,22 @@ router.get('/admin/getAllPets', function(req, res){
   });
 });
 
+router.get('/lost/getAllLostPets', function(req, res){
+  Pet.find({}, function(err, pets){
+  if(err){
+    res.send('something went really wrong');
+    next();
+  }
+  var arrayObj = []
+  pets.forEach((item)=> {
+    if(item.petStatus == 'Perdido'){
+      arrayObj.push(item)
+    }
+  })
+  res.json(arrayObj);
+});
+});
+
 
 router.get('/admin/getAdminDataList', function(req, res){
   var id = process.env.ADMIN_ID;

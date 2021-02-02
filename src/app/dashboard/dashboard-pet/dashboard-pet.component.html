@@ -49,9 +49,9 @@
                             <span><i class="fas fa-phone"></i> <a title="#">  (+506) {{profile.phone}}</a></span>
                             <span><i class="fas fa-envelope"></i> <a href="{{profile.email}}" title="{{profile.email}}"> {{profile.email}}</a></span>
                             <span><i class="fas fa-address-book"></i> {{profile.address}}</span>
-                            <a *ngIf="profile.linkTwitter != ''" target="_blank" href="{{profile.linkTwitter}}" class="btn btn-block btn-twitter"> <i class="fab fa-twitter"></i>   Link de Twitter</a>
-                            <a *ngIf="profile.linkFacebook != ''" target="_blank" href="{{profile.linkFacebook}}" class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i>   Link de facebook</a>
-                            <a *ngIf="profile.linkInstagram != ''" target="_blank" href="{{profile.linkInstagram}}" class="btn btn-block btn-instagram"> <i class="fab fa-instagram"></i>   Link de instagram</a>
+                            <a *ngIf="profile.linkTwitter != '' && profile.linkTwitter != 'null'" target="_blank" href="{{profile.linkTwitter}}" class="btn btn-block btn-twitter"> <i class="fab fa-twitter"></i>   Link de Twitter</a>
+                            <a *ngIf="profile.linkFacebook != '' && profile.linkFacebook != 'null'" target="_blank" href="{{profile.linkFacebook}}" class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i>   Link de facebook</a>
+                            <a *ngIf="profile.linkInstagram != '' && profile.linkInstagram != 'null'" target="_blank" href="{{profile.linkInstagram}}" class="btn btn-block btn-instagram"> <i class="fab fa-instagram"></i>   Link de instagram</a>
                         </div>
                         <div>
                             <button (click)="reportProfile()" class="btn w-100 btn-danger"><img style="height: 30px; width: 30px;" alt="{{profile.photo}}" src="https://cdn2.iconfinder.com/data/icons/cute-husky-emoticon/512/husky_emoji_sad-512.png"> Reportar perfil de {{profile.petName}} </button>
@@ -92,7 +92,7 @@
                                         </div>
                                     </div>
                                     <div class="p-5" *ngIf="profile.calendar.length == 0">
-                                        <div class="card box">
+                                        <div class="card box p-5">
                                             <div class="card-block">
                                                 <h6 class="card-title text-center col-12"><i class="fas fa-list"></i> </h6>
                                                 <div class="card-text">

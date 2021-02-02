@@ -97,7 +97,7 @@ export class MyPetCodeComponent implements OnInit {
   getPermissionInfo() {
     this.petService.getPetPermissionsDataList(this.getLinkIdParam).subscribe(data => {
       this.permissionData = data.permissions[0];
-      if(this.permissionData.length<=0){
+      if(this.permissionData == undefined || this.permissionData.length<=0){
         this.permissionData = {
           showPhoneInfo: true,
           showEmailInfo: true,
@@ -231,41 +231,28 @@ export class MyPetCodeComponent implements OnInit {
     };
     directionsService.route(request, (response, status) => {
       if (status == 'OK') {
-        this.showInfo = false;
-        // this.confirmData = response.routes[0].legs[0]; 
-        // this.distance = this.confirmData.distance.text;
-        // this.duration = this.confirmData.duration.text;
-        // this.end_address = this.confirmData.end_address;
-        // this.start_address = this.confirmData.start_address;
-        
-        // let costFinal = 1600;
-        // let endDirection = '<p><b>Dirrecion final:</b>' + this.end_address; + '<br></p>';
-        // let startDirection = '<p><b>Dirrecion inicial:</b>' + this.start_address; + '<br></p>';
-        // let distance = '<p><b>Distancia:</b>' + this.distance; + '<br></p>';
-        // let timeArrival = '<p><b>Tiempo de llegada:</b>' + this.duration + '<br></p>';
-        // let cost = '<p><b>Costo:</b> ₡' + costFinal + '<br></p>';
-        // let msg = distance + cost + timeArrival + startDirection + endDirection; 
-        
         Swal.fire({
-          title: "Confirmación de ida",
-          html: 'Ir a la direccion?',
-          showCancelButton: true,
-          allowEscapeKey: false,
-          confirmButtonText: 'OK',
-          cancelButtonText: 'No',
-          allowOutsideClick: false,
-          buttonsStyling: false,
-          reverseButtons: true,
+          title: 'Seleccione su aplicacion de preferencia',
+          showDenyButton: true,
           position: 'top',
-          padding: 0,
-          customClass: { container: 'sw-leave-container', cancelButton: 'btn btn-warning border col-auto mr-auto p-2', confirmButton: 'col-auto btn btn-info p-2' }
+          showCloseButton: true,
+          showCancelButton: false,
+          confirmButtonText: '<img alt="waze" style="height:100px;" src="https://logodownload.org/wp-content/uploads/2018/09/waze-logo-0.png">',
+          denyButtonText: '<img alt="waze" style="height:100px;" src="https://cdn.icon-icons.com/icons2/2108/PNG/512/google_maps_icon_130921.png">',
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            let toLat = this.markers[0].lat;
+            let toLong = this.markers[0].lng;
+
+            let destination = toLat + ',' + toLong;
+
+            window.open('https://waze.com/ul?ll=' + destination + '&z=10', '_blank');
+          } else if (result.isDenied) {
+            window.open('https://www.google.com/maps/dir/?api=1&origin='+this.gomarkers[0].lat+','+this.gomarkers[0].lng+'&destination='+this.markers[0].lat+','+this.markers[0].lng+'&travelmode=driving','_blank');
+          }
+          $('#showPopupMapPetHome').modal('hide');
         })
-        .then((result) => {
-            if (result.value){
-              $('#showPopupMapPetHome').modal('hide');
-              window.open('https://www.google.com/maps/dir/?api=1&origin='+this.gomarkers[0].lat+','+this.gomarkers[0].lng+'&destination='+this.markers[0].lat+','+this.markers[0].lng+'&travelmode=driving','_blank');
-            } 
-        });
       }else {
         this.showInfo = true;
         $('#showPopupMapPetHome').modal('hide');

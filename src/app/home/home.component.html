@@ -91,5 +91,37 @@
       </div>
     </div>
   </div>  
+  <div class="container mt-4">
+    <div class="container">
+    <div class="form-row">
+      <div class="form-group input-group col-12">
+          <h4 class="card-title">Perritos desaparecidos</h4>
+      </div>
+
+      <div class="form-group input-group col-12">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3"><i class="fas fa-search"></i></span>
+          </div>
+          <input class="form-control input-search" type="text" name="search" [(ngModel)]="query" autocomplete="off" placeholder="Buscar Usuario">
+        </div>
+      </div>
+    </div>
+    <div class="row test">
+      <div class="col-12 col-sm-4 col-lg-4 col-xl-4 mb-2" *ngFor="let item of filterData(query)">
+        <div class="card hovercard ">
+          <div class="cardheader" [ngStyle]="{'background-image': ' url(' + item.photo  + ')','background-size': 'cover', 'background-color':'rgba(0, 0, 0, 0.452)', 'background-blend-mode':'multiply',  'height': '235px'}"></div>
+          <div class="avatar">
+              <img alt="{{item.photo}}" src="{{item.photo}}">
+          </div>
+          <div class="card-body">
+              <h4 class="card-title mt-3">Hola, me llamo {{item.petName}}</h4>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+     
+  </div>
 </section>
 </div> 
