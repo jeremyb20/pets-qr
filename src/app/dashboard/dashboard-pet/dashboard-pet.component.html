@@ -12,7 +12,8 @@
             <div class="col-sm">
                 <div class="row">
                     <div class="col-6" >
-                        <button [disabled]="code == 'Ordenando' || code == 'Pendiente' || code == 'Preparando' || code == 'Enviado' || code == 'Recibido'" (click)="generateQrCode()" type="submit" class="btn btn-yellow btn-sm col-12 float-right mb-2">
+                        <!-- <button [disabled]="code == 'Ordenando' || code == 'Pendiente' || code == 'Preparando' || code == 'Enviado' || code == 'Recibido'" (click)="generateQrCode()" type="submit" class="btn btn-yellow btn-sm col-12 float-right mb-2"> -->
+                        <button (click)="goShopping()" type="submit" class="btn btn-yellow btn-sm col-12 float-right mb-2">
                           <i *ngIf="!loadingQr" class="fa fa-paw" aria-hidden="true"></i>
                           <svg *ngIf="loadingQr" class="loader" viewBox="0 0 24 24">
                               <circle class="loader__value" cx="12" cy="12" r="10" />
@@ -22,7 +23,7 @@
                               <circle class="loader__value" cx="12" cy="12" r="10" />
                               <circle class="loader__value" cx="12" cy="12" r="10" />
                           </svg>
-                          Generar QR
+                          Carrito de compras
                         </button>
                     </div>
                     <div class="col-6">

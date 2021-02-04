@@ -94,7 +94,7 @@
   <div class="container mt-4">
     <div class="container">
     <div class="form-row">
-      <div class="form-group input-group col-12">
+      <div class="form-group input-group col-12 justify-content-center mt-3">
           <h4 class="card-title">Perritos desaparecidos</h4>
       </div>
 
@@ -107,7 +107,7 @@
         </div>
       </div>
     </div>
-    <div class="row test">
+    <div class="row test justify-content-center">
       <div class="col-12 col-sm-4 col-lg-4 col-xl-4 mb-2" *ngFor="let item of filterData(query)">
         <div class="card hovercard ">
           <div class="cardheader" [ngStyle]="{'background-image': ' url(' + item.photo  + ')','background-size': 'cover', 'background-color':'rgba(0, 0, 0, 0.452)', 'background-blend-mode':'multiply',  'height': '235px'}"></div>

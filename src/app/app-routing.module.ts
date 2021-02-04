@@ -22,6 +22,7 @@ import { MapComponent } from './map/map.component';
 import { MenusComponent } from './menus/menus.component';
 import { DashboardPetComponent } from './dashboard/dashboard-pet/dashboard-pet.component';
 import { MyPetCodeComponent } from './my-pet-code/my-pet-code.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 
 const routes: Routes = [
@@ -51,6 +52,7 @@ const routes: Routes = [
         { path: 'dashboard-company', component: DashboardCompanyComponent,canActivate: [AdminGuard] },
         { path: 'dashboard-pet', component: DashboardPetComponent,canActivate: [AdminGuard] },
         { path: 'myPetCode', component: MyPetCodeComponent },
+        { path: 'shopping-cart', component: ShoppingCartComponent, canActivate: [AdminGuard]},
       
         { path: 'profile-user', component: ProfileUserComponent ,canActivate: [AdminGuard]},
         { path: 'profile-company', component: ProfileCompanyComponent ,canActivate: [AdminGuard]},

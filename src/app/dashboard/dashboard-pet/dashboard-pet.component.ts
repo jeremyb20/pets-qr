@@ -561,6 +561,10 @@ calendarOptions: CalendarOptions = {
     });
   }
 
+  goShopping() {
+    this.router.navigate(['/shopping-cart']);
+  }
+
   goToProfile() {
     this.router.navigate(['/myPetCode/'],{ queryParams: {id: this.pet.id}}); 
   }

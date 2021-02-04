@@ -1,4 +1,4 @@
-
+@import "../../scss/partials/bootstrap-breakpoints";
 #HomeComponent{
 
     .login-block{
@@ -26,6 +26,10 @@
     .login-sec{
         padding: 38px 30px; 
         position:relative;
+        @include media-breakpoint-up(sm) {
+            box-shadow: 0 6px 10px #1976D2, 0 0 6px rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
     }
     .login-sec .copy-text{
         position:absolute; 

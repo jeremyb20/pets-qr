@@ -376,3 +376,9 @@ $loader-keyframe: 1 / (length($loader-colors) * 2) * 100;
 .swal2-popup {
   margin-top: 2em;
 }
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}

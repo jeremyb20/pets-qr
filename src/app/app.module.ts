@@ -44,6 +44,7 @@ import { MenusComponent } from './menus/menus.component';
 import { DashboardPetComponent } from './dashboard/dashboard-pet/dashboard-pet.component';
 import { MyPetCodeComponent } from './my-pet-code/my-pet-code.component';
 import { SwitchComponent } from './common/directives/switch/switch.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 export function tokenGetter() {
   return localStorage.getItem("id_token");
@@ -78,7 +79,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MenusComponent,
     DashboardPetComponent,
     MyPetCodeComponent,
-    SwitchComponent
+    SwitchComponent,
+    ShoppingCartComponent
   ],
   imports: [
     BrowserModule,
