@@ -150,6 +150,10 @@ const PetSchema = mongoose.Schema ({
       type: String,
       require: true
     },
+    quantity: {
+      type: String,
+      require: true
+    },
     firstPhoto: {
       type: String,
       require: true

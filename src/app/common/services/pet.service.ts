@@ -455,9 +455,11 @@ sendNewProduct(obj,  firstPhoto:any,  secondPhoto: any):Observable<any> {
   fd.append('size',obj.size);
   fd.append('color',obj.color);
   fd.append('cost',obj.cost);
+  fd.append('quantity',obj.quantity);
   fd.append('description',obj.description);
   fd.append('firstPhoto', firstPhoto);
   fd.append('secondPhoto', secondPhoto);
+  
   
   if(this.isDev) {
     return this.httpClient.post<any>('http://localhost:8080/pet/admin/register/new-product', fd);

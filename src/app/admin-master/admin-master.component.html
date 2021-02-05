@@ -184,7 +184,7 @@
                             <h4 class="card-title">Productos Actuales</h4>
                         </div>
                         <div class="form-group text-center input-group col-6">
-                            <button class="btn btn-info"><i class="fas fa-plus"></i> Añadir Producto</button>
+                            <button (click)="addNewProduct()" class="btn btn-info"><i class="fas fa-plus"></i> Añadir Producto</button>
                         </div>
 
                         <div class="form-group input-group col-12">
@@ -192,7 +192,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text" id="basic-addon3"><i class="fas fa-search"></i></span>
                                 </div>
-                                <input class="form-control" type="text" name="search" [(ngModel)]="query" autocomplete="off" placeholder="Buscar Producto">
+                                <input class="form-control" type="text" name="search" [(ngModel)]="query2" autocomplete="off" placeholder="Buscar Producto">
                             </div>
                         </div>
                     </div>
@@ -209,7 +209,7 @@
                                     <th scope="col">Acción</th>
                                 </tr>
                             </thead>
-                            <tbody *ngFor="let item of filterProductData(query)" class="text-center">
+                            <tbody *ngFor="let item of filterProductData(query2)" class="text-center">
                                 <tr>
                                     <td>{{item.productName}}</td>
                                     <td>{{item.size}}</td>
@@ -357,9 +357,17 @@
             
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Descripcion</label>
-                <textarea class="form-control" formControlName="description" placeholder="Esto nos ayudara para informar en el sitio" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"></textarea>
+                <textarea class="form-control" formControlName="description" placeholder="Agregue una descripcion" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"></textarea>
                 <div *ngIf="submitted && f.description.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.description.errors }">
                     <div *ngIf="f.description.errors.required">Descripcion es requerido</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Cantidad disponible</label>
+                <input type="number" formControlName="quantity" class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && f.quantity.errors }" />
+                <div *ngIf="submitted && f.quantity.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.quantity.errors }">
+                    <div *ngIf="f.quantity.errors.required">Descripcion es requerido</div>
                 </div>
             </div>
 
@@ -374,16 +382,15 @@
 
                   <div class="form-group mb-1 text-center">
                     <label class="font-weight-bold">Segunda Foto:</label>
-                    <input #photoinput type="file" name="image" accept="image/*" class="d-none"
+                    <input #photoinputSecond type="file" name="image" accept="image/*" class="d-none"
                       (change)="processFileSecond($event)">
-                    <img [src]="photoSelected || '../../../assets/upload.png'" alt="" style="height: 66px;" class="img-fluid" (click)="photoinput.click()" srcset="">
+                    <img [src]="photoSelectedSecond || '../../../assets/upload.png'" alt="" style="height: 66px;" class="img-fluid" (click)="photoinputSecond.click()" srcset="">
                   </div>
             </div>
-            <i class="fas fa-plus-circle fa-2x"></i>
               <div class="modal-footer text-center">
                 <button type="button" class="btn btn-secondary float-left mr-auto" data-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-primary float-right">
-                  <i *ngIf="!loading" class="fas fa-edit"></i>
+                  <i *ngIf="!loading" class="fas fa-plus-circle"></i>
                   <svg *ngIf="loading" class="loader" viewBox="0 0 24 24">
                       <circle class="loader__value" cx="12" cy="12" r="10" />
                       <circle class="loader__value" cx="12" cy="12" r="10" />

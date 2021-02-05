@@ -55,7 +55,7 @@ const storage = multer.diskStorage({
     cd(null, new Date().getTime() + path.extname(file.originalname));
   }
 });
-app.use(multer({storage}).single('image'));
+app.use(multer({storage}).any('image'));
 
 // CORS Middleware
 app.use(cors());

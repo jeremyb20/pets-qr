@@ -502,24 +502,30 @@ router.get('/admin/getAllProductList', function(req, res){
 });
 
 router.post('/admin/register/new-product', async(req, res) => {
-  const obj = JSON.parse(JSON.stringify(req.body));
+  // const obj = JSON.parse(JSON.stringify(req.body));
+  // console.log(req.file);
 
-  const result = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.firstPhoto);
-  const resultSecond = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.secondPhoto);
+  // const result = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.firstPhoto);
+  // const resultSecond = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.secondPhoto);
 
-  let newProductList = {
-    productName: obj.productName,
-    size: obj.size,
-    color: obj.color,
-    cost: obj.cost,
-    description: obj.description,
-    firstPhoto: result.secure_url == undefined ? obj.firstPhoto : result.secure_url,
-    secondPhoto: resultSecond.secure_url == undefined ? obj.secondPhoto : resultSecond.secure_url
-  };
+  // let newProductList = {
+  //   productName: obj.productName,
+  //   size: obj.size,
+  //   color: obj.color,
+  //   cost: obj.cost,
+  //   description: obj.description,
+  //   quantity: obj.quantity,
+  //   firstPhoto: result.secure_url == undefined ? obj.firstPhoto : result.secure_url,
+  //   secondPhoto: resultSecond.secure_url == undefined ? obj.secondPhoto : resultSecond.secure_url
+  // };
 
-  Pet.findOneAndUpdate({ _id: process.env.ADMIN_ID }, { $push: { productsList: newProductList }},{new: true}).then(function(data){
-    res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
-  });
+  // console.log(newProductList);
+
+  // Pet.findOneAndUpdate({ _id: process.env.ADMIN_ID }, { $push: { productsList: newProductList }},{new: true}).then(function(data){
+  //   res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
+  // });
+
+  // check
 
 });
 

@@ -28,6 +28,7 @@ export class AdminMasterComponent implements OnInit {
   id: number = 1;
   idTab: number = 1;
   query: string;
+  query2: string;
 
   petLogged: any;
   pet : any;
@@ -93,6 +94,7 @@ export class AdminMasterComponent implements OnInit {
         size: ['', [Validators.required]],
         color: ['', Validators.required],
         cost: ['', Validators.required],
+        quantity:['', Validators.required],
         description: ['', Validators.required],
       });
     }
@@ -119,7 +121,6 @@ export class AdminMasterComponent implements OnInit {
       this.petService.getPetsList().subscribe(data => {
           this.allUsersData = data;
           this.filteredData = this.allUsersData;
-          this.filteredProductData = this.allUsersData.productsList;
           this.order = [];
           this.orderHistory = [];
           this.allUsersData.forEach(element => {
@@ -144,8 +145,8 @@ export class AdminMasterComponent implements OnInit {
 
     getAllProductList() {
       this.petService.getAllProductList().subscribe(data => {
-          this.filteredData = data;
-          this.filteredProductData = this.filteredData;
+          this.allProductsData = data.productsList;
+          this.filteredProductData = this.allProductsData;
       },
       error => {
       this.loading = false;
@@ -182,6 +183,7 @@ export class AdminMasterComponent implements OnInit {
               color: this.f.color.value,
               cost: this.f.cost.value,
               description: this.f.description.value,
+              quantity: this.f.quantity.value,
             }
             
             this.petService.sendNewProduct(newProduct, this.file, this.fileSecond).subscribe(data => {
@@ -257,18 +259,18 @@ export class AdminMasterComponent implements OnInit {
         return this.filteredData;
     }
 
-    filterProductData(query): any[] {
-      if (!query) {
+    filterProductData(query2): any[] {
+      if (!query2) {
         this.filteredProductData = this.allProductsData;
       }
       
       if(this.filteredProductData != undefined){
           this.filteredProductData = this.filteredProductData.filter(obj => {
-              if (!query) {
-                  return obj;
-              }
-              return obj.productName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
-          });
+            if (!query2) {
+                return obj;
+            }
+            return obj.productName.toLowerCase().indexOf(query2.toLowerCase()) !== -1;
+        });
       }
       return this.filteredProductData;
   }
