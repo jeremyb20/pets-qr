@@ -405,6 +405,15 @@ getPetsList():Observable<any> {
   }
 }
 
+getProductPetsList():Observable<any> {
+  this.loadToken();
+  if (this.isDev) {
+    return this.httpClient.get<any>('http://localhost:8080/pet/admin/getAllProductsPetList/');
+  } else {
+    return this.httpClient.get<any>('pet/admin/getAllProductsPetList/');
+  }
+}
+
 getPetsLostList():Observable<any> {
   this.loadToken();
   if (this.isDev) {
@@ -424,6 +433,36 @@ getAdminDataList():Observable<any> {
     return this.httpClient.get<any>('http://localhost:8080/pet/admin/getAdminDataList');
   } else {
     return this.httpClient.get<any>('pet/admin/getAdminDataList');
+  }
+}
+
+getAllProductList():Observable<any> {
+  let headers = new Headers();
+  this.loadToken();
+  headers.append('Authorization', this.authToken);
+  headers.append('Content-Type', 'application/json');
+  if (this.isDev) {
+    return this.httpClient.get<any>('http://localhost:8080/pet/admin/getAllProductList');
+  } else {
+    return this.httpClient.get<any>('pet/admin/getAllProductList');
+  }
+}
+
+  
+sendNewProduct(obj,  firstPhoto:any,  secondPhoto: any):Observable<any> {
+  const fd = new FormData();
+  fd.append('productName',obj.productName);
+  fd.append('size',obj.size);
+  fd.append('color',obj.color);
+  fd.append('cost',obj.cost);
+  fd.append('description',obj.description);
+  fd.append('firstPhoto', firstPhoto);
+  fd.append('secondPhoto', secondPhoto);
+  
+  if(this.isDev) {
+    return this.httpClient.post<any>('http://localhost:8080/pet/admin/register/new-product', fd);
+  }else{
+    return this.httpClient.post<any>('pet/admin/register/new-product', fd);
   }
 }
 

@@ -486,6 +486,43 @@ router.get('/admin/getAdminDataList', function(req, res){
   });
 });
 
+router.get('/admin/getAllProductList', function(req, res){
+  var id = process.env.ADMIN_ID;
+  Pet.findById(id, function(err, results){
+    if(err){
+      res.send('Algo ocurrio favor revisar admin');
+      return;
+    }
+
+   var pet = {
+      productsList: results.productsList
+    }
+    res.json(pet)
+  });
+});
+
+router.post('/admin/register/new-product', async(req, res) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+
+  const result = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.firstPhoto);
+  const resultSecond = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.secondPhoto);
+
+  let newProductList = {
+    productName: obj.productName,
+    size: obj.size,
+    color: obj.color,
+    cost: obj.cost,
+    description: obj.description,
+    firstPhoto: result.secure_url == undefined ? obj.firstPhoto : result.secure_url,
+    secondPhoto: resultSecond.secure_url == undefined ? obj.secondPhoto : resultSecond.secure_url
+  };
+
+  Pet.findOneAndUpdate({ _id: process.env.ADMIN_ID }, { $push: { productsList: newProductList }},{new: true}).then(function(data){
+    res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
+  });
+
+});
+
 // admin
 
 //Notifications 

@@ -10,11 +10,6 @@ interface HtmlInputEvent extends Event {
   target: HTMLInputElement & EventTarget
 }
 
-
-interface HtmlInputEvent extends Event {
-  target: HTMLInputElement & EventTarget
-}
-
 @Component({
   selector: 'app-register-pets',
   templateUrl: './register-pets.component.html',

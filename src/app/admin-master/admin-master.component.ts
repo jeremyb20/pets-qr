@@ -11,6 +11,9 @@ import { Subscription } from 'rxjs';
 
 declare var $: any;
 
+interface HtmlInputEvent extends Event {
+  target: HTMLInputElement & EventTarget
+}
 
 
 @Component({
@@ -21,25 +24,34 @@ declare var $: any;
 export class AdminMasterComponent implements OnInit {
   private mediaSubscription: Subscription;
   public AngularxQrCode: string = null;
+  newProductPetForm: FormGroup;
   id: number = 1;
   idTab: number = 1;
   query: string;
 
   petLogged: any;
   pet : any;
-  allUsersData: any;
   adminProfileData: any;
   Media: MediaResponse;
   loading: boolean = false;
   showCardMsgOrderList: boolean = false;
   showCardMsgOrderHistoryList: boolean = false;
+  allUsersData: any;
   filteredData: any;
+  allProductsData: any;
+  filteredProductData: any;
+  submitted = false;
   // order
+  file : File;
+  fileSecond : File;
+
+  photoSelectedSecond: String | ArrayBuffer;
+  photoSelected: String | ArrayBuffer;
 
   order: any;
   orderHistory: any;
 
-    constructor(private petService: PetService, private media: MediaService,private _notificationSvc: NotificationService, private router: Router) {
+    constructor(private petService: PetService, private media: MediaService,private _notificationSvc: NotificationService, private router: Router, private formBuilder: FormBuilder) {
         this.petLogged = this.petService.getLocalPet()
         this.pet = JSON.parse(this.petLogged);
         if(this.pet != null){
@@ -67,11 +79,22 @@ export class AdminMasterComponent implements OnInit {
         });
     
         this.getAllUsers();
+        this.getAllProductList();
     }    
+
+    get f() { return this.newProductPetForm.controls; }
+
 
 
     ngOnInit() {
       //this.getDataAdminList();
+      this.newProductPetForm = this.formBuilder.group({
+        productName: ['', Validators.required],
+        size: ['', [Validators.required]],
+        color: ['', Validators.required],
+        cost: ['', Validators.required],
+        description: ['', Validators.required],
+      });
     }
 
     // getDataAdminList() {
@@ -93,29 +116,92 @@ export class AdminMasterComponent implements OnInit {
     }
 
     getAllUsers() {
-        this.petService.getPetsList().subscribe(data => {
-            this.allUsersData = data;
-            this.filteredData = this.allUsersData;
-            this.order = [];
-            this.orderHistory = [];
-            this.allUsersData.forEach(element => {
-                if(element.code.length == 1){
-                    element.code.forEach(item => {
-                        if(item.status == 'Recibido'){
-                            this.orderHistory.push(element);
-                        }else{
-                            this.order.push(element);
-                        }
-                    });
-                }
+      this.petService.getPetsList().subscribe(data => {
+          this.allUsersData = data;
+          this.filteredData = this.allUsersData;
+          this.filteredProductData = this.allUsersData.productsList;
+          this.order = [];
+          this.orderHistory = [];
+          this.allUsersData.forEach(element => {
+              if(element.code.length == 1){
+                  element.code.forEach(item => {
+                      if(item.status == 'Recibido'){
+                          this.orderHistory.push(element);
+                      }else{
+                          this.order.push(element);
+                      }
+                  });
+              }
+          });
+          this.showCardMsgOrderList = (this.order.length > 0)? false: true;
+          this.showCardMsgOrderHistoryList = (this.orderHistory.length > 0)? false: true;
+      },
+      error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor DE REVISAR', 6000);
+      });
+    }
+
+    getAllProductList() {
+      this.petService.getAllProductList().subscribe(data => {
+          this.filteredData = data;
+          this.filteredProductData = this.filteredData;
+      },
+      error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor DE REVISAR', 6000);
+      });
+    }
+
+    addNewProduct() {
+      $('#addNewProductModal').modal('show');
+    }
+
+    sendNewProduct() {
+      this.submitted = true;
+      // stop here if form is invalid
+      if (this.newProductPetForm.invalid) {
+          return;
+      }
+      
+
+      var title = 'Agregar Nuevo Producto?'
+      Swal.fire({
+          title: title,
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: `Ok`,
+          denyButtonText: `No cambiar`,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            this.loading = true;
+            var newProduct = {
+              productName: this.f.productName.value,
+              size: this.f.size.value,
+              color: this.f.color.value,
+              cost: this.f.cost.value,
+              description: this.f.description.value,
+            }
+            
+            this.petService.sendNewProduct(newProduct, this.file, this.fileSecond).subscribe(data => {
+              if(data.success) {
+                  Swal.fire('Saved!', '', 'success');
+                  location.reload();
+              } else {
+                $('#qrCodeInfoDialog').modal('hide');
+                this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
+              }
+            },
+            error => {
+              this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
             });
-            this.showCardMsgOrderList = (this.order.length > 0)? false: true;
-            this.showCardMsgOrderHistoryList = (this.orderHistory.length > 0)? false: true;
-        },
-        error => {
-        this.loading = false;
-        this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor DE REVISAR', 6000);
-        });
+
+            Swal.fire('Saved!', '', 'success')
+          } else if (result.isDenied) {
+            Swal.fire('Cambios no ha sido guardados', '', 'info')
+          }
+        })
     }
 
     dropdowSelect(state: any, item: any){
@@ -169,11 +255,51 @@ export class AdminMasterComponent implements OnInit {
             });
         }
         return this.filteredData;
+    }
+
+    filterProductData(query): any[] {
+      if (!query) {
+        this.filteredProductData = this.allProductsData;
       }
+      
+      if(this.filteredProductData != undefined){
+          this.filteredProductData = this.filteredProductData.filter(obj => {
+              if (!query) {
+                  return obj;
+              }
+              return obj.productName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+          });
+      }
+      return this.filteredProductData;
+  }
 
     checkQrCode(link:any){
         $('#qrCodeInfoDialog').modal('show');
         this.AngularxQrCode = link;
     }
+  
 
+    processFile(event: HtmlInputEvent): void {
+
+      if(event.target.files && event.target.files[0]){
+        this.file = <File>event.target.files[0];
+  
+        const reader = new FileReader();
+  
+        reader.onload = e => this.photoSelected = reader.result;
+        reader.readAsDataURL(this.file);
+      }
+    }
+
+    processFileSecond(event: HtmlInputEvent): void {
+
+      if(event.target.files && event.target.files[0]){
+        this.fileSecond = <File>event.target.files[0];
+  
+        const reader = new FileReader();
+  
+        reader.onload = e => this.photoSelectedSecond = reader.result;
+        reader.readAsDataURL(this.fileSecond);
+      }
+    }
 }
