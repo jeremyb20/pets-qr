@@ -51,6 +51,8 @@ export class AdminMasterComponent implements OnInit {
   isfirstPhoto: boolean = false;
   itemProductSelected: any;
   linkPhoto: String;
+  linkFirst: String;
+  linkSecond: String;
 
   order: any;
   orderHistory: any;
@@ -166,6 +168,12 @@ export class AdminMasterComponent implements OnInit {
       this.isfirstPhoto = (value == 1)? true: false;
       this.linkPhoto = (value == 1)?item.firstPhoto:item.secondPhoto
       $('#addNewFistorSecondPhotoModal').modal('show');
+    }
+
+    seeFoto(item:any){
+      this.linkFirst = item.firstPhoto;
+      this.linkSecond = item.secondPhoto;
+      $('#visualization').modal('show');
     }
 
     sendNewProduct() {
