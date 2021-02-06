@@ -200,7 +200,7 @@ export class AdminMasterComponent implements OnInit {
             this.petService.sendNewProduct(newProduct, this.file, this.fileSecond).subscribe(data => {
               if(data.success) {
                   Swal.fire('Saved!', '', 'success');
-                  location.reload();
+                  this.getAllProductList();
               } else {
                 $('#qrCodeInfoDialog').modal('hide');
                 this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
@@ -229,7 +229,7 @@ export class AdminMasterComponent implements OnInit {
         if(data.success) {
           $('#addNewFistorSecondPhotoModal').modal('hide');
           this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
-          location.reload();
+          this.getAllProductList();
           this.loading = false;
         } else {
           $('#addNewFistorSecondPhotoModal').modal('hide');

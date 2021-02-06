@@ -510,7 +510,6 @@ router.put('/admin/register/registerPhotoPetProduct', async(req, res) => {
     isFistPhoto : obj.isFistPhoto,
     photo: result.secure_url == undefined ? obj.image : result.secure_url
   };
-  console.log(newPet,'j')
 
   await Pet.findOne({_id: process.env.ADMIN_ID }, (err, pet) => {
     if (!pet) {
@@ -521,11 +520,12 @@ router.put('/admin/register/registerPhotoPetProduct', async(req, res) => {
       arrayPet.push(pet);
       arrayPet.forEach(element => {
           element["productsList"].forEach(item => {
-            if(element._id == newPet.idProduct){
-              if(newPet.isFistPhoto){
+            if(item._id == newPet.idProduct){
+              if(newPet.isFistPhoto == 'true'){
                 item["firstPhoto"] = newPet.photo;
-              }else{
-                 item["secondPhoto"] = newPet.photo; 
+              }
+              if(newPet.isFistPhoto == 'false'){
+                item["secondPhoto"] = newPet.photo; 
               }
             }
           }) 
