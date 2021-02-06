@@ -422,8 +422,9 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body text-center">
           <form (ngSubmit)="sendPhotoSubmit()">
+            <img class="mb-1 text-center" *ngIf="linkPhoto" style="height: 200px;" src="{{linkPhoto}}" alt="{{linkPhoto}}" srcset="{{linkPhoto}}"> 
             <div *ngIf="isfirstPhoto" class="form-group mb-1 text-center">
                 <label class="font-weight-bold">Foto:</label>
                 <input #photoinput type="file" name="image" accept="image/*" class="d-none"

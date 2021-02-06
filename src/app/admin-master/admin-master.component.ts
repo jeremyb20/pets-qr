@@ -50,6 +50,7 @@ export class AdminMasterComponent implements OnInit {
   photoSelected: String | ArrayBuffer;
   isfirstPhoto: boolean = false;
   itemProductSelected: any;
+  linkPhoto: String;
 
   order: any;
   orderHistory: any;
@@ -161,11 +162,9 @@ export class AdminMasterComponent implements OnInit {
     }
 
     checkFoto(item:any, value:number){
-      console.log(item);
-      console.log(value);
       this.itemProductSelected = item;
       this.isfirstPhoto = (value == 1)? true: false;
-      console.log(this.isfirstPhoto)
+      this.linkPhoto = (value == 1)?item.firstPhoto:item.secondPhoto
       $('#addNewFistorSecondPhotoModal').modal('show');
     }
 
