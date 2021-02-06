@@ -48,6 +48,8 @@ export class AdminMasterComponent implements OnInit {
 
   photoSelectedSecond: String | ArrayBuffer;
   photoSelected: String | ArrayBuffer;
+  isfirstPhoto: boolean = false;
+  itemProductSelected: any;
 
   order: any;
   orderHistory: any;
@@ -158,6 +160,15 @@ export class AdminMasterComponent implements OnInit {
       $('#addNewProductModal').modal('show');
     }
 
+    checkFoto(item:any, value:number){
+      console.log(item);
+      console.log(value);
+      this.itemProductSelected = item;
+      this.isfirstPhoto = (value == 1)? true: false;
+      console.log(this.isfirstPhoto)
+      $('#addNewFistorSecondPhotoModal').modal('show');
+    }
+
     sendNewProduct() {
       this.submitted = true;
       // stop here if form is invalid
@@ -204,6 +215,32 @@ export class AdminMasterComponent implements OnInit {
             Swal.fire('Cambios no ha sido guardados', '', 'info')
           }
         })
+    }
+
+    sendPhotoSubmit(){
+      this.loading = true;
+      var object = {
+        idProduct:this.itemProductSelected._id,
+        isFistPhoto: this.isfirstPhoto,
+        image: (this.isfirstPhoto)?this.file:this.fileSecond
+      }
+
+      this.petService.addPhotoFirstORSecond(object).subscribe(data => {
+        if(data.success) {
+          $('#addNewFistorSecondPhotoModal').modal('hide');
+          this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
+          location.reload();
+          this.loading = false;
+        } else {
+          $('#addNewFistorSecondPhotoModal').modal('hide');
+          this.loading = false;
+          this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
+        }
+      },
+      error => {
+        this.loading = false;
+        this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+      });
     }
 
     dropdowSelect(state: any, item: any){

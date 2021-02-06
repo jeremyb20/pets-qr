@@ -206,6 +206,8 @@
                                     <th scope="col">Color</th>
                                     <th scope="col">Descripción</th>
                                     <th scope="col">Costo</th>
+                                    <th scope="col">Primera Foto</th>
+                                    <th scope="col">Segunda Foto</th>
                                     <th scope="col">Acción</th>
                                 </tr>
                             </thead>
@@ -215,7 +217,9 @@
                                     <td>{{item.size}}</td>
                                     <td>{{item.color}}</td>
                                     <td>{{item.description}}</td>
-                                    <td>{{item.cost}}</td>
+                                    <td>{{item.cost | currency:"₡"}}</td>
+                                    <td><button (click)="checkFoto(item,1)" class="btn btn-info btn-sm"> <i class="fas fa-camera"></i> Primera foto</button></td>
+                                    <td><button (click)="checkFoto(item,2)" class="btn btn-info btn-sm"> <i class="fas fa-camera"></i> Segunda foto</button></td>
                                     <td>
                                         <span class="d-flex">
                                             <a class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a>
@@ -400,6 +404,53 @@
                       <circle class="loader__value" cx="12" cy="12" r="10" />
                     </svg>
                   Crear Nuevo Producto
+                </button>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="addNewFistorSecondPhotoModal" tabindex="-1" role="dialog" aria-labelledby="addNewFistorSecondPhotoModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 *ngIf="isfirstPhoto" class="modal-title">Agregar primera foto</h5>
+          <h5 *ngIf="!isfirstPhoto" class="modal-title">Agregar segunda foto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="sendPhotoSubmit()">
+            <div *ngIf="isfirstPhoto" class="form-group mb-1 text-center">
+                <label class="font-weight-bold">Foto:</label>
+                <input #photoinput type="file" name="image" accept="image/*" class="d-none"
+                  (change)="processFile($event)">
+                <img [src]="photoSelected || '../../../assets/upload.png'" alt="" style="height: 66px;" class="img-fluid" (click)="photoinput.click()" srcset="">
+            </div>
+            
+            <div *ngIf="!isfirstPhoto" class="form-group mb-1 text-center">
+                <label class="font-weight-bold">Segunda Foto:</label>
+                <input #photoinputSecond type="file" name="image" accept="image/*" class="d-none"
+                  (change)="processFileSecond($event)">
+                <img [src]="photoSelectedSecond || '../../../assets/upload.png'" alt="" style="height: 66px;" class="img-fluid" (click)="photoinputSecond.click()" srcset="">
+            </div>
+            
+              <div class="modal-footer text-center">
+                <button type="button" class="btn btn-secondary float-left mr-auto" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary float-right">
+                  <i *ngIf="!loading" class="fas fa-edit"></i>
+                  <svg *ngIf="loading" class="loader" viewBox="0 0 24 24">
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                      <circle class="loader__value" cx="12" cy="12" r="10" />
+                    </svg>
+                  Actualizar
                 </button>
               </div>
           </form>

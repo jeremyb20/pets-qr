@@ -501,31 +501,44 @@ router.get('/admin/getAllProductList', function(req, res){
   });
 });
 
-router.post('/admin/register/new-product', async(req, res) => {
-  // const obj = JSON.parse(JSON.stringify(req.body));
-  // console.log(req.file);
+router.put('/admin/register/registerPhotoPetProduct', async(req, res) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
 
-  // const result = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.firstPhoto);
-  // const resultSecond = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.secondPhoto);
+  const result = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.image);
+  let newPet = {
+    idProduct : obj.idProduct,
+    isFistPhoto : obj.isFistPhoto,
+    photo: result.secure_url == undefined ? obj.image : result.secure_url
+  };
+  console.log(newPet,'j')
 
-  // let newProductList = {
-  //   productName: obj.productName,
-  //   size: obj.size,
-  //   color: obj.color,
-  //   cost: obj.cost,
-  //   description: obj.description,
-  //   quantity: obj.quantity,
-  //   firstPhoto: result.secure_url == undefined ? obj.firstPhoto : result.secure_url,
-  //   secondPhoto: resultSecond.secure_url == undefined ? obj.secondPhoto : resultSecond.secure_url
-  // };
-
-  // console.log(newProductList);
-
-  // Pet.findOneAndUpdate({ _id: process.env.ADMIN_ID }, { $push: { productsList: newProductList }},{new: true}).then(function(data){
-  //   res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
-  // });
-
-  // check
+  await Pet.findOne({_id: process.env.ADMIN_ID }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+     if(pet != null) {
+       var arrayPet = [];
+      arrayPet.push(pet);
+      arrayPet.forEach(element => {
+          element["productsList"].forEach(item => {
+            if(element._id == newPet.idProduct){
+              if(newPet.isFistPhoto){
+                item["firstPhoto"] = newPet.photo;
+              }else{
+                 item["secondPhoto"] = newPet.photo; 
+              }
+            }
+          }) 
+          pet.save();
+          try {
+            res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+          } catch (err) {
+            res.json({ success: false, msg: err });
+            next(err);
+          }
+      })
+     }
+   });
 
 });
 

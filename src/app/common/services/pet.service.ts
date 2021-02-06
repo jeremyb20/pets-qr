@@ -468,6 +468,20 @@ sendNewProduct(obj,  firstPhoto:any,  secondPhoto: any):Observable<any> {
   }
 }
 
+addPhotoFirstORSecond(obj:any):Observable<any> { 
+  const fd = new FormData();
+  fd.append('image', obj.image);
+  fd.append('idProduct', obj.idProduct);
+  fd.append('isFistPhoto', obj.isFistPhoto);
+
+  if(this.isDev) {
+    return this.httpClient.put<any>('http://localhost:8080/pet/admin/register/registerPhotoPetProduct', fd);
+  }else{
+    return this.httpClient.put<any>('pet/admin/register/registerPhotoPetProduct', fd);
+  }
+}
+
+
 // admin
 
 
