@@ -487,7 +487,7 @@ router.get('/admin/getAdminDataList', function(req, res){
 });
 
 router.get('/admin/getAllProductList', function(req, res){
-  var id = String(process.env.ADMIN_ID);
+  var id ='5ff79b5819151012d52a1b3e';
   Pet.findById(id, function(err, results){
     if(err){
       res.send('Algo ocurrio favor revisar admin');
