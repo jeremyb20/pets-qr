@@ -449,7 +449,7 @@ getAllProductList():Observable<any> {
 }
 
   
-sendNewProduct(obj,  firstPhoto:any,  secondPhoto: any):Observable<any> {
+sendNewProduct(obj):Observable<any> {
   const fd = new FormData();
   fd.append('productName',obj.productName);
   fd.append('size',obj.size);
@@ -457,8 +457,6 @@ sendNewProduct(obj,  firstPhoto:any,  secondPhoto: any):Observable<any> {
   fd.append('cost',obj.cost);
   fd.append('quantity',obj.quantity);
   fd.append('description',obj.description);
-  fd.append('firstPhoto', firstPhoto);
-  fd.append('secondPhoto', secondPhoto);
   
   
   if(this.isDev) {

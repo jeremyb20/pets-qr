@@ -187,10 +187,8 @@ export class AdminMasterComponent implements OnInit {
       var title = 'Agregar Nuevo Producto?'
       Swal.fire({
           title: title,
-          showDenyButton: true,
           showCancelButton: true,
           confirmButtonText: `Ok`,
-          denyButtonText: `No cambiar`,
         }).then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
@@ -204,12 +202,13 @@ export class AdminMasterComponent implements OnInit {
               quantity: this.f.quantity.value,
             }
             
-            this.petService.sendNewProduct(newProduct, this.file, this.fileSecond).subscribe(data => {
+            this.petService.sendNewProduct(newProduct).subscribe(data => {
               if(data.success) {
                   Swal.fire('Saved!', '', 'success');
+                  $('#addNewProductModal').modal('hide');
                   this.getAllProductList();
               } else {
-                $('#qrCodeInfoDialog').modal('hide');
+                $('#addNewProductModal').modal('hide');
                 this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
               }
             },

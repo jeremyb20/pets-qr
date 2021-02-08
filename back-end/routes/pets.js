@@ -501,6 +501,24 @@ router.get('/admin/getAllProductList', function(req, res){
   });
 });
 
+router.post('/admin/register/new-product', async(req, res) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+
+  let newProductList = {
+    productName: obj.productName,
+    size: obj.size,
+    color: obj.color,
+    cost: obj.cost,
+    description: obj.description,
+    quantity: obj.quantity
+  };
+
+  Pet.findOneAndUpdate({ _id: process.env.ADMIN_ID }, { $push: { productsList: newProductList }},{new: true}).then(function(data){
+    res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
+  });
+
+});
+
 router.put('/admin/register/registerPhotoPetProduct', async(req, res) => {
   const obj = JSON.parse(JSON.stringify(req.body));
 
