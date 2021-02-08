@@ -18,7 +18,7 @@ export class PetService {
   isDev: boolean = false;
 
   constructor(private httpClient: HttpClient, private jwtHelper: JwtHelperService) {
-      this.isDev = true;  // Change to false when you're gonna deploy your app, true when is on develop 
+      this.isDev = false;  // Change to false when you're gonna deploy your app, true when is on develop 
   }
 
   registerPet(pet,  photo:any):Observable<any> {
