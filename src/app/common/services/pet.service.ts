@@ -405,15 +405,6 @@ getPetsList():Observable<any> {
   }
 }
 
-getProductPetsList():Observable<any> {
-  this.loadToken();
-  if (this.isDev) {
-    return this.httpClient.get<any>('http://localhost:8080/pet/admin/getAllProductsPetList/');
-  } else {
-    return this.httpClient.get<any>('pet/admin/getAllProductsPetList/');
-  }
-}
-
 getPetsLostList():Observable<any> {
   this.loadToken();
   if (this.isDev) {
@@ -425,10 +416,6 @@ getPetsLostList():Observable<any> {
 
 
 getAdminDataList():Observable<any> {
-  let headers = new Headers();
-  this.loadToken();
-  headers.append('Authorization', this.authToken);
-  headers.append('Content-Type', 'application/json');
   if (this.isDev) {
     return this.httpClient.get<any>('http://localhost:8080/pet/admin/getAdminDataList/');
   } else {
@@ -436,15 +423,11 @@ getAdminDataList():Observable<any> {
   }
 }
 
-getAllProductList():Observable<any> {
-  let headers = new Headers();
-  this.loadToken();
-  headers.append('Authorization', this.authToken);
-  headers.append('Content-Type', 'application/json');
+getAllShopProductList():Observable<any> {
   if (this.isDev) {
-    return this.httpClient.get<any>('http://localhost:8080/pet/admin/getAllProductList/');
+    return this.httpClient.get<any>('http://localhost:8080/pet/admin/getAllProductShopList/');
   } else {
-    return this.httpClient.get<any>('pet/admin/getAllProductList/');
+    return this.httpClient.get<any>('pet/admin/getAllProductShopList/');
   }
 }
 

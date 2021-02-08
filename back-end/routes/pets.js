@@ -428,6 +428,7 @@ router.put('/update/updatePetPermissions', async(req, res, next) => {
 
 router.get('/admin/getAllPets', function(req, res){
     Pet.find({}, function(err, pets){
+      console.log(pets)
     if(err){
       res.send('something went really wrong');
       next();
@@ -486,10 +487,9 @@ router.get('/admin/getAdminDataList', function(req, res){
   });
 });
 
-router.get('/admin/getAllProductList', function(req, res){
+router.get('/admin/getAllProductShopList', function(req, res){
   var id ='5ff79b5819151012d52a1b3e';
   Pet.findById(id, function(err, results){
-    console.log(results);
     if(err){
       res.send('Algo ocurrio favor revisar admin');
       return;

@@ -144,18 +144,18 @@ export class AdminMasterComponent implements OnInit {
       },
       error => {
       this.loading = false;
-      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor DE REVISAR', 6000);
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor de revisar get all users', 6000);
       });
     }
 
     getAllProductList() {
-      this.petService.getAllProductList().subscribe(data => {
+      this.petService.getAllShopProductList().subscribe(data => {
           this.allProductsData = data.productsList;
           this.filteredProductData = this.allProductsData;
       },
       error => {
       this.loading = false;
-      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor DE REVISAR', 6000);
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor de revisar All products list', 6000);
       });
     }
 

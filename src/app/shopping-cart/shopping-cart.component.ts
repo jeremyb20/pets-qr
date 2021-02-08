@@ -51,7 +51,7 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   getAllMyProduct(){
-    this.petService.getAllProductList().subscribe(data => {
+    this.petService.getAllShopProductList().subscribe(data => {
       this.allProductsData = data.productsList;
       this.filteredProductData = this.allProductsData;
     },
