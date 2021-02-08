@@ -313,7 +313,7 @@ router.post('/register/generateQrCodePet', async(req, res) => {
     res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
   });
 
-  Pet.findOneAndUpdate({ _id: process.env.ADMIN_ID }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
+  Pet.findOneAndUpdate({ _id: String(process.env.ADMIN_ID) }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
     console.log('Se ha enviado al admin');
   });
 });
@@ -454,7 +454,7 @@ router.get('/admin/lost/getAllLostPets', function(req, res){
 
 
 router.get('/admin/getAdminDataList', function(req, res){
-  var id = process.env.ADMIN_ID;
+  var id = String(process.env.ADMIN_ID);
   Pet.findById(id, function(err, results){
     if(err){
       res.send('Algo ocurrio favor revisar admin');
@@ -487,7 +487,7 @@ router.get('/admin/getAdminDataList', function(req, res){
 });
 
 router.get('/admin/getAllProductList', function(req, res){
-  var id = process.env.ADMIN_ID;
+  var id = String(process.env.ADMIN_ID);
   Pet.findById(id, function(err, results){
     if(err){
       res.send('Algo ocurrio favor revisar admin');
@@ -513,7 +513,7 @@ router.post('/admin/register/new-product', async(req, res) => {
     quantity: obj.quantity
   };
 
-  Pet.findOneAndUpdate({ _id: process.env.ADMIN_ID }, { $push: { productsList: newProductList }},{new: true}).then(function(data){
+  Pet.findOneAndUpdate({ _id: String(process.env.ADMIN_ID) }, { $push: { productsList: newProductList }},{new: true}).then(function(data){
     res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
   });
 
@@ -529,7 +529,7 @@ router.put('/admin/register/registerPhotoPetProduct', async(req, res) => {
     photo: result.secure_url == undefined ? obj.image : result.secure_url
   };
 
-  await Pet.findOne({_id: process.env.ADMIN_ID }, (err, pet) => {
+  await Pet.findOne({_id: String(process.env.ADMIN_ID) }, (err, pet) => {
     if (!pet) {
       return res.json({success:false,msg: 'Usuario no encontrado'});
     }
@@ -659,7 +659,7 @@ router.post('/report/reportLostPetStatus', async(req, res) => {
      }
    });
 
-  Pet.findOneAndUpdate({ _id: process.env.ADMIN_ID }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
+  Pet.findOneAndUpdate({ _id: String(process.env.ADMIN_ID) }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
     console.log('Se ha enviado correctamente');
   });
 });
@@ -705,7 +705,7 @@ router.put('/update/updateReportLostPetStatus', async(req, res, next) => {
      }
    });
 
-   Pet.findOneAndUpdate({ _id: process.env.ADMIN_ID }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
+   Pet.findOneAndUpdate({ _id: String(process.env.ADMIN_ID) }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
     console.log('Se ha enviado correctamente');
   });
 });
