@@ -39,9 +39,9 @@
                                 <span>Creo que me he extraviado de mi hogar, ¿Me puedes ayudar a volver a casa? Mis redes sociales son:</span>
                             </div>
                             <div class="mt-2 mb-2" *ngIf="permissionData && (profile.linkTwitter != 'null' && profile.linkTwitter != 'null' && profile.linkTwitter != 'null')">
-                                <a *ngIf="profile.linkTwitter != '' && permissionData.showLinkTwitter" target="_blank" href="{{profile.linkTwitter}}" class="btn mr-2 btn-twitter"> <i class="fab fa-twitter"></i> </a>
-                                <a *ngIf="profile.linkFacebook != '' && permissionData.showLinkFacebook" target="_blank" href="{{profile.linkFacebook}}" class="btn mr-2 btn-facebook"> <i class="fab fa-facebook-f"></i> </a>
-                                <a *ngIf="profile.linkInstagram != '' && permissionData.showLinkInstagram" target="_blank" href="{{profile.linkInstagram}}" class="btn  btn-instagram"> <i class="fab fa-instagram"></i> </a>
+                                <a *ngIf="profile.linkTwitter && permissionData.showLinkTwitter" target="_blank" href="{{profile.linkTwitter}}" class="btn mr-2 btn-twitter"> <i class="fab fa-twitter"></i> </a>
+                                <a *ngIf="profile.linkFacebook && permissionData.showLinkFacebook" target="_blank" href="{{profile.linkFacebook}}" class="btn mr-2 btn-facebook"> <i class="fab fa-facebook-f"></i> </a>
+                                <a *ngIf="profile.linkInstagram && permissionData.showLinkInstagram" target="_blank" href="{{profile.linkInstagram}}" class="btn  btn-instagram"> <i class="fab fa-instagram"></i> </a>
                             </div> 
                         </div>
                         <!-- <div *ngIf="hideMenu" class="card-footer">
