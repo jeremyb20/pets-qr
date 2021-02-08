@@ -55,7 +55,7 @@ export class ToolbarComponent implements OnInit {
       },
       error => {
         this.loading = false;
-        this._notificationSvc.warning('Hola '+'Admin'+'', 'Ocurrio un error favor DE REVISAR', 6000);
+        this._notificationSvc.warning('Hola '+this.user.petName+'', 'Ocurrio un error favor de contactar a soporte', 6000);
       });
   }
 

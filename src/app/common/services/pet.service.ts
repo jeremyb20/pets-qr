@@ -417,9 +417,9 @@ getProductPetsList():Observable<any> {
 getPetsLostList():Observable<any> {
   this.loadToken();
   if (this.isDev) {
-    return this.httpClient.get<any>('http://localhost:8080/pet/lost/getAllLostPets/');
+    return this.httpClient.get<any>('http://localhost:8080/pet/admin/lost/getAllLostPets/');
   } else {
-    return this.httpClient.get<any>('pet/lost/getAllLostPets/');
+    return this.httpClient.get<any>('pet/admin/lost/getAllLostPets/');
   }
 }
 
@@ -493,7 +493,7 @@ getNotificationsService(id):Observable<any> {
   if (this.isDev) {
     return this.httpClient.get<any>('http://localhost:8080/pet/notifications/getNotificationsList/'+ id);
   } else {
-    return this.httpClient.get<any>('pet/notificationsn/getNotificationsList/'+ id);
+    return this.httpClient.get<any>('pet/notifications/getNotificationsList/'+ id);
   }
 }
 

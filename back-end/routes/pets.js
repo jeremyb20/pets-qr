@@ -436,7 +436,7 @@ router.get('/admin/getAllPets', function(req, res){
   });
 });
 
-router.get('/lost/getAllLostPets', function(req, res){
+router.get('/admin/lost/getAllLostPets', function(req, res){
   Pet.find({}, function(err, pets){
   if(err){
     res.send('something went really wrong');
