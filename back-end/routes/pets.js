@@ -426,9 +426,8 @@ router.put('/update/updatePetPermissions', async(req, res, next) => {
 
 // admin 
 
-router.get('/admin/getAllPets', function(req, res){
+router.get('/getAllPets', function(req, res){
     Pet.find({}, function(err, pets){
-      console.log(pets)
     if(err){
       res.send('something went really wrong');
       next();
@@ -437,7 +436,7 @@ router.get('/admin/getAllPets', function(req, res){
   });
 });
 
-router.get('/admin/lost/getAllLostPets', function(req, res){
+router.get('/lost/getAllLostPets', function(req, res){
   Pet.find({}, function(err, pets){
   if(err){
     res.send('something went really wrong');
@@ -454,7 +453,7 @@ router.get('/admin/lost/getAllLostPets', function(req, res){
 });
 
 
-router.get('/admin/getAdminDataList', function(req, res){
+router.get('/getAdminDataList', function(req, res){
   var id = String(process.env.ADMIN_ID);
   Pet.findById(id, function(err, results){
     if(err){
@@ -487,7 +486,7 @@ router.get('/admin/getAdminDataList', function(req, res){
   });
 });
 
-router.get('/admin/getAllProductShopList', function(req, res){
+router.get('/getAllProductShopList', function(req, res){
   var id ='5ff79b5819151012d52a1b3e';
   Pet.findById(id, function(err, results){
     if(err){
@@ -502,7 +501,7 @@ router.get('/admin/getAllProductShopList', function(req, res){
   });
 });
 
-router.post('/admin/register/new-product', async(req, res) => {
+router.post('/register/new-product', async(req, res) => {
   const obj = JSON.parse(JSON.stringify(req.body));
 
   let newProductList = {
@@ -520,7 +519,7 @@ router.post('/admin/register/new-product', async(req, res) => {
 
 });
 
-router.put('/admin/register/registerPhotoPetProduct', async(req, res) => {
+router.put('/register/registerPhotoPetProduct', async(req, res) => {
   const obj = JSON.parse(JSON.stringify(req.body));
 
   const result = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.image);

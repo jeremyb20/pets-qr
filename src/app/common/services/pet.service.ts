@@ -399,35 +399,35 @@ export class PetService {
 getPetsList():Observable<any> {
   this.loadToken();
   if (this.isDev) {
-    return this.httpClient.get<any>('http://localhost:8080/pet/admin/getAllPets/');
+    return this.httpClient.get<any>('http://localhost:8080/pet/getAllPets/');
   } else {
-    return this.httpClient.get<any>('pet/admin/getAllPets/');
+    return this.httpClient.get<any>('pet/getAllPets/');
   }
 }
 
 getPetsLostList():Observable<any> {
   this.loadToken();
   if (this.isDev) {
-    return this.httpClient.get<any>('http://localhost:8080/pet/admin/lost/getAllLostPets/');
+    return this.httpClient.get<any>('http://localhost:8080/pet/lost/getAllLostPets/');
   } else {
-    return this.httpClient.get<any>('pet/admin/lost/getAllLostPets/');
+    return this.httpClient.get<any>('pet/lost/getAllLostPets/');
   }
 }
 
 
-getAdminDataList():Observable<any> {
+geDataList():Observable<any> {
   if (this.isDev) {
-    return this.httpClient.get<any>('http://localhost:8080/pet/admin/getAdminDataList/');
+    return this.httpClient.get<any>('http://localhost:8080/pet/getAdminDataList/');
   } else {
-    return this.httpClient.get<any>('pet/admin/getAdminDataList/');
+    return this.httpClient.get<any>('pet/getAdminDataList/');
   }
 }
 
 getAllShopProductList():Observable<any> {
   if (this.isDev) {
-    return this.httpClient.get<any>('http://localhost:8080/pet/admin/getAllProductShopList/');
+    return this.httpClient.get<any>('http://localhost:8080/pet/getAllProductShopList/');
   } else {
-    return this.httpClient.get<any>('pet/admin/getAllProductShopList/');
+    return this.httpClient.get<any>('pet/getAllProductShopList/');
   }
 }
 
@@ -443,9 +443,9 @@ sendNewProduct(obj):Observable<any> {
   
   
   if(this.isDev) {
-    return this.httpClient.post<any>('http://localhost:8080/pet/admin/register/new-product/', fd);
+    return this.httpClient.post<any>('http://localhost:8080/pet/register/new-product/', fd);
   }else{
-    return this.httpClient.post<any>('pet/admin/register/new-product/', fd);
+    return this.httpClient.post<any>('pet/register/new-product/', fd);
   }
 }
 
@@ -456,9 +456,9 @@ addPhotoFirstORSecond(obj:any):Observable<any> {
   fd.append('isFistPhoto', obj.isFistPhoto);
 
   if(this.isDev) {
-    return this.httpClient.put<any>('http://localhost:8080/pet/admin/register/registerPhotoPetProduct', fd);
+    return this.httpClient.put<any>('http://localhost:8080/pet/register/registerPhotoPetProduct', fd);
   }else{
-    return this.httpClient.put<any>('pet/admin/register/registerPhotoPetProduct', fd);
+    return this.httpClient.put<any>('pet/register/registerPhotoPetProduct', fd);
   }
 }
 
