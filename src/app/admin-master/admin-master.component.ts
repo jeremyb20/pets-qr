@@ -61,17 +61,17 @@ export class AdminMasterComponent implements OnInit {
         this.petLogged = this.petService.getLocalPet()
         this.pet = JSON.parse(this.petLogged);
         if(this.pet != null){
-          switch (this.pet.userState) {
-            case 0:
-              this.router.navigate(['/admin']);
-              break;
-            case 3:
-              this.router.navigate(['/dashboard-pet']);
-              break;
+          // switch (this.pet.userState) {
+          //   case 0:
+          //     this.router.navigate(['/admin']);
+          //     break;
+          //   case 3:
+          //     this.router.navigate(['/dashboard-pet']);
+          //     break;
     
-            default:
-              break;
-          }
+          //   default:
+          //     break;
+          // }
         }else{
           this.router.navigate(['/home']);
           localStorage.clear();
