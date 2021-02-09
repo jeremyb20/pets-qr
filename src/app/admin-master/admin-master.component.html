@@ -184,7 +184,7 @@
                             <h4 class="card-title">Productos Actuales</h4>
                         </div>
                         <div class="form-group text-center input-group col-6">
-                            <button (click)="addNewProduct()" class="btn btn-info"><i class="fas fa-plus"></i> Añadir Producto</button>
+                            <button (click)="addNewProduct(true, null)" class="btn btn-info"><i class="fas fa-plus"></i> Añadir Producto</button>
                         </div>
 
                         <div class="form-group input-group col-12">
@@ -224,7 +224,7 @@
                                     <td><button [disabled]="!item.firstPhoto || !item.secondPhoto" (click)="seeFoto(item)" class="btn btn-success btn-sm"> <i class="fas fa-eye"></i> Ver</button></td>
                                     <td>
                                         <span class="d-flex">
-                                            <a class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a>
+                                            <a class="mr-4" data-toggle="tooltip" (click)="addNewProduct(false, item)" data-placement="top" title="Edit" data-original-title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a>
                                             <a data-toggle="tooltip" data-placement="top" title="Close" data-original-title="Close"><i class="fas fa-times color-danger"></i></a>
                                         </span>
                                     </td>
@@ -326,13 +326,14 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header bg-dark text-white">
-          <h5 class="modal-title" id="addNewProductModal">Crear nuevo producto</h5>
+          <h5 *ngIf="isNewProduct" class="modal-title" id="addNewProductModal">Crear nuevo producto</h5>
+          <h5 *ngIf="!isNewProduct" class="modal-title" id="addNewProductModal">Editar producto</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form class="form mt-3" [formGroup]="newProductPetForm" (ngSubmit)="sendNewProduct()" >
+          <form class="form mt-3" [formGroup]="newProductPetForm" (ngSubmit)="sendNewProduct(isNewProduct)" >
             <div class="form-group">
                 <label for="exampleInputEmail1">Nombre del Producto</label>
                 <input type="text" formControlName="productName" class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && f.productName.errors }" />
@@ -379,7 +380,7 @@
             </div>
               <div class="modal-footer text-center">
                 <button type="button" class="btn btn-secondary float-left mr-auto" data-dismiss="modal">Cancelar</button>
-                <button type="submit" class="btn btn-primary float-right">
+                <button *ngIf="isNewProduct" type="submit" class="btn btn-primary float-right">
                   <i *ngIf="!loading" class="fas fa-plus-circle"></i>
                   <svg *ngIf="loading" class="loader" viewBox="0 0 24 24">
                       <circle class="loader__value" cx="12" cy="12" r="10" />
@@ -391,6 +392,18 @@
                     </svg>
                   Crear Nuevo Producto
                 </button>
+                <button *ngIf="!isNewProduct" type="submit" class="btn btn-primary float-right">
+                    <i *ngIf="!loading" class="fas fa-plus-circle"></i>
+                    <svg *ngIf="loading" class="loader" viewBox="0 0 24 24">
+                        <circle class="loader__value" cx="12" cy="12" r="10" />
+                        <circle class="loader__value" cx="12" cy="12" r="10" />
+                        <circle class="loader__value" cx="12" cy="12" r="10" />
+                        <circle class="loader__value" cx="12" cy="12" r="10" />
+                        <circle class="loader__value" cx="12" cy="12" r="10" />
+                        <circle class="loader__value" cx="12" cy="12" r="10" />
+                      </svg>
+                    Actualizar Producto
+                  </button>
               </div>
           </form>
         </div>

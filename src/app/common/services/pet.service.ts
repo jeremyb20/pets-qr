@@ -450,6 +450,25 @@ sendNewProduct(obj):Observable<any> {
   }
 }
 
+updateNewProduct(obj):Observable<any> {
+  const fd = new FormData();
+  fd.append('productName',obj.productName);
+  fd.append('size',obj.size);
+  fd.append('color',obj.color);
+  fd.append('cost',obj.cost);
+  fd.append('quantity',obj.quantity);
+  fd.append('description',obj.description);
+  fd.append('_id',obj.id);
+  fd.append('idProduct',obj.idProduct);
+  
+  
+  if(this.isDev) {
+    return this.httpClient.put<any>('http://localhost:8080/pet/update/new-product/', fd);
+  }else{
+    return this.httpClient.put<any>('pet/update/new-product/', fd);
+  }
+}
+
 addPhotoFirstORSecond(obj:any):Observable<any> { 
   const fd = new FormData();
   fd.append('image', obj.image);

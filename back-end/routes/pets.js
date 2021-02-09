@@ -519,6 +519,53 @@ router.post('/register/new-product', async(req, res) => {
 
 });
 
+
+router.put('/update/new-product', async(req, res) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+
+  let newProductList = {
+    productName: obj.productName,
+    size: obj.size,
+    color: obj.color,
+    cost: obj.cost,
+    description: obj.description,
+    quantity: obj.quantity,
+    idProduct: obj.idProduct
+  };
+
+  await Pet.findOne({_id: obj._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+     if(pet != null) {
+       var arrayPet = [];
+      arrayPet.push(pet);
+      arrayPet.forEach(element => {
+          element["productsList"].forEach(item => {
+            if(item._id == newProductList.idProduct){
+              console.log('paso aqui');
+              item["productName"] = newProductList.productName;
+              item["size"] = newProductList.size;
+              item["color"] = newProductList.color;
+              item["cost"] = newProductList.cost;
+              item["description"] = newProductList.description;
+              item["quantity"] = newProductList.quantity;
+            }
+          }) 
+          pet.save();
+          try {
+            res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+          } catch (err) {
+            res.json({ success: false, msg: err });
+            next(err);
+          }
+      })
+     }
+   });
+
+});
+
+
 router.put('/register/registerPhotoPetProduct', async(req, res) => {
   const obj = JSON.parse(JSON.stringify(req.body));
 

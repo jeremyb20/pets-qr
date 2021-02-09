@@ -53,7 +53,8 @@ export class AdminMasterComponent implements OnInit {
   linkPhoto: String;
   linkFirst: String;
   linkSecond: String;
-
+  isNewProduct: boolean = false;
+  idItemProduct: number;
   order: any;
   orderHistory: any;
 
@@ -159,8 +160,32 @@ export class AdminMasterComponent implements OnInit {
       });
     }
 
-    addNewProduct() {
-      $('#addNewProductModal').modal('show');
+    addNewProduct(isNew: boolean,item: any) {
+      if(isNew){
+        this.newProductPetForm = this.formBuilder.group({
+          productName: ['', Validators.required],
+          size: ['', [Validators.required]],
+          color: ['', Validators.required],
+          cost: ['', Validators.required],
+          quantity:['', Validators.required],
+          description: ['', Validators.required],
+        });
+         $('#addNewProductModal').modal('show');
+         this.isNewProduct = true;
+      }else {
+        $('#addNewProductModal').modal('show');
+        this.isNewProduct = false;
+        this.idItemProduct = item._id
+        this.newProductPetForm = this.formBuilder.group({
+          productName: [item.productName, Validators.required],
+          size: [item.size, [Validators.required]],
+          color: [item.color, Validators.required],
+          cost: [item.cost, Validators.required],
+          quantity:[item.quantity, Validators.required],
+          description: [item.description, Validators.required],
+        });
+      }
+     
     }
 
     checkFoto(item:any, value:number){
@@ -176,53 +201,94 @@ export class AdminMasterComponent implements OnInit {
       $('#visualization').modal('show');
     }
 
-    sendNewProduct() {
+    sendNewProduct(isNewProduct: boolean) {
       this.submitted = true;
       // stop here if form is invalid
       if (this.newProductPetForm.invalid) {
           return;
       }
       
-
-      var title = 'Agregar Nuevo Producto?'
-      Swal.fire({
-          title: title,
-          showCancelButton: true,
-          confirmButtonText: `Ok`,
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            this.loading = true;
-            var newProduct = {
-              productName: this.f.productName.value,
-              size: this.f.size.value,
-              color: this.f.color.value,
-              cost: this.f.cost.value,
-              description: this.f.description.value,
-              quantity: this.f.quantity.value,
-              id: this.pet.id
-            }
-            
-            this.petService.sendNewProduct(newProduct).subscribe(data => {
-              if(data.success) {
-                  Swal.fire('Saved!', '', 'success');
-                  this.loading = false;
-                  $('#addNewProductModal').modal('hide');
-                  this.getAllProductList();
-              } else {
-                $('#addNewProductModal').modal('hide');
-                this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
+      if(isNewProduct){
+        var title = 'Agregar Nuevo Producto?'
+        Swal.fire({
+            title: title,
+            showCancelButton: true,
+            confirmButtonText: `Ok`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              this.loading = true;
+              var newProduct = {
+                productName: this.f.productName.value,
+                size: this.f.size.value,
+                color: this.f.color.value,
+                cost: this.f.cost.value,
+                description: this.f.description.value,
+                quantity: this.f.quantity.value,
+                id: this.pet.id
               }
-            },
-            error => {
-              this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
-            });
-
-            Swal.fire('Saved!', '', 'success')
-          } else if (result.isDenied) {
-            Swal.fire('Cambios no ha sido guardados', '', 'info')
-          }
-        })
+              
+              this.petService.sendNewProduct(newProduct).subscribe(data => {
+                if(data.success) {
+                    Swal.fire('Saved!', '', 'success');
+                    this.loading = false;
+                    $('#addNewProductModal').modal('hide');
+                    this.getAllProductList();
+                } else {
+                  $('#addNewProductModal').modal('hide');
+                  this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
+                }
+              },
+              error => {
+                this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+              });
+  
+              Swal.fire('Saved!', '', 'success')
+            } else if (result.isDenied) {
+              Swal.fire('Cambios no ha sido guardados', '', 'info')
+            }
+          })
+      }else{
+        var title = 'Editar Producto?'
+        Swal.fire({
+            title: title,
+            showCancelButton: true,
+            confirmButtonText: `Ok`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              this.loading = true;
+              var updateProduct = {
+                productName: this.f.productName.value,
+                size: this.f.size.value,
+                color: this.f.color.value,
+                cost: this.f.cost.value,
+                description: this.f.description.value,
+                quantity: this.f.quantity.value,
+                id: this.pet.id,
+                idProduct: this.idItemProduct
+              }
+              this.petService.updateNewProduct(updateProduct).subscribe(data => {
+                if(data.success) {
+                    Swal.fire('Saved!', '', 'success');
+                    this.loading = false;
+                    $('#addNewProductModal').modal('hide');
+                    this.getAllProductList();
+                } else {
+                  $('#addNewProductModal').modal('hide');
+                  this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
+                }
+              },
+              error => {
+                this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+              });
+  
+              Swal.fire('Saved!', '', 'success')
+            } else if (result.isDenied) {
+              Swal.fire('Cambios no ha sido guardados', '', 'info')
+            }
+          })
+      }
     }
 
     sendPhotoSubmit(){
