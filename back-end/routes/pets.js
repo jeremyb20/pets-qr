@@ -454,7 +454,7 @@ router.get('/lost/getAllLostPets', function(req, res){
 
 
 router.get('/getAdminDataList', function(req, res){
-  var id = String(process.env.ADMIN_ID);
+  var id ='6001c62cc9d9a51663845872';
   Pet.findById(id, function(err, results){
     if(err){
       res.send('Algo ocurrio favor revisar admin');
@@ -487,7 +487,7 @@ router.get('/getAdminDataList', function(req, res){
 });
 
 router.get('/getAllProductShopList', function(req, res){
-  var id ='5ff79b5819151012d52a1b3e';
+  var id ='6001c62cc9d9a51663845872';
   Pet.findById(id, function(err, results){
     if(err){
       res.send('Algo ocurrio favor revisar admin');
@@ -513,7 +513,7 @@ router.post('/register/new-product', async(req, res) => {
     quantity: obj.quantity
   };
 
-  Pet.findOneAndUpdate({ _id: String(process.env.ADMIN_ID) }, { $push: { productsList: newProductList }},{new: true}).then(function(data){
+  Pet.findOneAndUpdate({ _id: obj._id }, { $push: { productsList: newProductList }},{new: true}).then(function(data){
     res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
   });
 
@@ -529,7 +529,7 @@ router.put('/register/registerPhotoPetProduct', async(req, res) => {
     photo: result.secure_url == undefined ? obj.image : result.secure_url
   };
 
-  await Pet.findOne({_id: String(process.env.ADMIN_ID) }, (err, pet) => {
+  await Pet.findOne({_id: obj._id }, (err, pet) => {
     if (!pet) {
       return res.json({success:false,msg: 'Usuario no encontrado'});
     }

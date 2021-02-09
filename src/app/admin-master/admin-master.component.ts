@@ -200,11 +200,13 @@ export class AdminMasterComponent implements OnInit {
               cost: this.f.cost.value,
               description: this.f.description.value,
               quantity: this.f.quantity.value,
+              id: this.pet.id
             }
             
             this.petService.sendNewProduct(newProduct).subscribe(data => {
               if(data.success) {
                   Swal.fire('Saved!', '', 'success');
+                  this.loading = false;
                   $('#addNewProductModal').modal('hide');
                   this.getAllProductList();
               } else {
@@ -228,7 +230,8 @@ export class AdminMasterComponent implements OnInit {
       var object = {
         idProduct:this.itemProductSelected._id,
         isFistPhoto: this.isfirstPhoto,
-        image: (this.isfirstPhoto)?this.file:this.fileSecond
+        image: (this.isfirstPhoto)?this.file:this.fileSecond,
+        id: this.pet.id
       }
 
       this.petService.addPhotoFirstORSecond(object).subscribe(data => {

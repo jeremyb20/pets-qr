@@ -18,7 +18,7 @@ export class PetService {
   isDev: boolean = false;
 
   constructor(private httpClient: HttpClient, private jwtHelper: JwtHelperService) {
-      this.isDev = false;  // Change to false when you're gonna deploy your app, true when is on develop 
+      this.isDev = true;  // Change to false when you're gonna deploy your app, true when is on develop 
   }
 
   registerPet(pet,  photo:any):Observable<any> {
@@ -440,6 +440,7 @@ sendNewProduct(obj):Observable<any> {
   fd.append('cost',obj.cost);
   fd.append('quantity',obj.quantity);
   fd.append('description',obj.description);
+  fd.append('_id',obj.id);
   
   
   if(this.isDev) {
@@ -454,6 +455,7 @@ addPhotoFirstORSecond(obj:any):Observable<any> {
   fd.append('image', obj.image);
   fd.append('idProduct', obj.idProduct);
   fd.append('isFistPhoto', obj.isFistPhoto);
+  fd.append('_id',obj.id);
 
   if(this.isDev) {
     return this.httpClient.put<any>('http://localhost:8080/pet/register/registerPhotoPetProduct', fd);
