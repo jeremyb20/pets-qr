@@ -521,45 +521,6 @@ calendarOptions: CalendarOptions = {
       reader.readAsDataURL(this.file);
     }
   }
-  
-  // generate code qr
-
-  generateQrCode() {
-    this.loadingQr = true;
-    var object = {
-      id: this.pet.id,
-      status: "Ordenando",
-      petName: this.profile.petName,
-      photo: this.profile.photo
-    }
-
-    this.petService.generateQrCodePet(object).subscribe(data => {
-      if(data.success) {
-        Swal.fire({
-          title: 'Solicitud de Codigo Qr exitoso' ,
-          html: data.msg,
-          icon: "success",
-          allowEscapeKey: false,
-          allowOutsideClick: false,
-          position: 'top',
-          customClass: { confirmButton: 'col-auto btn btn-info' }
-        })
-        .then((result) => {
-          if (result.value){
-            location.reload();
-          }   
-        });
-      } else {
-        $('#updatePhotoModal').modal('hide');
-        this.loadingQr = false;
-        this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
-      }
-    },
-    error => {
-      this.loadingQr = false;
-      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
-    });
-  }
 
   goShopping() {
     this.router.navigate(['/shopping-cart']);

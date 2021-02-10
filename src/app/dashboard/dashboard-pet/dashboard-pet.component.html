@@ -4,7 +4,7 @@
             <div class="col-sm">
               <h5 class="page-heading"> <i class="fa fa-paw" aria-hidden="true"></i>  Bienvenido a tu perfil {{profile.petName}}!</h5>
             </div>
-            <div class="col-sm">
+            <div *ngIf="hideMsg" class="col-sm">
                 <div class="alert error-message text-center" *ngIf="hideMsg" [ngClass]="{'alert-dark': code == 'Ordenando','alert-info': code == 'Pendiente', 'alert-primary': code == 'Preparando', 'alert-warning': code == 'Entrega', 'alert-success': code == 'Recibido'}">
                     <i class="fa fa-paw mt-1 mr-3"></i> <strong class="text-center">QR status: {{ code }}</strong>
                 </div>
@@ -13,17 +13,9 @@
                 <div class="row">
                     <div class="col-6" >
                         <!-- <button [disabled]="code == 'Ordenando' || code == 'Pendiente' || code == 'Preparando' || code == 'Enviado' || code == 'Recibido'" (click)="generateQrCode()" type="submit" class="btn btn-yellow btn-sm col-12 float-right mb-2"> -->
-                        <button (click)="goShopping()" type="submit" class="btn btn-yellow btn-sm col-12 float-right mb-2">
-                          <i *ngIf="!loadingQr" class="fa fa-paw" aria-hidden="true"></i>
-                          <svg *ngIf="loadingQr" class="loader" viewBox="0 0 24 24">
-                              <circle class="loader__value" cx="12" cy="12" r="10" />
-                              <circle class="loader__value" cx="12" cy="12" r="10" />
-                              <circle class="loader__value" cx="12" cy="12" r="10" />
-                              <circle class="loader__value" cx="12" cy="12" r="10" />
-                              <circle class="loader__value" cx="12" cy="12" r="10" />
-                              <circle class="loader__value" cx="12" cy="12" r="10" />
-                          </svg>
-                          Carrito de compras
+                        <button [disabled]="code == 'Ordenando' || code == 'Pendiente' || code == 'Preparando' || code == 'Enviado' || code == 'Recibido'" (click)="goShopping()" type="submit" class="btn btn-yellow btn-sm col-12 float-right mb-2">
+                          <i class="fas fa-cart-plus"></i>
+                          Mi Carrito
                         </button>
                     </div>
                     <div class="col-6">

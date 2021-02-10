@@ -310,7 +310,7 @@ router.post('/register/generateQrCodePet', async(req, res) => {
   }
 
   Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { code: object }},{new: true}).then(function(data){
-    res.json({success:true,msg: 'Nuevo codigo Se ha generado correctamente el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
+    res.json({success:true,msg: 'Su compra se generado correctamente, el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
   });
 
   Pet.findOneAndUpdate({ _id: String(process.env.ADMIN_ID) }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
