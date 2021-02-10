@@ -237,8 +237,8 @@ export class MyPetCodeComponent implements OnInit {
           position: 'top',
           showCloseButton: true,
           showCancelButton: false,
-          confirmButtonText: '<img alt="waze" style="height:100px;" src="https://logodownload.org/wp-content/uploads/2018/09/waze-logo-0.png">',
-          denyButtonText: '<img alt="waze" style="height:100px;" src="https://cdn.icon-icons.com/icons2/2108/PNG/512/google_maps_icon_130921.png">',
+          confirmButtonText: '<img alt="waze" style="height:100px;" src="https://res.cloudinary.com/ensamble/image/upload/v1612996625/waze-logo-0_hubxqp.png">',
+          denyButtonText: '<img alt="waze" style="height:100px;" src="https://res.cloudinary.com/ensamble/image/upload/v1612996625/google_maps_icon_130921_ei3tpw.png">',
         }).then((result) => {
           /* Read more about isConfirmed, isDenied below */
           if (result.isConfirmed) {
