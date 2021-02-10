@@ -292,12 +292,15 @@ router.post('/register/newPetEvent', async(req, res) => {
 });
 
 router.post('/register/generateQrCodePet', async(req, res) => {
+  var id ='6001c62cc9d9a51663845872';
   const obj = JSON.parse(JSON.stringify(req.body));
   var code = 'https://' + req.headers.host + '/myPetCode/' + obj._id;
   var status = 'Ordenando'
   var object = {
     link: code,
-    status: status
+    status: status,
+    commentary: obj.commentary,
+    total: obj.total
   }
 
   var notifications = {
@@ -313,7 +316,7 @@ router.post('/register/generateQrCodePet', async(req, res) => {
     res.json({success:true,msg: 'Su compra se generado correctamente, el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
   });
 
-  Pet.findOneAndUpdate({ _id: String(process.env.ADMIN_ID) }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
+  Pet.findOneAndUpdate({ _id: id }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
     console.log('Se ha enviado al admin');
   });
 });

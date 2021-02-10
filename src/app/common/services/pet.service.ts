@@ -150,6 +150,8 @@ export class PetService {
     fd.append('status', obj.status);
     fd.append('petName', obj.petName);
     fd.append('photo', obj.photo);
+    fd.append('commentary', obj.commentary);
+    fd.append('total', obj.total);
     if(this.isDev) {
       return this.httpClient.post<any>('http://localhost:8080/pet/register/generateQrCodePet', fd);
     }else{

@@ -226,50 +226,58 @@
             </button>
             </div>
             <div class="modal-body text-center">
-                <h5 class="mb-4">Nosotros por el momento aceptamos</h5>
-                <!-- <img class="mr-2" width="45px" src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg" alt="Visa">
-                <img class="mr-2" width="45px" src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg" alt="American Express">
-                <img class="mr-2" width="45px" src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg" alt="Mastercard">
-                <img class="mr-2" width="45px" src="https://www.marc.com.mx/wp-content/uploads/2015/12/paypal.png" alt="PayPal acceptance mark"> -->
-                <img class="mr-2" width="85px" src="https://ascrigere.org/images/donaciones/04.png" alt="Sinpe Movil">
-                <div>
-                    <h5 class="font-weight-bold">Siga los siguientes pasos</h5>
-                    <ul class="text-left mt-3">
-                        <p>1. Haz el depósito.</p>
-                        <p>2. Favor tomar un screenshot del pago</p>
-                        <p>3. Enviar el screenshot por whatsapp.</p>
-                        <p>4. Ver el estatus en tu perfil</p>
-                    </ul>
-                </div>
-                <div class="card">
+                <form  [formGroup]="buyProcudForm" (ngSubmit)="generateQrCode()">
+                    <h5 class="mb-4">Nosotros por el momento aceptamos</h5>
+                    <!-- <img class="mr-2" width="45px" src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg" alt="Visa">
+                    <img class="mr-2" width="45px" src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg" alt="American Express">
+                    <img class="mr-2" width="45px" src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg" alt="Mastercard">
+                    <img class="mr-2" width="45px" src="https://www.marc.com.mx/wp-content/uploads/2015/12/paypal.png" alt="PayPal acceptance mark"> -->
+                    <img class="mr-2" width="85px" src="https://ascrigere.org/images/donaciones/04.png" alt="Sinpe Movil">
                     <div>
-                        <div class="card-body">
-                            <h6 class="card-title"><i class="fa fa-phone"></i> Telefono para el depósito</h6>
-                            <p class="card-text">(+506) {{phoneSinpe}}</p>
-                        </div>
-                        <div class="card-footer">
-                            <p class="card-text"><button (click)="copyInputMessage(phoneSinpe)" class="btn btn-info btn-sm">Copiar al portapapeles</button>
-                            </p>
+                        <h5 class="font-weight-bold">Siga los siguientes pasos</h5>
+                        <ul class="text-left mt-3">
+                            <p>1. Haz el depósito.</p>
+                            <p>2. Favor tomar un screenshot del pago</p>
+                            <p>3. Enviar el screenshot por whatsapp.</p>
+                            <p>4. Ver el estatus en tu perfil</p>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div>
+                            <div class="card-body">
+                                <h6 class="card-title"><i class="fa fa-phone"></i> Telefono para el depósito</h6>
+                                <p class="card-text">(+506) {{phoneSinpe}}</p>
+                            </div>
+                            <div class="card-footer">
+                                <p class="card-text"><button (click)="copyInputMessage(phoneSinpe)" class="btn btn-info btn-sm">Copiar al portapapeles</button>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Añadir Comentario</label>
+                        <textarea class="form-control" formControlName="commentary" placeholder="Agrega algun detalle del envio" class="form-control" [ngClass]="{ 'is-invalid': submitted && h.commentary.errors }"></textarea>
+                        <div *ngIf="submitted && h.commentary.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && h.commentary.errors }">
+                            <div *ngIf="h.commentary.errors.required">Descripcion es requerido</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="button" class="btn btn-secondary float-left mr-auto" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary float-right">
+                        <i *ngIf="!loadingQr" class="fa fa-paw" aria-hidden="true"></i>
+                        <svg *ngIf="loadingQr" class="loader" viewBox="0 0 24 24">
+                            <circle class="loader__value" cx="12" cy="12" r="10" />
+                            <circle class="loader__value" cx="12" cy="12" r="10" />
+                            <circle class="loader__value" cx="12" cy="12" r="10" />
+                            <circle class="loader__value" cx="12" cy="12" r="10" />
+                            <circle class="loader__value" cx="12" cy="12" r="10" />
+                            <circle class="loader__value" cx="12" cy="12" r="10" />
+                        </svg>
+                        He hecho los pasos
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer text-center">
-                <button type="button" class="btn btn-secondary float-left mr-auto" data-dismiss="modal">Cancelar</button>
-                <button (click)="generateQrCode()" type="submit" class="btn btn-primary float-right">
-                <i *ngIf="!loadingQr" class="fa fa-paw" aria-hidden="true"></i>
-                <svg *ngIf="loadingQr" class="loader" viewBox="0 0 24 24">
-                    <circle class="loader__value" cx="12" cy="12" r="10" />
-                    <circle class="loader__value" cx="12" cy="12" r="10" />
-                    <circle class="loader__value" cx="12" cy="12" r="10" />
-                    <circle class="loader__value" cx="12" cy="12" r="10" />
-                    <circle class="loader__value" cx="12" cy="12" r="10" />
-                    <circle class="loader__value" cx="12" cy="12" r="10" />
-                </svg>
-                  He hecho los pasos
-                </button>
-              </div>
-        </div>
         </div>
     </div>
 </div>

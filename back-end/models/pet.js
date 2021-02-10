@@ -171,6 +171,14 @@ const PetSchema = mongoose.Schema ({
     status: {
       type: String,
       require: true
+    },
+    commentary: {
+      type: String,
+      require: true
+    },
+    total : {
+      type: String,
+      require: true
     }
   }],
   resetPasswordToken: {

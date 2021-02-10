@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { PetService } from '../common/services/pet.service';
 import { NotificationService } from '../common/services/notification.service';
 import * as moment from 'moment';
+declare var $ : any;
 
 @Component({
   selector: 'app-toolbar',
@@ -61,6 +62,10 @@ export class ToolbarComponent implements OnInit {
 
   getDate(strDate) {
     return moment(new Date(strDate)).locale('es').calendar(); 
+  }
+
+  goHome(){
+    $('#wrapper').removeClass('toggled')
   }
 
   updateNotification(item: any){

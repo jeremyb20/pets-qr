@@ -6,6 +6,7 @@ import { MediaService, MediaResponse } from '../common/services/media.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 declare var $ :any;
 declare var window: any;
 
@@ -16,7 +17,9 @@ declare var window: any;
 })
 export class ShoppingCartComponent implements OnInit {
   private mediaSubscription: Subscription;
+  buyProcudForm: FormGroup;
   Media: MediaResponse;
+  submitted: boolean= false;
   userLogged: any;
   user:any;
   loading: boolean = false;
@@ -37,7 +40,7 @@ export class ShoppingCartComponent implements OnInit {
   private singleProduct;
   public isAdded;
 
-  constructor(public authService: AuthServices, public petService: PetService, private _notificationSvc: NotificationService, private media: MediaService,private route: Router) {
+  constructor(public authService: AuthServices, public petService: PetService,private formBuilder: FormBuilder, private _notificationSvc: NotificationService, private media: MediaService,private route: Router) {
     this.mediaSubscription = this.media.subscribeMedia().subscribe(result => {
       this.Media = result;
     });
@@ -50,6 +53,9 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.buyProcudForm = this.formBuilder.group({
+      commentary: ['', Validators.required],
+    });
   }
 
   getPetDataList() {
@@ -61,6 +67,8 @@ export class ShoppingCartComponent implements OnInit {
       this._notificationSvc.warning('Hola '+this.user.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
     });
   }
+
+  get h() { return this.buyProcudForm.controls; }
 
   getAllMyProduct(){
     this.petService.getAllShopProductList().subscribe(data => {
@@ -171,12 +179,18 @@ export class ShoppingCartComponent implements OnInit {
 
 
   generateQrCode() {
+    this.submitted = true;
+    if (this.buyProcudForm.invalid) {
+      return;
+    }
     this.loadingQr = true;
     var object = {
       id: this.user.id,
       status: "Ordenando",
       petName: this.user.petName,
-      photo: this.user.photo
+      photo: this.user.photo,
+      commentary: this.h.commentary.value,
+      total: this.total
     }
     this.petService.generateQrCodePet(object).subscribe(data => {
       if(data.success) {

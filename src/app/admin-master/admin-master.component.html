@@ -64,6 +64,8 @@
                                                         <!-- <th scope="col">Orden</th> -->
                                                         <th scope="col">Cliente</th>
                                                         <th scope="col">QR</th>
+                                                        <th scope="col">Detalle</th>
+                                                        <th scope="col">Total ₡</th>
                                                         <th scope="col">Status</th>
                                                         <th scope="col">Accion</th>
                                                     </tr>
@@ -73,7 +75,8 @@
                                                         <td>{{item._id}}</td>
                                                         <td>{{item.petName}}</td>
                                                         <td><button (click)="checkQrCode(item.code[0].link)" class="btn btn-primary btn-sm" > VER QR </button></td>
-                                                        <!-- <td>{{item.cost | currency:"₡"}}</td> -->
+                                                        <td>{{item.code[0].commentary}}</td>
+                                                        <td>{{item.code[0].total | currency:"₡"}}</td>
                                                         <td>
                                                             <!-- <span class="badge badge-xs badge-primary">Pendiente</span> -->
                                                             <div class="btn-group">
