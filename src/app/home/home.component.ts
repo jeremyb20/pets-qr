@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener} from '@angular/core';
 import { Router } from '@angular/router';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PetService } from '../common/services/pet.service';
 import { NotificationService } from '../common/services/notification.service';
+import { MediaService, MediaResponse } from '../common/services/media.service';
+import { Subscription } from 'rxjs';
+declare var $ :any;
+
 
 @Component({
   selector: 'app-home',
@@ -11,6 +15,8 @@ import { NotificationService } from '../common/services/notification.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  private mediaSubscription: Subscription;
+  Media: MediaResponse;
   loginForm: FormGroup;
   email: string;
   password: string;
@@ -23,12 +29,20 @@ export class HomeComponent implements OnInit {
   allUsersData: any;
   filteredData: any;
   imageUrl: any;
+  elementDiv :any
+  isShow: boolean;
+  topPosToStartShowing = 100;
 
   constructor(
     private petService: PetService,
+    private media: MediaService,
     private _notificationSvc: NotificationService,
     private formBuilder: FormBuilder,
-    private router: Router) { }
+    private router: Router) {
+      this.mediaSubscription = this.media.subscribeMedia().subscribe(result => {
+        this.Media = result;
+      });
+    }
 
   ngOnInit() {
     this.loginForm =  this.formBuilder.group({
@@ -38,6 +52,29 @@ export class HomeComponent implements OnInit {
     this.getAllUsers();
   }
   get f() { return this.loginForm.controls; }
+
+  @HostListener('window:scroll',['$event'])
+
+  divScroll(e, isClicked) {
+    if(isClicked){
+      e.srcElement.scrollTop =0;
+    }
+    this.elementDiv = e;
+    if (e.target.scrollTop >= this.topPosToStartShowing) {
+      this.isShow = true;
+    } else {
+      this.isShow = false;
+    }
+  }
+
+  // TODO: Cross browsing
+  gotoTop() {
+    this.elementDiv.srcElement.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
 
   onSubmit() {
     this.submitted = true;

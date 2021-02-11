@@ -394,6 +394,9 @@ router.put('/update/updatePetPermissions', async(req, res, next) => {
        var arrayPet = [];
       arrayPet.push(pet);
       arrayPet.forEach(element => {
+          if(element["permissions"].length == 0){
+            element["permissions"].push(object);
+          }
           element["permissions"].forEach(item => {
             item["showPhoneInfo"] = object.showPhoneInfo;
             item["showEmailInfo"] = object.showEmailInfo;

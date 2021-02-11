@@ -73,6 +73,10 @@ body {
     background-color: #81D4FA;
 }
 
+.homeInitLanding {
+  background-color: #ffffff;
+}
+
 $loader-colors: dodgerblue, mediumspringgreen, crimson, peachpuff, chocolate, pink;
 $loader-dash: 63;
 $loader-duration: length($loader-colors) * 1s;
@@ -247,6 +251,8 @@ $loader-keyframe: 1 / (length($loader-colors) * 2) * 100;
         background-color: #F57F17;
         color: #fff;
         border: 2px solid #F57F17;
+        -webkit-box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15);
+        box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18), 0 4px 15px 0 rgba(0,0,0,0.15);
     }
     
     ::placeholder {
