@@ -129,8 +129,8 @@
   <div class="container">
 
     <!-- Brand -->
-    <a class="navbar-brand" href="https://mdbootstrap.com/material-design-for-bootstrap/" target="_blank">
-      <strong>MDB</strong>
+    <a class="navbar-brand" (click)="gotoTop()">
+      <img height="50px" src="https://res.cloudinary.com/ensamble/image/upload/v1613153301/logopets_uyf4xq.png" alt="">
     </a>
 
     <!-- Collapse -->
@@ -202,30 +202,27 @@
 
     <!--First slide-->
     <div class="carousel-item active">
-      <div class="view" style="background-image: url('https://mdbootstrap.com/img/Photos/Others/images/93.jpg'); background-color:rgba(0, 8, 54, 0.452); background-blend-mode:multiply; background-repeat: no-repeat; background-size: cover;">
+      <div class="view" [ngClass]="{'background': Media.IsMobile }" style="background-image: url('https://res.cloudinary.com/ensamble/image/upload/v1613154316/petbg-01_v8349a.jpg'); background-color:rgba(0, 8, 54, 0.452); background-blend-mode:multiply; background-repeat: no-repeat; background-size: cover;">
 
         <!-- Mask & flexbox options-->
         <div class="carousel-caption d-none d-md-block mask rgba-black-light d-flex justify-content-center align-items-center">
 
           <!-- Content -->
-          <div class="text-center text-white mx-5 wow fadeIn">
+          <div class="text-center text-white wow fadeIn">
             <h1 class="mb-4">
-              <strong>Learn Bootstrap 4 with MDB</strong>
+              <strong>Más que un sitio web, somos familia</strong>
             </h1>
 
             <p>
-              <strong>Best & free guide of responsive web design</strong>
+              <strong>La identificación portátil canino es una necesidad.</strong>
             </p>
 
             <p class="mb-4 d-none d-md-block">
-              <strong>The most comprehensive tutorial for the Bootstrap 4. Loved by over 500 000 users. Video and
-                written versions
-                available. Create your own, stunning website.</strong>
+              <strong>Registrarse es muy fácil y sencillo, haz click al botón de abajo para registrarse.</strong>
             </p>
 
-            <a target="_blank" href="https://mdbootstrap.com/bootstrap-tutorial/" class="btn btn-inverse btn-lg">Start
-              free tutorial
-              <i class="fas fa-graduation-cap ml-2"></i>
+            <a [routerLink]="'/register-pets'" class="btn btn-inverse btn-lg">Registrarse
+              <i class="fas fa-paw ml-2"></i>
             </a>
           </div>
           <!-- Content -->
@@ -239,29 +236,26 @@
 
     <!--Second slide-->
     <div class="carousel-item">
-      <div class="view" style="background-image: url('https://mdbootstrap.com/img/Photos/Others/images/94.jpg'); background-color:rgba(0, 8, 54, 0.452); background-blend-mode:multiply; background-repeat: no-repeat; background-size: cover;">
+      <div class="view" style="background-image: url('https://res.cloudinary.com/ensamble/image/upload/v1613154747/petbg-02_qnthzs.jpg'); background-color:rgba(0, 8, 54, 0.452); background-blend-mode:multiply; background-repeat: no-repeat; background-position: center; background-size: cover;">
 
         <!-- Mask & flexbox options-->
         <div class="carousel-caption d-none d-md-block mask rgba-black-light d-flex justify-content-center align-items-center">
 
           <!-- Content -->
-          <div class="text-center text-white mx-5 wow fadeIn">
+          <div class="text-center text-white wow fadeIn">
             <h1 class="mb-4">
-              <strong>Learn Bootstrap 4 with MDB</strong>
+              <strong>LocalPets&Family</strong>
             </h1>
 
             <p>
-              <strong>Best & free guide of responsive web design</strong>
+              <strong>Diseñado con la mas alta calidad</strong>
             </p>
 
             <p class="mb-4 d-none d-md-block">
-              <strong>The most comprehensive tutorial for the Bootstrap 4. Loved by over 500 000 users. Video and
-                written versions
-                available. Create your own, stunning website.</strong>
+              <strong>Puedes iniciar sesión haciendo click abajo.</strong>
             </p>
 
-            <a target="_blank" href="https://mdbootstrap.com/bootstrap-tutorial/" class="btn btn-inverse btn-lg">Start
-              free tutorial
+            <a [routerLink]="'/login-pets'" class="btn btn-inverse btn-lg">Iniciar Sesión
               <i class="fas fa-graduation-cap ml-2"></i>
             </a>
           </div>
@@ -276,30 +270,26 @@
 
     <!--Third slide-->
     <div class="carousel-item">
-      <div class="view" style="background-image: url('https://mdbootstrap.com/img/Photos/Others/images/92.jpg'); background-color:rgba(0, 8, 54, 0.452); background-blend-mode:multiply; background-repeat: no-repeat; background-size: cover;">
+      <div class="view" [ngClass]="{'background-familiar': Media.IsMobile }" style="background-image: url('https://res.cloudinary.com/ensamble/image/upload/v1613160357/petbg-03_uwhch6.jpg'); background-color:rgba(1, 7, 41, 0.452); background-blend-mode:multiply; background-repeat: no-repeat; background-size: cover;">
 
         <!-- Mask & flexbox options-->
         <div class="carousel-caption d-none d-md-block mask rgba-black-light d-flex justify-content-center align-items-center">
 
           <!-- Content -->
-          <div class="text-center text-white mx-5 wow fadeIn">
+          <div class="text-center text-white wow fadeIn">
             <h1 class="mb-4">
-              <strong>Learn Bootstrap 4 with MDB</strong>
+              <strong>Porque también ellos lo necesitan</strong>
             </h1>
 
             <p>
-              <strong>Best & free guide of responsive web design</strong>
+              <strong> También proveemos placas de identificación para personas</strong>
             </p>
 
             <p class="mb-4 d-none d-md-block">
-              <strong>The most comprehensive tutorial for the Bootstrap 4. Loved by over 500 000 users. Video and
-                written versions
-                available. Create your own, stunning website.</strong>
+              <strong>LocalPets&Family también se ha diversificado con la incorporación de la plaquita personal para advertir a otros de algún padecimiento en caso de emergencias.</strong>
             </p>
 
-            <a target="_blank" href="https://mdbootstrap.com/bootstrap-tutorial/" class="btn btn-inverse btn-lg">Start
-              free tutorial
-              <i class="fas fa-graduation-cap ml-2"></i>
+            <a target="_blank" href="https://mdbootstrap.com/bootstrap-tutorial/" class="btn btn-inverse btn-lg">Registrar Familiar
             </a>
           </div>
           <!-- Content -->
@@ -773,18 +763,25 @@
 <!--Main layout-->
 
 <!--Footer-->
-<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+<footer class="page-footer text-center font-small mt-4 fadeIn">
 
   <!--Call to action-->
-  <div class="pt-4">
-    <a class="btn btn-inverse" href="https://mdbootstrap.com/getting-started/" target="_blank" role="button">Download
-      MDB
-      <i class="fas fa-download ml-2"></i>
-    </a>
-    <a class="btn btn-inverse" href="https://mdbootstrap.com/bootstrap-tutorial/" target="_blank" role="button">Start
-      free tutorial
-      <i class="fas fa-graduation-cap ml-2"></i>
-    </a>
+  <div class="container pt-4">
+    <div class="row">
+      <div class="col-6 text-right">
+        <a class="m-1  btn btn-inverse" [routerLink]="'/register-pets'" role="button">Registrar Can
+          <i class="fas fa-download ml-2"></i>
+        </a>
+      </div>
+      <div class="col-6 text-left"> 
+        <button class="m-1 btn btn-inverse" [disabled]="true" role="button">Registrar Familiar
+          <i class="fas fa-graduation-cap ml-2"></i>
+        </button>
+      </div>
+      
+     
+    </div>
+    
   </div>
   <!--/.Call to action-->
 
