@@ -130,7 +130,7 @@
 
     <!-- Brand -->
     <a class="navbar-brand" (click)="gotoTop()">
-      <img height="50px" src="https://res.cloudinary.com/ensamble/image/upload/v1613153301/logopets_uyf4xq.png" alt="">
+      <img height="50px" src="https://res.cloudinary.com/ensamble/image/upload/v1613153301/logopets_uyf4xq.png" alt="LocalPetsAndFamilyLogo">
     </a>
 
     <!-- Collapse -->
@@ -155,6 +155,7 @@
         <li class="nav-item">
           <a class="nav-link" [routerLink]="'/register-pets'">Registrarse</a>
         </li>
+
         <li class="nav-item">
           <a class="nav-link" href="https://mdbootstrap.com/bootstrap-tutorial/">Servicio al cliente</a>
         </li>
@@ -175,7 +176,7 @@
         <li class="nav-item">
           <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="btn btn-inverse rounded"
             target="_blank">
-            <i class="fab fa-github mr-2"></i>MDB GitHub
+            <i class="fa fa-search"></i> Se busca
           </a>
         </li>
       </ul>
@@ -331,8 +332,8 @@
         <!--Grid column-->
         <div class="col-md-6 mb-4">
 
-          <img src="https://mdbootstrap.com/img/Marketing/mdb-press-pack/mdb-main.jpg" class="img-fluid z-depth-1-half"
-            alt="">
+          <img src="https://i.pinimg.com/564x/08/71/66/087166ec928cb1e2fec2947044cb75ca.jpg" class="img-fluid z-depth-1-half"
+            alt="resinad22">
 
         </div>
         <!--Grid column-->
@@ -341,28 +342,34 @@
         <div class="col-md-6 mb-4">
 
           <!-- Main heading -->
-          <h3 class="h3 mb-3">Material Design for Bootstrap</h3>
-          <p>This template is created with Material Design for Bootstrap (
-            <strong>MDB</strong> ) framework.</p>
-          <p>Read details below to learn more about MDB.</p>
+          <h3 class="h3 mb-3">Material diseñado a gusto</h3>
+          <p>Materiales creado de apartir de la resina para mayor durabilidad (
+            <strong>Placa resina D22</strong> ).</p>
+          <p>Puedes ver más detalles en nuestra tienda.</p>
           <!-- Main heading -->
 
           <hr>
 
           <p>
-            <strong>400+</strong> material UI elements,
-            <strong>600+</strong> material icons,
-            <strong>74</strong> CSS animations, SASS files, templates, tutorials and many more.
-            <strong>Free for personal and commercial use.</strong>
+            <strong>400+</strong> diseños en tienda,
+            <strong>600+</strong> material y diseños económicos,
+            <strong>74</strong> Horas despues del pedido se hace la entrega de su producto.
+            <strong>Uso comercial y personal.</strong>
           </p>
 
-          <!-- CTA -->
-          <a target="_blank" href="https://mdbootstrap.com/getting-started/" class="btn btn-indigo btn-md">Download
-            <i class="fas fa-download ml-1"></i>
-          </a>
-          <a target="_blank" href="https://mdbootstrap.com/components/" class="btn btn-indigo btn-md">Live demo
-            <i class="fas fa-image ml-1"></i>
-          </a>
+        <div class="row">
+          <div class="col-6">
+            <!-- CTA -->
+            <a [routerLink]="'/login-pets'" class="btn btn-inverse btn-md">Ver tienda
+              	<i class="fas fa-shopping-cart"></i>
+            </a>
+          </div>
+          <div class="col-6">
+            <a [routerLink]="'/login-pets'" class="btn btn-inverse btn-md">Iniciar sesión
+              <i class="fas fa-sign-in-alt"></i>
+            </a>
+          </div>
+        </div>
 
         </div>
         <!--Grid column-->
@@ -378,7 +385,7 @@
     <!--Section: Main features & Quick Start-->
     <section>
 
-      <h3 class="h3 text-center mb-5">About MDB</h3>
+      <h3 class="h3 text-center mb-5"> <img height="150px" src="https://res.cloudinary.com/ensamble/image/upload/v1613171537/localpetsandfamilylogo_alxxjo.png" alt="LocalPetsAndFamilyLogo"> </h3>
 
       <!--Grid row-->
       <div class="row wow fadeIn">
@@ -389,11 +396,11 @@
           <!--First row-->
           <div class="row">
             <div class="col-1 mr-3">
-              <i class="fas fa-code fa-2x indigo-text"></i>
+              <i class="fas fa-building fa-2x indigo-text"></i>
             </div>
             <div class="col-10">
-              <h5 class="feature-title">Bootstrap 4</h5>
-              <p class="grey-text">Thanks to MDB you can take advantage of all feature of newest Bootstrap 4.</p>
+              <h5 class="feature-title">LocalPetsandFamily</h5>
+              <p class="grey-text">Es una empresa nacional, fundada en el año 2020. Nace de la necesidad de proveer un producto que no había en nuestro mercado, ya que, lejos de ser un lujo, la identificación portátil es una necesidad..</p>
             </div>
           </div>
           <!--/First row-->
@@ -403,14 +410,11 @@
           <!--Second row-->
           <div class="row">
             <div class="col-1 mr-3">
-              <i class="fas fa-book fa-2x blue-text"></i>
+              <i class="fas fa-truck fa-2x blue-text"></i>
             </div>
             <div class="col-10">
-              <h5 class="feature-title">Detailed documentation</h5>
-              <p class="grey-text">We give you detailed user-friendly documentation at your disposal. It will help you
-                to implement your ideas
-                easily.
-              </p>
+              <h5 class="feature-title">Entrega a domicilio</h5>
+              <p class="grey-text">Brindamos facilidad de entrega hasta la puerta de su casa.</p>
             </div>
           </div>
           <!--/Second row-->
@@ -420,13 +424,11 @@
           <!--Third row-->
           <div class="row">
             <div class="col-1 mr-3">
-              <i class="fas fa-graduation-cap fa-2x cyan-text"></i>
+              <i class="fas fa-credit-card fa-2x cyan-text"></i>
             </div>
             <div class="col-10">
-              <h5 class="feature-title">Lots of tutorials</h5>
-              <p class="grey-text">We care about the development of our users. We have prepared numerous tutorials,
-                which allow you to learn
-                how to use MDB as well as other technologies.</p>
+              <h5 class="feature-title">Pague de distintas formas.</h5>
+              <p class="grey-text">Mediante transferencia, Paypal o SINPE Móvil.</p>
             </div>
           </div>
           <!--/Third row-->
@@ -437,7 +439,15 @@
         <!--Grid column-->
         <div class="col-lg-6 col-md-12">
 
-          <p class="h5 text-center mb-4">Watch our "5 min Quick Start" tutorial</p>
+          <div class="row">
+            <div class="col-1 mr-3">
+              <i class="fas fa-graduation-cap fa-2x cyan-text"></i>
+            </div>
+            <div class="col-10">
+              <h5 class="feature-title">Atención al cliente</h5>
+              <p class="grey-text">Contáctenos, con gusto le atenderemos. ya sea por redes sociales o personal.</p>
+            </div>
+          </div>
           <!-- <div class="embed-responsive embed-responsive-16by9">
             <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/cXTThxoywNQ" allowfullscreen></iframe>
           </div> -->
@@ -824,9 +834,11 @@
   <!-- Social icons -->
 
   <!--Copyright-->
-  <div class="footer-copyright py-3">
-    © 2018 Copyright:
-    <a href="https://mdbootstrap.com/bootstrap-tutorial/" target="_blank"> MDBootstrap.com </a>
+  <div class="footer-copyright text-white py-3">
+    © {{year}} Copyright:
+    <a class="navbar-brand ml-4 final" (click)="gotoTop()">
+      <img height="50px" src="https://res.cloudinary.com/ensamble/image/upload/v1613153301/logopets_uyf4xq.png" alt="LocalPetsAndFamilyLogo">
+    </a>
   </div>
   <!--/.Copyright-->
 

@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit {
   elementDiv :any
   isShow: boolean;
   topPosToStartShowing = 100;
+  year: any;
 
   constructor(
     private petService: PetService,
@@ -42,6 +43,9 @@ export class HomeComponent implements OnInit {
       this.mediaSubscription = this.media.subscribeMedia().subscribe(result => {
         this.Media = result;
       });
+
+      const moonLanding = new Date();
+      this.year = moonLanding.getFullYear();
     }
 
   ngOnInit() {

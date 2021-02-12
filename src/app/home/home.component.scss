@@ -652,6 +652,20 @@
       background-position: -311px;
     }
 
+    .final {
+      -webkit-transition: background 0.5s ease-in-out,padding 0.5s ease-in-out;
+      transition: background 0.5s ease-in-out,padding 0.5s ease-in-out !important;
+    }
+    .final:hover {
+      -webkit-transition: all 0.6s ease-out;
+        -moz-transition: all 0.6s ease-out;
+        -o-transition: all 0.6s ease-out;
+        -ms-transition: all 0.6s ease-out;
+        transition: all 0.6s ease-out;
+        padding-top: 13px;
+        padding-bottom: 13px;
+    }
+
     @media (max-width: 740px) {
       html,
       body,
