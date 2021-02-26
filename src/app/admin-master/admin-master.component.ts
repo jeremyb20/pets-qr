@@ -144,26 +144,8 @@ export class AdminMasterComponent implements OnInit {
       this.petService.getPetsList().subscribe(data => {
           this.allUsersData = data;
           this.filteredData = this.allUsersData;
-          // this.order = [];
-          // this.orderHistory = [];
-          // this.allUsersData.forEach(element => {
-          //     if(element.code.length >= 1){
-          //       element.code.forEach(item => {
-          //         item.showPanel = true;
-          //         this.order.push(item);
-          //       });
-          //   }
-          // });
-          // this.order.map((element, index) => {
-          //   element.products.map((val, index) => {
-          //     if (val.status == 'Recibido') {
-          //       this.orderHistory.push(element);
-          //     }
-          //   });
-          // });
+      
           this.getAllCode();
-          // this.showCardMsgOrderList = (this.order.length > 0)? false: true;
-          // this.showCardMsgOrderHistoryList = (this.orderHistory.length > 0)? false: true;
       },
       error => {
         this.loading = false;
@@ -177,9 +159,6 @@ export class AdminMasterComponent implements OnInit {
 
     getAllCode(){
       this.petService.getAllCodeList().subscribe(data => {
-        console.log(data);
-        // this.allUsersData = data;
-        // this.filteredData = this.allUsersData;
         this.order = [];
         this.orderHistory = [];
         data.forEach(element => {
