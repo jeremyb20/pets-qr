@@ -144,35 +144,67 @@ export class AdminMasterComponent implements OnInit {
       this.petService.getPetsList().subscribe(data => {
           this.allUsersData = data;
           this.filteredData = this.allUsersData;
-          this.order = [];
-          this.orderHistory = [];
-          this.allUsersData.forEach(element => {
-              if(element.code.length >= 1){
-                element.code.forEach(item => {
-                  item.showPanel = true;
-                  this.order.push(item);
-                });
-            }
-          });
-          this.order.map((element, index) => {
-            element.products.map((val, index) => {
-              if (val.status == 'Recibido') {
-                this.orderHistory.push(element);
-              }
-            });
-          });
-          this.getAllProductList();
-          this.showCardMsgOrderList = (this.order.length > 0)? false: true;
-          this.showCardMsgOrderHistoryList = (this.orderHistory.length > 0)? false: true;
+          // this.order = [];
+          // this.orderHistory = [];
+          // this.allUsersData.forEach(element => {
+          //     if(element.code.length >= 1){
+          //       element.code.forEach(item => {
+          //         item.showPanel = true;
+          //         this.order.push(item);
+          //       });
+          //   }
+          // });
+          // this.order.map((element, index) => {
+          //   element.products.map((val, index) => {
+          //     if (val.status == 'Recibido') {
+          //       this.orderHistory.push(element);
+          //     }
+          //   });
+          // });
+          this.getAllCode();
+          // this.showCardMsgOrderList = (this.order.length > 0)? false: true;
+          // this.showCardMsgOrderHistoryList = (this.orderHistory.length > 0)? false: true;
       },
       error => {
-      this.loading = false;
-      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor de revisar get all users', 6000);
+        this.loading = false;
+        this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor de revisar get all users', 6000);
       });
     }
 
     showPanel(item: any) {
       item.showPanel = !item.showPanel;
+    }
+
+    getAllCode(){
+      this.petService.getAllCodeList().subscribe(data => {
+        console.log(data);
+        // this.allUsersData = data;
+        // this.filteredData = this.allUsersData;
+        this.order = [];
+        this.orderHistory = [];
+        data.forEach(element => {
+            if(element.code.length >= 1){
+              element.code.forEach(item => {
+                item.showPanel = true;
+                this.order.push(item);
+              });
+          }
+        });
+        this.order.map((element, index) => {
+          element.products.map((val, index) => {
+            if (val.status == 'Recibido') {
+              this.orderHistory.push(element);
+            }
+          });
+        });
+        this.getAllProductList();
+        this.showCardMsgOrderList = (this.order.length > 0)? false: true;
+        this.showCardMsgOrderHistoryList = (this.orderHistory.length > 0)? false: true;
+      },
+      error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor de revisar get all users', 6000);
+      });
     }
 
     getAllProductList() {

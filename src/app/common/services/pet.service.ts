@@ -473,6 +473,15 @@ getPetsList():Observable<any> {
   }
 }
 
+getAllCodeList():Observable<any> {
+  this.loadToken();
+  if (this.isDev) {
+    return this.httpClient.get<any>('http://localhost:8080/pet/getAllCodePetsList/');
+  } else {
+    return this.httpClient.get<any>('pet/getAllCodePetsList/');
+  }
+}
+
 getPetsLostList():Observable<any> {
   this.loadToken();
   if (this.isDev) {

@@ -12,6 +12,7 @@ const app = express();
 require('dotenv').config();
 
 var fileupload = require('express-fileupload');
+const pet = require('../models/pet');
 
 app.use(fileupload({
   useTempFiles:true
@@ -795,8 +796,40 @@ router.get('/getAllPets', function(req, res){
       res.json({ success: false, msg: err });
       next();
     }
-    res.json(pets)
+    const object = [];
+    pets.forEach(item => {
+      var test = {
+        idPet: item._id,
+        petName: item.petName,
+        email: item.email,
+        age: item.age,
+        birthDate: item.birthDate,
+        ownerPetName: item.ownerPetName,
+        petStatus: item.petStatus
+      }  
+      object.push(test);
+    })
+    res.json(object)
   });
+});
+
+router.get('/getAllCodePetsList', function(req, res){
+  Pet.find({}, function(err, pets){
+  if(err){
+    res.json({ success: false, msg: err });
+    next();
+  }
+  const object = [];
+  pets.forEach(item => {
+    if(item.code.length> 0){
+      var test = {
+        code:item.code
+      }  
+      object.push(test);
+    }
+  })
+  res.json(object)
+});
 });
 
 router.get('/lost/getAllLostPets', function(req, res){
