@@ -388,13 +388,13 @@ router.get('/getPetDataList', function(req, res){
         phoneVeterinarian: results.phoneVeterinarian,
         healthAndRequirements: results.healthAndRequirements,
         favoriteActivities: results.favoriteActivities,
-        calendar: results.calendar,
-        code: results.code,
+        // calendar: results.calendar,
+        // code: results.code,
         petStatus: results.petStatus,
         linkTwitter: results.linkTwitter,
         linkFacebook: results.linkFacebook,
         linkInstagram: results.linkInstagram,
-        newPetProfile: results.newPetProfile
+        // newPetProfile: results.newPetProfile
       }
       res.json(pet)
     }else {
@@ -417,8 +417,8 @@ router.get('/getPetDataList', function(req, res){
               phoneVeterinarian: element.phoneVeterinarian,
               healthAndRequirements: element.healthAndRequirements,
               favoriteActivities: element.favoriteActivities,
-              calendar: element.calendar,
-              code: element.code,
+              // calendar: element.calendar,
+              // code: element.code,
               petStatus: element.petStatus,
               linkTwitter: element.linkTwitter,
               linkFacebook: element.linkFacebook,
@@ -459,6 +459,33 @@ router.get('/getAllProfileList/:id', function(req, res){
     }
 
     res.json(pet)
+  });
+});
+
+router.get('/getCalendarData/:id/:idSecond', function(req, res){
+  var id = req.params.id;
+  var idSecond = req.params.idSecond;
+  Pet.findById(id, function(err, results){
+    if(err){
+      res.json({ success: false, msg: err });
+      return;
+    }
+
+    if(idSecond == 0) {
+      var pet = {
+        calendar: results.calendar
+       }
+       res.json(pet)
+    }else {
+      results.newPetProfile.forEach(element => {
+        if (element._id == idSecond) {
+          var pet = {
+            calendar: element.calendar
+          }
+          res.json(pet)
+        }
+      })
+    }
   });
 });
 

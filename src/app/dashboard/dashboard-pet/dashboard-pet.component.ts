@@ -53,6 +53,7 @@ export class DashboardPetComponent implements OnInit {
   showReportForm: boolean = false;
   petStatus: string;
   photoPrincipalPet: string;
+  eventsCalendar: any;
 // calendar 
 
 isNewEvent: boolean = false;
@@ -262,10 +263,8 @@ calendarOptions: CalendarOptions = {
         userState: this.profile.userState
       }
       this.petService.setstoreUserData(objectStored)  
-      if(this.profile.code != undefined)
-        this.code = (this.profile.code.length> 0)? this.profile.code[0].status: '';
-
-      this.calendarOptions.events = data.calendar;
+      // if(this.profile.code != undefined)
+      //   this.code = (this.profile.code.length> 0)? this.profile.code[0].status: '';
       this.markers = [];
       this.markers.push({
         lat: this.profile.lat,
@@ -274,8 +273,20 @@ calendarOptions: CalendarOptions = {
         isDestination: false,
         photo: this.profile.photo
       });
-      this.getPermissionInfo();
+      this.getCalendarInfo();
       this.showInfo = true;
+    },
+    error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
+  }
+
+  getCalendarInfo() {
+    this.petService.getCalendarInfoService(this.pet.id, this.idSecondary).subscribe(data => {
+      this.calendarOptions.events = data.calendar;
+      this.eventsCalendar = data.calendar;
+      this.getPermissionInfo();
     },
     error => {
       this.loading = false;

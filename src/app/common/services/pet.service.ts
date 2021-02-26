@@ -135,6 +135,14 @@ export class PetService {
     }
   }
 
+  getCalendarInfoService(id: any, idSecondary: any):Observable<any> {
+    if (this.isDev) {
+      return this.httpClient.get<any>('http://localhost:8080/pet/getCalendarData/' + id +'/'+ idSecondary);
+    } else {
+      return this.httpClient.get<any>('pet/getCalendarData/' + id +'/'+ idSecondary);
+    }
+  }
+
 
   registerNewPetEvent(event):Observable<any> {
     const fd = new FormData();
@@ -319,10 +327,6 @@ export class PetService {
   // Permissions
   
   getPetPermissionsDataList(id: any, idSecondary: any):Observable<any> {
-    let headers = new Headers();
-    // this.loadToken();
-    // headers.append('Authorization', this.authToken);
-    // headers.append('Content-Type', 'application/json');
     if (this.isDev) {
       return this.httpClient.get<any>('http://localhost:8080/pet/getPermissionsData/' + id +'/'+ idSecondary);
     } else {
