@@ -94,7 +94,7 @@ router.post('/register/new-pet', async(req, res, next) => {
 });
 
 router.post('/register/new-petByUserPet', async(req, res) => {
-  var id ='6001c62cc9d9a51663845872';
+  var id ='60219dea321aed00155e1659';
   const obj = JSON.parse(JSON.stringify(req.body));
   const result = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.image);
   const newpet = {
@@ -593,7 +593,7 @@ router.put('/update/updatePetEvent', async(req, res) => {
 });
 
 router.post('/register/generateQrCodePet', async(req, res) => {
-  var id ='6001c62cc9d9a51663845872';
+  var id ='60219dea321aed00155e1659';
   const obj = JSON.parse(JSON.stringify(req.body));
   const objProducts = JSON.parse(obj.products);
   var object = {
@@ -817,7 +817,7 @@ router.get('/lost/getAllLostPets', function(req, res){
 
 
 router.get('/getAdminDataList', function(req, res){
-  var id ='6001c62cc9d9a51663845872';
+  var id ='60219dea321aed00155e1659';
   Pet.findById(id, function(err, results){
     if(err){
       res.json({ success: false, msg: err });
@@ -850,17 +850,21 @@ router.get('/getAdminDataList', function(req, res){
 });
 
 router.get('/getAllProductShopList', function(req, res){
-  var id ='6001c62cc9d9a51663845872';
+  var id ='60219dea321aed00155e1659';
   Pet.findById(id, function(err, results){
     if(err){
       res.json({ success: false, msg: err });
       return;
     }
 
-   var pet = {
-      productsList: results.productsList
+    if(results.productsList.length> 0 ){
+      var pet = {
+        productsList: results.productsList
+      }
+      res.json(pet)
     }
-    res.json(pet)
+
+  
   });
 });
 

@@ -104,7 +104,6 @@ export class AdminMasterComponent implements OnInit {
         });
     
         this.getAllUsers();
-        this.getAllProductList();
     }    
 
     get f() { return this.newProductPetForm.controls; }
@@ -162,6 +161,7 @@ export class AdminMasterComponent implements OnInit {
               }
             });
           });
+          this.getAllProductList();
           this.showCardMsgOrderList = (this.order.length > 0)? false: true;
           this.showCardMsgOrderHistoryList = (this.orderHistory.length > 0)? false: true;
       },
