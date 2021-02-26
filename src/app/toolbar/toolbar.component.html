@@ -1,27 +1,49 @@
 <div *ngIf="authService.loggedIn() || petService.loggedIn()" class=" toolbar">
-    <nav class="navbar navbar-expand navbar-dark" [ngClass]="{'p-0 ml-3' : !Media.IsMobile }">
+    <nav class="navbar navbar-expand navbar-dark p-0">
         <a id="menu-toggle" class="navbar-brand">
             <span class="navbar-toggler-icon"></span>
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation"> 
+        <div *ngIf="!Media.IsMobile" class="button mail" (click)="goHome()" [routerLink]="['/dashboard-pet']" ><i class="fas fa-home"></i></div>
+        <button *ngIf="Media.IsMobile" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation"> 
             <span class="navbar-toggler-icon"></span> 
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="nav navbar-nav ml-auto">
-                <li *ngIf="user.userState != 0" class="nav-item mr-3">
-                    <div class="button mail" (click)="goHome()" [routerLink]="['/dashboard-pet']" ><i class="fas fa-home"></i></div>
-                </li>
-                <li class="nav-item">
-                    <div class="button mail" (click)="isFoo = !isFoo" ><i class="fas fa-bell"></i><span *ngIf="isNewMsg > 0"  class="badge">{{isNewMsg}}</span></div>
-                </li>
-                <!-- <li class="nav-item">
-        <div class="button mail d-none d-lg-block" *ngIf="AllowMailbox" (click)="goMailbox()"><i class="fas fa-envelope"></i><span *ngIf="unreadMails > 0" class="badge">{{unreadMails}}</span></div>
-                </li> -->
-                <li class="nav-item" [ngClass]="{'justify-content-md-end' : !Media.IsMobile }">
-                    <div (click)="logout()" class="button-logout d-none d-lg-block"><i class="fas fa-sign-out-alt"></i></div>
-                </li>
-            </ul>
-        </div>
+      
+            <!-- Links -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      
+                <!-- Left 
+                <ul class="navbar-nav mr-auto">
+                  <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/login-pets'">Iniciar Sesion</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" [routerLink]="'/register-pets'">Registrarse</a>
+                  </li>
+          
+                  <li class="nav-item">
+                    <a class="nav-link" href="https://mdbootstrap.com/bootstrap-tutorial/">Servicio al cliente</a>
+                  </li>
+                </ul>-->
+          
+                <!-- Right -->
+                <ul class="navbar-nav nav-flex-icons">
+                  <li class="nav-item">
+                    <a (click)="isFoo = !isFoo" class="nav-link" target="_blank">
+                        <span *ngIf="isNewMsg > 0"  class="badge">{{isNewMsg}}</span>
+                        <i class="fas fa-bell"></i>
+                    </a>
+                  </li>
+                    <!--<li class="nav-item">
+                            <div class="button mail d-none d-lg-block" *ngIf="AllowMailbox" (click)="goMailbox()"><i class="fas fa-envelope"></i><span *ngIf="unreadMails > 0" class="badge">{{unreadMails}}</span></div>
+                        </li> -->
+                  <li class="nav-item">
+                    <a (click)="logout()" class="nav-link" target="_blank">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                  </li>
+                </ul>
+          
+              </div>
     </nav>
     <div *ngIf="isFoo" class="dropdown-menu p-0 dropdown-menu-right dropdown-menu-animated dropdown-lg show" style="overflow-y: scroll;">
 

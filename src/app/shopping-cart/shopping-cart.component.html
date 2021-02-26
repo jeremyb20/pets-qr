@@ -2,7 +2,8 @@
     <div class="container main-section">
         <div class="row justify-content-center mb-3 mt-3 login-sec ">
             <div class="col-12 col-sm-6 text-center"><h2 class="h2"><i class="fas fa-store"></i> LocalPets&Family Store </h2></div>
-            <div class="col-12 col-sm-6 text-center"><button [disabled]="this.allListShoppingCartItem.length == 0 || counter == 0" (click)="checkMyShoppingCart()" class="btn" [ngClass]="{'btn-inverse': this.allListShoppingCartItem.length == 0, 'btn-yellow': this.allListShoppingCartItem.length > 0}">({{counter}}) Mi Carrito de compras  <i class="fas fa-cart-plus"></i></button></div>
+            <div class="col-6 col-sm-3 text-center"><button [disabled]="this.allListShoppingCartItem.length == 0 || counter == 0" (click)="checkMyShoppingCart()" class="btn" [ngClass]="{'btn-inverse': this.allListShoppingCartItem.length == 0, 'btn-yellow': this.allListShoppingCartItem.length > 0}">({{counter}}) Mi Carrito de compras  <i class="fas fa-cart-plus"></i></button></div>
+            <div class="col-6 col-sm-3 text-center"><button (click)="historyCart()" class="btn btn-yellow">Historial de compras<i class="fas fa-history"></i></button></div>
         </div>
         <div class="scroll-home-shop p-3">
             <div class="form-group input-group col-12">
@@ -97,8 +98,13 @@
                                                         <input class="test" style="width: 40px;" class="quantity" min="0" name="quantity" value="1" type="number">
                                                         <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus btn btn-outline-info btn-sm"><i class="fas fa-plus"></i></button>
                                                     </div> -->
+
+                                                    <div class="def-number-input d-flex number-input safari_only mb-0 w-100">
+                                                       <button (click)="selectCan(item)" class="btn btn-info btn-sm">Seleccionar Can</button>
+                                                    </div>
                                                     <small id="passwordHelpBlock" class="form-text text-muted text-center">
-                                                        (Nota, 1 por producto)
+                                                       <span *ngIf="item.petName == undefined"> (Nota, 1 por producto)</span>
+                                                       <span class="text-bold" *ngIf="item.petName"> Producto para {{item.petName}}</span>
                                                     </small>
                                                 </div>
                                             </div>
@@ -281,3 +287,47 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" *ngIf="seeAllProfile" id="selectProfileModal" tabindex="-1" role="dialog" aria-labelledby="selectProfileModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="selectProfileModal">Seleccionar Can</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <div class="row">
+                  <div class="col-12 col-sm-12 card-wrapper">
+                    <div class="card border-0">
+                      <div class="position-relative rounded-circle overflow-hidden mx-auto custom-circle-image">
+                        <img class="w-100 h-100" src="{{photoPrincipalPet}}" alt="{{photoPrincipalPet}}">
+                      </div>
+                      <div class="card-body text-center mt-4">
+                        <a (click)="profileSelected(petPrincipal)" class="btn btn-inverse btn-sm">Seleccionar
+                            <i class="fas fa-paw ml-2"></i>
+                        </a>  
+                      </div>
+                    </div>
+                  </div>
+            
+                  <div *ngFor="let item of seeAllProfile" class="col-6 col-sm-6 col-lg-6 col-xl-6 card-wrapper" style="width: 18rem;">
+                    <div class="card border-0">
+                      <div class="position-relative rounded-circle overflow-hidden mx-auto custom-circle-image">
+                        <img class="w-100 h-100" src="{{item.photo}}" alt="Card image cap">
+                      </div>
+                      <div class="card-body text-center mt-4">
+                        <a (click)="profileSelected(item)" class="btn btn-inverse btn-sm">Seleccionar
+                            <i class="fas fa-paw ml-2"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>    
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>

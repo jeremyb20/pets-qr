@@ -15,6 +15,7 @@ export class PetService {
 
   authToken: any;
   pet: any;
+  petPrincipal: any;
   isDev: boolean = false;
 
   constructor(private httpClient: HttpClient, private jwtHelper: JwtHelperService) {
@@ -34,11 +35,43 @@ export class PetService {
     fd.append('bussinesSelected',pet.bussinesSelected);
     fd.append('image', photo);
     fd.append('petStatus',pet.petStatus);
+    fd.append('genderSelected',pet.genderSelected);
 
     if(this.isDev) {
       return this.httpClient.post<any>('http://localhost:8080/pet/register/new-pet', fd);
     }else{
       return this.httpClient.post<any>('pet/register/new-pet', fd);
+    }
+  }
+
+  registerNewPetByUserPet(pet,  photo:any):Observable<any> {
+    const fd = new FormData();
+    fd.append('petName',pet.petName);
+    fd.append('ownerPetName',pet.ownerPetName);
+    fd.append('birthDate',pet.birthDate);
+    fd.append('address',pet.address);
+    fd.append('_id',pet._id);
+    fd.append('email',pet.email);
+    fd.append('age',pet.age);
+    fd.append('veterinarianContact',pet.veterinarianContact);
+    fd.append('phoneVeterinarian',pet.phoneVeterinarian);
+    fd.append('healthAndRequirements',pet.healthAndRequirements);
+    fd.append('favoriteActivities',pet.favoriteActivities);
+    fd.append('userState',pet.userState);
+    fd.append('genderSelected',pet.genderSelected);
+    fd.append('phone',pet.phone);
+    // fd.append('linkTwitter',pet.linkTwitter);
+    // fd.append('linkFacebook',pet.linkFacebook);
+    // fd.append('linkInstagram',pet.linkInstagram);
+    fd.append('petStatus',pet.petStatus);
+    fd.append('lat',pet.lat);
+    fd.append('lng',pet.lng);
+    fd.append('image', photo);
+
+    if(this.isDev) {
+      return this.httpClient.post<any>('http://localhost:8080/pet/register/new-petByUserPet', fd);
+    }else{
+      return this.httpClient.post<any>('pet/register/new-petByUserPet', fd);
     }
   }
 
@@ -58,6 +91,7 @@ export class PetService {
     fd.append('birthDate',pet.birthDate);
     fd.append('address',pet.address);
     fd.append('_id',pet._id);
+    fd.append('idSecond',pet.idSecond);
     fd.append('email',pet.email);
     fd.append('age',pet.age);
     fd.append('veterinarianContact',pet.veterinarianContact);
@@ -80,6 +114,7 @@ export class PetService {
     fd.append('lat',market.lat);
     fd.append('lng',market.lng);
     fd.append('_id',market._id);
+    fd.append('idSecond',market.idSecond);
     if(this.isDev) {
       return this.httpClient.put<any>('http://localhost:8080/pet/update/updateLocationPet', fd);
     }else{
@@ -87,9 +122,10 @@ export class PetService {
     }
   }
 
-  updatePhotoPetProfile(id:any, photo:any):Observable<any> { 
+  updatePhotoPetProfile(id:any, idSecond: any, photo:any):Observable<any> { 
     const fd = new FormData();
     fd.append('image', photo);
+    fd.append('idSecond',idSecond);
     fd.append('_id', id);
 
     if(this.isDev) {
@@ -106,12 +142,30 @@ export class PetService {
     fd.append('date',event.date);
     fd.append('enddate',event.enddate);
     fd.append('description',event.description);
+    fd.append('idSecond',event.idSecond);
     fd.append('_id',event._id);
 
     if(this.isDev) {
       return this.httpClient.post<any>('http://localhost:8080/pet/register/newPetEvent', fd);
     }else{
       return this.httpClient.post<any>('pet/register/newPetEvent', fd);
+    }
+  }
+
+  updateNewPetEvent(event):Observable<any> {
+    const fd = new FormData();
+    fd.append('title',event.title);
+    fd.append('date',event.date);
+    fd.append('enddate',event.enddate);
+    fd.append('description',event.description);
+    fd.append('idSecond',event.idSecond);
+    fd.append('idEventUpdate',event.idEventUpdate);
+    fd.append('_id',event._id);
+
+    if(this.isDev) {
+      return this.httpClient.put<any>('http://localhost:8080/pet/update/updatePetEvent', fd);
+    }else{
+      return this.httpClient.put<any>('pet/update/updatePetEvent', fd);
     }
   }
 
@@ -147,11 +201,12 @@ export class PetService {
   generateQrCodePet(obj: any):Observable<any> {
     const fd = new FormData();
     fd.append('_id', obj.id);
-    fd.append('status', obj.status);
+    fd.append('commentary', obj.commentary);
     fd.append('petName', obj.petName);
     fd.append('photo', obj.photo);
-    fd.append('commentary', obj.commentary);
+    fd.append('products', JSON.stringify(obj.products));
     fd.append('total', obj.total);
+
     if(this.isDev) {
       return this.httpClient.post<any>('http://localhost:8080/pet/register/generateQrCodePet', fd);
     }else{
@@ -161,7 +216,9 @@ export class PetService {
   
   updateStatusCodePet(obj: any):Observable<any> {
     const fd = new FormData();
-    fd.append('_id', obj.id);
+    fd.append('_id', obj.idPetPrincipal);
+    fd.append('idObject', obj.idObject);
+    fd.append('idItemSelected', obj.idItemSelected);
     fd.append('status', obj.status);
     fd.append('photo', obj.photo);
     if(this.isDev) {
@@ -171,15 +228,19 @@ export class PetService {
     }
   }
 
-  getPetDaList(id):Observable<any> {
-    let headers = new Headers();
-    this.loadToken();
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-Type', 'application/json');
+  getPetDataList(id, idSecondary: any):Observable<any> {    
     if (this.isDev) {
-      return this.httpClient.get<any>('http://localhost:8080/pet/getPetDataList/' + id);
+      return this.httpClient.get<any>('http://localhost:8080/pet/getPetDataList?id=' + id+'&idSecond='+ idSecondary);
     } else {
-      return this.httpClient.get<any>('pet/getPetDataList/' + id);
+      return this.httpClient.get<any>('pet/getPetDataList?id=' + id+'&idSecond='+ idSecondary );
+    }
+  }
+
+  getAllProfileList(id):Observable<any> {
+    if (this.isDev) {
+      return this.httpClient.get<any>('http://localhost:8080/pet/getAllProfileList/' + id);
+    } else {
+      return this.httpClient.get<any>('pet/getAllProfileList/' + id);
     }
   }
 
@@ -257,15 +318,15 @@ export class PetService {
   
   // Permissions
   
-  getPetPermissionsDataList(id):Observable<any> {
+  getPetPermissionsDataList(id: any, idSecondary: any):Observable<any> {
     let headers = new Headers();
-    this.loadToken();
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-Type', 'application/json');
+    // this.loadToken();
+    // headers.append('Authorization', this.authToken);
+    // headers.append('Content-Type', 'application/json');
     if (this.isDev) {
-      return this.httpClient.get<any>('http://localhost:8080/pet/getPermissionsData/' + id);
+      return this.httpClient.get<any>('http://localhost:8080/pet/getPermissionsData/' + id +'/'+ idSecondary);
     } else {
-      return this.httpClient.get<any>('pet/getPermissionsData/' + id);
+      return this.httpClient.get<any>('pet/getPermissionsData/' + id +'/'+ idSecondary);
     }
   }
 
@@ -273,6 +334,7 @@ export class PetService {
   updatePetPermissionInfo(obj: any):Observable<any> {
     const fd = new FormData();
     fd.append('_id', obj.id);
+    fd.append('idSecondary', obj.idSecondary);
     fd.append('showPhoneInfo', obj.showPhoneInfo)
     fd.append('showEmailInfo', obj.showEmailInfo)
     fd.append('showLinkTwitter', obj.showLinkTwitter)
@@ -492,10 +554,10 @@ addPhotoFirstORSecond(obj:any):Observable<any> {
 // Notifications
 
 getNotificationsService(id):Observable<any> {
-  let headers = new Headers();
-  this.loadToken();
-  headers.append('Authorization', this.authToken);
-  headers.append('Content-Type', 'application/json');
+ // let headers = new Headers();
+  // this.loadToken();
+  // headers.append('Authorization', this.authToken);
+  // headers.append('Content-Type', 'application/json');
   if (this.isDev) {
     return this.httpClient.get<any>('http://localhost:8080/pet/notifications/getNotificationsList/'+ id);
   } else {
@@ -526,8 +588,22 @@ updateNotification(obj: any):Observable<any> {
     this.pet = pet;
   }
 
+  storePrincipalUserData(pet) {
+    localStorage.setItem('petPrincipal', JSON.stringify(pet));
+    this.petPrincipal = pet;
+  }
+  
+  getPrincipalUserData() {
+    return localStorage.getItem("petPrincipal");
+  }
+
   getLocalPet(){
     return localStorage.getItem("pet");
+  }
+
+  setstoreUserData(pet){
+    localStorage.setItem('pet', JSON.stringify(pet));
+    this.pet = pet;
   }
 
   loadToken() {

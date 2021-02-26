@@ -1,27 +1,52 @@
-<div *ngIf="profile">
-    <nav *ngIf="!hideMenu" class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand"><i class="fa fa-paw" aria-hidden="true"></i> {{profile.petName}}</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active" [ngClass]="{'mb-2 mt-2': Media.IsMobile, 'ml-2': Media.IsLandscape}">
-              <button class="btn btn-block btn-inverse btn-sm" [routerLink]="['/home']"><i class="fas fa-home"></i> Inicio <span class="sr-only">(current)</span></button>
-            </li>
-            <li class="nav-item" [ngClass]="{'mb-2': Media.IsMobile, 'ml-2': Media.IsLandscape}">
-                <button [routerLink]="['/login-pets']" class="btn btn-block btn-inverse btn-sm">Iniciar Sesión</button>
-            </li>
-            <li class="nav-item" [ngClass]="{'mb-2': Media.IsMobile, 'ml-2': Media.IsLandscape}">
-                <button [routerLink]="['/register-pets']" class="btn btn-block btn-yellow btn-sm">Registrarse</button> 
-            </li>
-          </ul>
-          <span class="navbar-text" [ngClass]="{'w-100': Media.IsMobile, 'd-none':Media.IsLandscape}">
-            <button class="btn-block btn btn-danger">Reportar Problema</button>
-          </span>
+<div *ngIf="profile" id="myPetProfile" class="scroll" (scroll)="divScroll($event, false)">
+      <nav *ngIf="!hideMenu" class="navbar fixed-top navbar-expand-lg navbar-dark mb-5" [ngClass]="{'scrolled': !isShow, 'scrolling-navbar': isShow, 'top-nav-collapse': isShow}">
+        <div class="container">
+      
+          <!-- Brand -->
+          <a class="navbar-brand" [routerLink]="'/home'">
+            <img height="50px" src="https://res.cloudinary.com/ensamble/image/upload/v1613153301/logopets_uyf4xq.png" alt="LocalPetsAndFamilyLogo">
+          </a>
+      
+          <!-- Collapse -->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      
+          <!-- Links -->
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      
+            <!-- Left -->
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="'/login-pets'">Iniciar Sesion</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="'/register-pets'">Registrarse</a>
+              </li>
+      
+              <li class="nav-item">
+                <a class="nav-link" href="https://mdbootstrap.com/bootstrap-tutorial/">Servicio al cliente</a>
+              </li>
+            </ul>
+      
+            <!-- Right -->
+            <ul class="navbar-nav nav-flex-icons">
+              <li class="nav-item">
+                <a href="https://www.facebook.com/LocalPetsFamily-115795170546124" class="nav-link" target="_blank">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="https://twitter.com/" class="nav-link" target="_blank">
+                  <i class="fab fa-twitter"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
-    <div class="container-fluid mx-auto test" id="myPetProfile">
+    <div class="container-fluid mx-auto test" [ngClass]="{'margin': !hideMenu}" id="myPetProfile">
         <div *ngIf="profile">
             <div class="row no-gutters ">
                 <div class="col-12 col-sm-4 col-md-4 col-lg-4 mb-4">
@@ -36,7 +61,7 @@
                                 <p class="card-text mb-2">Bienvenid@ a mi perfil</p>
                             </div>
                             <div *ngIf="profile.petStatus === 'Perdido'" class="meta card-text">
-                                <span>Creo que me he extraviado de mi hogar, ¿Me puedes ayudar a volver a casa? Mis redes sociales son:</span>
+                                <span>Creo que me he extraviado de mi hogar, ¿Me puedes ayudar a volver a casa? Mis datos personales son las siguientes:</span>
                             </div>
                             <div class="mt-2 mb-2" *ngIf="permissionData && (profile.linkTwitter != 'null' && profile.linkTwitter != 'null' && profile.linkTwitter != 'null')">
                                 <a *ngIf="profile.linkTwitter && permissionData.showLinkTwitter" target="_blank" href="{{profile.linkTwitter}}" class="btn mr-2 btn-twitter"> <i class="fab fa-twitter"></i> </a>

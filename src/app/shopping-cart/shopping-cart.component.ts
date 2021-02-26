@@ -37,6 +37,11 @@ export class ShoppingCartComponent implements OnInit {
   total: number;
   phoneSinpe: string = '70160434';
   @Input() products: any = [];
+  photoPrincipalPet: string;
+  seeAllProfile: any;
+  petPrincipal: any;
+  selectCanObject:any;
+  productNameSelected: any;
   private singleProduct;
   public isAdded;
 
@@ -49,6 +54,8 @@ export class ShoppingCartComponent implements OnInit {
         this.userLogged = this.petService.getLocalPet();
     }
     this.user = JSON.parse(this.userLogged);
+    var petPrincipal = this.petService.getPrincipalUserData();
+    this.petPrincipal = JSON.parse(petPrincipal);
     this.getAllMyProduct();
   }
 
@@ -56,11 +63,10 @@ export class ShoppingCartComponent implements OnInit {
     this.buyProcudForm = this.formBuilder.group({
       commentary: ['', Validators.required],
     });
-  }
 
-  getPetDataList() {
-    this.petService.getPetDaList(this.user.id).subscribe(data => {
-      this.profile = data;
+    this.petService.getAllProfileList(this.petPrincipal.id).subscribe(data => {
+      this.photoPrincipalPet = data.photo;
+      this.seeAllProfile = data.newPetProfile;
     },
     error => {
       this.loading = false;
@@ -109,8 +115,12 @@ export class ShoppingCartComponent implements OnInit {
   removeItem(item){
     this.test = [];
     var index = this.finalCard.indexOf(item);
+    var indexSecond = this.selectCanObject.indexOf(item);
     if (index !== -1) {
       this.finalCard.splice(index, 1);
+    }
+    if (indexSecond !== -1) {
+      this.selectCanObject.splice(indexSecond, 1);
     }
 
     this.allListShoppingCartItem = this.finalCard;
@@ -157,6 +167,23 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   goToPay() {
+    var goNext = false;
+    this.finalCard.forEach(element => {
+      if(element.petName == undefined){
+        // If Item is already added then display alert message
+        Swal.fire({
+          position: 'top',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'El producto ' +element.productName+ ' debe ser seleccionado para un can!'
+        })
+        goNext = false;
+        return;
+      }else{
+        goNext = true;
+      }
+    });
+    if(goNext)
     $('#goToPayModal').modal('show');
   }
 
@@ -177,6 +204,24 @@ export class ShoppingCartComponent implements OnInit {
     document.execCommand('copy');
   }
 
+  selectCan(item: any) {
+    this.productNameSelected = item.productName;
+    this.selectCanObject = [];
+    this.selectCanObject.push(item);
+    $('#selectProfileModal').modal('show');
+  }
+
+  profileSelected(val:any){
+    this.finalCard.forEach(element => {
+      if(element.productName == this.productNameSelected){
+        element.idCan = val.id,
+        element.petName = val.petName,
+        element.petPhoto = val.photo
+      }
+    });
+    $('#selectProfileModal').modal('hide');
+  }
+
 
   generateQrCode() {
     this.submitted = true;
@@ -184,14 +229,30 @@ export class ShoppingCartComponent implements OnInit {
       return;
     }
     this.loadingQr = true;
+   
+    let products = [];
+    this.finalCard.forEach(element => {
+      var intermediate = {
+        productName: element.productName,
+        description:element.description,
+        cost: element.cost,
+        idCan: element.idCan,
+        petName: element.petName,
+        petPhoto: element.petPhoto,
+        status: "Ordenando",
+      }
+      products.push(intermediate)
+    });
+
     var object = {
-      id: this.user.id,
-      status: "Ordenando",
-      petName: this.user.petName,
-      photo: this.user.photo,
+      id: this.petPrincipal.id,
+      petName: this.petPrincipal.petName,
+      photo: this.petPrincipal.photo,
       commentary: this.h.commentary.value,
+      products : products,
       total: this.total
     }
+
     this.petService.generateQrCodePet(object).subscribe(data => {
       if(data.success) {
         Swal.fire({
@@ -221,6 +282,10 @@ export class ShoppingCartComponent implements OnInit {
       this.loadingQr = false;
       this._notificationSvc.warning('Hola '+this.user.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
     });
+  }
+
+  historyCart(){
+
   }
 
 

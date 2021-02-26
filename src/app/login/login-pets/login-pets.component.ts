@@ -44,27 +44,31 @@ export class LoginPetsComponent implements OnInit {
     }
 
     this.petService.authenticatePet(pet).subscribe(data => {
-        if(data.success) {
-          this.loading = false;
-          switch (data.pet.userState) {
-            case 0:
-              this.router.navigate(['/admin']);
-              break;
-            case 3:
-              this.router.navigate(['/dashboard-pet']);
+      if(data.success) {
+        this.loading = false;
+        switch (data.pet.userState) {
+          case 0:
+            this.router.navigate(['/admin']);
             break;
-          
-            default:
-              break;
-          }
-          this.petService.storeUserData(data.token, data.pet);
-        } else {
-          this.hideMsg = true;
-          this.ShowMsg = data.msg;
-          this.loading = false;
-          setTimeout(() => { this.hideMsg = false }, this.timeSeconds);
+          case 3:
+            this.router.navigate(['/dashboard-pet']);
+          break;
+        
+          default:
+            break;
         }
+        this.petService.storeUserData(data.token, data.pet);
+        this.petService.storePrincipalUserData(data.pet);
+      } else {
+        this.hideMsg = true;
+        this.ShowMsg = data.msg;
+        this.loading = false;
+        setTimeout(() => { this.hideMsg = false }, this.timeSeconds);
+      }
+    },
+    error => {
+      this.loading = false;
+      console.log(error);
     });
   }
-
 }

@@ -221,6 +221,26 @@
         border-radius: .25rem;
     }
     
+    /* You can adjust the image size by increasing/decreasing the width, height */
+    .custom-circle-image {
+        width:100px; /* note i used vw not px for better responsive */
+        height: 100px;
+    }
+
+    .custom-circle-image img {
+        object-fit: cover;
+    }
+      
+    .card-title {
+        letter-spacing: 1.1px;
+    }
+      
+    .card-text {
+        font-family: MerriweatherRegular;
+        font-size: 22px;
+        line-height: initial;
+    }
+
     .minus {
         padding-left: 10px;
     }

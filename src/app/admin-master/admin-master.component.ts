@@ -7,6 +7,14 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import {
+  AUTO_STYLE,
+  animate,
+  state,
+  style,
+  transition,
+  trigger
+} from '@angular/animations';
 
 
 declare var $: any;
@@ -15,11 +23,21 @@ interface HtmlInputEvent extends Event {
   target: HTMLInputElement & EventTarget
 }
 
+const DEFAULT_DURATION = 300;
+
 
 @Component({
   selector: 'app-admin-master',
   templateUrl: './admin-master.component.html',
-  styleUrls: ['./admin-master.component.scss']
+  styleUrls: ['./admin-master.component.scss'],
+  animations: [
+    trigger('collapse', [
+      state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
+      state('true', style({ height: '0', visibility: 'hidden' })),
+      transition('false => true', animate(DEFAULT_DURATION + 'ms ease-in')),
+      transition('true => false', animate(DEFAULT_DURATION + 'ms ease-out'))
+    ])
+  ]
 })
 export class AdminMasterComponent implements OnInit {
   private mediaSubscription: Subscription;
@@ -91,7 +109,7 @@ export class AdminMasterComponent implements OnInit {
 
     get f() { return this.newProductPetForm.controls; }
 
-
+    collapsed = false;
 
     ngOnInit() {
       //this.getDataAdminList();
@@ -130,15 +148,19 @@ export class AdminMasterComponent implements OnInit {
           this.order = [];
           this.orderHistory = [];
           this.allUsersData.forEach(element => {
-              if(element.code.length == 1){
-                  element.code.forEach(item => {
-                      if(item.status == 'Recibido'){
-                          this.orderHistory.push(element);
-                      }else{
-                          this.order.push(element);
-                      }
-                  });
+              if(element.code.length >= 1){
+                element.code.forEach(item => {
+                  item.showPanel = true;
+                  this.order.push(item);
+                });
+            }
+          });
+          this.order.map((element, index) => {
+            element.products.map((val, index) => {
+              if (val.status == 'Recibido') {
+                this.orderHistory.push(element);
               }
+            });
           });
           this.showCardMsgOrderList = (this.order.length > 0)? false: true;
           this.showCardMsgOrderHistoryList = (this.orderHistory.length > 0)? false: true;
@@ -147,6 +169,10 @@ export class AdminMasterComponent implements OnInit {
       this.loading = false;
       this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor de revisar get all users', 6000);
       });
+    }
+
+    showPanel(item: any) {
+      item.showPanel = !item.showPanel;
     }
 
     getAllProductList() {
@@ -318,11 +344,11 @@ export class AdminMasterComponent implements OnInit {
       });
     }
 
-    dropdowSelect(state: any, item: any){
+    dropdowSelect(state: any, itemPrincipal:any, item: any){
         var title = 'Cambiar Status?'
         Swal.fire({
             title: title,
-            showDenyButton: true,
+            showDenyButton: false,
             showCancelButton: true,
             confirmButtonText: `Ok`,
             denyButtonText: `No cambiar`,
@@ -330,15 +356,17 @@ export class AdminMasterComponent implements OnInit {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
                 var object = {
-                    id: item._id,
+                    idPetPrincipal: itemPrincipal.idPrincipal,
+                    idObject: itemPrincipal._id,
+                    idItemSelected: item._id,
                     status: state,
                     photo: this.pet.photo
                   }
               
                   this.petService.updateStatusCodePet(object).subscribe(data => {
                     if(data.success) {
-                        location.reload();
                         Swal.fire('Saved!', '', 'success');
+                        setTimeout(() => { location.reload(); }, 3000);
                     } else {
                       $('#qrCodeInfoDialog').modal('hide');
                       this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
@@ -388,8 +416,8 @@ export class AdminMasterComponent implements OnInit {
   }
 
     checkQrCode(link:any){
-        $('#qrCodeInfoDialog').modal('show');
-        this.AngularxQrCode = link;
+      $('#qrCodeInfoDialog').modal('show');
+      this.AngularxQrCode = link;
     }
   
 

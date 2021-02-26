@@ -23,6 +23,7 @@ import { MenusComponent } from './menus/menus.component';
 import { DashboardPetComponent } from './dashboard/dashboard-pet/dashboard-pet.component';
 import { MyPetCodeComponent } from './my-pet-code/my-pet-code.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { SearchLostComponent } from './search-lost/search-lost.component';
 
 
 const routes: Routes = [
@@ -36,9 +37,10 @@ const routes: Routes = [
           { path: 'register-pets', component: RegisterPetComponent },
           { path: 'forgot-company', component: ForgotCompanyComponent },
           { path: 'forgot-user', component: ForgotUserComponent },
+          { path: 'search-lost', component: SearchLostComponent },
           { path: 'reset-company/:token', component: ResetCompanyComponent },
           { path: 'reset-user/:token', component: ResetUserComponent },
-          { path: 'myPetCode/:id', component: MyPetCodeComponent },
+          { path: 'myPetCode/:id/:idSecond', component: MyPetCodeComponent },
 
           // { path: 'maintenance', component: MaintenanceComponent },
       ]

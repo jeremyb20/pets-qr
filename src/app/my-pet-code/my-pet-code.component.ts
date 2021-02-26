@@ -22,6 +22,7 @@ export class MyPetCodeComponent implements OnInit {
   private mediaSubscription: Subscription;
   public searchControl: FormControl;
   getLinkIdParam: null;
+  getLinkIdSecondaryParams: null;
   zoom: number = 12;
   lat: number = 9.93040049002793;
   lng: number = -84.09062837772197;
@@ -44,6 +45,10 @@ export class MyPetCodeComponent implements OnInit {
   destination : any;
   getTrack: boolean = false;
 
+  isShow: boolean;
+  topPosToStartShowing = 100;
+  elementDiv :any
+
   @ViewChild("search")
   public searchElementRef: ElementRef;
 
@@ -63,12 +68,16 @@ export class MyPetCodeComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private media: MediaService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone,  private petService: PetService,private _notificationSvc: NotificationService, private route: ActivatedRoute , private router: Router) {
     this.route.params.subscribe(params => {
+      // este es cuando hace click en target_blank
       this.getLinkIdParam = params.id; 
+      this.getLinkIdSecondaryParams = params.idSecond;
     });
 
     if(this.getLinkIdParam == undefined) {
+      //Este es cuando va ver perfil;
       this.route.queryParams.subscribe(params => {
         this.getLinkIdParam = params.id;
+        this.getLinkIdSecondaryParams = params.idSecond;
         this.hideMenu = true;
       });
     }
@@ -87,15 +96,34 @@ export class MyPetCodeComponent implements OnInit {
     } else {
       this.currentTimer = darkStyle;
     }
-    this.getPermissionInfo();
     this.getPetDataList();
    
    }
 
   ngOnInit() {}
 
+  getPetDataList() {
+    this.petService.getPetDataList(this.getLinkIdParam,this.getLinkIdSecondaryParams).subscribe(data => {
+      this.profile = data;
+      this.imageUrl = this.profile.photo;
+      this.markers.push({
+        lat: this.profile.lat,
+        lng: this.profile.lng,
+        draggable: false,
+        isDestination: true,
+        photo: 'https://cdn.worldvectorlogo.com/logos/google-maps-2020-icon.svg'
+      });
+      this.getPermissionInfo();
+      this.showInfo = true;
+    },
+    error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.profile.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
+  }
+
   getPermissionInfo() {
-    this.petService.getPetPermissionsDataList(this.getLinkIdParam).subscribe(data => {
+    this.petService.getPetPermissionsDataList(this.getLinkIdParam, this.getLinkIdSecondaryParams).subscribe(data => {
       this.permissionData = data.permissions[0];
       if(this.permissionData == undefined || this.permissionData.length<=0){
         this.permissionData = {
@@ -124,24 +152,6 @@ export class MyPetCodeComponent implements OnInit {
     });
   }
 
-  getPetDataList() {
-    this.petService.getPetDaList(this.getLinkIdParam).subscribe(data => {
-      this.profile = data;
-      this.imageUrl = this.profile.photo;
-      this.markers.push({
-        lat: this.profile.lat,
-        lng: this.profile.lng,
-        draggable: false,
-        isDestination: true,
-        photo: 'https://cdn.worldvectorlogo.com/logos/google-maps-2020-icon.svg'
-      });
-      this.showInfo = true;
-    },
-    error => {
-      this.loading = false;
-      this._notificationSvc.warning('Hola '+this.profile.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
-    });
-  }
 
   copyInputMessage(inputElement:any){
     Swal.fire({
@@ -251,12 +261,36 @@ export class MyPetCodeComponent implements OnInit {
           } else if (result.isDenied) {
             window.open('https://www.google.com/maps/dir/?api=1&origin='+this.gomarkers[0].lat+','+this.gomarkers[0].lng+'&destination='+this.markers[0].lat+','+this.markers[0].lng+'&travelmode=driving','_blank');
           }
+          this.zoom = 12;
+          this.showInfo = true;
+          location.reload();
           $('#showPopupMapPetHome').modal('hide');
         })
       }else {
         this.showInfo = true;
         $('#showPopupMapPetHome').modal('hide');
       }
+    });
+  }
+
+  divScroll(e, isClicked) {
+    if(isClicked){
+      e.srcElement.scrollTop =0;
+    }
+    this.elementDiv = e;
+    if (e.target.scrollTop >= this.topPosToStartShowing) {
+      this.isShow = true;
+    } else {
+      this.isShow = false;
+    }
+  }
+
+  // TODO: Cross browsing
+  gotoTop() {
+    this.elementDiv.srcElement.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
     });
   }
 

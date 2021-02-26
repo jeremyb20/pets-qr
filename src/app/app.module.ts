@@ -14,6 +14,7 @@ import { FullCalendarModule } from '@fullcalendar/angular'; // the main connecto
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
 import interactionPlugin from '@fullcalendar/interaction'; // a plugin
 import { QRCodeModule } from 'angularx-qrcode';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -45,6 +46,7 @@ import { DashboardPetComponent } from './dashboard/dashboard-pet/dashboard-pet.c
 import { MyPetCodeComponent } from './my-pet-code/my-pet-code.component';
 import { SwitchComponent } from './common/directives/switch/switch.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { SearchLostComponent } from './search-lost/search-lost.component';
 
 export function tokenGetter() {
   return localStorage.getItem("id_token");
@@ -80,7 +82,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     DashboardPetComponent,
     MyPetCodeComponent,
     SwitchComponent,
-    ShoppingCartComponent
+    ShoppingCartComponent,
+    SearchLostComponent
   ],
   imports: [
     BrowserModule,
@@ -93,6 +96,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     SocialLoginModule,
     FullCalendarModule,
     QRCodeModule,
+    BrowserAnimationsModule,
     NgIdleModule.forRoot(),
     JwtModule.forRoot({
       config: {

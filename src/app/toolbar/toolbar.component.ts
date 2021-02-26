@@ -26,12 +26,23 @@ export class ToolbarComponent implements OnInit {
   constructor(public authService: AuthServices, public petService: PetService, private _notificationSvc: NotificationService, private media: MediaService,private route: Router) { 
     this.mediaSubscription = this.media.subscribeMedia().subscribe(result => {
       this.Media = result;
+      if(this.Media.IsLandscape) {
+        $('#wrapper').addClass('toggled')
+      }
+      if(this.user){
+        if(this.user.userState == 0 || this.Media.IsLandscape) {
+          $('#wrapper').removeClass('toggled')
+        }
+      }
     });
     this.userLogged = this.authService.getLocalUser();
     if(this.userLogged == null ){
         this.userLogged = this.petService.getLocalPet();
     }
     this.user = JSON.parse(this.userLogged);
+    if(this.user.userState == 0 || this.Media.IsLandscape) {
+      $('#wrapper').removeClass('toggled')
+    }
     this.getNotifications();
   }
 
@@ -65,7 +76,18 @@ export class ToolbarComponent implements OnInit {
   }
 
   goHome(){
-    $('#wrapper').removeClass('toggled')
+    // $('#wrapper').removeClass('toggled')
+    if(this.user.userState == 0 ){
+      this.route.navigate(['/admin'])
+    }
+
+    if(this.user.userState == 3 ){
+      if(this.Media.IsMobile){
+        $('#wrapper').removeClass('toggled')
+      }
+        
+      this.route.navigate(['/dashboard-pet']);
+    }
   }
 
   updateNotification(item: any){

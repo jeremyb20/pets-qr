@@ -164,12 +164,46 @@ const PetSchema = mongoose.Schema ({
     },
   }],
   code: [{
-    link: {
+    products: [{
+      productName: {
+        type: String,
+        require: true
+      },
+      description: {
+        type: String,
+        require: true
+      },
+      cost: {
+        type: String,
+        require: true
+      },
+      idCan: {
+        type: String,
+        require: true
+      },
+      petName: {
+        type: String,
+        require: true
+      },
+      petPhoto: {
+        type: String,
+        require: true
+      },
+      status: {
+        type: String,
+        require: true
+      },
+      link: {
+        type: String,
+        require: true
+      },
+    }],
+    petName: {
       type: String,
       require: true
     },
-    status: {
-      type: String,
+    idPrincipal: {
+      type:String,
       require: true
     },
     commentary: {
@@ -262,7 +296,266 @@ const PetSchema = mongoose.Schema ({
       type: String,
       require: true
     }
-  }]
+  }],
+  newPetProfile: [
+    {
+      petName: {
+        type: String
+      },
+      phone: {
+        type: Number,
+        require: false
+      },
+      email: {
+        type: String,
+        require: true,
+        unique: true
+      },
+      lat: {
+        type: String,
+        require: true
+      },
+      lng: {
+        type: String,
+        require: true
+      },
+      photo: {
+        type: String,
+        require: false
+      },
+      linkTwitter: {
+        type: String,
+        require: false
+      },
+      linkFacebook: {
+        type: String,
+        require: false
+      },
+      linkInstagram: {
+        type: String,
+        require: false
+      },
+      notifications: [{
+        message: {
+          type: String,
+          require: true
+        },
+        userPetName: {
+          type: String,
+          require: true
+        },
+        isNewMsg: {
+          type: Boolean,
+          require: true
+        },
+        dateMsg: {
+          type: String,
+          require: true
+        },
+        idPet: {
+          type: String,
+          require: true
+        },
+        photo: {
+          type: String,
+          require: false
+        },
+      }],
+    
+      permissions: [{
+        showPhoneInfo: {
+          type: Boolean,
+          require: true
+        },
+        showEmailInfo: {
+          type: Boolean,
+          require: true
+        },
+        showLinkTwitter: {
+          type: Boolean,
+          require: true
+        },
+        showLinkFacebook: {
+          type: Boolean,
+          require: true
+        },
+        showLinkInstagram: {
+          type: Boolean,
+          require: true
+        },
+        showOwnerPetName: {
+          type: Boolean,
+          require: true
+        },
+        showBirthDate: {
+          type: Boolean,
+          require: true
+        },
+        showAddressInfo: {
+          type: Boolean,
+          require: true
+        },
+        showAgeInfo: {
+          type: Boolean,
+          require: true
+        },
+        showVeterinarianContact: {
+          type: Boolean,
+          require: true
+        },
+        showPhoneVeterinarian: {
+          type: Boolean,
+          require: true
+        },
+        showHealthAndRequirements: {
+          type: Boolean,
+          require: true
+        },
+        showFavoriteActivities: {
+          type: Boolean,
+          require: true
+        },
+        showLocationInfo: {
+          type:Boolean,
+          require: true
+        }
+      }],
+      // productsList: [{
+      //   productName: {
+      //     type: String,
+      //     require: true
+      //   },
+      //   size: {
+      //     type: String,
+      //     require: true
+      //   },
+      //   color: {
+      //     type: String,
+      //     require: true
+      //   },
+      //   description: {
+      //     type: String,
+      //     require: true
+      //   },
+      //   cost: {
+      //     type: String,
+      //     require: true
+      //   },
+      //   quantity: {
+      //     type: String,
+      //     require: true
+      //   },
+      //   firstPhoto: {
+      //     type: String,
+      //     require: true
+      //   },
+      //   secondPhoto: {
+      //     type: String,
+      //     require: true
+      //   },
+      // }],
+      // code: [{
+      //   link: {
+      //     type: String,
+      //     require: true
+      //   },
+      //   status: {
+      //     type: String,
+      //     require: true
+      //   },
+      //   commentary: {
+      //     type: String,
+      //     require: true
+      //   },
+      //   total : {
+      //     type: String,
+      //     require: true
+      //   }
+      // }],
+      resetPasswordToken: {
+        type: String
+      },
+      resetPasswordExpires: {
+        type: Date
+      },
+      userState: {
+        type: Number,
+        require: false
+      },
+      ownerPetName: {
+        type: String,
+        require: true
+      },
+      birthDate: {
+        type: String,
+        require: true
+      },
+      address: {
+        type: String,
+        require: true
+      },
+      age: {
+        type: Number,
+        require: true
+      },
+      phoneVeterinarian: {
+        type: Number,
+        require: true
+      },
+      veterinarianContact: {
+        type: String,
+        require: true
+      },
+      healthAndRequirements: {
+        type: String,
+        require: true
+      },
+      favoriteActivities: {
+        type: String,
+        require: true
+      },
+      petStatus : {
+        type: String,
+        require: true
+      },
+      petStatusReport :[{
+        lastPlaceLost: {
+          type: String,
+          require: true
+        },
+        date: {
+          type: String,
+          require: true
+        },
+        petStatus: {
+          type: String,
+          require: true
+        },
+        descriptionLost: {
+          type: String,
+          require: true
+        }
+      }],
+      calendar: [{
+        title: {
+          type: String,
+          require: true
+        },
+        date: {
+          type: String,
+          require: true
+        },
+        enddate: {
+          type: String,
+          require: true
+        },
+        description: {
+          type: String,
+          require: true
+        }
+      }],
+    }
+  ]
 }, { autoIndex: false });
 
 PetSchema.plugin(passportLocalMongoose);

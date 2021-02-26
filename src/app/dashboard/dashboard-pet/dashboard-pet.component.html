@@ -3,25 +3,36 @@
         <div class="row">
             <div class="col-sm">
               <h5 class="page-heading"> <i class="fa fa-paw" aria-hidden="true"></i>  Bienvenido a tu perfil {{profile.petName}}!</h5>
-            </div>
-            <div *ngIf="hideMsg" class="col-sm">
-                <div class="alert error-message text-center" *ngIf="hideMsg" [ngClass]="{'alert-dark': code == 'Ordenando','alert-info': code == 'Pendiente', 'alert-primary': code == 'Preparando', 'alert-warning': code == 'Entrega', 'alert-success': code == 'Recibido'}">
-                    <i class="fa fa-paw mt-1 mr-3"></i> <strong class="text-center">QR status: {{ code }}</strong>
+              <div class="dropdown mb-3">
+                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-plus mt-1 mr-3"></i> Mas
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" (click)="newPetRegister()"><i class="fa fa-paw mt-1 mr-3"></i> Añadir Can</a>
+                  <a class="dropdown-item" href="#"><i class="fa fa-user mt-1 mr-3"></i> Añadir Familiar</a>
+                  <a class="dropdown-item" (click)="changeProfilePet()"><i class="fa fa-edit mt-1 mr-3"></i> Cambiar Perfil</a>
+                  <!-- <a class="dropdown-item" href="#"></a> -->
                 </div>
               </div>
+            </div>
+            <!-- <div *ngIf="profile.code.length > 0" class="col-sm">
+                <div class="alert error-message text-center" *ngIf="profile.code.length > 0" [ngClass]="{'alert-dark': profile.code[0].status == 'Ordenando','alert-info': profile.code[0].status == 'Pendiente', 'alert-primary': profile.code[0].status == 'Preparando', 'alert-warning': profile.code[0].status == 'Entrega', 'alert-success': profile.code[0].status == 'Recibido'}">
+                    <i class="fa fa-paw mt-1 mr-3"></i> <strong class="text-center">QR status: {{ profile.code[0].status }}</strong>
+                </div>
+              </div> -->
             <div class="col-sm">
                 <div class="row">
                     <div class="col-6" >
                         <!-- <button [disabled]="code == 'Ordenando' || code == 'Pendiente' || code == 'Preparando' || code == 'Enviado' || code == 'Recibido'" (click)="generateQrCode()" type="submit" class="btn btn-yellow btn-sm col-12 float-right mb-2"> -->
-                        <button [disabled]="code == 'Ordenando' || code == 'Pendiente' || code == 'Preparando' || code == 'Enviado' || code == 'Recibido'" (click)="goShopping()" type="submit" class="btn btn-yellow btn-sm col-12 float-right mb-2">
+                        <button (click)="goShopping()" type="submit" class="btn btn-yellow btn-sm col-12 float-right mb-2">
                           <i class="fas fa-cart-plus"></i>
                           Mi Carrito
                         </button>
                     </div>
                     <div class="col-6">
-                      <button (click)="goToProfile()" class="btn btn-yellow btn-sm col-12 float-right mb-2">
-                          Ver Perfil
-                      </button>
+                        <button (click)="goToProfile()" class="btn btn-yellow btn-sm col-12 float-right mb-2">
+                            Ver Perfil
+                        </button>
                     </div>
                  </div>
             </div>
@@ -30,8 +41,7 @@
             <div class="col-xs-12 col-12 col-sm-4 col-md-4 col-lg-3">
                 <div class="userProfileInfo" [ngClass]="{'p-4': Media.IsMobile }">
                     <div class="image text-center">
-                        <img src="{{profile.photo}}" style=" width:210px; height:200px;" alt="{{profile.petName}}" class=" mt-2 img-responsive rounded-circle">
-                        
+                        <img class="w-100 h-100" style="border-radius: 15px;" src="{{profile.photo}}" alt="{{profile.photo}}">
                         <a (click)="updatePhoto()" class="editImage">
                             <i class="fa fa-camera"></i>
                         </a>
@@ -56,7 +66,7 @@
             <div class="col-xs-12 col-12 col-sm-8  col-md-8 col-lg-9">
                 <div class="box">
                     <!-- Tabs -->
-                    <ul class="nav nav-tabs nav-pills nav-fill" id="nav-tab" role="tablist">
+                    <ul class="nav nav-tabs nav-pills nav-fill mb-2" id="nav-tab" role="tablist">
                         <li class="nav-item" (click)="stepTrackOrder(1)" ><a class="nav-link" [ngClass]="{'active': id === 1}" (click)="stepTrackOrder(1)" id="nav-calendar-tab" data-toggle="tab" href="#nav-calendar" role="tab" aria-controls="nav-calendar" aria-selected="false"> <i class="fas fa-list"></i> Eventos</a></li>
                         <li class="nav-item" (click)="stepTrackOrder(2)" ><a class="nav-link" [ngClass]="{'active': id === 2}" (click)="stepTrackOrder(2)" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="true"><i class="fas fa-calendar-alt"></i> Calendario</a></li>
                         <li class="nav-item" (click)="stepTrackOrder(3)" ><a class="nav-link" [ngClass]="{'active': id === 3}" (click)="stepTrackOrder(3)" id="nav-activity-tab" data-toggle="tab" href="#nav-activity" role="tab" aria-controls="nav-activity" aria-selected="false"><i class="fas fa-tasks"></i> Perfil</a></li>
@@ -102,7 +112,7 @@
                         </div>
 
                         <!-- Calendario -->
-                        <div *ngIf="id === 2" class="tab-panel fade show" [ngClass]="{'active': id === 2}" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+                        <div *ngIf="id === 2" class="tab-panel fade show" [ngClass]="{'active': id === 2, 'mb-2': !Media.IsMobile}" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
                             <full-calendar [options]="calendarOptions"></full-calendar>
                         </div>
     
@@ -111,7 +121,7 @@
                             <div class="userActivities text-center">
                                 <h2 class="boxTitle">  <i class="fa fa-paw" aria-hidden="true"></i>  Informacion personal</h2>
                                 <form  [formGroup]="newPetInfoForm" (ngSubmit)="addNewPetInfoSubmit()">
-                                    <div class="form-row">
+                                    <!-- <div class="form-row">
                                         <div class="form-group input-group col-6">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"> <i class="fa fa-paw" aria-hidden="true"></i>  </span>
@@ -132,7 +142,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="form-row">
                                         <div class="form-group input-group col-6">
                                             <div class="input-group-prepend">
@@ -156,13 +165,12 @@
                                             </div>
                                         </div> 
                                     </div>
-
                                     <div class="form-row">
                                         <div class="form-group input-group col-6">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
                                             </div>
-                                            <input type="date" formControlName="birthDate" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.birthDate.errors }" />
+                                            <input type="date" rel="txtTooltip" title="Fecha de nacimiento del can" data-toggle="tooltip" data-placement="top" formControlName="birthDate" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.birthDate.errors }" />
                                             <div *ngIf="submitted && g.birthDate.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.birthDate.errors }">
                                                 <div *ngIf="g.birthDate.errors.required">Fecha de cumpleaños es requerido</div>
                                             </div>
@@ -172,7 +180,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"> <i class="fas fa-birthday-cake"></i> </span>
                                             </div>
-                                            <input type="text" formControlName="age" class="form-control" placeholder="Edad del can" [ngClass]="{ 'is-invalid': submitted && g.age.errors }" />
+                                            <input type="text" rel="txtTooltip" title="Edad del can" data-toggle="tooltip" data-placement="top" formControlName="age" class="form-control" placeholder="Edad del can" [ngClass]="{ 'is-invalid': submitted && g.age.errors }" />
                                             <div *ngIf="submitted && g.age.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.age.errors }">
                                                 <div *ngIf="g.age.errors.required">Edad del can es requerido</div>
                                             </div>
@@ -199,7 +207,75 @@
                                                 <div *ngIf="g.phoneVeterinarian.errors.pattern">Solo se permiten numeros</div>
                                             </div>
                                         </div>  
+                                    </div> -->
+
+                                    <div class="form-group input-group col-12">
+                                        <span class="mr-3"> <i class="fa fa-paw" aria-hidden="true"></i>  Nombre del can  </span>
+                                        <input type="text" formControlName="petName" class="form-control" placeholder="Nombre del can" [ngClass]="{ 'is-invalid': submitted && g.petName.errors }" />
+                                        <div *ngIf="submitted && g.petName.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.petName.errors }">
+                                            <div *ngIf="g.petName.errors.required">Nombre del can es requerido</div>
+                                        </div>
                                     </div>
+
+                                    <div class="form-group input-group col-12">
+                                        <span class="mr-3"><i class="fa fa-envelope"></i> Correo </span>
+                                        <input type="text" formControlName="email" class="form-control" placeholder="Email del can" [ngClass]="{ 'is-invalid': submitted && g.email.errors }" />
+                                        <div *ngIf="submitted && g.email.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.email.errors }">
+                                            <div *ngIf="g.email.errors.required">Nombre del can es requerido</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group input-group col-12">
+                                        <span class="mr-3"><i class="fa fa-user" aria-hidden="true"></i> Nombre del Dueño </span>
+                                        <input type="text" formControlName="ownerPetName" class="form-control" placeholder="Nombre del Dueño" [ngClass]="{ 'is-invalid': submitted && g.ownerPetName.errors }" />
+                                        <div *ngIf="submitted && g.ownerPetName.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.ownerPetName.errors }">
+                                            <div *ngIf="g.ownerPetName.errors.required">Dueño del can es requerido</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group input-group col-12">
+                                        <span class="mr-3"><i class="fa fa-phone"></i> Telefono </span>
+                                        <input formControlName="phone" pattern="\d*" class="form-control" placeholder="Telefono " maxlength="8" [ngClass]="{ 'is-invalid': submitted && g.phone.errors }" />
+                                        <div *ngIf="submitted && g.phone.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.phone.errors }">
+                                            <div *ngIf="g.phone.errors.required">Telefono es requerido</div>
+                                            <div *ngIf="g.phone.errors.minlength">Telefono debe ser al menos 8 digitos</div>
+                                            <div *ngIf="g.phone.errors.pattern">Solo se permiten numeros</div>
+                                        </div>
+                                    </div> 
+
+                                    <div class="form-group input-group col-12">
+                                        <span *ngIf="Media.IsMobile" class="mr-3"><i class="fa fa-calendar"></i> Nacimiento can </span>
+                                        <span *ngIf="!Media.IsMobile" class="mr-3"><i class="fa fa-calendar"></i> Fecha de nacimiento del can </span>
+                                        <input type="date" rel="txtTooltip" title="Fecha de nacimiento del can" data-toggle="tooltip" data-placement="top" formControlName="birthDate" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.birthDate.errors }" />
+                                        <div *ngIf="submitted && g.birthDate.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.birthDate.errors }">
+                                            <div *ngIf="g.birthDate.errors.required">Fecha de cumpleaños es requerido</div>
+                                        </div>
+                                    </div>  
+  
+                                    <div class="form-group input-group col-12">
+                                        <span class="mr-3"><i class="fas fa-birthday-cake"></i> Edad del can </span>
+                                        <input type="text" rel="txtTooltip" title="Edad del can" data-toggle="tooltip" data-placement="top" formControlName="age" class="form-control" placeholder="Edad del can" [ngClass]="{ 'is-invalid': submitted && g.age.errors }" />
+                                        <div *ngIf="submitted && g.age.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.age.errors }">
+                                            <div *ngIf="g.age.errors.required">Edad del can es requerido</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group input-group col-12">
+                                        <span class="mr-3"><i class="fas fa-address-book"></i> Nombre del veterinario </span>
+                                        <input type="text" formControlName="veterinarianContact" placeholder="Nombre del veterinario" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.veterinarianContact.errors }" />
+                                        <div *ngIf="submitted && g.veterinarianContact.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.veterinarianContact.errors }">
+                                            <div *ngIf="g.veterinarianContact.errors.required">Nombre del veterinario es requerido</div>
+                                        </div>
+                                      </div>
+                                    <div class="form-group input-group col-12">
+                                        <span class="mr-3"><i class="fa fa-phone"></i> Telefono Veterinario </span>
+                                        <input formControlName="phoneVeterinarian" pattern="\d*" class="form-control" placeholder="Telefono Veterinario" maxlength="8" [ngClass]="{ 'is-invalid': submitted && g.phoneVeterinarian.errors }" />
+                                        <div *ngIf="submitted && g.phoneVeterinarian.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.phoneVeterinarian.errors }">
+                                            <div *ngIf="g.phoneVeterinarian.errors.required">Telefono es requerido</div>
+                                            <div *ngIf="g.phoneVeterinarian.errors.minlength">Telefono debe ser al menos 8 digitos</div>
+                                            <div *ngIf="g.phoneVeterinarian.errors.pattern">Solo se permiten numeros</div>
+                                        </div>
+                                    </div> 
 
                                     <div class="form-row">
                                         <div class="form-group input-group col-4">
@@ -468,45 +544,38 @@
         </div>
         <div class="modal-body">
           <form *ngIf="isNewEvent" [formGroup]="newEventForm" (ngSubmit)="newEventCalendarSubmit()">
-            <div class="form-group input-group">
-              <div class="input-group-prepend">
-                  <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-              </div>
-              <input type="text" formControlName="title" class="form-control" placeholder="Nombre completo" [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
-              <div *ngIf="submitted && f.title.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.title.errors }">
-                  <div *ngIf="f.title.errors.required">Nuevo titulo es requerido</div>
-              </div>
-            </div> 
-            <div class="form-group input-group">
-              <div class="input-group-prepend">
-                  <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
-              </div>
-              <input type="date" formControlName="date" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
-              <div *ngIf="submitted && f.date.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.date.errors }">
-                  <div *ngIf="f.date.errors.required">Fecha de Inicio es requerido</div>
-              </div>
-            </div> 
-            <div class="form-group input-group">
-              <div class="input-group-prepend">
-                  <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
-              </div>
-              <input type="date" formControlName="enddate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.enddate.errors }" />
-              <div *ngIf="submitted && f.enddate.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.enddate.errors }">
-                  <div *ngIf="f.enddate.errors.required">Fecha de Final es requerido</div>
-              </div>
-            </div>  
-
-            <div class="form-group input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+            <div class="form-group input-group col-12">
+                <span class="mr-3"> <i class="fa fa-paw" aria-hidden="true"></i>  Nombre del evento  </span>
+                <input type="text" formControlName="title" class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+                <div *ngIf="submitted && f.title.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.title.errors }">
+                    <div *ngIf="f.title.errors.required">Nuevo titulo es requerido</div>
                 </div>
-                <input type="text" formControlName="description" class="form-control" placeholder="Descripcion" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
+            </div>
+
+            <div class="form-group input-group col-12">
+                <span class="mr-3"><i class="fa fa-envelope"></i> Fecha de inicio </span>
+                <input type="date" formControlName="date" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
+                <div *ngIf="submitted && f.date.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.date.errors }">
+                    <div *ngIf="f.date.errors.required">Fecha de Inicio es requerido</div>
+                </div>
+            </div>
+
+            <div class="form-group input-group col-12">
+                <span class="mr-3"><i class="fa fa-envelope"></i> Fecha Final </span>
+                <input type="date" formControlName="enddate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.enddate.errors }" />
+                <div *ngIf="submitted && f.enddate.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.enddate.errors }">
+                    <div *ngIf="f.enddate.errors.required">Fecha de Final es requerido</div>
+                </div>
+            </div>
+            
+            <div class="form-group input-group col-12">
+                <span class="mr-3"> <i class="fa fa-paw" aria-hidden="true"></i>  Descripción del evento  </span>
+                <textarea class="form-control" formControlName="description" placeholder="" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"></textarea>
                 <div *ngIf="submitted && f.description.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.description.errors }">
                     <div *ngIf="f.description.errors.required">Descripcion es requerido</div>
                 </div>
-              </div> 
-  
-              <div class="modal-footer text-center">
+            </div>
+            <div class="modal-footer text-center">
                 <button type="button" class="btn btn-secondary float-left mr-auto" data-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-primary float-right">
                   <i *ngIf="!loading" class="fas fa-plus-circle"></i>
@@ -522,43 +591,38 @@
                 </button>
               </div>
           </form>
-          <form *ngIf="!isNewEvent" [formGroup]="newEventForm" (ngSubmit)="newEventCalendarSubmit()">
-            <div class="form-group input-group">
-              <div class="input-group-prepend">
-                  <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-              </div>
-              <input type="text" formControlName="title" class="form-control" placeholder="Nombre completo" [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
-              <div *ngIf="submitted && f.title.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.title.errors }">
-                  <div *ngIf="f.title.errors.required">Nuevo titulo es requerido</div>
-              </div>
-            </div> 
-            <div class="form-group input-group">
-              <div class="input-group-prepend">
-                  <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
-              </div>
-              <input type="date" formControlName="date" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
-              <div *ngIf="submitted && f.date.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.date.errors }">
-                  <div *ngIf="f.date.errors.required">Fecha de Inicio es requerido</div>
-              </div>
-            </div> 
-            <div class="form-group input-group">
-              <div class="input-group-prepend">
-                  <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
-              </div>
-              <input type="date" formControlName="enddate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.enddate.errors }" />
-              <div *ngIf="submitted && f.enddate.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.enddate.errors }">
-                  <div *ngIf="f.enddate.errors.required">Fecha de Final es requerido</div>
-              </div>
-            </div>  
-            <div class="form-group input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+          <form *ngIf="!isNewEvent" [formGroup]="newEventForm" (ngSubmit)="updateEventCalendarSubmit()">
+            <div class="form-group input-group col-12">
+                <span class="mr-3"> <i class="fa fa-paw" aria-hidden="true"></i>  Nombre del evento  </span>
+                <input type="text" formControlName="title" class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+                <div *ngIf="submitted && f.title.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.title.errors }">
+                    <div *ngIf="f.title.errors.required">Nuevo titulo es requerido</div>
                 </div>
-                <input type="text" formControlName="description" class="form-control" placeholder="Descripcion" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
+            </div>
+
+            <div class="form-group input-group col-12">
+                <span class="mr-3"><i class="fa fa-envelope"></i> Fecha de inicio </span>
+                <input type="date" formControlName="date" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
+                <div *ngIf="submitted && f.date.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.date.errors }">
+                    <div *ngIf="f.date.errors.required">Fecha de Inicio es requerido</div>
+                </div>
+            </div>
+
+            <div class="form-group input-group col-12">
+                <span class="mr-3"><i class="fa fa-envelope"></i> Fecha Final </span>
+                <input type="date" formControlName="enddate" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.enddate.errors }" />
+                <div *ngIf="submitted && f.enddate.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.enddate.errors }">
+                    <div *ngIf="f.enddate.errors.required">Fecha de Final es requerido</div>
+                </div>
+            </div>
+            
+            <div class="form-group input-group col-12">
+                <span class="mr-3"> <i class="fa fa-paw" aria-hidden="true"></i>  Descripción del evento  </span>
+                <textarea class="form-control" formControlName="description" placeholder="" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"></textarea>
                 <div *ngIf="submitted && f.description.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.description.errors }">
                     <div *ngIf="f.description.errors.required">Descripcion es requerido</div>
                 </div>
-              </div> 
+            </div>
   
               <div class="modal-footer text-center">
                 <button type="button" class="btn btn-secondary float-left mr-auto" data-dismiss="modal">Cancelar</button>
@@ -700,5 +764,237 @@
   </div>
   
   
+  <div class="modal fade" id="newPetModal" tabindex="-1" role="dialog" aria-labelledby="newPetModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="newPetModal">Agregar nuevo can</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                <div class="form-group input-group col-12">
+                    <span class="mr-3"> <i class="fa fa-paw" aria-hidden="true"></i>  Genero del can  </span>
+                    <ng-select [searchable]="false" formControlName="genderSelected" class=" form-control rounded-0 " id="inputGroupSelect01" [clearable]="false" [ngClass]="{ 'is-invalid': submitted && i.genderSelected.errors }">
+                        <ng-option *ngFor="let item of bussinesType" [value]="item.Id">{{item.gender}}</ng-option>
+                    </ng-select>
+                    <div *ngIf="submitted && i.genderSelected.errors" class="invalid-feedback">
+                        <div *ngIf="i.genderSelected.errors.required">Tipo de genero es requerido</div>
+                    </div>
+                  </div>
+                <div class="form-group input-group col-12">
+                    <span class="mr-3"> <i class="fa fa-paw" aria-hidden="true"></i>  Nombre del can  </span>
+                    <input type="text" formControlName="petName" class="form-control" placeholder="Nombre del can" [ngClass]="{ 'is-invalid': submitted && i.petName.errors }" />
+                    <div *ngIf="submitted && i.petName.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.petName.errors }">
+                        <div *ngIf="i.petName.errors.required">Nombre del can es requerido</div>
+                    </div>
+                </div>
+
+                <div class="form-group input-group col-12">
+                    <span class="mr-3"><i class="fa fa-envelope"></i> Correo </span>
+                    <input  type="text" formControlName="email" class="form-control" placeholder="Email del can" [ngClass]="{ 'is-invalid': submitted && i.email.errors }" />
+                    <div *ngIf="submitted && i.email.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.email.errors }">
+                        <div *ngIf="i.email.errors.required">Nombre del can es requerido</div>
+                    </div>
+                </div>
+
+                <div class="form-group input-group col-12">
+                    <span class="mr-3"><i class="fa fa-user" aria-hidden="true"></i> Nombre del Dueño </span>
+                    <input type="text" formControlName="ownerPetName" class="form-control" placeholder="Nombre del Dueño" [ngClass]="{ 'is-invalid': submitted && i.ownerPetName.errors }" />
+                    <div *ngIf="submitted && i.ownerPetName.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.ownerPetName.errors }">
+                        <div *ngIf="i.ownerPetName.errors.required">Dueño del can es requerido</div>
+                    </div>
+                </div>
+
+                <div class="form-group input-group col-12">
+                    <span class="mr-3"><i class="fa fa-phone"></i> Telefono </span>
+                    <input formControlName="phone" pattern="\d*" class="form-control" placeholder="Telefono " maxlength="8" [ngClass]="{ 'is-invalid': submitted && i.phone.errors }" />
+                    <div *ngIf="submitted && i.phone.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.phone.errors }">
+                        <div *ngIf="i.phone.errors.required">Telefono es requerido</div>
+                        <div *ngIf="i.phone.errors.minlength">Telefono debe ser al menos 8 digitos</div>
+                        <div *ngIf="i.phone.errors.pattern">Solo se permiten numeros</div>
+                    </div>
+                </div> 
+
+                <div class="form-group input-group col-12">
+                    <span *ngIf="Media.IsMobile" class="mr-3"><i class="fa fa-calendar"></i> Nacimiento can </span>
+                    <span *ngIf="!Media.IsMobile" class="mr-3"><i class="fa fa-calendar"></i> Fecha de nacimiento del can </span>
+                    <input type="date" rel="txtTooltip" title="Fecha de nacimiento del can" data-toggle="tooltip" data-placement="top" formControlName="birthDate" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && i.birthDate.errors }" />
+                    <div *ngIf="submitted && i.birthDate.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.birthDate.errors }">
+                        <div *ngIf="i.birthDate.errors.required">Fecha de cumpleaños es requerido</div>
+                    </div>
+                </div>  
+
+                <div class="form-group input-group col-12">
+                    <span class="mr-3"><i class="fas fa-birthday-cake"></i> Edad del can </span>
+                    <input type="text" rel="txtTooltip" title="Edad del can" data-toggle="tooltip" data-placement="top" formControlName="age" class="form-control" placeholder="Edad del can" [ngClass]="{ 'is-invalid': submitted && i.age.errors }" />
+                    <div *ngIf="submitted && i.age.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.age.errors }">
+                        <div *ngIf="i.age.errors.required">Edad del can es requerido</div>
+                    </div>
+                </div>
+
+                <div class="form-group input-group col-12">
+                    <span class="mr-3"><i class="fas fa-address-book"></i> Nombre del veterinario </span>
+                    <input type="text" formControlName="veterinarianContact" placeholder="Nombre del veterinario" class="form-control" [ngClass]="{ 'is-invalid': submitted && i.veterinarianContact.errors }" />
+                    <div *ngIf="submitted && i.veterinarianContact.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.veterinarianContact.errors }">
+                        <div *ngIf="i.veterinarianContact.errors.required">Nombre del veterinario es requerido</div>
+                    </div>
+                  </div>
+                <div class="form-group input-group col-12">
+                    <span class="mr-3"><i class="fa fa-phone"></i> Telefono Veterinario </span>
+                    <input formControlName="phoneVeterinarian" pattern="\d*" class="form-control" placeholder="Telefono Veterinario" maxlength="8" [ngClass]="{ 'is-invalid': submitted && i.phoneVeterinarian.errors }" />
+                    <div *ngIf="submitted && i.phoneVeterinarian.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.phoneVeterinarian.errors }">
+                        <div *ngIf="i.phoneVeterinarian.errors.required">Telefono es requerido</div>
+                        <div *ngIf="i.phoneVeterinarian.errors.minlength">Telefono debe ser al menos 8 digitos</div>
+                        <div *ngIf="i.phoneVeterinarian.errors.pattern">Solo se permiten numeros</div>
+                    </div>
+                </div> 
+
+                <!-- <div class="form-row">
+                    <div class="form-group input-group col-4">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"> <i class="fab fa-twitter"></i> </span>
+                        </div>
+                        <input type="text" formControlName="linkTwitter" placeholder="Link de Twitter" class="form-control" [ngClass]="{ 'is-invalid': submitted && i.linkTwitter.errors }" />
+                        <div *ngIf="submitted && i.linkTwitter.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.linkTwitter.errors }">
+                            <div *ngIf="i.linkTwitter.errors.required">Link de Twitter es requerido</div>
+                        </div>
+                      </div>
+                    <div class="form-group input-group col-4">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"> <i class="fab fa-facebook-f"></i> </span>
+                        </div>
+                        <input type="text" formControlName="linkFacebook" placeholder="Link de Facebook" class="form-control" [ngClass]="{ 'is-invalid': submitted && i.linkFacebook.errors }" />
+                        <div *ngIf="submitted && i.linkFacebook.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.linkFacebook.errors }">
+                            <div *ngIf="i.linkFacebook.errors.required">Link de Facebook es requerido</div>
+                        </div>
+                    </div> 
+                    <div class="form-group input-group col-4">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"> <i class="fab fa-instagram"></i></span>
+                        </div>
+                        <input type="text" formControlName="linkInstagram" placeholder="Link de instagram" class="form-control" [ngClass]="{ 'is-invalid': submitted && i.linkInstagram.errors }" />
+                        <div *ngIf="submitted && i.linkInstagram.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.linkInstagram.errors }">
+                            <div *ngIf="i.linkInstagram.errors.required">Link de instagram es requerido</div>
+                        </div>
+                    </div>  
+                </div> -->
+
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Direccion exacta</label>
+                    <textarea class="form-control" formControlName="address" placeholder="" class="form-control" [ngClass]="{ 'is-invalid': submitted && i.address.errors }"></textarea>
+                    <div *ngIf="submitted && i.address.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.address.errors }">
+                        <div *ngIf="i.address.errors.required">Direccion exacta es requerido</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Necesidades y requisitos de salud y dieta</label>
+                    <textarea class="form-control" formControlName="healthAndRequirements" placeholder="" class="form-control" [ngClass]="{ 'is-invalid': submitted && i.healthAndRequirements.errors }"></textarea>
+                    <div *ngIf="submitted && i.healthAndRequirements.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.healthAndRequirements.errors }">
+                        <div *ngIf="i.healthAndRequirements.errors.required">Contacto veterinario es requerido</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Actividades / juguetes / golosinas favoritas</label>
+                    <textarea class="form-control" formControlName="favoriteActivities" placeholder="" class="form-control" [ngClass]="{ 'is-invalid': submitted && i.favoriteActivities.errors }"></textarea>
+                    <div *ngIf="submitted && i.favoriteActivities.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.favoriteActivities.errors }">
+                        <div *ngIf="i.favoriteActivities.errors.required">Contacto veterinario es requerido</div>
+                    </div>
+                </div>
+               
+                 <div class="form-group mb-1 text-center">
+                   <label class="font-weight-bold">Foto:</label>
+                   <input #photoinput type="file" name="image" accept="image/*" class="d-none"
+                     (change)="processFile($event)">
+                   <img [src]="photoSelected || '../../../assets/upload.png'" alt="" style="height: 66px;" class="img-fluid" (click)="photoinput.click()" srcset="">
+                 </div>
+                   <div class="form-group mb-1">
+                       <div class="form-group text-center col">
+                           <label class="font-weight-bold ">Mostrar ubicacion exacta de la vivienda del can</label>
+                           <div class="map" style="width:100%;height:35vh" #map>
+                               <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [styles]="currentTimer" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [zoomControl]="true" (mapClick)="mapClickedNewPet($event)" [disableDefaultUI]="false">
+                             
+                                 <agm-marker style="border-radius: 50%;" *ngFor="let m of markersNewPet; let i = index" [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [agmFitBounds]="true" [iconUrl]="{url:m.photo, scaledSize:{height:45, width:40, radius:5}}">
+                                     
+                                   <agm-info-window  #infowindow [isOpen]="showInfoNewPet" >
+                                     <h6>Es tu ubicación actual?</h6>
+                                     <p>Si no es la Ubicacion puedes cambiarla haciendo click</p>
+                                     <button class="btn btn-info btn-sm mr-1" (click)="changePositionNewPet(m)" >Cambiar</button>
+                                     <button class="btn btn-success btn-sm" (click)="savePositionNewPet()" >Guardar</button>
+                                   </agm-info-window>
+                                 </agm-marker>
+                               </agm-map>
+                             </div>
+                             <div class="container">
+                               <div class="text-center well">
+                                 <!-- <div class="pt-2 pr-0 pl-0"> <button class="btn btn-info btn-sm" (click)="setCurrentNewPosition()">Mi Ubicación Actual</button></div> -->
+                             </div>
+                           </div>
+                       </div>
+                   </div>
+                 <div class="form-group">
+                     <button type="submit" class="btn btn-yellow btn-block"> <i *ngIf="!loading" class="fas fa-plus-circle"></i>
+                       <svg *ngIf="loading" class="loader" viewBox="0 0 24 24">
+                         <circle class="loader__value" cx="12" cy="12" r="10" />
+                         <circle class="loader__value" cx="12" cy="12" r="10" />
+                         <circle class="loader__value" cx="12" cy="12" r="10" />
+                         <circle class="loader__value" cx="12" cy="12" r="10" />
+                         <circle class="loader__value" cx="12" cy="12" r="10" />
+                         <circle class="loader__value" cx="12" cy="12" r="10" />
+                       </svg>
+                       Crear nuevo Perfil
+                     </button>
+                 </div>                                                                
+               </form>
+        </div>
+      </div>
+    </div>
+  </div>
   
-  
+  <div class="modal fade" *ngIf="seeAllProfile" id="changeProfileModal" tabindex="-1" role="dialog" aria-labelledby="changeProfileModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="changeProfileModal">Cambiar de perfil</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <div class="row">
+                  <div class="col-12 col-sm-12 card-wrapper">
+                    <div class="card border-0">
+                      <div class="position-relative rounded-circle overflow-hidden mx-auto custom-circle-image">
+                        <img class="w-100 h-100" src="{{photoPrincipalPet}}" alt="{{photoPrincipalPet}}">
+                      </div>
+                      <div class="card-body text-center mt-4">
+                        <a (click)="profileSelected(1)" class="btn btn-inverse btn-sm">Perfil principal
+                            <i class="fas fa-paw ml-2"></i>
+                        </a>  
+                      </div>
+                    </div>
+                  </div>
+            
+                  <div *ngFor="let item of seeAllProfile" class="col-6 col-sm-6 col-lg-6 col-xl-6 card-wrapper" style="width: 18rem;">
+                    <div class="card border-0">
+                      <div class="position-relative rounded-circle overflow-hidden mx-auto custom-circle-image">
+                        <img class="w-100 h-100" src="{{item.photo}}" alt="Card image cap">
+                      </div>
+                      <div class="card-body text-center mt-4">
+                        <a (click)="profileSelected(item)" class="btn btn-inverse btn-sm">{{item.petName}}
+                            <i class="fas fa-paw ml-2"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>    
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>

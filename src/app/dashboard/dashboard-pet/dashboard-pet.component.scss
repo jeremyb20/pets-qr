@@ -153,14 +153,58 @@
         margin: 0 0 24px 0
     }
 
-    @media (min-width: 992px) {
+    .card-wrapper {
+        margin: 5% 0;
+      }
+      
+      /* You can adjust the image size by increasing/decreasing the width, height */
+    .custom-circle-image {
+        width:100px; /* note i used vw not px for better responsive */
+        height: 100px;
+    }
+
+    .custom-circle-image img {
+        object-fit: cover;
+    }
+      
+    .card-title {
+        letter-spacing: 1.1px;
+    }
+      
+    .card-text {
+        font-family: MerriweatherRegular;
+        font-size: 22px;
+        line-height: initial;
+    }
+
+    @media (max-width: 992px) {
         .box {
             background: #fff;
             padding: 22px 10px;
             margin: 0 0 24px 0
         }
+
+        .img-size {
+            margin: 0px 36px 0px 43px !important;
+        }
+
+        .custom-circle-image {
+            width:100px; /* note i used vw not px for better responsive */
+            height: 100px;
+        }
+    
     }
     
+    .mobileHeight {
+        height: 210px !important;
+        border-radius: 50% !important; 
+    }
+
+    .landscapeHeight {
+        height: 210px !important;
+        border-radius: 50% !important;
+    }
+
     .box.box-without-padding {
         padding: 0
     }

@@ -10,6 +10,25 @@
   padding-right: 250px;
 }
 
+#logout_sidebar_button {
+  position: absolute;
+  display: inline-block;
+  bottom: 0;
+  width: 100%;
+}
+
+.sidebar {
+  color: white;
+  background:hsl(227, 49%, 89%);
+  position: relative;
+  min-height: 100%;
+  padding-bottom: 40px;
+}
+.sidebar li {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
 #sidebar-wrapper {
   z-index: 1000;
   position: fixed;
@@ -18,7 +37,7 @@
   height: 100%;
   margin-right: -250px;
   overflow-y: auto;
-  background: #193239;
+  background: #1c2331;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
@@ -31,8 +50,6 @@
 
 .page-content-wrapper {
   width: 100%;
-//   position: absolute;
-  // padding: 15px;
 }
 
 #wrapper.toggled .page-content-wrapper {
@@ -74,7 +91,8 @@
 }
 
 .sidebar-nav>.sidebar-brand {
-  height: 65px;
+  height: 119px;
+  padding-top: 62px;
   font-size: 18px;
   line-height: 60px;
 }

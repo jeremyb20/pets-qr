@@ -119,6 +119,21 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         }
     }
 
+    goHome(){
+        // $('#wrapper').removeClass('toggled')
+        if(this.user.userState == 0 ){
+          this.router.navigate(['/admin'])
+        }
+    
+        if(this.user.userState == 3 ){
+          if(this.Media.IsMobile){
+            $('#wrapper').removeClass('toggled')
+          }
+            
+          this.router.navigate(['/dashboard-pet']);
+        }
+      }
+
     detectWakeFromSleep() {
         let now = new Date().getTime();
         let delta = now - this.lastTick;

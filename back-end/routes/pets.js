@@ -93,6 +93,67 @@ router.post('/register/new-pet', async(req, res, next) => {
   });
 });
 
+router.post('/register/new-petByUserPet', async(req, res) => {
+  var id ='6001c62cc9d9a51663845872';
+  const obj = JSON.parse(JSON.stringify(req.body));
+  const result = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.image);
+  const newpet = {
+    petName: obj.petName,
+    ownerPetName: obj.ownerPetName,
+    birthDate: obj.birthDate,
+    address: obj.address,
+    email: obj.email,
+    age: obj.age,
+    veterinarianContact: obj.veterinarianContact,
+    phoneVeterinarian: obj.phoneVeterinarian,
+    healthAndRequirements: obj.healthAndRequirements,
+    favoriteActivities: obj.favoriteActivities,
+    // linkTwitter: obj.linkTwitter,
+    // linkFacebook: obj.linkFacebook,
+    // linkInstagram: obj.linkInstagram,
+    lat: obj.lat,
+    lng: obj.lng,
+    userState: obj.userState,
+    genderSelected:obj.genderSelected,
+    photo: result.secure_url == undefined ? obj.image : result.secure_url,
+    phone: obj.phone,
+    petStatus: obj.petStatus,
+    permissions : {
+      showPhoneInfo: true,
+      showEmailInfo: true,
+      showLinkTwitter: true,
+      showLinkFacebook: true,
+      showLinkInstagram: true,
+      showOwnerPetName: true,
+      showBirthDate: true,
+      showAddressInfo: true,
+      showAgeInfo: true,
+      showVeterinarianContact: true,
+      showPhoneVeterinarian: true,
+      showHealthAndRequirements: true,
+      showFavoriteActivities: true,
+      showLocationInfo: true
+    }
+  }
+
+  var notifications = {
+    message: 'El usuario con el correo '+ obj.email+ ' ha registrado un can bajo su dominio',
+    userPetName: obj.petName,
+    isNewMsg: true,
+    dateMsg: new Date(),
+    photo: obj.photo,
+    idPet: obj._id
+  }
+
+  Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { newPetProfile: newpet }},{new: true}).then(function(data){
+    res.json({success:true,msg: 'Se ha registrado correctamente el can bajo su correo de perfil!'});
+  });
+
+  Pet.findOneAndUpdate({ _id: id }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
+    console.log('Se ha enviado al admin');
+  });
+});
+
 // Authenticate
 router.post('/authenticate', (req, res, next) => {
   const email = req.body.email;
@@ -117,7 +178,8 @@ router.post('/authenticate', (req, res, next) => {
             id: pet._id,
             userState: pet.userState,
             petName: pet.petName,
-            photo: pet.photo
+            photo: pet.photo,
+            idSecond: 0
           }
         })
       } else {
@@ -153,10 +215,11 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
     if (!pet) {
       return res.json({success:false,msg: 'Usuario no encontrado'});
     }
-     if(pet != null) {
-       var arrayPet = [];
-       arrayPet.push(pet);
-      arrayPet.forEach(element => {
+    if(pet != null) {
+      var arrayPet = [];
+      arrayPet.push(pet);
+      if(obj.idSecond == 0){
+        arrayPet.forEach(element => {
           element["petName"] = petUpdate.petName;
           element["ownerPetName"] = petUpdate.ownerPetName;
           element["birthDate"] = petUpdate.birthDate;
@@ -178,7 +241,34 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
             res.json({ success: false, msg: err });
             next(err);
           }
-      })
+        })
+      }else {
+        arrayPet[0].newPetProfile.forEach(element => {
+          if(element._id == obj.idSecond){
+            element["petName"] = petUpdate.petName;
+            element["ownerPetName"] = petUpdate.ownerPetName;
+            element["birthDate"] = petUpdate.birthDate;
+            element["address"] = petUpdate.address;
+            element["email"] = petUpdate.email;
+            element["age"] = petUpdate.age;
+            element["veterinarianContact"] = petUpdate.veterinarianContact;
+            element["phoneVeterinarian"] = petUpdate.phoneVeterinarian;
+            element["healthAndRequirements"] = petUpdate.healthAndRequirements;
+            element["favoriteActivities"] = petUpdate.favoriteActivities;
+            element["linkTwitter"] = petUpdate.linkTwitter;
+            element["linkFacebook"] = petUpdate.linkFacebook;
+            element["linkInstagram"] = petUpdate.linkInstagram;
+            element["showLocationInfo"] = petUpdate.showLocationInfo;
+            pet.save();
+            try {
+              res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+            } catch (err) {
+              res.json({ success: false, msg: err });
+              next(err);
+            }
+          }
+        })
+      }
      }
    });
 });
@@ -198,7 +288,8 @@ router.put('/update/updateLocationPet', async(req, res, next) => {
      if(pet != null) {
        var arrayPet = [];
       arrayPet.push(pet);
-      arrayPet.forEach(element => {
+      if(obj.idSecond == 0){
+        arrayPet.forEach(element => {
           element["lat"] = petUpdate.lat;
           element["lng"] = petUpdate.lng;
           pet.save();
@@ -208,7 +299,22 @@ router.put('/update/updateLocationPet', async(req, res, next) => {
             res.json({ success: false, msg: err });
             next(err);
           }
-      })
+        })
+      }else{
+        arrayPet[0].newPetProfile.forEach(element => {
+          if(element._id == obj.idSecond){
+            element["lat"] = petUpdate.lat;
+            element["lng"] = petUpdate.lng;
+            pet.save();
+            try {
+              res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+            } catch (err) {
+              res.json({ success: false, msg: err });
+              next(err);
+            }
+          }
+        })
+      }
      }
    });
 });
@@ -227,52 +333,131 @@ router.put('/update/updatePhotoPetProfile', async(req, res, next) => {
     }
      if(pet != null) {
        var arrayPet = [];
-      arrayPet.push(pet);
-      arrayPet.forEach(element => {
-          element["photo"] = newPet.photo;
-          pet.save();
-          try {
-            res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
-          } catch (err) {
-            res.json({ success: false, msg: err });
-            next(err);
-          }
-      })
+       arrayPet.push(pet);
+       if(obj.idSecond == 0){
+        arrayPet.forEach(element => {
+            element["photo"] = newPet.photo;
+            pet.save();
+            try {
+              res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+            } catch (err) {
+              res.json({ success: false, msg: err });
+              next(err);
+            }
+        })
+      }else {
+        arrayPet[0].newPetProfile.forEach(element => {
+          if (element._id == obj.idSecond) {
+            element["photo"] = newPet.photo;
+            pet.save();
+            try {
+              res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+            } catch (err) {
+              res.json({ success: false, msg: err });
+              next(err);
+            }
+          }   
+        })
+      }
      }
    });
 });
 
-router.get('/getPetDataList/:id', function(req, res){
+router.get('/getPetDataList', function(req, res){
+  var id = req.query.id;
+  var idSecond = req.query.idSecond;
+  Pet.findById(id, function(err, results){
+    if(err){
+      res.json({ success: false, msg: err });
+      return;
+    }
+    if(idSecond == 0) {
+      var pet = {
+        petName: results.petName,
+        ownerPetName: results.ownerPetName,
+        phone: results.phone,
+        email: results.email,
+        photo: results.photo,
+        userState: results.userState,
+        lat: results.lat,
+        lng: results.lng,
+        birthDate: results.birthDate,
+        address: results.address,
+        age: results.age,
+        veterinarianContact: results.veterinarianContact,
+        phoneVeterinarian: results.phoneVeterinarian,
+        healthAndRequirements: results.healthAndRequirements,
+        favoriteActivities: results.favoriteActivities,
+        calendar: results.calendar,
+        code: results.code,
+        petStatus: results.petStatus,
+        linkTwitter: results.linkTwitter,
+        linkFacebook: results.linkFacebook,
+        linkInstagram: results.linkInstagram,
+        newPetProfile: results.newPetProfile
+      }
+      res.json(pet)
+    }else {
+      if(results!= null) {
+          results.newPetProfile.forEach(element => {
+          if (element._id == idSecond) {
+            var pet = {
+              petName: element.petName,
+              ownerPetName: element.ownerPetName,
+              phone: element.phone,
+              email: element.email,
+              photo: element.photo,
+              userState: element.userState,
+              lat: element.lat,
+              lng: element.lng,
+              birthDate: element.birthDate,
+              address: element.address,
+              age: element.age,
+              veterinarianContact: element.veterinarianContact,
+              phoneVeterinarian: element.phoneVeterinarian,
+              healthAndRequirements: element.healthAndRequirements,
+              favoriteActivities: element.favoriteActivities,
+              calendar: element.calendar,
+              code: element.code,
+              petStatus: element.petStatus,
+              linkTwitter: element.linkTwitter,
+              linkFacebook: element.linkFacebook,
+              linkInstagram: element.linkInstagram
+            }
+            res.json(pet)
+          }
+        })
+      }
+      
+    }
+  });
+});
+
+router.get('/getAllProfileList/:id', function(req, res){
   var id = req.params.id;
   Pet.findById(id, function(err, results){
     if(err){
-      res.send('Algo ocurrio favor contactar a soporte');
+      res.json({ success: false, msg: err });
       return;
     }
+    let object = [];
 
-   var pet = {
+    results.newPetProfile.forEach(item => {
+      var test = {
+        id: item._id,
+        petName : item.petName,
+        photo: item.photo
+      }
+
+      object.push(test);
+    })
+
+    var pet = {
       petName: results.petName,
-      ownerPetName: results.ownerPetName,
-      phone: results.phone,
-      email: results.email,
       photo: results.photo,
-      userState: results.userState,
-      lat: results.lat,
-      lng: results.lng,
-      birthDate: results.birthDate,
-      address: results.address,
-      age: results.age,
-      veterinarianContact: results.veterinarianContact,
-      phoneVeterinarian: results.phoneVeterinarian,
-      healthAndRequirements: results.healthAndRequirements,
-      favoriteActivities: results.favoriteActivities,
-      calendar: results.calendar,
-      code: results.code,
-      petStatus: results.petStatus,
-      linkTwitter: results.linkTwitter,
-      linkFacebook: results.linkFacebook,
-      linkInstagram: results.linkInstagram
+      newPetProfile: object
     }
+
     res.json(pet)
   });
 });
@@ -286,22 +471,119 @@ router.post('/register/newPetEvent', async(req, res) => {
     enddate: obj.enddate,
     description: obj.description
   };
-  Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { calendar: newCalendarEvent  }},{new: true}).then(function(data){
-    res.json({success:true,msg: 'Evento registrado correctamente..!'});
-  });
+  if(obj.idSecond == 0) {
+    Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { calendar: newCalendarEvent } }, { new: true }).then(function (data) {
+      res.json({ success: true, msg: 'Evento registrado correctamente..!' });
+    });
+  }else {
+    Pet.findOne({_id: req.body._id }, (err, pet) => {
+      if (!pet) {
+        return res.json({success:false,msg: 'Usuario no encontrado'});
+      }
+      if(pet != null) {
+         var arrayPet = [];
+        arrayPet.push(pet);
+        arrayPet[0].newPetProfile.forEach(element => {
+          if (element._id == obj.idSecond) {
+             element["calendar"].push(newCalendarEvent);
+            pet.save();
+            try {
+              res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+            } catch (err) {
+              res.json({ success: false, msg: err });
+              next(err);
+            }
+          }   
+        })
+      }
+    });
+  }
+});
+
+router.put('/update/updatePetEvent', async(req, res) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  let updateCalendarEvent = {
+    title: obj.title,
+    date: obj.date,
+    enddate: obj.enddate,
+    description: obj.description
+  };
+  if(obj.idSecond == 0) {
+    Pet.findOne({_id: req.body._id }, (err, pet) => {
+      if (!pet) {
+        return res.json({success:false,msg: 'Usuario no encontrado'});
+      }
+      if(pet != null) {
+         var arrayPet = [];
+        arrayPet.push(pet);
+        arrayPet[0].calendar.forEach(element => {
+          if (element._id == obj.idEventUpdate) {
+            element["title"] = updateCalendarEvent.title;
+            element["date"] = updateCalendarEvent.date;
+            element["enddate"] = updateCalendarEvent.enddate;
+            element["description"] = updateCalendarEvent.description;
+            
+            pet.save();
+            try {
+              res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+            } catch (err) {
+              res.json({ success: false, msg: err });
+              next(err);
+            }
+          }   
+        })
+      }
+    });
+  }else {
+    Pet.findOne({_id: req.body._id }, (err, pet) => {
+      if (!pet) {
+        return res.json({success:false,msg: 'Usuario no encontrado'});
+      }
+      if(pet != null) {
+         var arrayPet = [];
+        arrayPet.push(pet);
+        arrayPet[0].newPetProfile.forEach(element => {
+          if (element._id == obj.idSecond) {
+             element["calendar"].forEach(item => {
+              item["title"] = updateCalendarEvent.title;
+              item["date"] = updateCalendarEvent.date;
+              item["enddate"] = updateCalendarEvent.enddate;
+              item["description"] = updateCalendarEvent.description;
+              
+              pet.save();
+              try {
+                res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+              } catch (err) {
+                res.json({ success: false, msg: err });
+                next(err);
+              }
+             })
+          }   
+        })
+      }
+    });
+  }
 });
 
 router.post('/register/generateQrCodePet', async(req, res) => {
   var id ='6001c62cc9d9a51663845872';
   const obj = JSON.parse(JSON.stringify(req.body));
-  var code = 'https://' + req.headers.host + '/myPetCode/' + obj._id;
-  var status = 'Ordenando'
+  const objProducts = JSON.parse(obj.products);
   var object = {
-    link: code,
-    status: status,
+    petName: obj.petName,
     commentary: obj.commentary,
+    products: objProducts,
+    idPrincipal: obj._id,
     total: obj.total
   }
+
+  object.products.forEach(item => {
+    if(item.idCan == obj._id){
+      item.link = 'https://' + req.headers.host + '/myPetCode/' + obj._id +'/'+ 0
+    }else {
+      item.link = 'https://' + req.headers.host + '/myPetCode/' + obj._id +'/'+ item.idCan
+    }
+  })
 
   var notifications = {
     message: 'El usuario '+ obj.petName+ ' ha solicitado un collar',
@@ -324,14 +606,13 @@ router.post('/register/generateQrCodePet', async(req, res) => {
 router.put('/update/updateStatusQrCodePet', async(req, res, next) => {
   const obj = JSON.parse(JSON.stringify(req.body));
 
-  var code = 'https://' + req.headers.host + '/myPetCode/' + obj._id;
   var object = {
-    link: code,
     status: obj.status
   }
 
+
   var notifications = {
-    message: 'Se ha cambiado el estado del producto a '+ object.status+'',
+    message: 'Se ha cambiado el estado del producto a '+ object.status+' Favor de revisar en (Mi carrito de compras)',
     userPetName: 'Admin',
     isNewMsg: true,
     dateMsg: new Date(),
@@ -348,16 +629,20 @@ router.put('/update/updateStatusQrCodePet', async(req, res, next) => {
       arrayPet.push(pet);
       arrayPet.forEach(element => {
           element["code"].forEach(item => {
-            item["status"] = object.status;
-            item["link"] = object.link; 
+            // item["status"] = object.status;
+            item["products"].forEach(element=> {
+              if(element["_id"] == obj.idItemSelected){
+                element["status"] = object.status;
+                pet.save();
+                try {
+                  res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+                } catch (err) {
+                  res.json({ success: false, msg: err });
+                  next(err);
+                }
+              }
+            })
           }) 
-          pet.save();
-          try {
-            res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
-          } catch (err) {
-            res.json({ success: false, msg: err });
-            next(err);
-          }
       })
      }
    });
@@ -369,18 +654,30 @@ router.put('/update/updateStatusQrCodePet', async(req, res, next) => {
 
 // Permissions
 
-router.get('/getPermissionsData/:id', function(req, res){
+router.get('/getPermissionsData/:id/:idSecond', function(req, res){
   var id = req.params.id;
+  var idSecond = req.params.idSecond;
   Pet.findById(id, function(err, results){
     if(err){
-      res.send('Algo ocurrio favor contactar a soporte');
+      res.json({ success: false, msg: err });
       return;
     }
 
-   var pet = {
-     permissions: results.permissions
+    if(idSecond == 0) {
+      var pet = {
+        permissions: results.permissions
+       }
+       res.json(pet)
+    }else {
+      results.newPetProfile.forEach(element => {
+        if (element._id == idSecond) {
+          var pet = {
+            permissions: element.permissions
+          }
+          res.json(pet)
+        }
+      })
     }
-    res.json(pet)
   });
 });
 
@@ -392,8 +689,9 @@ router.put('/update/updatePetPermissions', async(req, res, next) => {
     }
      if(pet != null) {
        var arrayPet = [];
-      arrayPet.push(pet);
-      arrayPet.forEach(element => {
+      if(object.idSecondary == 0 ){
+        arrayPet.push(pet);
+        arrayPet.forEach(element => {
           if(element["permissions"].length == 0){
             element["permissions"].push(object);
           }
@@ -420,7 +718,39 @@ router.put('/update/updatePetPermissions', async(req, res, next) => {
             res.json({ success: false, msg: err });
             next(err);
           }
-      })
+        })
+      }else{
+        arrayPet.push(pet.newPetProfile);
+        arrayPet.forEach(element => {
+          element.forEach(item => {
+            if(item._id == object.idSecondary){
+              item["permissions"].forEach(val => {
+                val["showPhoneInfo"] = object.showPhoneInfo;
+                val["showEmailInfo"] = object.showEmailInfo;
+                val["showLinkTwitter"] = object.showLinkTwitter;
+                val["showLinkFacebook"] = object.showLinkFacebook;
+                val["showLinkInstagram"] = object.showLinkInstagram;
+                val["showOwnerPetName"] = object.showOwnerPetName;
+                val["showBirthDate"] = object.showBirthDate;
+                val["showAddressInfo"] = object.showAddressInfo;
+                val["showAgeInfo"] = object.showAgeInfo;
+                val["showVeterinarianContact"] = object.showVeterinarianContact;
+                val["showPhoneVeterinarian"] = object.showPhoneVeterinarian;
+                val["showHealthAndRequirements"] = object.showHealthAndRequirements;
+                val["showFavoriteActivities"] = object.showFavoriteActivities;
+                val["showLocationInfo"] = object.showLocationInfo;
+                pet.save();
+                try {
+                  res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+                } catch (err) {
+                  res.json({ success: false, msg: err });
+                  next(err);
+                }
+              }) 
+            }
+          });
+        })
+      }
      }
    });
 });
@@ -435,7 +765,7 @@ router.put('/update/updatePetPermissions', async(req, res, next) => {
 router.get('/getAllPets', function(req, res){
     Pet.find({}, function(err, pets){
     if(err){
-      res.send('something went really wrong');
+      res.json({ success: false, msg: err });
       next();
     }
     res.json(pets)
@@ -445,7 +775,7 @@ router.get('/getAllPets', function(req, res){
 router.get('/lost/getAllLostPets', function(req, res){
   Pet.find({}, function(err, pets){
   if(err){
-    res.send('something went really wrong');
+    res.json({ success: false, msg: err });
     next();
   }
   var arrayObj = []
@@ -463,7 +793,7 @@ router.get('/getAdminDataList', function(req, res){
   var id ='6001c62cc9d9a51663845872';
   Pet.findById(id, function(err, results){
     if(err){
-      res.send('Algo ocurrio favor revisar admin');
+      res.json({ success: false, msg: err });
       return;
     }
 
@@ -496,7 +826,7 @@ router.get('/getAllProductShopList', function(req, res){
   var id ='6001c62cc9d9a51663845872';
   Pet.findById(id, function(err, results){
     if(err){
-      res.send('Algo ocurrio favor revisar admin');
+      res.json({ success: false, msg: err });
       return;
     }
 
@@ -549,7 +879,6 @@ router.put('/update/new-product', async(req, res) => {
       arrayPet.forEach(element => {
           element["productsList"].forEach(item => {
             if(item._id == newProductList.idProduct){
-              console.log('paso aqui');
               item["productName"] = newProductList.productName;
               item["size"] = newProductList.size;
               item["color"] = newProductList.color;
@@ -620,7 +949,7 @@ router.get('/notifications/getNotificationsList/:id', function(req, res){
   var id = req.params.id;
   Pet.findById(id, function(err, results){
     if(err){
-      res.send('Algo ocurrio favor revisar admin');
+      res.json({ success: false, msg: err });
       return;
     }
     res.json(results.notifications)
@@ -807,7 +1136,7 @@ router.get('/getAllMenuList/:id', function(req, res){
   var id = req.params.id;
   Company.findById(id, function(err, results){
     if(err){
-      res.send('Algo ocurrio favor contactar a soporte');
+      res.json({ success: false, msg: err });
       next();
     }
     res.json(results.newMenu)
@@ -818,7 +1147,7 @@ router.get('/getCompanyMenu/:id', function(req, res){
   var id = req.params.id;
   Company.findById(id, function(err, results){
     if(err){
-      res.send('Algo ocurrio favor contactar a soporte');
+      res.json({ success: false, msg: err });
       next();
     }
     var objec =[{
@@ -835,7 +1164,7 @@ router.get('/getRestaurantMenuList/', function(req, res){
   Company.find({}, function(err, company){
     const obj = JSON.parse(JSON.stringify(company));
     if(err){
-      res.send('Algo ocurrio contacta con el administrador del sitio');
+      res.json({ success: false, msg: err });
       next();
     }else{
       const list = [];
@@ -934,7 +1263,7 @@ router.get('/mailbox/getMessages/:id', function(req, res){
   var id = req.params.id;
   Company.findById(id, function(err, results){
     if(err){
-      res.send('something went really wrong');
+      res.json({ success: false, msg: err });
       next();
     }
     res.json(results.message)

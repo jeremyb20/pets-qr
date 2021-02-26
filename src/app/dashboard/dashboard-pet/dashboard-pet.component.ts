@@ -36,6 +36,7 @@ export class DashboardPetComponent implements OnInit {
   newPetInfoForm: FormGroup;
   newEventForm: FormGroup;
   newLostPetForm: FormGroup;
+  registerForm: FormGroup;
   submitted = false;
   loading: boolean = false;
   loadingQr: boolean = false;
@@ -51,17 +52,19 @@ export class DashboardPetComponent implements OnInit {
   petStatusInfo: string;
   showReportForm: boolean = false;
   petStatus: string;
+  photoPrincipalPet: string;
 // calendar 
 
 isNewEvent: boolean = false;
 events: any;
+idEventUpdate: any;
 calendarOptions: CalendarOptions = {
   plugins: [dayGridPlugin, timeGridPlugin],
   initialView: 'dayGridMonth',
   locale: esLocale,
   headerToolbar: {
     left: 'prev,next',
-    center: '',
+    center: 'title',
     right: 'dayGridMonth,timeGridWeek,timeGridDay'
   },
   buttonText: {
@@ -73,9 +76,6 @@ calendarOptions: CalendarOptions = {
   },
   dateClick: this.handleDateClick.bind(this,true), // bind is important!
   events: [],
-  validRange: {
-    start: new Date()
-  },
   eventClick: this.handleDateClick.bind(this, false)
 };
 
@@ -92,18 +92,25 @@ calendarOptions: CalendarOptions = {
   duration: string;
   start_address: string;
   showInfo: boolean = true;
+  showInfoNewPet: boolean = true;
   addDestiny: boolean = false;
   generate: boolean = false;
   getTrack: boolean = false;
   showInfoFinal: boolean = false;
   trackingRoute: boolean = false;
   markers: marker[] = [];
+  markersNewPet: marker[] = [];
   confirmData: any;
   origin : any;
   destination : any;
   FilteredPetStatus: any;
-
+  bussinesType = [
+    {Id: 1, gender: 'Macho'},
+    {Id: 2, gender: 'Hembra'},
+    {Id: 2, gender: 'Otro'}
+  ];
   currentTimer: any;
+  idSecondary: number = 0;
 
   public renderOptions = {
     suppressMarkers: true,
@@ -118,6 +125,8 @@ calendarOptions: CalendarOptions = {
         opacity: 0.8,
     },
   }
+  seeAllProfile: any;
+  petPrincipal: any;
 
   @ViewChild("search")
   public searchElementRef: ElementRef;
@@ -125,6 +134,9 @@ calendarOptions: CalendarOptions = {
   constructor(private petService: PetService, private media: MediaService, private formBuilder: FormBuilder, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private _location: Location, private _notificationSvc: NotificationService, private router: Router) {
     this.petLogged = this.petService.getLocalPet()
     this.pet = JSON.parse(this.petLogged);
+    this.idSecondary = this.pet.idSecond;
+    var petPrincipal = this.petService.getPrincipalUserData();
+    this.petPrincipal = JSON.parse(petPrincipal);
     if(this.pet != null){
       switch (this.pet.userState) {
         case 0:
@@ -145,6 +157,13 @@ calendarOptions: CalendarOptions = {
 
     this.mediaSubscription = this.media.subscribeMedia().subscribe(media => {
       this.Media = media;
+      if(this.Media.IsMobile){
+        this.calendarOptions.headerToolbar = {
+          left: 'prev,next',
+            center: 'title',
+            right: ''
+        };
+      }
     });
 
     var today = new Date()
@@ -159,12 +178,12 @@ calendarOptions: CalendarOptions = {
       }
 
     this.getPetDataList();
-    this.getPermissionInfo();
   }
 
   get g() { return this.newPetInfoForm.controls; }
   get f() { return this.newEventForm.controls; }
   get h() { return this.newLostPetForm.controls; }
+  get i() { return this.registerForm.controls; }
 
 
   ngOnInit() {
@@ -181,10 +200,30 @@ calendarOptions: CalendarOptions = {
       descriptionLost: ['', Validators.required],
     });
 
+    this.registerForm = this.formBuilder.group({
+      petName: ['', Validators.required],
+      genderSelected: ['Genero del Can', Validators.required],
+      ownerPetName: ['', Validators.required],
+      birthDate: ['', [Validators.required]],
+      phone: ['', [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
+      address: ['', [Validators.required]],
+      email: ['', [Validators.required]],
+      age: ['', [Validators.minLength(0),Validators.required,Validators.pattern(/\d/)]],
+      veterinarianContact: ['', Validators.required],
+      phoneVeterinarian: ['', [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
+      healthAndRequirements: ['', Validators.required],
+      favoriteActivities: ['', Validators.required],
+      linkTwitter: [''],
+      linkFacebook: [''],
+      linkInstagram: [''],
+    });
+
     this.FilteredPetStatus = [
       {Id: 0, Name:'No-Perdido'},
       {Id: 1, Name:'Perdido'}
     ];
+    $('input[rel="txtTooltip"]').tooltip();
+    $('input[rel="txtAgeTooltip"]').tooltip();
   }
 
   stepTrackOrder(step: number){
@@ -192,8 +231,10 @@ calendarOptions: CalendarOptions = {
   }
 
   getPetDataList() {
-    this.petService.getPetDaList(this.pet.id).subscribe(data => {
+    this.petService.getPetDataList(this.pet.id, this.idSecondary).subscribe(data => {
       this.profile = data;
+      // this.seeAllProfile = data.newPetProfile;
+      // this.photoPrincipalPet = data.photo;
       this.petStatusInfo = this.profile.petStatus;
       this.showReportForm = (this.profile.petStatus == 'Perdido')? true: false;
       this.newPetInfoForm = this.formBuilder.group({
@@ -212,18 +253,20 @@ calendarOptions: CalendarOptions = {
         linkFacebook: [this.profile.linkFacebook = (this.profile.linkFacebook == 'null')? this.profile.linkFacebook = '': this.profile.linkFacebook],
         linkInstagram: [this.profile.linkInstagram = (this.profile.linkInstagram == 'null')? this.profile.linkInstagram = '': this.profile.linkInstagram],
       });
-      
-      if(this.code != undefined && this.code != '' ){
-         this.code = data.code[0].status;
-      }else{
-        if(data.code.length != 0)
-          this.code = data.code[0].status;
-        else 
-        this.hideMsg = false;  
+
+      let objectStored = {
+        id: this.pet.id,
+        idSecond: this.idSecondary,
+        petName: this.profile.petName,
+        photo: this.profile.photo,
+        userState: this.profile.userState
       }
+      this.petService.setstoreUserData(objectStored)  
+      if(this.profile.code != undefined)
+        this.code = (this.profile.code.length> 0)? this.profile.code[0].status: '';
 
       this.calendarOptions.events = data.calendar;
-
+      this.markers = [];
       this.markers.push({
         lat: this.profile.lat,
         lng: this.profile.lng,
@@ -231,6 +274,7 @@ calendarOptions: CalendarOptions = {
         isDestination: false,
         photo: this.profile.photo
       });
+      this.getPermissionInfo();
       this.showInfo = true;
     },
     error => {
@@ -240,7 +284,7 @@ calendarOptions: CalendarOptions = {
   }
 
   getPermissionInfo() {
-    this.petService.getPetPermissionsDataList(this.pet.id).subscribe(data => {
+    this.petService.getPetPermissionsDataList(this.pet.id, this.idSecondary).subscribe(data => {
       this.updatePermission = false;
       this.permissionData = data.permissions[0];
       if(this.permissionData == undefined || this.permissionData.length<=0){
@@ -263,6 +307,18 @@ calendarOptions: CalendarOptions = {
       }else{
         this.permissionData = data.permissions[0];
       }
+      this.getPetProfileList()
+    },
+    error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
+  }
+
+  getPetProfileList(){
+    this.petService.getAllProfileList(this.petPrincipal.id).subscribe(data => {
+      this.photoPrincipalPet = data.photo;
+      this.seeAllProfile = data.newPetProfile;
     },
     error => {
       this.loading = false;
@@ -278,6 +334,7 @@ calendarOptions: CalendarOptions = {
   updatePermissionList() {
     var object  = {
       id: this.pet.id,
+      idSecondary: this.idSecondary,
       showPhoneInfo: this.permissionData.showPhoneInfo,
       showEmailInfo: this.permissionData.showEmailInfo,
       showLinkTwitter: this.permissionData.showLinkTwitter,
@@ -297,7 +354,7 @@ calendarOptions: CalendarOptions = {
     this.petService.updatePetPermissionInfo(object).subscribe(data => {
       if(data.success)
       this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
-      setTimeout(() => { location.reload(); }, 3000);
+      setTimeout(() => {location.reload() }, 3000);
     },
     error => {
       this.loading = false;
@@ -314,6 +371,7 @@ calendarOptions: CalendarOptions = {
     const pet = {
       petName: this.g.petName.value,
       _id: this.pet.id,
+      idSecond: this.idSecondary,
       ownerPetName: this.g.ownerPetName.value,
       birthDate: this.g.birthDate.value,
       address: this.g.address.value,
@@ -332,7 +390,7 @@ calendarOptions: CalendarOptions = {
       if(data.success) {
         this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
         this.loading = false;
-        location.reload();
+        this.getPetDataList();
       } else {
         $('#newMenuModal').modal('hide');
         this.loading = false;
@@ -397,6 +455,7 @@ calendarOptions: CalendarOptions = {
     var pet = {
       lat: this.markers[0].lat,
       lng: this.markers[0].lng,
+      idSecond: this.idSecondary,
       _id: this.pet.id
     }
     
@@ -418,9 +477,64 @@ calendarOptions: CalendarOptions = {
 
   }
 
+  setCurrentNewPosition() {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.zoom = 17;
+        
+        this.markersNewPet.push({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+          draggable: false,
+          isDestination: false,
+          photo: 'https://cdn.worldvectorlogo.com/logos/google-maps-2020-icon.svg'
+        });
+
+        this.showInfoNewPet = true;
+      });
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+
+  mapClickedNewPet($event: MouseEvent) {
+    var event: any;
+    event = $event
+    this.showInfoNewPet = true;
+    this.zoom = 17;
+    if(this.markersNewPet.length ==0 ){
+      this.markersNewPet.push({
+        lat: event.coords.lat,
+        lng: event.coords.lng,
+        draggable: false,
+        isDestination: false,
+        photo: "https://cdn.worldvectorlogo.com/logos/google-maps-2020-icon.svg"
+      });
+    }
+  }
+  
+  changePositionNewPet(mPosition: any){
+    this.showInfoNewPet = false;
+    if (this.markersNewPet.length > 0) {
+      this.markersNewPet.shift();
+    }
+  }
+
+  savePositionNewPet() {
+    this.showInfoNewPet = false;
+  }
+
   // calendar 
   editCalendar(item:any) {
-    console.log(item);
+    this.isNewEvent = false;
+    this.idEventUpdate = item._id;
+    this.newEventForm = this.formBuilder.group({
+      title: [item.title, Validators.required],
+      date: [item.date, [Validators.required]],
+      enddate: [item.enddate, Validators.required],
+      description: [item.description, Validators.required]
+    });
+    $('#newCalendarEventModal').modal('show');
   }
 
   handleDateClick(isNew, arg) {
@@ -463,7 +577,8 @@ calendarOptions: CalendarOptions = {
       date: this.f.date.value,
       enddate: this.f.enddate.value,
       description: this.f.description.value,
-      _id: this.pet.id
+      _id: this.pet.id,
+      idSecond: this.idSecondary
     } 
 
     this.petService.registerNewPetEvent(newEvent).subscribe(data => {
@@ -483,7 +598,41 @@ calendarOptions: CalendarOptions = {
       this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
     });
   }
+  
+  updateEventCalendarSubmit() {
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.newEventForm.invalid) {
+        return;
+    }
+    this.loading = true;
+    var updateEvent = {
+      title: this.f.title.value,
+      date: this.f.date.value,
+      enddate: this.f.enddate.value,
+      description: this.f.description.value,
+      idEventUpdate: this.idEventUpdate,
+      _id: this.pet.id,
+      idSecond: this.idSecondary,
+    } 
 
+    this.petService.updateNewPetEvent(updateEvent).subscribe(data => {
+      if(data.success) {
+        $('#newCalendarEventModal').modal('hide');
+        this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
+        this.loading = false;
+        location.reload();
+      } else {
+        $('#newCalendarEventModal').modal('hide');
+        this.loading = false;
+        this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
+      }
+    },
+    error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
+  }
   //Photo
 
   updatePhoto(){
@@ -492,12 +641,12 @@ calendarOptions: CalendarOptions = {
 
   updatePhotoSubmit(){
     this.loading = true;
-    this.petService.updatePhotoPetProfile(this.pet.id,this.file).subscribe(data => {
+    this.petService.updatePhotoPetProfile(this.pet.id, this.idSecondary, this.file).subscribe(data => {
       if(data.success) {
         $('#updatePhotoModal').modal('hide');
         this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
         this.loading = false;
-        this.getPetDataList();
+        location.reload();
       } else {
         $('#updatePhotoModal').modal('hide');
         this.loading = false;
@@ -527,7 +676,7 @@ calendarOptions: CalendarOptions = {
   }
 
   goToProfile() {
-    this.router.navigate(['/myPetCode/'],{ queryParams: {id: this.pet.id}}); 
+    this.router.navigate(['/myPetCode/'],{ queryParams: {id: this.pet.id, idSecond: this.idSecondary}}); 
   }
 
   reportProfile(){
@@ -600,6 +749,136 @@ calendarOptions: CalendarOptions = {
     });
   }
 
+  // register pet
+
+  newPetRegister(){
+    this.registerForm = this.formBuilder.group({
+      petName: ['', Validators.required],
+      genderSelected: ['Genero del Can', Validators.required],
+      ownerPetName: [this.profile.ownerPetName, Validators.required],
+      birthDate: ['', [Validators.required]],
+      phone: [this.profile.phone, [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
+      address: [this.profile.address, [Validators.required]],
+      email: [this.profile.email, [Validators.required]],
+      age: ['', [Validators.minLength(0),Validators.required,Validators.pattern(/\d/)]],
+      veterinarianContact: ['', Validators.required],
+      phoneVeterinarian: ['', [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
+      healthAndRequirements: ['', Validators.required],
+      favoriteActivities: ['', Validators.required],
+      // linkTwitter: [this.profile.linkTwitter = (this.profile.linkTwitter == 'null')? this.profile.linkTwitter = '': this.profile.linkTwitter],
+      // linkFacebook: [this.profile.linkFacebook = (this.profile.linkFacebook == 'null')? this.profile.linkFacebook = '': this.profile.linkFacebook],
+      // linkInstagram: [this.profile.linkInstagram = (this.profile.linkInstagram == 'null')? this.profile.linkInstagram = '': this.profile.linkInstagram],
+    });
+
+    this.setCurrentNewPosition();
+
+    $('#newPetModal').modal('show');
+  }
+
+  onSubmit() {
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.registerForm.invalid) {
+        return;
+    }
+    if(this.i.genderSelected.value  === 'Genero del Can'){
+      Swal.fire({
+        title: 'Error de registro' ,
+        html: "Seleccione el Genero del Can",
+        showCancelButton: false,
+        allowEscapeKey: false,
+        confirmButtonText: 'OK',
+        allowOutsideClick: false,
+        buttonsStyling: false,
+        reverseButtons: true,
+        position: 'top',
+        padding: 0,
+        customClass: { confirmButton: 'col-auto btn btn-info m-3' }
+      })
+      .then((result) => {
+            
+      });
+      return;
+    }
+    
+    this.loading = true;
+    var newPet = {
+      petName: this.i.petName.value,
+      phone: this.i.phone.value,
+      email: this.i.email.value,
+      lat: this.markersNewPet[0].lat,
+      lng: this.markersNewPet[0].lng,
+      genderSelected: this.i.genderSelected.value,
+      userState: 3,
+      petStatus: 'No-Perdido',
+      ownerPetName: this.i.ownerPetName.value,
+      birthDate: this.i.birthDate.value,
+      address: this.i.address.value,
+      age: this.i.age.value,
+      veterinarianContact: this.i.veterinarianContact.value,
+      phoneVeterinarian: this.i.phoneVeterinarian.value,
+      healthAndRequirements: this.i.healthAndRequirements.value,
+      favoriteActivities: this.i.favoriteActivities.value,
+      // linkTwitter: this.i.linkTwitter.value,
+      // linkFacebook: this.i.linkFacebook.value,
+      // linkInstagram: this.i.linkInstagram.value,
+      _id: this.pet.id,
+    }
+
+    this.petService.registerNewPetByUserPet(newPet,this.file).subscribe(data => {
+      if(data.success) {
+        this.loading = false;
+        Swal.fire({
+          title: 'Registro ' + newPet.petName+'' ,
+          html: data.msg + ' Su inicio de sesion va a ser por el mismo correo que se registró',
+          showCancelButton: false,
+          allowEscapeKey: false,
+          confirmButtonText: 'OK',
+          allowOutsideClick: false,
+          buttonsStyling: false,
+          reverseButtons: true,
+          position: 'top',
+          padding: 0,
+          customClass: { confirmButton: 'col-auto btn btn-info m-3' }
+        })
+        .then((result) => {
+          if (result.value){
+            $('#newPetModal').modal('hide');
+            this.router.navigate(['/dashboard-pet']); 
+          }
+              
+        });
+      } else {
+        this.hideMsg = true;
+        this.loading = false;
+        this.ShowMsg = data.msg;
+        setTimeout(() => { this.hideMsg = false }, 3000);
+      }
+    },
+    error => {
+      this.hideMsg = true;
+      this.loading = false;
+      this.ShowMsg = "Ocurrio un error favor contactar a soporte o al administrador del sitio";
+      setTimeout(() => { this.hideMsg = false }, 3000);
+    });
+  }
+
+  changeProfilePet() {
+    $('#changeProfileModal').modal('show');
+  }
+
+  profileSelected(val:any){
+    if(val != 1){
+      this.idSecondary = val.id
+      this.pet.id = this.petPrincipal.id
+      this.getPetDataList();
+    }else{
+      this.idSecondary = this.petPrincipal.idSecond
+      this.pet.id = this.petPrincipal.id
+      this.getPetDataList();
+    }
+    $('#changeProfileModal').modal('hide');
+  }
 }
 
 
