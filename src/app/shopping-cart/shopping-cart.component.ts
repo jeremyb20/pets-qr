@@ -42,6 +42,7 @@ export class ShoppingCartComponent implements OnInit {
   petPrincipal: any;
   selectCanObject:any;
   productNameSelected: any;
+  historyList : any = [];
   private singleProduct;
   public isAdded;
 
@@ -61,7 +62,7 @@ export class ShoppingCartComponent implements OnInit {
 
   ngOnInit() {
     this.buyProcudForm = this.formBuilder.group({
-      commentary: ['', Validators.required],
+      comment: ['', Validators.required],
     });
 
     this.petService.getAllProfileList(this.petPrincipal.id).subscribe(data => {
@@ -80,6 +81,18 @@ export class ShoppingCartComponent implements OnInit {
     this.petService.getAllShopProductList().subscribe(data => {
       this.allProductsData = data.productsList;
       this.filteredProductData = this.allProductsData;
+
+      this.getHistory();
+    },
+    error => {
+    this.loading = false;
+    this._notificationSvc.warning('Hola '+this.user.petName+'', 'Ocurrio un error favor Contactar al administrador', 6000);
+    });
+  }
+
+  getHistory(){
+    this.petService.getHistoryList(this.petPrincipal.id).subscribe(data => {
+     this.historyList = data;
     },
     error => {
     this.loading = false;
@@ -112,15 +125,43 @@ export class ShoppingCartComponent implements OnInit {
     this.counter = this.finalCard.length;
   }
 
+  disMarkItem(item) {
+    
+    var title = 'Eliminar '+item.productName+' del carrito ?'
+    Swal.fire({
+        title: title,
+        showCancelButton: true,
+        confirmButtonText: `Ok`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            this.allProductsData.map((val, index) => {
+              if (val.class === item.class) {
+                item.class = '';
+              }
+            })
+        
+            var index = this.finalCard.indexOf(item);
+            if (index !== -1) {
+              this.finalCard.splice(index, 1);
+            }
+        
+            this.counter = this.finalCard.length;
+        }
+      })
+  }
+
   removeItem(item){
     this.test = [];
     var index = this.finalCard.indexOf(item);
-    var indexSecond = this.selectCanObject.indexOf(item);
+    if(this.selectCanObject){
+      var indexSecond = this.selectCanObject.indexOf(item);
+      if (indexSecond !== -1) {
+        this.selectCanObject.splice(indexSecond, 1);
+      }
+    }
     if (index !== -1) {
       this.finalCard.splice(index, 1);
-    }
-    if (indexSecond !== -1) {
-      this.selectCanObject.splice(indexSecond, 1);
     }
 
     this.allListShoppingCartItem = this.finalCard;
@@ -248,7 +289,7 @@ export class ShoppingCartComponent implements OnInit {
       id: this.petPrincipal.id,
       petName: this.petPrincipal.petName,
       photo: this.petPrincipal.photo,
-      commentary: this.h.commentary.value,
+      comment: this.h.comment.value,
       products : products,
       total: this.total
     }
@@ -285,7 +326,7 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   historyCart(){
-
+    $('#showHistoryModal').modal('show');
   }
 
 

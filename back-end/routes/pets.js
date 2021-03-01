@@ -434,6 +434,35 @@ router.get('/getPetDataList', function(req, res){
   });
 });
 
+router.get('/getHistoryShopList/:id', function(req, res){
+  var id = req.params.id;
+  Pet.findById(id, function(err, results){
+    if(err){
+      res.json({ success: false, msg: err });
+      return;
+    }
+    if(results.code.length> 0 ){
+      var object = [];
+      results.code.forEach(item => {
+        item.products.forEach(val=> {
+          var product = {
+            cost: val.cost,
+            description: val.description,
+            petName: val.petName,
+            petPhoto: val.petPhoto,
+            productName: val.productName,
+            status: val.status
+          }
+          object.push(product);
+        })
+      })
+
+      
+      res.json(object)
+    }
+  });
+});
+
 router.get('/getAllProfileList/:id', function(req, res){
   var id = req.params.id;
   Pet.findById(id, function(err, results){
@@ -599,7 +628,7 @@ router.post('/register/generateQrCodePet', async(req, res) => {
   const objProducts = JSON.parse(obj.products);
   var object = {
     petName: obj.petName,
-    commentary: obj.commentary,
+    comment: obj.comment,
     products: objProducts,
     idPrincipal: obj._id,
     total: obj.total
@@ -896,8 +925,6 @@ router.get('/getAllProductShopList', function(req, res){
       }
       res.json(pet)
     }
-
-  
   });
 });
 
@@ -1157,188 +1184,6 @@ router.put('/update/updateReportLostPetStatus', async(req, res, next) => {
 });
 
 // reports
-
-
-
-
-
-
-
-
-
-
-router.post('/register/newMenu', async(req, res) => {
-  const obj = JSON.parse(JSON.stringify(req.body));
-
-  const result = await cloudinary.uploader.upload(req.file != undefined ? req.file.path : obj.image);
-  let newMenu = {
-    foodName: obj.foodName,
-    description: obj.description,
-    cost: obj.cost,
-    idCompany: obj.idCompany,
-    photo: result.secure_url == undefined ? obj.image : result.secure_url
-  };
-  Company.findOneAndUpdate({ _id: req.body.idCompany }, { $push: { newMenu: newMenu  }},{new: true}).then(function(data){
-    res.json({success:true,msg: 'Se ha registrado correctamente..!'});
-  });
-});
-
-
-
-
-// router.get('/profile/getAllUsers', function(req, res){
-//     Company.find({}, function(err, users){
-//     if(err){
-//       res.send('something went really wrong');
-//       next();
-//     }
-//     res.json(users)
-//   });
-// });
-
-router.get('/getAllMenuList/:id', function(req, res){
-  var id = req.params.id;
-  Company.findById(id, function(err, results){
-    if(err){
-      res.json({ success: false, msg: err });
-      next();
-    }
-    res.json(results.newMenu)
-  });
-});
-
-router.get('/getCompanyMenu/:id', function(req, res){
-  var id = req.params.id;
-  Company.findById(id, function(err, results){
-    if(err){
-      res.json({ success: false, msg: err });
-      next();
-    }
-    var objec =[{
-      newMenu: results.newMenu,
-      petName: results.petName,
-      idCompany: results._id
-      }  
-    ]
-    res.json(objec);
-  });
-});
-
-router.get('/getRestaurantMenuList/', function(req, res){
-  Company.find({}, function(err, company){
-    const obj = JSON.parse(JSON.stringify(company));
-    if(err){
-      res.json({ success: false, msg: err });
-      next();
-    }else{
-      const list = [];
-      obj.forEach(element => {
-        if(element.newMenu.length>0){
-          var objec ={
-            newMenu: element.newMenu.slice(0,4),
-            petName: element.petName,
-            idCompany: element._id
-          }
-            list.push(objec)
-        }
-      })
-      res.json(list);
-    }
-    
-  });
-});
-
-router.put('/update/updateMenuItemList', async(req, res, next) => {
-  const obj = JSON.parse(JSON.stringify(req.body));
-  const result = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.image);
-  let newMenu = {
-    foodName: obj.foodName,
-    description: obj.description,
-    cost: obj.cost,
-    _id: obj._id,
-    idCompany: obj.idCompany,
-    photo: result.secure_url == undefined ? obj.image : result.secure_url
-  };
-
-  await Company.findOne({_id: req.body.idCompany }, (err, user) => {
-    if (!user) {
-      return res.json({success:false,msg: 'Usuario no encontrado'});
-    }
-     if(user != null) {
-       user.newMenu.forEach(element => {
-         if(element._id == newMenu._id){
-          element["foodName"] = newMenu.foodName;
-          element["description"] = newMenu.description;
-          element["cost"] = newMenu.cost;
-          element["photo"] = newMenu.photo;
-          user.save();
-           try {
-             res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
-           } catch (err) {
-             res.json({ success: false, msg: err });
-             next(err);
-           }
-         }
-       })
-     }
-   });
-});
-
-router.put('/delete/deleteMenuItemList', async(req, res, next) => {
-  Company.findOne({_id: req.body.idCompany }, (err, user) => {
-    if (!user) {
-      return res.json({success:false,msg: 'Usuario no encontrado'});
-    }
-     if(user != null) {
-      for (var i =0; i < user.newMenu.length; i++){
-        if (user.newMenu[i]._id == req.body._id) {
-          user.newMenu.splice(i,1);
-          user.save();
-          try {
-            res.json({ success: true, msg: 'Se ha eliminado correctamente..!' });
-          } catch (err) {
-            res.json({ success: false, msg: err });
-            next(err);
-          }
-          break;
-        }
-      }
-     }
-   });
-});
-
-// Profile
-router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-  res.json({company: req.company});
-});
-
-router.route('/users/:_id')
-  .delete(function(req, res){
-    Company.remove(req,res);
-});
-
-router.put('/profile/updateCompany', (req, res) => {
-    Company.findByIdAndUpdate(req.body._id, { $set: req.body }).then(function (data) {
-    res.json({ success: true, msg: 'Update success.' });
-  });
-});
-
-router.get('/mailbox/getMessages/:id', function(req, res){
-  var id = req.params.id;
-  Company.findById(id, function(err, results){
-    if(err){
-      res.json({ success: false, msg: err });
-      next();
-    }
-    res.json(results.message)
-  });
-});
-
-router.post('/mailbox/sendMessage', (req, res, next) => {
-    Company.findOneAndUpdate({ _id: req.body.idUserSent }, { $push: { message: req.body  } }).then(function(data){
-    res.json({success:true,msg: 'Message sent'});
-  });
-});
 
 
 router.post('/forgot', (req, res, next) => {

@@ -209,7 +209,7 @@ export class PetService {
   generateQrCodePet(obj: any):Observable<any> {
     const fd = new FormData();
     fd.append('_id', obj.id);
-    fd.append('commentary', obj.commentary);
+    fd.append('comment', obj.comment);
     fd.append('petName', obj.petName);
     fd.append('photo', obj.photo);
     fd.append('products', JSON.stringify(obj.products));
@@ -505,6 +505,14 @@ getAllShopProductList():Observable<any> {
     return this.httpClient.get<any>('http://localhost:8080/pet/getAllProductShopList/');
   } else {
     return this.httpClient.get<any>('pet/getAllProductShopList/');
+  }
+}
+
+getHistoryList(id:any):Observable<any> {
+  if (this.isDev) {
+    return this.httpClient.get<any>('http://localhost:8080/pet/getHistoryShopList/'+ id);
+  } else {
+    return this.httpClient.get<any>('pet/getHistoryShopList/'+ id);
   }
 }
 

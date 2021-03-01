@@ -206,7 +206,7 @@ const PetSchema = mongoose.Schema ({
       type:String,
       require: true
     },
-    commentary: {
+    comment: {
       type: String,
       require: true
     },
@@ -335,33 +335,6 @@ const PetSchema = mongoose.Schema ({
         type: String,
         require: false
       },
-      notifications: [{
-        message: {
-          type: String,
-          require: true
-        },
-        userPetName: {
-          type: String,
-          require: true
-        },
-        isNewMsg: {
-          type: Boolean,
-          require: true
-        },
-        dateMsg: {
-          type: String,
-          require: true
-        },
-        idPet: {
-          type: String,
-          require: true
-        },
-        photo: {
-          type: String,
-          require: false
-        },
-      }],
-    
       permissions: [{
         showPhoneInfo: {
           type: Boolean,
@@ -420,64 +393,6 @@ const PetSchema = mongoose.Schema ({
           require: true
         }
       }],
-      // productsList: [{
-      //   productName: {
-      //     type: String,
-      //     require: true
-      //   },
-      //   size: {
-      //     type: String,
-      //     require: true
-      //   },
-      //   color: {
-      //     type: String,
-      //     require: true
-      //   },
-      //   description: {
-      //     type: String,
-      //     require: true
-      //   },
-      //   cost: {
-      //     type: String,
-      //     require: true
-      //   },
-      //   quantity: {
-      //     type: String,
-      //     require: true
-      //   },
-      //   firstPhoto: {
-      //     type: String,
-      //     require: true
-      //   },
-      //   secondPhoto: {
-      //     type: String,
-      //     require: true
-      //   },
-      // }],
-      // code: [{
-      //   link: {
-      //     type: String,
-      //     require: true
-      //   },
-      //   status: {
-      //     type: String,
-      //     require: true
-      //   },
-      //   commentary: {
-      //     type: String,
-      //     require: true
-      //   },
-      //   total : {
-      //     type: String,
-      //     require: true
-      //   }
-      // }],
-      resetPasswordToken: {
-        type: String
-      },
-      resetPasswordExpires: {
-        type: Date
-      },
       userState: {
         type: Number,
         require: false
