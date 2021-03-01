@@ -39,9 +39,19 @@
         box-shadow: 0 6px 10px rgba(0, 0, 0, 0.561), 0 0 6px rgba(0, 0, 0, 0.05);
         border-radius: 5px;
     }
+
     .product-grid2 .product-image2{
+        height: 250px;
         overflow:hidden;
         position:relative
+    }
+
+    @media screen and (max-width:990px){
+        .product-grid2 .product-image2{
+            height: auto;
+            overflow:hidden;
+            position:relative
+        }
     }
     .product-grid2 .product-image2 a{
         display:block
