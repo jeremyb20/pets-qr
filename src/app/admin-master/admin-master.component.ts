@@ -155,6 +155,11 @@ export class AdminMasterComponent implements OnInit {
 
     showPanel(item: any) {
       item.showPanel = !item.showPanel;
+      this.order.map((val, index) => {
+        if (val._id != item._id) {
+            val.showPanel = true;
+        }
+      });
     }
 
     getAllCode(){

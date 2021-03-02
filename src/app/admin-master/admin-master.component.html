@@ -54,11 +54,11 @@
                         <div class="row no-gutters">
                             <div class="col-lg-12 mb-3">
                                 <div class="card">
-                                    <div class="card-body top-menu">
+                                    <div class="card-body top-menu p-1">
                                         <h4 class="card-title">Listas de ordenes</h4>
                                         <div class="container">
                                             <div id="accordion">
-                                              <div *ngFor="let item of order" class="card mb-2">
+                                              <div *ngFor="let item of order" class="card" [ngClass]="{'mb-4': Media.IsMobile, 'mb-3': !Media.IsMobile}">
                                                 <div class="card-header" (click)="showPanel(item)" role="tab" id="headingTwo">
                                                   <h5 class="mb-0">
                                                     <a aria-expanded="false">
@@ -69,54 +69,48 @@
                                                   </h5>
                                                 </div>
                                                 <div id="{{item._id}}" class="collapsible" [@collapse]="item.showPanel" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-                                                  <div class="card-body p-1">
-                                                    <table class="table verticle-middle table-responsive-lg mb-0">
-                                                        <thead class="text-center thead-dark">
-                                                            <tr>
-                                                                <th scope="col">ID</th>
-                                                                <!-- <th scope="col">Orden</th> -->
-                                                                <th scope="col">Cliente</th>
-                                                                <th scope="col">QR</th>
-                                                                <th scope="col">Detalle</th>
-                                                                <th scope="col">Costo ₡</th>
-                                                                <th scope="col">Status</th>
-                                                                <th scope="col">Accion</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody *ngFor="let val of item.products" class="text-center">
-                                                            <tr *ngIf="val.status != 'Recibido'">
-                                                                <td>{{val.idCan}}</td>
-                                                                <td>{{val.petName}}</td>
-                                                                <td ><button (click)="checkQrCode(val.link)" class="btn btn-primary btn-sm" > VER QR </button></td>
-                                                                <td>{{val.description}}</td>
-                                                                <td>{{val.cost | currency:"₡"}}</td>
-                                                                <td>
-                                                                    <!-- <span class="badge badge-xs badge-primary">Pendiente</span> -->
-                                                                    <div class="btn-group">
-                                                                        <button type="button" class="btn btn-sm dropdown-toggle"
-                                                                        [ngClass]="{'btn-dark': val.status == 'Ordenando','btn-info': val.status == 'Pendiente', 'btn-primary': val.status == 'Preparando', 'btn-warning': val.status == 'Entrega', 'btn-success': val.status == 'Recibido'}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                            {{val.status}}
-                                                                        </button>
-                                                                        <div class="dropdown-menu">
-                                                                          <a class="dropdown-item" (click)="dropdowSelect('Ordenando',item, val)">Ordenando</a>
-                                                                          <a class="dropdown-item" (click)="dropdowSelect('Pendiente',item, val)">Pendiente</a>
-                                                                          <a class="dropdown-item" (click)="dropdowSelect('Preparando',item, val)">Preparando</a>
-                                                                          <a class="dropdown-item" (click)="dropdowSelect('Entrega',item, val)">Entrega</a>
-                                                                          <a class="dropdown-item" (click)="dropdowSelect('Recibido',item, val)">Recibido</a>
+                                                    <div class="card-body p-1" style="background-color: #dde5ec;">
+                                                        <div class="row p-3">
+                                                            <div class="col-12 col-sm-4 col-lg-4 col-xl-4 mb-2" *ngFor="let val of item.products">
+                                                                <div *ngIf="val.status != 'Recibido'">
+                                                                    <div class="card hovercard ">
+                                                                        <div class="card-header">
+                                                                            <h6 style="display: contents;">Status: </h6>
+                                                                            <div class="btn-group">
+                                                                                <button type="button" class="btn btn-sm dropdown-toggle"
+                                                                                [ngClass]="{'btn-dark': val.status == 'Ordenando','btn-info': val.status == 'Pendiente', 'btn-primary': val.status == 'Preparando', 'btn-warning': val.status == 'Entrega', 'btn-success': val.status == 'Recibido'}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                    {{val.status}}
+                                                                                </button>
+                                                                                <div class="dropdown-menu">
+                                                                                <a class="dropdown-item" (click)="dropdowSelect('Ordenando',item, val)">Ordenando</a>
+                                                                                <a class="dropdown-item" (click)="dropdowSelect('Pendiente',item, val)">Pendiente</a>
+                                                                                <a class="dropdown-item" (click)="dropdowSelect('Preparando',item, val)">Preparando</a>
+                                                                                <a class="dropdown-item" (click)="dropdowSelect('Entrega',item, val)">Entrega</a>
+                                                                                <a class="dropdown-item" (click)="dropdowSelect('Recibido',item, val)">Recibido</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-body">
+                                                                            <h6 class="card-title mt-3">ID: {{val.idCan}}</h6>
+                                                                            <p>Cliente: {{val.petName}}</p>
+                                                                            <p>QR: <button (click)="checkQrCode(val.link)" class="btn btn-primary btn-sm" > VER QR </button></p>
+                                                                            <p>Detalle: {{val.description}}</p>
+                                                                            <p>Costo: {{val.cost | currency:"₡"}}</p>
+                                                                            
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <h6>Accion</h6>
+                                                                            <span class="d-flex">
+                                                                                <a class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a>
+                                                                                <a data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fas fa-trash color-danger"></i></a>
+                                                                            </span>
                                                                         </div>
                                                                     </div>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="d-flex">
-                                                                        <a class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a>
-                                                                        <a data-toggle="tooltip" data-placement="top" title="Close" data-original-title="Close"><i class="fas fa-times color-danger"></i></a>
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                        </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    </div>
+                                                </div>
                                                 </div>
                                                 <div *ngIf="showCardMsgOrderList">
                                                     <div class="card m-2" style="width: 18rem;">
@@ -139,7 +133,7 @@
                         <div class="row no-gutters">
                             <div class="col-lg-12 mb-3">
                                 <div class="card">
-                                    <div class="card-body top-menu">
+                                    <div class="card-body top-menu p-1">
                                         <h4 class="card-title">Historial de ordenes</h4>
                                         <div class="container">
                                             <div id="accordion">
@@ -154,53 +148,40 @@
                                                   </h5>
                                                 </div>
                                                 <div id="{{item._id}}" class="collapsible" [@collapse]="item.showPanel" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-                                                  <div class="card-body p-1">
-                                                    <table class="table verticle-middle table-responsive-lg mb-0">
-                                                        <thead class="text-center thead-dark">
-                                                            <tr>
-                                                                <th scope="col">ID</th>
-                                                                <!-- <th scope="col">Orden</th> -->
-                                                                <th scope="col">Cliente</th>
-                                                                <th scope="col">QR</th>
-                                                                <th scope="col">Detalle</th>
-                                                                <th scope="col">Costo ₡</th>
-                                                                <th scope="col">Status</th>
-                                                                <th scope="col">Accion</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody *ngFor="let val of item.products" class="text-center">
-                                                            <tr *ngIf="val.status == 'Recibido'">
-                                                                <td>{{val.idCan}}</td>
-                                                                <td>{{val.petName}}</td>
-                                                                <td ><button (click)="checkQrCode(val.link)" class="btn btn-primary btn-sm" > VER QR </button></td>
-                                                                <td>{{val.description}}</td>
-                                                                <td>{{val.cost | currency:"₡"}}</td>
-                                                                <td>
-                                                                    <!-- <span class="badge badge-xs badge-primary">Pendiente</span> -->
-                                                                    <div class="btn-group">
-                                                                        <button [disabled]="true" type="button" class="btn btn-sm dropdown-toggle"
-                                                                        [ngClass]="{'btn-dark': val.status == 'Ordenando','btn-info': val.status == 'Pendiente', 'btn-primary': val.status == 'Preparando', 'btn-warning': val.status == 'Entrega', 'btn-success': val.status == 'Recibido'}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                            {{val.status}}
-                                                                        </button>
-                                                                        <div class="dropdown-menu">
-                                                                            <a class="dropdown-item" (click)="dropdowSelect('Ordenando',item._id, val)">Ordenando</a>
-                                                                            <a class="dropdown-item" (click)="dropdowSelect('Pendiente',item._id, val)">Pendiente</a>
-                                                                            <a class="dropdown-item" (click)="dropdowSelect('Preparando',item._id, val)">Preparando</a>
-                                                                            <a class="dropdown-item" (click)="dropdowSelect('Entrega',item._id, val)">Entrega</a>
-                                                                            <a class="dropdown-item" (click)="dropdowSelect('Recibido',item._id, val)">Recibido</a>
+                                                  <div class="card-body p-1" style="background-color: #dde5ec;">
+                                                    <div class="row p-3">
+                                                        <div class="col-12 col-sm-4 col-lg-4 col-xl-4 mb-2" *ngFor="let val of item.products">
+                                                            <div *ngIf="val.status == 'Recibido'">
+                                                                <div class="card hovercard ">
+                                                                    <div class="card-header">
+                                                                        <h6 style="display: contents;">Status: </h6>
+                                                                        <div class="btn-group">
+                                                                            <button [disabled]="true" type="button" class="btn btn-sm dropdown-toggle"
+                                                                            [ngClass]="{'btn-dark': val.status == 'Ordenando','btn-info': val.status == 'Pendiente', 'btn-primary': val.status == 'Preparando', 'btn-warning': val.status == 'Entrega', 'btn-success': val.status == 'Recibido'}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                {{val.status}}
+                                                                            </button>
                                                                         </div>
                                                                     </div>
-                                                                </td>
-                                                                <td>
-                                                                    <span class="d-flex">
-                                                                        <a class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a>
-                                                                        <a data-toggle="tooltip" data-placement="top" title="Close" data-original-title="Close"><i class="fas fa-times color-danger"></i></a>
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                  </div>
+                                                                    <div class="card-body">
+                                                                        <h6 class="card-title mt-3">ID: {{val.idCan}}</h6>
+                                                                        <p>Cliente: {{val.petName}}</p>
+                                                                        <p>QR: <button (click)="checkQrCode(val.link)" class="btn btn-primary btn-sm" > VER QR </button></p>
+                                                                        <p>Detalle: {{val.description}}</p>
+                                                                        <p>Costo: {{val.cost | currency:"₡"}}</p>
+                                                                        
+                                                                    </div>
+                                                                    <div class="card-footer">
+                                                                        <h6>Accion</h6>
+                                                                        <span class="d-flex">
+                                                                            <a class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a>
+                                                                            <a data-toggle="tooltip" data-placement="top" title="Delete" data-original-title="Delete"><i class="fas fa-trash color-danger"></i></a>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 </div>
                                               </div>
                                                 <div *ngIf="showCardMsgOrderHistoryList">
