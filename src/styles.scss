@@ -70,7 +70,8 @@ body {
     --bgcolor-new-item: var(--color-secondary-50);
 }
 .homeInit{
-    background-color: #81D4FA;
+  background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+
 }
 
 .homeInitLanding {
@@ -137,18 +138,24 @@ $loader-keyframe: 1 / (length($loader-colors) * 2) * 100;
 
 .reset,
 .forgot {
-    background-color: #81D4FA;
+  @include media-breakpoint-down(sm) {
+    background: -webkit-linear-gradient(top, #007dff, #ffffff);
+  }
+  background: -webkit-linear-gradient(left, #3931af, #00c6ff);
     height: 100vh;
+    @include media-breakpoint-down(sm) {
+      height: 130vh !important;
+    }
     @include media-breakpoint-up(lg) {
       .card{
         width: 30rem;
         margin: auto;
-        background-color: #81D4FA;
+        background: -webkit-linear-gradient(left, #81D4FA, #00c6ff);
       }
     }
     .card{
       margin: auto;
-      background-color: #81D4FA;
+      background: -webkit-linear-gradient(left, #81D4FA, #00c6ff);
       box-shadow: 0px 8px 16px 0px #1976D2;
     }
     .btn-yellow {

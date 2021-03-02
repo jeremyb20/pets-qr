@@ -38,9 +38,11 @@ export class RegisterPetComponent implements OnInit {
     {Id: 2, gender: 'Otro'}
   ];
 
+  isSetPosition: boolean = false;
+
   
   constructor(private formBuilder: FormBuilder,private mapsAPILoader: MapsAPILoader,private ngZone: NgZone, private petService: PetService, private router: Router ) {
-    this.setCurrentPosition();
+    // this.setCurrentPosition();
    }
 
   ngOnInit() {
@@ -84,6 +86,7 @@ export class RegisterPetComponent implements OnInit {
           photo: 'https://cdn.worldvectorlogo.com/logos/google-maps-2020-icon.svg'
         });
         this.showInfo = true;
+        this.isSetPosition = true;
       });
     } else {
       alert("Geolocation is not supported by this browser.");
@@ -128,57 +131,95 @@ export class RegisterPetComponent implements OnInit {
               
         });
         return;
-      }
-      
-      this.loading = true;
-      var newPet = {
-        petName: this.f.petName.value,
-        phone: this.f.phone.value,
-        email: this.f.email.value,
-        password: this.f.password.value,
-        acceptTerms: this.f.acceptTerms.value,
-        lat: this.markers[0].lat,
-        lng: this.markers[0].lng,
-        genderSelected: this.f.genderSelected.value,
-        userState: 3,
-        petStatus: 'No-Perdido'
-      }
-
-      this.petService.registerPet(newPet,this.file).subscribe(data => {
-        if(data.success) {
-          this.loading = false;
-          Swal.fire({
-            title: 'Registro ' + newPet.petName+'' ,
-            html: "Su registro ha sido authenticado correctamente. Haz click en ok para iniciar sesion",
-            showCancelButton: false,
-            allowEscapeKey: false,
-            confirmButtonText: 'OK',
-            allowOutsideClick: false,
-            buttonsStyling: false,
-            reverseButtons: true,
-            position: 'top',
-            padding: 0,
-            customClass: { confirmButton: 'col-auto btn btn-info m-3' }
-          })
-          .then((result) => {
-              if (result.value){
-                this.router.navigate(['/login-pets']); 
-              }
-                
-          });
-        } else {
+      }else  if(!this.isSetPosition){
+        Swal.fire({
+          title: 'Error de registro' ,
+          html: "Seleccione en el mapa la posicion de vivienda del can",
+          showCancelButton: false,
+          allowEscapeKey: false,
+          confirmButtonText: 'OK',
+          allowOutsideClick: false,
+          buttonsStyling: false,
+          reverseButtons: true,
+          position: 'top',
+          padding: 0,
+          customClass: { confirmButton: 'col-auto btn btn-info m-3' }
+        })
+        .then((result) => {
+          this.isSetPosition = true;
+        });
+        return;
+      } else  if(this.file == undefined && !this.showInfo){
+        Swal.fire({
+          title: 'Error de registro' ,
+          html: "Seleccione una foto de perfil para el can",
+          showCancelButton: false,
+          allowEscapeKey: false,
+          confirmButtonText: 'OK',
+          allowOutsideClick: false,
+          buttonsStyling: false,
+          reverseButtons: true,
+          position: 'top',
+          padding: 0,
+          customClass: { confirmButton: 'col-auto btn btn-info m-3' }
+        })
+        .then((result) => {
+              
+        });
+        return;
+      } else {
+        if(this.markers.length != 0) {
+          this.loading = true;
+        var newPet = {
+          petName: this.f.petName.value,
+          phone: this.f.phone.value,
+          email: this.f.email.value,
+          password: this.f.password.value,
+          acceptTerms: this.f.acceptTerms.value,
+          lat: this.markers[0].lat,
+          lng: this.markers[0].lng,
+          genderSelected: this.f.genderSelected.value,
+          userState: 3,
+          petStatus: 'No-Perdido'
+        }
+  
+        this.petService.registerPet(newPet,this.file).subscribe(data => {
+          if(data.success) {
+            this.loading = false;
+            Swal.fire({
+              title: 'Registro ' + newPet.petName+'' ,
+              html: "Su registro ha sido authenticado correctamente. Haz click en ok para iniciar sesion",
+              showCancelButton: false,
+              allowEscapeKey: false,
+              confirmButtonText: 'OK',
+              allowOutsideClick: false,
+              buttonsStyling: false,
+              reverseButtons: true,
+              position: 'top',
+              padding: 0,
+              customClass: { confirmButton: 'col-auto btn btn-info m-3' }
+            })
+            .then((result) => {
+                if (result.value){
+                  this.router.navigate(['/login-pets']); 
+                }
+                  
+            });
+          } else {
+            this.hideMsg = true;
+            this.loading = false;
+            this.ShowMsg = data.msg;
+            setTimeout(() => { this.hideMsg = false }, this.timeSeconds);
+          }
+        },
+        error => {
           this.hideMsg = true;
           this.loading = false;
-          this.ShowMsg = data.msg;
+          this.ShowMsg = "Ocurrio un error favor contactar a soporte o al administrador del sitio";
           setTimeout(() => { this.hideMsg = false }, this.timeSeconds);
+        });
         }
-      },
-      error => {
-        this.hideMsg = true;
-        this.loading = false;
-        this.ShowMsg = "Ocurrio un error favor contactar a soporte o al administrador del sitio";
-        setTimeout(() => { this.hideMsg = false }, this.timeSeconds);
-      });
+      }
   }
 
   onReset() {
