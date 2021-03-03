@@ -75,6 +75,7 @@ export class AdminMasterComponent implements OnInit {
   idItemProduct: number;
   order: any;
   orderHistory: any;
+  showPetSecondArray: any;
 
     constructor(private petService: PetService, private media: MediaService,private _notificationSvc: NotificationService, private router: Router, private formBuilder: FormBuilder) {
         this.petLogged = this.petService.getLocalPet()
@@ -257,6 +258,11 @@ export class AdminMasterComponent implements OnInit {
         });
       }
      
+    }
+
+    showSecondPet(item){
+      this.showPetSecondArray = item.newPetProfile;
+      $('#showPetModal').modal('show');
     }
 
     checkFoto(item:any, value:number){

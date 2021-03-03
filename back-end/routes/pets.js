@@ -829,6 +829,23 @@ router.get('/getAllPets', function(req, res){
     }
     const object = [];
     pets.forEach(item => {
+      var newPetObject = [];
+      if(item.newPetProfile.length>0){
+        item.newPetProfile.forEach(element => {
+          var pet  = {
+            idPet: element._id,
+            petName: element.petName,
+            email: element.email,
+            phone: element.phone,
+            age: element.age,
+            birthDate: element.birthDate,
+            ownerPetName: element.ownerPetName,
+            petStatus: element.petStatus
+          }
+          newPetObject.push(pet);
+        })
+      }
+      
       var test = {
         idPet: item._id,
         petName: item.petName,
@@ -837,13 +854,38 @@ router.get('/getAllPets', function(req, res){
         age: item.age,
         birthDate: item.birthDate,
         ownerPetName: item.ownerPetName,
-        petStatus: item.petStatus
+        petStatus: item.petStatus,
+        newPetProfile: (newPetObject.length > 0)? newPetObject: null
       }  
       object.push(test);
     })
     res.json(object)
   });
 });
+
+// router.get('/getAllPets', function(req, res){
+//   Pet.find({}, function(err, pets){
+//   if(err){
+//     res.json({ success: false, msg: err });
+//     next();
+//   }
+//   const object = [];
+//   pets.forEach(item => {
+//     var test = {
+//       idPet: item._id,
+//       petName: item.petName,
+//       email: item.email,
+//       phone: item.phone,
+//       age: item.age,
+//       birthDate: item.birthDate,
+//       ownerPetName: item.ownerPetName,
+//       petStatus: item.petStatus
+//     }  
+//     object.push(test);
+//   })
+//   res.json(object)
+// });
+// });
 
 router.get('/getAllCodePetsList', function(req, res){
   Pet.find({}, function(err, pets){
