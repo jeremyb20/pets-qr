@@ -211,6 +211,7 @@ export class PetService {
     fd.append('_id', obj.id);
     fd.append('comment', obj.comment);
     fd.append('petName', obj.petName);
+    fd.append('email', obj.email);
     fd.append('photo', obj.photo);
     fd.append('products', JSON.stringify(obj.products));
     fd.append('total', obj.total);

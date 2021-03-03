@@ -202,6 +202,10 @@ const PetSchema = mongoose.Schema ({
       type: String,
       require: true
     },
+    email: {
+      type: String,
+      require: true
+    },
     idPrincipal: {
       type:String,
       require: true

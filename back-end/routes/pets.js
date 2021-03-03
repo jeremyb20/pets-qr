@@ -180,6 +180,7 @@ router.post('/authenticate', (req, res, next) => {
             userState: pet.userState,
             petName: pet.petName,
             photo: pet.photo,
+            email: pet.email,
             idSecond: 0
           }
         })
@@ -629,6 +630,7 @@ router.post('/register/generateQrCodePet', async(req, res) => {
   var object = {
     petName: obj.petName,
     comment: obj.comment,
+    email: obj.email,
     products: objProducts,
     idPrincipal: obj._id,
     total: obj.total
@@ -831,6 +833,7 @@ router.get('/getAllPets', function(req, res){
         idPet: item._id,
         petName: item.petName,
         email: item.email,
+        phone: item.phone,
         age: item.age,
         birthDate: item.birthDate,
         ownerPetName: item.ownerPetName,

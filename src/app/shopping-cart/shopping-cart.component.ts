@@ -289,6 +289,7 @@ export class ShoppingCartComponent implements OnInit {
       id: this.petPrincipal.id,
       petName: this.petPrincipal.petName,
       photo: this.petPrincipal.photo,
+      email: this.petPrincipal.email,
       comment: this.h.comment.value,
       products : products,
       total: this.total

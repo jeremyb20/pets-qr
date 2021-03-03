@@ -15,7 +15,7 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-
+import _ from "lodash";
 
 declare var $: any;
 
@@ -160,26 +160,55 @@ export class AdminMasterComponent implements OnInit {
             val.showPanel = true;
         }
       });
+      this.orderHistory.map((val, index) => {
+        if (val._id != item._id) {
+            val.showPanel = true;
+        }
+      });
     }
 
     getAllCode(){
       this.petService.getAllCodeList().subscribe(data => {
         this.order = [];
         this.orderHistory = [];
+        
         data.forEach(element => {
-            if(element.code.length >= 1){
-              element.code.forEach(item => {
-                item.showPanel = true;
-                this.order.push(item);
+          if(element.code.length >= 1){
+            element.code.forEach(item => {
+              item.showPanel = true;
+              item.products.forEach(element => {
+                var object = {
+                  comment: item.comment,
+                  idPrincipal: item.idPrincipal,
+                  petName: item.petName,
+                  email: item.email,
+                  products: [{
+                    cost: element.cost,
+                    description: element.description,
+                    idCan: element.idCan,
+                    link: element.link,
+                    petName: element.petName,
+                    petPhoto: element.petPhoto,
+                    productName: element.productName,
+                    status: element.status,
+                    _id: element._id
+                  }],
+                  showPanel: item.showPanel,
+                  total: item.total,
+                  _id: item._id
+                }
+                if(element.status != 'Recibido'){
+                  this.order.push(object);
+                }else{
+                  this.orderHistory.push(object);
+                }
               });
+            });
           }
         });
-        this.order.map((element, index) => {
-          element.products.map((val, index) => {
-            if (val.status == 'Recibido') {
-              this.orderHistory.push(element);
-            }
-          });
+
+        this.orderHistory = _.uniqWith(this.orderHistory, (f1,f2) => {
+          return f1._id === f2._id;
         });
         this.getAllProductList();
         this.showCardMsgOrderList = (this.order.length > 0)? false: true;
@@ -409,7 +438,7 @@ export class AdminMasterComponent implements OnInit {
                 if (!query) {
                     return obj;
                 }
-                return obj.petName.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+                return obj.email.toLowerCase().indexOf(query.toLowerCase()) !== -1;
             });
         }
         return this.filteredData;
