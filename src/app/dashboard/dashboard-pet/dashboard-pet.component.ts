@@ -45,7 +45,7 @@ export class DashboardPetComponent implements OnInit {
   hideMsg: boolean = true;
   ShowMsg: string = 'hola';
   code: any;
-  id: number = 1;
+  id: number;
   permissionData: any;
   permissionDataCopy: any;
   updatePermission: boolean = false;
@@ -137,6 +137,8 @@ calendarOptions: CalendarOptions = {
     this.pet = JSON.parse(this.petLogged);
     this.idSecondary = this.pet.idSecond;
     var petPrincipal = this.petService.getPrincipalUserData();
+    var idSelected = this.petService.getidTrack();
+    this.id = parseInt(idSelected);
     this.petPrincipal = JSON.parse(petPrincipal);
     if(this.pet != null){
       switch (this.pet.userState) {
@@ -229,6 +231,7 @@ calendarOptions: CalendarOptions = {
 
   stepTrackOrder(step: number){
     this.id = step;
+    this.petService.setidTrack(this.id);
   }
 
   getPetDataList() {
@@ -401,7 +404,8 @@ calendarOptions: CalendarOptions = {
       if(data.success) {
         this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
         this.loading = false;
-        this.getPetDataList();
+        // this.getPetDataList();
+        setTimeout(() => {location.reload() }, 3000);
       } else {
         $('#newMenuModal').modal('hide');
         this.loading = false;

@@ -382,7 +382,7 @@
 
                         <!-- Panel control -->
                         <div *ngIf="id === 5" class="tab-panel fade show "  [ngClass]="{'active': id === 5}"  id="nav-panelControl" role="tabpanel" aria-labelledby="nav-panelControl-tab">   
-                            <div class="panelProfileContent">
+                            <div *ngIf="permissionData" class="panelProfileContent">
                                 <div class="row">
                                     <div class="col-sm">
                                         <h4>  <i class="fa fa-paw" aria-hidden="true"></i> Panel de control</h4>

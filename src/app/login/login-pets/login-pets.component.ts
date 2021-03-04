@@ -59,6 +59,7 @@ export class LoginPetsComponent implements OnInit {
         }
         this.petService.storeUserData(data.token, data.pet);
         this.petService.storePrincipalUserData(data.pet);
+        this.petService.setidTrack(1)
       } else {
         this.hideMsg = true;
         this.ShowMsg = data.msg;

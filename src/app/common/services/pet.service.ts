@@ -614,6 +614,14 @@ updateNotification(obj: any):Observable<any> {
     localStorage.setItem('petPrincipal', JSON.stringify(pet));
     this.petPrincipal = pet;
   }
+
+  setidTrack(id){
+    localStorage.setItem('idSelected', id);
+  }
+
+  getidTrack(){
+    return localStorage.getItem('idSelected');
+  }
   
   getPrincipalUserData() {
     return localStorage.getItem("petPrincipal");
