@@ -79,6 +79,13 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  showPoliticPrivacy(val) {
+    if(val == 1)
+      $('#termsandcondition').modal('show');
+    else
+      $('#politicPrivacy').modal('show');
+  }
+
   onSubmit() {
     this.submitted = true;
     if (this.loginForm.invalid) {

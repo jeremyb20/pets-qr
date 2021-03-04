@@ -5,6 +5,7 @@ import { MapsAPILoader } from '@agm/core';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { PetService } from 'src/app/common/services/pet.service';
+declare var $: any;
 
 interface HtmlInputEvent extends Event {
   target: HTMLInputElement & EventTarget
@@ -105,6 +106,10 @@ export class RegisterPetComponent implements OnInit {
 
   savePosition() {
     this.showInfo = false;
+  }
+
+  showPoliticPrivacy(){
+    $('#termsandcondition').modal('show');
   }
 
   onSubmit() {
