@@ -78,7 +78,8 @@ app.use(compression({
   filter: shouldCompress,
   // threshold is the byte threshold for the response body size
   // before compression is considered, the default is 1kb
-  threshold: 0
+  threshold: 10 * 1000,
+  level: 6
 }));
 
 app.use(function (req, res, next) {
