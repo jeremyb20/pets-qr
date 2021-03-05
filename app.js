@@ -11,6 +11,7 @@ const multer = require('multer');
 const session = require('express-session');
 const flash = require('express-flash');
 const User = require('./back-end/models/user');
+const compression = require('compression');
 require('dotenv').config();
 
 // Port Number
@@ -60,8 +61,29 @@ app.use(multer({storage}).single('image'));
 // CORS Middleware
 app.use(cors());
 
+
+const shouldCompress = (req, res) => {
+  if (req.headers['x-no-compression']) {
+    // don't compress responses if this request header is present
+    return false;
+  }
+
+  // fallback to standard compression
+  return compression.filter(req, res);
+};
+
+app.use(compression({
+  // filter decides if the response should be compressed or not,
+  // based on the `shouldCompress` function above
+  filter: shouldCompress,
+  // threshold is the byte threshold for the response body size
+  // before compression is considered, the default is 1kb
+  threshold: 0
+}));
+
 app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://localpetsandfamily.herokuapp.com/');
+  var origin = (req.headers.host == 'localhost:8080')? '*' : 'https://localpetsandfamily.herokuapp.com/';
+  res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.setHeader('Access-Control-Allow-Credentials', true);
