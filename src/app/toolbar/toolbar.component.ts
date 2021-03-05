@@ -44,7 +44,7 @@ export class ToolbarComponent implements OnInit {
     if(this.user.userState == 0 || this.Media.IsLandscape) {
       $('#wrapper').removeClass('toggled')
     }
-    this.getNotifications();
+    //this.getNotifications();
   }
 
   ngOnInit(): void {
