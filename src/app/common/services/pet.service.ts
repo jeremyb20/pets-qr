@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 export class PetService {
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
+    'Cache-Control': 'no-cache'
   });
 
   authToken: any;
