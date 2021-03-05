@@ -22,6 +22,7 @@ export class ToolbarComponent implements OnInit {
   notificationsData: any;
   isNewMsg: number = 0;
   isFoo:boolean = false;
+  showAllNotifications: any;
 
   constructor(public authService: AuthServices, public petService: PetService, private _notificationSvc: NotificationService, private media: MediaService,private route: Router) { 
     this.mediaSubscription = this.media.subscribeMedia().subscribe(result => {
@@ -58,7 +59,14 @@ export class ToolbarComponent implements OnInit {
     this.notificationsData = [];
     this.isNewMsg = 0;
     this.petService.getNotificationsService(this.user.id).subscribe(data => {
-        this.notificationsData = data;
+        // this.notificationsData = data;
+        data.map((item, index)=> {
+          if(index<= 5){
+            this.notificationsData.push(item);
+          }
+          
+        });
+        this.showAllNotifications = data;
         this.notificationsData.forEach(element => {
             if(element.isNewMsg){
                 this.isNewMsg ++;
@@ -69,6 +77,13 @@ export class ToolbarComponent implements OnInit {
         this.loading = false;
         this._notificationSvc.warning('Hola '+this.user.petName+'', 'Ocurrio un error favor de contactar a soporte', 6000);
       });
+  }
+
+  showAllNotificationsModal(){
+    this.isFoo = false;
+    $('#showAllnotificationsModal').addClass('test');
+    $('#showAllnotificationsModal').modal('show');
+    
   }
 
   getDate(strDate) {

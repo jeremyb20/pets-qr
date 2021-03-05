@@ -127,6 +127,10 @@ $loader-keyframe: 1 / (length($loader-colors) * 2) * 100;
   padding: 0px;
 }
 
+.modal-backdrop {
+  z-index: auto !important;
+}
+
 .ng-select .ng-select-container {
   color: #333;
   background-color: #bbbbbb;
