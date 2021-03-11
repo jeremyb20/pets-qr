@@ -652,6 +652,10 @@
       background-position: -311px;
     }
 
+    .test {
+      background-position: 0px !important;
+    }
+
     .final {
       -webkit-transition: background 0.5s ease-in-out,padding 0.5s ease-in-out;
       transition: background 0.5s ease-in-out,padding 0.5s ease-in-out !important;
@@ -709,7 +713,7 @@
   }
 
   .carousel{
-    height:50%
+    height:100%
   }
   
   @media (max-width:776px){
