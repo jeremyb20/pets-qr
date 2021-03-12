@@ -174,38 +174,43 @@ export class AdminMasterComponent implements OnInit {
         this.orderHistory = [];
         
         data.forEach(element => {
-          if(element.code.length >= 1){
-            element.code.forEach(item => {
-              item.showPanel = true;
-              item.products.forEach(element => {
-                var object = {
-                  comment: item.comment,
-                  idPrincipal: item.idPrincipal,
-                  petName: item.petName,
-                  email: item.email,
-                  products: [{
-                    cost: element.cost,
-                    description: element.description,
-                    idCan: element.idCan,
-                    link: element.link,
-                    petName: element.petName,
-                    petPhoto: element.petPhoto,
-                    productName: element.productName,
-                    status: element.status,
-                    _id: element._id
-                  }],
-                  showPanel: item.showPanel,
-                  total: item.total,
-                  _id: item._id
-                }
-                if(element.status != 'Recibido'){
-                  this.order.push(object);
-                }else{
-                  this.orderHistory.push(object);
-                }
-              });
-            });
+          if(element.status != 'Recibido'){
+            this.order.push(element);
+          }else{
+            this.orderHistory.push(element);
           }
+          // if(element.code.length >= 1){
+          //   element.code.forEach(item => {
+          //     item.showPanel = true;
+          //     item.products.forEach(element => {
+          //       var object = {
+          //         comment: item.comment,
+          //         idPrincipal: item.idPrincipal,
+          //         petName: item.petName,
+          //         email: item.email,
+          //         products: [{
+          //           cost: element.cost,
+          //           description: element.description,
+          //           idCan: element.idCan,
+          //           link: element.link,
+          //           petName: element.petName,
+          //           petPhoto: element.petPhoto,
+          //           productName: element.productName,
+          //           status: element.status,
+          //           _id: element._id
+          //         }],
+          //         showPanel: item.showPanel,
+          //         total: item.total,
+          //         _id: item._id
+          //       }
+          //       if(element.status != 'Recibido'){
+          //         this.order.push(object);
+          //       }else{
+          //         this.orderHistory.push(object);
+          //       }
+          //     });
+          //   });
+          // }
         });
 
         this.orderHistory = _.uniqWith(this.orderHistory, (f1,f2) => {

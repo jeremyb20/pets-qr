@@ -185,6 +185,7 @@ export class PetService {
     fd.append('petStatus',status.petStatus);
     fd.append('petName',status.petName);
     fd.append('descriptionLost',event.descriptionLost);
+    fd.append('idSecondary',event.idSecondary);
     fd.append('_id',event._id);
 
     if(this.isDev) {
@@ -209,13 +210,8 @@ export class PetService {
 
   generateQrCodePet(obj: any):Observable<any> {
     const fd = new FormData();
-    fd.append('_id', obj.id);
-    fd.append('comment', obj.comment);
-    fd.append('petName', obj.petName);
-    fd.append('email', obj.email);
-    fd.append('photo', obj.photo);
+    fd.append('_id', obj.idPrincipal);
     fd.append('products', JSON.stringify(obj.products));
-    fd.append('total', obj.total);
 
     if(this.isDev) {
       return this.httpClient.post<any>('http://localhost:8080/pet/register/generateQrCodePet', fd);

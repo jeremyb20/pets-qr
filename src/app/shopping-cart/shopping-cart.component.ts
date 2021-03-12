@@ -42,6 +42,7 @@ export class ShoppingCartComponent implements OnInit {
   petPrincipal: any;
   selectCanObject:any;
   productNameSelected: any;
+  petNamePrincipal: string = '';
   historyList : any = [];
   private singleProduct;
   public isAdded;
@@ -67,6 +68,7 @@ export class ShoppingCartComponent implements OnInit {
 
     this.petService.getAllProfileList(this.petPrincipal.id).subscribe(data => {
       this.photoPrincipalPet = data.photo;
+      this.petNamePrincipal = data.petName
       this.seeAllProfile = data.newPetProfile;
     },
     error => {
@@ -145,8 +147,9 @@ export class ShoppingCartComponent implements OnInit {
             if (index !== -1) {
               this.finalCard.splice(index, 1);
             }
-        
+            this.allListShoppingCartItem =  this.finalCard;
             this.counter = this.finalCard.length;
+
         }
       })
   }
@@ -274,6 +277,9 @@ export class ShoppingCartComponent implements OnInit {
     let products = [];
     this.finalCard.forEach(element => {
       var intermediate = {
+        idPrincipal: this.petPrincipal.id,
+        email: this.petPrincipal.email,
+        comment: this.h.comment.value,
         productName: element.productName,
         description:element.description,
         cost: element.cost,
@@ -286,14 +292,19 @@ export class ShoppingCartComponent implements OnInit {
     });
 
     var object = {
-      id: this.petPrincipal.id,
-      petName: this.petPrincipal.petName,
-      photo: this.petPrincipal.photo,
-      email: this.petPrincipal.email,
-      comment: this.h.comment.value,
-      products : products,
-      total: this.total
+      idPrincipal: this.petPrincipal.id,
+      products: products
     }
+
+    // var object = {
+    //   idPrincipal: this.petPrincipal.id,
+    //   petName: this.petPrincipal.petName,
+    //   photo: this.petPrincipal.photo,
+    //   email: this.petPrincipal.email,
+    //   comment: this.h.comment.value,
+    //   products : products,
+    //   total: this.total
+    // }
 
     this.petService.generateQrCodePet(object).subscribe(data => {
       if(data.success) {

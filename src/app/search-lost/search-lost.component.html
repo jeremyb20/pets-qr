@@ -107,8 +107,8 @@
                         <div class="card-body">
                             <h4 class="card-title mt-3">Hola, me llamo {{item.petName}}</h4>
                         </div>
-                        <div *ngFor="let val of item.code" class="card-footer">
-                            <a class="btn btn-inverse" target="_blank" href="{{val.link}}" type="submit">Ver perfil de {{item.petName}}</a>
+                        <div class="card-footer">
+                            <a class="btn btn-inverse" target="_blank" href="{{item.link}}" type="submit">Ver perfil de {{item.petName}}</a>
                         </div>
                     </div>
                   </div>

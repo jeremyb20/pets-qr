@@ -75,7 +75,7 @@
                                 <div class="row mb-4" *ngFor="let item of finalCard">
                                     <div class="col-md-5 col-lg-3 col-xl-3" >
                                         <div class="product-grid2">
-                                            <div class="product-image2">
+                                            <div class="product-image2 popupimage">
                                                 <a >
                                                     <img class="pic-1" src="{{item.firstPhoto}}" alt="{{item.firstPhoto}}">
                                                     <img class="pic-2" src="{{item.secondPhoto}}" alt="{{item.secondPhoto}}">
@@ -305,8 +305,8 @@
                       <div class="position-relative rounded-circle overflow-hidden mx-auto custom-circle-image">
                         <img class="w-100 h-100" src="{{photoPrincipalPet}}" alt="{{photoPrincipalPet}}">
                       </div>
-                      <div class="card-body text-center mt-4">
-                        <a (click)="profileSelected(petPrincipal)" class="btn btn-inverse btn-sm">Seleccionar
+                      <div class="card-body text-center">
+                        <a (click)="profileSelected(petPrincipal)" class="btn btn-inverse btn-sm"><i class="fas fa-paw ml-2"></i>{{petNamePrincipal}}
                             <i class="fas fa-paw ml-2"></i>
                         </a>  
                       </div>
@@ -316,11 +316,10 @@
                   <div *ngFor="let item of seeAllProfile" class="col-6 col-sm-6 col-lg-6 col-xl-6 card-wrapper" style="width: 18rem;">
                     <div class="card border-0">
                       <div class="position-relative rounded-circle overflow-hidden mx-auto custom-circle-image">
-                        <img class="w-100 h-100" src="{{item.photo}}" alt="Card image cap">
+                        <img class="w-100 h-100" src="{{item.photo}}" alt="{{item.photo}}">
                       </div>
-                      <div class="card-body text-center mt-4">
-                        <a (click)="profileSelected(item)" class="btn btn-inverse btn-sm">Seleccionar
-                            <i class="fas fa-paw ml-2"></i>
+                      <div class="card-body text-center">
+                        <a (click)="profileSelected(item)" class="btn btn-inverse btn-sm"> <i class="fas fa-paw ml-2"></i>{{item.petName}}
                         </a>
                       </div>
                     </div>

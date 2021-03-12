@@ -445,20 +445,18 @@ router.get('/getHistoryShopList/:id', function(req, res){
     if(results.code.length> 0 ){
       var object = [];
       results.code.forEach(item => {
-        item.products.forEach(val=> {
-          var product = {
-            cost: val.cost,
-            description: val.description,
-            petName: val.petName,
-            petPhoto: val.petPhoto,
-            productName: val.productName,
-            status: val.status
-          }
-          object.push(product);
-        })
+        var product =  {
+          comment: item.comment,
+          cost: item.cost,
+          description: item.description,
+          idCan: item.idCan,
+          petName: item.petName,
+          productName: item.productName,
+          status: item.status,
+          _id: item._id
+        }
+        object.push(product);
       })
-
-      
       res.json(object)
     }
   });
@@ -627,16 +625,8 @@ router.post('/register/generateQrCodePet', async(req, res) => {
   var id ='60219dea321aed00155e1659';
   const obj = JSON.parse(JSON.stringify(req.body));
   const objProducts = JSON.parse(obj.products);
-  var object = {
-    petName: obj.petName,
-    comment: obj.comment,
-    email: obj.email,
-    products: objProducts,
-    idPrincipal: obj._id,
-    total: obj.total
-  }
 
-  object.products.forEach(item => {
+  objProducts.forEach(item => {
     if(item.idCan == obj._id){
       item.link = 'https://' + req.headers.host + '/myPetCode/' + obj._id +'/'+ 0
     }else {
@@ -653,7 +643,7 @@ router.post('/register/generateQrCodePet', async(req, res) => {
     idPet: obj._id
   }
 
-  Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { code: object }},{new: true}).then(function(data){
+  Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { code: objProducts }},{new: true}).then(function(data){
     res.json({success:true,msg: 'Su compra se generado correctamente, el administrador se va contactar contigo, por mientras ve su estado del codigo en tu perfil!'});
   });
 
@@ -688,19 +678,16 @@ router.put('/update/updateStatusQrCodePet', async(req, res, next) => {
       arrayPet.push(pet);
       arrayPet.forEach(element => {
           element["code"].forEach(item => {
-            // item["status"] = object.status;
-            item["products"].forEach(element=> {
-              if(element["_id"] == obj.idItemSelected){
-                element["status"] = object.status;
-                pet.save();
-                try {
-                  res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
-                } catch (err) {
-                  res.json({ success: false, msg: err });
-                  next(err);
-                }
+            if(item["_id"] == obj.idItemSelected){
+              item["status"] = object.status;
+              pet.save();
+              try {
+                res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+              } catch (err) {
+                res.json({ success: false, msg: err });
+                next(err);
               }
-            })
+            }
           }) 
       })
      }
@@ -894,12 +881,37 @@ router.get('/getAllCodePetsList', function(req, res){
     next();
   }
   const object = [];
+  // pets.forEach(item => {
+  //   if(item.code.length> 0){
+  //     var it = {
+  //       showPanel: true,
+  //       email: item.email,
+  //       code: item.code
+  //     }
+  //     object.push(it);
+  //   }
+  // })
+
   pets.forEach(item => {
     if(item.code.length> 0){
-      var test = {
-        code:item.code
-      }  
-      object.push(test);
+      item.code.forEach(value => {
+        var val = {
+          comment: value.comment,
+          cost: value.cost,
+          description: value.description,
+          email: value.email,
+          idCan: value.idCan,
+          idPrincipal: value.idPrincipal,
+          link: value.link,
+          petName: value.petName,
+          petPhoto: value.petPhoto,
+          productName: value.productName,
+          status: value.status,
+          showPanel: true,
+          _id: value._id
+        }
+        object.push(val);
+      })
     }
   })
   res.json(object)
@@ -915,7 +927,33 @@ router.get('/lost/getAllLostPets', function(req, res){
   var arrayObj = []
   pets.forEach((item)=> {
     if(item.petStatus == 'Perdido'){
-      arrayObj.push(item)
+      item.code.forEach(val=> {
+        if(item._id == val.idCan){
+          var object = {
+            link : val.link,
+            photo:val.petPhoto,
+            petName: val.petName
+          }
+          arrayObj.push(object);
+        }
+        
+      });
+    }
+    if(item.newPetProfile.length>0) {
+      item.newPetProfile.forEach(value => {
+        if(value.petStatus == 'Perdido'){
+          item.code.forEach(f=> {
+            if(value._id == f.idCan){
+              var object = {
+                link : f.link,
+                photo: f.petPhoto,
+                petName: f.petName
+              }
+              arrayObj.push(object);
+            }
+          })
+        }
+      })
     }
   })
   res.json(arrayObj);
@@ -1155,25 +1193,48 @@ router.post('/report/reportLostPetStatus', async(req, res) => {
       return res.json({success:false,msg: 'Usuario no encontrado'});
     }
      if(pet != null) {
-       var arrayPet = [];
-      arrayPet.push(pet);
-      arrayPet.forEach(element => {
+      var arrayPet = [];
+      if(obj.idSecondary == 0 ){
+        arrayPet.push(pet);
+        arrayPet.forEach(element => {
           element["petStatus"] = reportPetLost.petStatus;
-          if(element["petStatusReport"].length> 0){
+          if (element["petStatusReport"].length > 0) {
             var indexToRemove = 0;
             var numberToRemove = 1;
             element["petStatusReport"].splice(indexToRemove, numberToRemove);
           }
           element["petStatusReport"].push(reportPetLost)
-          
+
           pet.save();
           try {
-            res.json({success:true,msg: 'Se ha reportado correctamente.. al administrador del sitio!'});
+            res.json({ success: true, msg: 'Se ha reportado correctamente.. al administrador del sitio!' });
           } catch (err) {
             res.json({ success: false, msg: err });
             next(err);
           }
-      })
+        })
+      }else{
+        pet.newPetProfile.forEach(element => {
+          if(element._id == obj.idSecondary){
+            console.log('paso')
+            element["petStatus"] = reportPetLost.petStatus;
+            if (element["petStatusReport"].length > 0) {
+              var indexToRemove = 0;
+              var numberToRemove = 1;
+              element["petStatusReport"].splice(indexToRemove, numberToRemove);
+            }
+            element["petStatusReport"].push(reportPetLost)
+  
+            pet.save();
+            try {
+              res.json({ success: true, msg: 'Se ha reportado correctamente.. al administrador del sitio!' });
+            } catch (err) {
+              res.json({ success: false, msg: err });
+              next(err);
+            }
+          }
+        })
+      }
      }
    });
 

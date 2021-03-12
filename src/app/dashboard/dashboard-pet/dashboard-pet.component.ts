@@ -713,6 +713,7 @@ calendarOptions: CalendarOptions = {
       lastPlaceLost: this.h.lastPlaceLost.value,
       date: this.h.date.value,
       descriptionLost: this.h.descriptionLost.value,
+      idSecondary: this.idSecondary,
       _id: this.pet.id
     } 
       
@@ -720,7 +721,6 @@ calendarOptions: CalendarOptions = {
       petStatus : (this.showReportForm)? 'Perdido' : 'No-Perdido',
       petName: this.profile.petName
     }
-
     this.petService.sendNewPetStatusEvent(form, status).subscribe(data => {
       if(data.success) {
         $('#reportProfileModal').modal('hide');

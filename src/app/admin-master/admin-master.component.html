@@ -63,7 +63,7 @@
                                                   <h5 class="mb-0">
                                                     <a aria-expanded="false">
                                                         <div class="row">
-                                                            <span class="col-6">Ver compra de {{item.email}}</span> <span class="col-6 text-center"> Total: {{item.total | currency:"₡"}}</span>
+                                                            <span class="col-6">Ver compra de {{item.email}}</span> <span class="col-6 text-center">Costo: {{item.cost | currency:"₡"}}</span>
                                                         </div>
                                                     </a>
                                                   </h5>
@@ -71,32 +71,32 @@
                                                 <div id="{{item._id}}" class="collapsible" [@collapse]="item.showPanel" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
                                                     <div class="card-body p-1" style="background-color: #dde5ec;">
                                                         <div class="row p-3">
-                                                            <div class="col-12 col-sm-4 col-lg-4 col-xl-4 mb-2" *ngFor="let val of item.products">
-                                                                <div *ngIf="val.status != 'Recibido'">
+                                                            <div class="col-12 col-sm-4 col-lg-4 col-xl-4 mb-2">
+                                                                <div *ngIf="item.status != 'Recibido'">
                                                                     <div class="card hovercard ">
                                                                         <div class="card-header">
                                                                             <h6 style="display: contents;">Status: </h6>
                                                                             <div class="btn-group">
                                                                                 <button type="button" class="btn btn-sm dropdown-toggle mr-3"
-                                                                                [ngClass]="{'btn-dark': val.status == 'Ordenando','btn-info': val.status == 'Pendiente', 'btn-primary': val.status == 'Preparando', 'btn-warning': val.status == 'Entrega', 'btn-success': val.status == 'Recibido'}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                    {{val.status}}
+                                                                                [ngClass]="{'btn-dark': item.status == 'Ordenando','btn-info': item.status == 'Pendiente', 'btn-primary': item.status == 'Preparando', 'btn-warning': item.status == 'Entrega', 'btn-success': item.status == 'Recibido'}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                    {{item.status}}
                                                                                 </button>
                                                                                 <div class="dropdown-menu">
-                                                                                <a class="dropdown-item" (click)="dropdowSelect('Ordenando',item, val)">Ordenando</a>
-                                                                                <a class="dropdown-item" (click)="dropdowSelect('Pendiente',item, val)">Pendiente</a>
-                                                                                <a class="dropdown-item" (click)="dropdowSelect('Preparando',item, val)">Preparando</a>
-                                                                                <a class="dropdown-item" (click)="dropdowSelect('Entrega',item, val)">Entrega</a>
-                                                                                <a class="dropdown-item" (click)="dropdowSelect('Recibido',item, val)">Recibido</a>
+                                                                                <a class="dropdown-item" (click)="dropdowSelect('Ordenando',item, item)">Ordenando</a>
+                                                                                <a class="dropdown-item" (click)="dropdowSelect('Pendiente',item, item)">Pendiente</a>
+                                                                                <a class="dropdown-item" (click)="dropdowSelect('Preparando',item, item)">Preparando</a>
+                                                                                <a class="dropdown-item" (click)="dropdowSelect('Entrega',item, item)">Entrega</a>
+                                                                                <a class="dropdown-item" (click)="dropdowSelect('Recibido',item, item)">Recibido</a>
                                                                                 </div>
                                                                             </div>
-                                                                            <img style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;" class="img-responsive" src="{{val.petPhoto}}" alt="{{val.petPhoto}}">
+                                                                            <img style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;" class="img-responsive" src="{{item.petPhoto}}" alt="{{item.petPhoto}}">
                                                                         </div>
                                                                         <div class="card-body">
-                                                                            <h6 class="card-title mt-3">ID: {{val.idCan}}</h6>
-                                                                            <p>Cliente: {{val.petName}}</p>
-                                                                            <p>QR: <button (click)="checkQrCode(val.link)" class="btn btn-primary btn-sm" > VER QR </button></p>
-                                                                            <p>Detalle: {{val.description}}</p>
-                                                                            <p>Costo: {{val.cost | currency:"₡"}}</p>
+                                                                            <h6 class="card-title mt-3">ID: {{item.idCan}}</h6>
+                                                                            <p>Cliente: {{item.petName}}</p>
+                                                                            <p>QR: <button (click)="checkQrCode(item.link)" class="btn btn-primary btn-sm" > VER QR </button></p>
+                                                                            <p>Detalle: {{item.description}}</p>
+                                                                            <p>Costo: {{item.cost | currency:"₡"}}</p>
                                                                             
                                                                         </div>
                                                                         <div class="card-footer">
@@ -151,25 +151,25 @@
                                                 <div id="{{item._id}}" class="collapsible" [@collapse]="item.showPanel" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
                                                   <div class="card-body p-1" style="background-color: #dde5ec;">
                                                     <div class="row p-3">
-                                                        <div class="col-12 col-sm-4 col-lg-4 col-xl-4 mb-2" *ngFor="let val of item.products">
-                                                            <div *ngIf="val.status == 'Recibido'">
+                                                        <div class="col-12 col-sm-4 col-lg-4 col-xl-4 mb-2" >
+                                                            <div *ngIf="item.status == 'Recibido'">
                                                                 <div class="card hovercard ">
                                                                     <div class="card-header">
                                                                         <h6 style="display: contents;">Status: </h6>
                                                                         <div class="btn-group">
                                                                             <button [disabled]="true" type="button" class="btn btn-sm dropdown-toggle mr-3"
-                                                                            [ngClass]="{'btn-dark': val.status == 'Ordenando','btn-info': val.status == 'Pendiente', 'btn-primary': val.status == 'Preparando', 'btn-warning': val.status == 'Entrega', 'btn-success': val.status == 'Recibido'}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                {{val.status}}
+                                                                            [ngClass]="{'btn-dark': item.status == 'Ordenando','btn-info': item.status == 'Pendiente', 'btn-primary': item.status == 'Preparando', 'btn-warning': item.status == 'Entrega', 'btn-success': item.status == 'Recibido'}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                {{item.status}}
                                                                             </button>
-                                                                            <img style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;" class="img-responsive" src="{{val.petPhoto}}" alt="{{val.petPhoto}}">
+                                                                            <img style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;" class="img-responsive" src="{{item.petPhoto}}" alt="{{item.petPhoto}}">
                                                                         </div>
                                                                     </div>
                                                                     <div class="card-body">
-                                                                        <h6 class="card-title mt-3">ID: {{val.idCan}}</h6>
-                                                                        <p>Cliente: {{val.petName}}</p>
-                                                                        <p>QR: <button (click)="checkQrCode(val.link)" class="btn btn-primary btn-sm" > VER QR </button></p>
-                                                                        <p>Detalle: {{val.description}}</p>
-                                                                        <p>Costo: {{val.cost | currency:"₡"}}</p>
+                                                                        <h6 class="card-title mt-3">ID: {{item.idCan}}</h6>
+                                                                        <p>Cliente: {{item.petName}}</p>
+                                                                        <p>QR: <button (click)="checkQrCode(item.link)" class="btn btn-primary btn-sm" > VER QR </button></p>
+                                                                        <p>Detalle: {{item.description}}</p>
+                                                                        <p>Costo: {{item.cost | currency:"₡"}}</p>
                                                                         
                                                                     </div>
                                                                     <div class="card-footer">

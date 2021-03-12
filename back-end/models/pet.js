@@ -164,40 +164,6 @@ const PetSchema = mongoose.Schema ({
     },
   }],
   code: [{
-    products: [{
-      productName: {
-        type: String,
-        require: true
-      },
-      description: {
-        type: String,
-        require: true
-      },
-      cost: {
-        type: String,
-        require: true
-      },
-      idCan: {
-        type: String,
-        require: true
-      },
-      petName: {
-        type: String,
-        require: true
-      },
-      petPhoto: {
-        type: String,
-        require: true
-      },
-      status: {
-        type: String,
-        require: true
-      },
-      link: {
-        type: String,
-        require: true
-      },
-    }],
     petName: {
       type: String,
       require: true
@@ -215,6 +181,34 @@ const PetSchema = mongoose.Schema ({
       require: true
     },
     total : {
+      type: String,
+      require: true
+    },
+    productName : {
+      type: String,
+      require: true
+    },
+    description: {
+      type: String,
+      require: true
+    },
+    cost: {
+      type: String,
+      require: true
+    },
+    idCan: {
+      type: String,
+      require: true
+    },
+    petPhoto: {
+      type: String,
+      require: true
+    },
+    status: {
+      type: String,
+      require: true
+    },
+    link: {
       type: String,
       require: true
     }

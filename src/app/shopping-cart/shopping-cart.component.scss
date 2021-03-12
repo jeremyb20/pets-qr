@@ -46,11 +46,19 @@
         position:relative
     }
 
+    .popupimage {
+        height: 90px !important;
+    }
+
     @media screen and (max-width:990px){
         .product-grid2 .product-image2{
             height: auto;
             overflow:hidden;
             position:relative
+        }
+
+        .popupimage {
+            height: auto !important;
         }
     }
     .product-grid2 .product-image2 a{
