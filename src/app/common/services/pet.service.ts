@@ -19,8 +19,9 @@ export class PetService {
   pet: any;
   petPrincipal: any;
   isDev: boolean = false;
+  test: any;
 
-  constructor(private httpClient: HttpClient, private jwtHelper: JwtHelperService) {
+  constructor(private httpClient: HttpClient, private jwtHelper: JwtHelperService, private router: Router) {
       this.isDev = false;  // Change to false when you're gonna deploy your app, true when is on develop 
   }
 
