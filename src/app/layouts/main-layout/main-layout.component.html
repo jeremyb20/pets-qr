@@ -48,7 +48,7 @@
             </ul>
             <ul id="logout_sidebar_button" class="nav nav-sidebar">
                 <div class="sidebar-body d-flex flex-column flex-grow-1">
-                    <div class="mt-auto"><button type="button" (click)="logout()" class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i> Logout</button></div>
+                    <div class="mt-auto"><button type="button" (click)="logout()" class="btn btn-danger btn-block"><i class="fas fa-sign-out-alt"></i> Salir</button></div>
                 </div>
             </ul>
          </div>
@@ -65,16 +65,16 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header text-center d-block">
-                <h6 class="modal-title font-weight-bold">Your Session is about to end!</h6>
+                <h6 class="modal-title font-weight-bold">Tu sesión está apunto de terminar!</h6>
             </div>
             <div class="modal-body ml-1 mr-1">
-                <div class="text-center">You'll be logged out in {{ countdown }} sec(s)...</div>
+                <div class="text-center">Se cerrará la sesión {{ countdown }} seg(s)...</div>
                 <div class="progress mt-2">
                     <div class="progress-bar bg-danger" role="progressbar" [ngStyle]="{ 'width' : this.countPct + '%' }" [attr.aria-valuenow]="this.countPct" aria-valuemin="0" aria-valuemax="100"></div>
                   </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-info mr-auto" data-dismiss="modal">Stay Logged In</button>
+                <button type="button" class="btn btn-sm btn-info mr-auto" data-dismiss="modal">Permanecer conectado</button>
             </div>
         </div>
     </div>

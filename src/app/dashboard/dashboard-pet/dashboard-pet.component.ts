@@ -1,4 +1,4 @@
-import { Component, ElementRef, NgZone, OnInit, ViewChild, OnDestroy, Input, AfterContentInit } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild, OnDestroy, Input, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CalendarOptions } from '@fullcalendar/angular'; // useful for typechecking
 import { Subscription, from } from 'rxjs';
@@ -132,7 +132,7 @@ calendarOptions: CalendarOptions = {
   @ViewChild("search")
   public searchElementRef: ElementRef;
   
-  constructor(private petService: PetService, private media: MediaService, private formBuilder: FormBuilder, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private _location: Location, private _notificationSvc: NotificationService, private router: Router) {
+  constructor(private cdRef:ChangeDetectorRef, private petService: PetService, private media: MediaService, private formBuilder: FormBuilder, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private _location: Location, private _notificationSvc: NotificationService, private router: Router) {
     this.petLogged = this.petService.getLocalPet()
     this.pet = JSON.parse(this.petLogged);
     this.idSecondary = this.pet.idSecond;
@@ -187,7 +187,14 @@ calendarOptions: CalendarOptions = {
   get f() { return this.newEventForm.controls; }
   get h() { return this.newLostPetForm.controls; }
   get i() { return this.registerForm.controls; }
-
+  
+  ngAfterViewChecked(){
+    var test = this.petService.loggedIn();
+    if(!test){
+      this.petService.logout();
+      this.cdRef.detectChanges();
+    }
+  }
 
   ngOnInit() {
     this.newEventForm = this.formBuilder.group({

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -647,5 +648,6 @@ updateNotification(obj: any):Observable<any> {
     this.authToken = null;
     this.pet = null;
     localStorage.clear();
+    this.router.navigate(['/home']);
   }
 }

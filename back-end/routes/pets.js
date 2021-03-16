@@ -170,7 +170,7 @@ router.post('/authenticate', (req, res, next) => {
       if(err) throw err;
       if(isMatch) {
         const token = jwt.sign({data: pet}, process.env.SECRET, {
-          expiresIn: 604800   // 1 week: 604800 1 day //60 one minute 
+          expiresIn: 86400   // 1 week: 604800 1 day 86400 //60 one minute 
         });
         res.json({
           success: true,
