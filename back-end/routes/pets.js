@@ -9,6 +9,8 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const app = express();
+const hbs = require('nodemailer-express-handlebars');
+const path = require('path');
 require('dotenv').config();
 
 var fileupload = require('express-fileupload');
@@ -1294,7 +1296,6 @@ router.put('/update/updateReportLostPetStatus', async(req, res, next) => {
 
 router.post('/forgot', (req, res, next) => {
   const obj = JSON.parse(JSON.stringify(req.body));
-  console.log(obj)
   async.waterfall([
     function(done) {
       crypto.randomBytes(20, function(err, buf) {
@@ -1303,7 +1304,7 @@ router.post('/forgot', (req, res, next) => {
       });
     },
     function(token, done) {
-        Company.findOne({ email: obj.email }, (err, user) => {
+        Pet.findOne({ email: obj.email }, (err, user) => {
         if (!user) {
          return res.json({success:false,msg: 'Email not found'});
         }
@@ -1318,30 +1319,37 @@ router.post('/forgot', (req, res, next) => {
       });
     },
     function(token, user, done) {
-      // var smtpTransport = nodemailer.createTransport({
-      //   host: 'mail.ticowebmail.com',
-      //   port: 25,
-      //   secure: false,
-      //   logger: true,
-      //   debug: true,
-      //   ignoreTLS: true,
-      //   auth: {
-      //     user: 'marco@ticowebmail.com',
-      //     pass: 'NTRNTxplr12'
-      //   },
-      //   tls: {
-      //     // do not fail on invalid certs
-      //     rejectUnauthorized: false
-      //   }
-      // });
       var smtpTransport = nodemailer.createTransport({
-        service: 'gmail',
-        host: 'smtp.gmail.com',
+        host: process.env.ZOHO_HOST,
+        port: process.env.ZOHO_PORT,
+        secure: true,
+        logger: true,
+        debug: true,
         auth: {
-          user: 'jeremybarquero18@gmail.com',
-          pass: 'octubre151096'
+          user: process.env.ZOHO_USER,
+          pass: process.env.ZOHO_PASSWORD
+        },
+        tls: {
+          // do not fail on invalid certs
+          rejectUnauthorized: false
         }
       });
+
+      const handlebarOptions = {
+        viewEngine: {
+          extName: ".handlebars",
+          partialsDir: path.resolve(__dirname, "views"),
+          defaultLayout: false,
+        },
+        viewPath: path.resolve(__dirname, "views"),
+        extName: ".handlebars",
+      };
+      
+      smtpTransport.use(
+        "compile",
+        hbs(handlebarOptions)
+      );
+
       smtpTransport.verify(function(error, success) {
         if (error) {
           console.log(error);
@@ -1351,16 +1359,22 @@ router.post('/forgot', (req, res, next) => {
       });
       var mailOptions = {
         to: user.email,
-        from: 'marco@ticowebmail.com',
-        subject: 'Yummy Eats restablecimiento de la contraseña',
-        text: 'Recibe esto porque usted (u otra persona) ha solicitado el restablecimiento de la contraseña de su cuenta.\n\n' +
+        from: '	soporte@localpetsandfamily.com',
+        subject: 'LocalPetsAndFamily restablecimiento de la contraseña',
+        attachments: [
+          {filename: 'localpetslogo.jpg', path:'./src/assets/localpetslogo.jpg'}
+        ],
+        template: 'index',
+        context: {
+          text: 'Recibe esto porque usted (u otra persona) ha solicitado el restablecimiento de la contraseña de su cuenta.\n\n' +
           'Haga clic en el siguiente enlace o péguelo en su navegador para completar el proceso:\n\n' +
-          //'http://localhost:4200/reset/' + token + '\n\n' +
-          'https://' + req.headers.host + '/reset/' + token + '\n\n' +
-          'Si no lo solicitó, ignore este correo electrónico y su contraseña permanecerá sin cambios.\n'
+          'Si no lo solicitó, ignore este correo electrónico y su contraseña permanecerá sin cambios.\n',
+          link: (req.headers.host == 'localhost:8080')? 'https://localhost:4100/reset-pets/' + token  : 'https://' + req.headers.host + '/reset-pets/' + token,
+          textLink: 'Ir al enlace'
+        } 
       };
       smtpTransport.sendMail(mailOptions, function(err) {
-        res.json({success: true, msg: 'Se ha enviado un correo electrónico a ' + user.email + ' con más instrucciones.'});
+        res.json({success: true, msg: 'Se ha enviado un correo electrónico a ' + user.email + ' con más instrucciones. favor de revisar la carpeta de spam si no ves el correo en tu bandeja principal'});
         done(err, 'done');
       });
     }
@@ -1370,8 +1384,8 @@ router.post('/forgot', (req, res, next) => {
   });
 });
 
-router.get('/reset/:token', (req, res) => {
-    Company.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+router.get('/reset-pets/:token', (req, res) => {
+  Pet.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
     if (!user) {
       return res.json({success:false,msg: err});
     }else{
@@ -1383,13 +1397,13 @@ router.get('/reset/:token', (req, res) => {
 });
 
 
-router.post('/reset/', function(req, res) {
+router.post('/reset-pets/', function(req, res) {
   req.params.token = req.body.token;
   async.waterfall([
     function(done) {
-        Company.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+      Pet.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
         if (!user) {
-          return  res.json({success:false,msg: 'Password reset token is invalid or has expired..'});
+          return  res.json({success:false,msg: 'El token de restablecimiento de contraseña no es válido o ha caducado..'});
         }else if(req.body.password === req.body.confirm){
           user.password = req.body.password;
           user.resetPasswordToken = undefined;
@@ -1413,21 +1427,36 @@ router.post('/reset/', function(req, res) {
     },
     function(user, done) {
       var smtpTransport = nodemailer.createTransport({
-        host: 'mail.ticowebmail.com',
-        port: 25,
-        secure: false,
+        host: process.env.ZOHO_HOST,
+        port: process.env.ZOHO_PORT,
+        secure: true,
         logger: true,
         debug: true,
-        ignoreTLS: true,
         auth: {
-          user: 'marco@ticowebmail.com',
-          pass: 'NTRNTxplr12'
+          user: process.env.ZOHO_USER,
+          pass: process.env.ZOHO_PASSWORD
         },
         tls: {
           // do not fail on invalid certs
           rejectUnauthorized: false
         }
       });
+    
+      const handlebarOptions = {
+        viewEngine: {
+          extName: ".handlebars",
+          partialsDir: path.resolve(__dirname, "views"),
+          defaultLayout: false,
+        },
+        viewPath: path.resolve(__dirname, "views"),
+        extName: ".handlebars",
+      };
+      
+      smtpTransport.use(
+        "compile",
+        hbs(handlebarOptions)
+      );
+
       smtpTransport.verify(function(error, success) {
         if (error) {
           console.log(error);
@@ -1435,15 +1464,24 @@ router.post('/reset/', function(req, res) {
           console.log("Server is ready to take our messages");
         }
       });
+    
       var mailOptions = {
         to: user.email,
-        from: 'marco@ticowebmail.com',
-        subject: 'Your password has been changed',
-        text: 'Hello,\n\n' +
-          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+        from: '	soporte@localpetsandfamily.com',
+        subject: 'LocalPetsAndFamily restablecimiento de la contraseña',
+        attachments: [
+          {filename: 'localpetslogo.jpg', path:'./src/assets/localpetslogo.jpg'}
+        ],
+        template: 'index',
+        context: {
+          text: 'La contraseña de su correo ' + user.email + ' ha sido actualizada satisfactoriamente.\n',
+          link: 'https://www.localpetsandfamily.com/login-pets',
+          textLink: 'Ir a iniciar sesion'
+        } 
       };
+
       smtpTransport.sendMail(mailOptions, function(err) {
-        res.json({success:true,msg: 'Success! Your password has been changed.'});
+        res.json({success:true,msg: 'Su contraseña ha sido actualizada satisfactoriamente.'});
         done(err);
       });
     }

@@ -4,14 +4,14 @@ import { PetService } from 'src/app/common/services/pet.service';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { Router,ActivatedRoute } from '@angular/router';
 import { MustMatch } from '../../common/helpers/must-match.validator';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 @Component({
-  selector: 'app-reset-company',
-  templateUrl: './reset-company.component.html',
-  styleUrls: ['./reset-company.component.scss']
+  selector: 'app-reset-pets',
+  templateUrl: './reset-pets.component.html',
+  styleUrls: ['./reset-pets.component.scss']
 })
-export class ResetCompanyComponent implements OnInit {
-
+export class ResetPetsComponent implements OnInit {
   resetCompanyForm: FormGroup;
   submitted = false;
   loading: boolean = false;
@@ -30,7 +30,7 @@ export class ResetCompanyComponent implements OnInit {
         password: ['', [Validators.required, Validators.minLength(6)]],
         confirm: ['', Validators.required],
       }, {
-        validator: MustMatch('password', 'confirm')
+        validator: MustMatch('password', 'confirmPassword')
       });
     }
 
@@ -49,14 +49,38 @@ export class ResetCompanyComponent implements OnInit {
         confirm: this.f.confirm.value,
         token: this.resetToken
       }
-      debugger;
       this.petService.resetPassword(reset).subscribe(data => {
         if(data.success) {
           this.loading = false;
-          this._notificationSvc.success('Yummy Eats', data.msg, 8000);
+          Swal.fire({
+            title: 'Cambio de contraseña exitosamente' ,
+            html: data.msg,
+            showCancelButton: false,
+            allowEscapeKey: false,
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            buttonsStyling: false,
+            reverseButtons: true,
+            position: 'top',
+            customClass: { confirmButton: 'col-auto btn btn-info m-3' }
+          })
+          .then((result) => {
+            if (result.value){
+              this.router.navigate(['/login-pets']);
+            }   
+          });
         } else {
           this.loading = false;
-          this._notificationSvc.warning('Yummy Eats', data.msg, 8000);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: data.msg,
+            footer: ''
+          }).then((result) => {
+            if (result.value){
+              this.router.navigate(['/login-pets']);
+            }   
+          });
         }
       },
       error => {

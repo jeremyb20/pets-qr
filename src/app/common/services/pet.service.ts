@@ -299,17 +299,17 @@ export class PetService {
     const fd = new FormData();
     fd.append('email',email.email);
     if (this.isDev) {
-      return this.httpClient.post<any>('http://localhost:8080/company/forgot', fd);
+      return this.httpClient.post<any>('http://localhost:8080/pet/forgot', fd);
     } else {
-      return this.httpClient.post<any>('company/forgot/', fd);
+      return this.httpClient.post<any>('pet/forgot/', fd);
     }
   }
 
   resetPassword(reset):Observable<any> {
     if (this.isDev) {
-      return this.httpClient.post<any>('http://localhost:8080/company/reset/', reset);
+      return this.httpClient.post<any>('http://localhost:8080/pet/reset-pets/', reset);
     } else {
-      return this.httpClient.post<any>('company/reset', reset);
+      return this.httpClient.post<any>('pet/reset-pets', reset);
     }
   }
 

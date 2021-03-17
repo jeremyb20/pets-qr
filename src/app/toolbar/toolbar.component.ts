@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthServices } from '../common/services/auth.service';
 import { MediaService, MediaResponse } from '../common/services/media.service';
 import { Subscription } from 'rxjs';
@@ -24,7 +24,7 @@ export class ToolbarComponent implements OnInit {
   isFoo:boolean = false;
   showAllNotifications: any;
 
-  constructor(public authService: AuthServices, public petService: PetService, private _notificationSvc: NotificationService, private media: MediaService,private route: Router) { 
+  constructor(public authService: AuthServices, public petService: PetService, private _notificationSvc: NotificationService, private media: MediaService,private route: Router, private cdRef:ChangeDetectorRef) { 
     this.mediaSubscription = this.media.subscribeMedia().subscribe(result => {
       this.Media = result;
       if(this.Media.IsLandscape) {
@@ -47,11 +47,19 @@ export class ToolbarComponent implements OnInit {
     this.getNotifications();
   }
 
+  ngAfterViewChecked(){
+    var test = this.petService.loggedIn();
+    if(!test){
+      this.petService.logout();
+      this.cdRef.detectChanges();
+    }
+  }
+
   ngOnInit(): void {
   }
 
   logout() {
-    this.authService.logout();
+    this.petService.logout();
     this.route.navigate(['/home'])
   }
 

@@ -24,6 +24,8 @@ import { DashboardPetComponent } from './dashboard/dashboard-pet/dashboard-pet.c
 import { MyPetCodeComponent } from './my-pet-code/my-pet-code.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { SearchLostComponent } from './search-lost/search-lost.component';
+import { ForgotPetsComponent } from './forgot/forgot-pets/forgot-pets.component';
+import { ResetPetsComponent } from './reset/reset-pets/reset-pets.component';
 
 
 const routes: Routes = [
@@ -37,9 +39,11 @@ const routes: Routes = [
           { path: 'register-pets', component: RegisterPetComponent },
           { path: 'forgot-company', component: ForgotCompanyComponent },
           { path: 'forgot-user', component: ForgotUserComponent },
+          { path: 'forgot-pets', component: ForgotPetsComponent },
           { path: 'search-lost', component: SearchLostComponent },
           { path: 'reset-company/:token', component: ResetCompanyComponent },
           { path: 'reset-user/:token', component: ResetUserComponent },
+          { path: 'reset-pets/:token', component: ResetPetsComponent },
           { path: 'myPetCode/:id/:idSecond', component: MyPetCodeComponent },
 
           // { path: 'maintenance', component: MaintenanceComponent },

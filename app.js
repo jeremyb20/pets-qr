@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
+// const express = require('body-parser');
 const cors = require('cors');
 const logger = require('morgan');
 const passport = require('passport');
@@ -40,12 +40,12 @@ const app = express();
 const users = require('./back-end/routes/users');
 const pets = require('./back-end/routes/pets');
 
-app.use(bodyParser.urlencoded({
+app.use(express.urlencoded({
   extended: false,
   parameterLimit: '500000'
 }));
-app.use(bodyParser.json({limit: "50mb"}));
-app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
+app.use(express.json({limit: "50mb"}));
+app.use(express.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 app.use(cookieParser());
 
 app.use(express.json());
@@ -99,7 +99,7 @@ app.use(logger('dev'));
 
 
 // Body Parser Middleware
-app.use(bodyParser.json());
+app.use(express.json());
 
 // Passport Middleware
 app.use(passport.initialize());

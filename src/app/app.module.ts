@@ -47,6 +47,8 @@ import { MyPetCodeComponent } from './my-pet-code/my-pet-code.component';
 import { SwitchComponent } from './common/directives/switch/switch.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { SearchLostComponent } from './search-lost/search-lost.component';
+import { ForgotPetsComponent } from './forgot/forgot-pets/forgot-pets.component';
+import { ResetPetsComponent } from './reset/reset-pets/reset-pets.component';
 
 export function tokenGetter() {
   return localStorage.getItem("id_token");
@@ -83,7 +85,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MyPetCodeComponent,
     SwitchComponent,
     ShoppingCartComponent,
-    SearchLostComponent
+    SearchLostComponent,
+    ForgotPetsComponent,
+    ResetPetsComponent
   ],
   imports: [
     BrowserModule,
