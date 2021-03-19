@@ -13,6 +13,7 @@ const flash = require('express-flash');
 const User = require('./back-end/models/user');
 const compression = require('compression');
 require('dotenv').config();
+const http = require("http");
 
 // Port Number
 const port = process.env.PORT || 8080;
@@ -121,6 +122,14 @@ app.use(express.static(__dirname + '/dist/pets-qr'));
 app.get('/*', function(re,res){
     res.sendFile(path.join(__dirname+'/dist/pets-qr/index.html'))
 })
+
+http.createServer(function(req, res){
+  res.writeHead(200, {
+    'Content-Type': 'application/json',
+    'Content-Lenght': res.length
+  }).listen(8080);
+})
+
 var server =  app.listen(port, function() {
   console.log("App is running on port " + port);
 });
