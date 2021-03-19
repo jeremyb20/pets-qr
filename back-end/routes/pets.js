@@ -520,6 +520,37 @@ router.get('/getCalendarData/:id/:idSecond', function(req, res){
   });
 });
 
+router.get('/getLocationInfo/:id/:idSecond', function(req, res){
+  var id = req.params.id;
+  var idSecond = req.params.idSecond;
+  Pet.findById(id, function(err, results){
+    if(err){
+      res.json({ success: false, msg: err });
+      return;
+    }
+
+    if(idSecond == 0) {
+      var pet = {
+        lat: results.lat,
+        lng: results.lng,
+        photo: results.photo
+       }
+       res.json(pet)
+    }else {
+      results.newPetProfile.forEach(element => {
+        if (element._id == idSecond) {
+          var pet = {
+            lat: results.lat,
+            lng: results.lng,
+            photo: results.photo
+           }
+          res.json(pet)
+        }
+      })
+    }
+  });
+});
+
 
 router.post('/register/newPetEvent', async(req, res) => {
   const obj = JSON.parse(JSON.stringify(req.body));

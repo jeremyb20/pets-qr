@@ -145,6 +145,14 @@ export class PetService {
     }
   }
 
+  getLocationInfoService(id: any, idSecondary: any):Observable<any> {
+    if (this.isDev) {
+      return this.httpClient.get<any>('http://localhost:8080/pet/getLocationInfo/' + id +'/'+ idSecondary);
+    } else {
+      return this.httpClient.get<any>('pet/getLocationInfo/' + id +'/'+ idSecondary);
+    }
+  }
+
 
   registerNewPetEvent(event):Observable<any> {
     const fd = new FormData();

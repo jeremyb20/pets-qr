@@ -10,20 +10,14 @@
       
             <!-- Links -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      
-                <!-- Left 
-                <ul class="navbar-nav mr-auto">
-                  <li class="nav-item">
-                    <a class="nav-link" [routerLink]="'/login-pets'">Iniciar Sesion</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" [routerLink]="'/register-pets'">Registrarse</a>
-                  </li>
-          
-                  <li class="nav-item">
-                    <a class="nav-link" href="https://mdbootstrap.com/bootstrap-tutorial/">Servicio al cliente</a>
-                  </li>
-                </ul>-->
+                <ul *ngIf="!Media.IsMobile" class="navbar-nav mr-auto">
+                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/profile-pets'"> Perfil</a> </li>
+                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/events-pets'"> Eventos</a> </li>
+                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/calendar-pets'"> Calendario</a> </li>
+                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/location-pets'"> Ubicacion</a> </li>
+                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/permissions-pets'"> Permisos</a> </li>
+                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/shopping-cart'"> Carrito Compras</a> </li>
+                </ul>
           
                 <!-- Right -->
                 <ul class="navbar-nav nav-flex-icons">

@@ -140,6 +140,13 @@ $loader-keyframe: 1 / (length($loader-colors) * 2) * 100;
   align-items: center !important;      
 }
 
+.fc .fc-toolbar-title {
+  text-transform: capitalize !important;
+  @include media-breakpoint-down(md) {
+    font-size: 11px !important;
+  }
+}
+
 .reset,
 .forgot {
   @include media-breakpoint-down(sm) {

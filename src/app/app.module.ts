@@ -49,6 +49,11 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { SearchLostComponent } from './search-lost/search-lost.component';
 import { ForgotPetsComponent } from './forgot/forgot-pets/forgot-pets.component';
 import { ResetPetsComponent } from './reset/reset-pets/reset-pets.component';
+import { ProfilePetsComponent } from './profile/profile-pets/profile-pets.component';
+import { EventsPetsComponent } from './events/events-pets/events-pets.component';
+import { CalendarPetsComponent } from './calendar/calendar-pets/calendar-pets.component';
+import { LocationPetsComponent } from './location/location-pets/location-pets.component';
+import { PermissionsPetsComponent } from './permissions/permissions-pets/permissions-pets.component';
 
 export function tokenGetter() {
   return localStorage.getItem("id_token");
@@ -87,7 +92,12 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ShoppingCartComponent,
     SearchLostComponent,
     ForgotPetsComponent,
-    ResetPetsComponent
+    ResetPetsComponent,
+    ProfilePetsComponent,
+    EventsPetsComponent,
+    CalendarPetsComponent,
+    LocationPetsComponent,
+    PermissionsPetsComponent,
   ],
   imports: [
     BrowserModule,

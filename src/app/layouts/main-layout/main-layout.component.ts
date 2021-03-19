@@ -135,11 +135,10 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     }
 
     gotoSomewhere(val){
-        if(val == 6){
-            this.router.navigate(['/shopping-cart']);
-        }else{
-            this.petService.setidTrack(val);
-            setTimeout(() => {   location.reload(); }, 500);
+        this.petService.setidTrack(val);
+        if(val == 2){
+            this.router.navigate(['/calendar-pets']);
+            setTimeout(() => { location.reload(); }, 500);
         }
         $('#wrapper').removeClass('toggled');
     }
