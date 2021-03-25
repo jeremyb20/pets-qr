@@ -43,6 +43,8 @@ export class ShoppingCartComponent implements OnInit {
   selectCanObject:any;
   productNameSelected: any;
   petNamePrincipal: string = '';
+  linkFirst: String;
+  linkSecond: String;
   historyList : any = [];
   private singleProduct;
   public isAdded;
@@ -125,6 +127,12 @@ export class ShoppingCartComponent implements OnInit {
     this.allListShoppingCartItem.push(item);
     this.finalCard = this.allListShoppingCartItem.filter((item, i, ar) => ar.indexOf(item) === i);
     this.counter = this.finalCard.length;
+  }
+
+  seeFoto(item:any){
+    this.linkFirst = item.firstPhoto;
+    this.linkSecond = item.secondPhoto;
+    $('#visualization').modal('show');
   }
 
   disMarkItem(item) {

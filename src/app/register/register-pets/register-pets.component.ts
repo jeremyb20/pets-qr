@@ -193,7 +193,7 @@ export class RegisterPetComponent implements OnInit {
             this.loading = false;
             Swal.fire({
               title: 'Registro ' + newPet.petName+'' ,
-              html: "Su registro ha sido authenticado correctamente. Haz click en ok para iniciar sesion",
+              html: "Su registro ha sido authenticado correctamente. Haz click en ok para iniciar sesión",
               showCancelButton: false,
               allowEscapeKey: false,
               confirmButtonText: 'OK',

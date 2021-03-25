@@ -70,7 +70,7 @@ export class LoginPetsComponent implements OnInit {
     error => {
       this.loading = false;
       this.hideMsg = true;
-      this.ShowMsg = 'Servicio en mantenimiento, favor de iniciar sesion mas tarde';
+      this.ShowMsg = 'Servicio en mantenimiento, favor de iniciar sesión más tarde';
       setTimeout(() => { this.hideMsg = false }, 100000);
       console.log(error);
     });

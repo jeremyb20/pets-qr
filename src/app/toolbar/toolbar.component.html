@@ -10,20 +10,20 @@
       
             <!-- Links -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul *ngIf="!Media.IsMobile" class="navbar-nav mr-auto">
-                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/profile-pets'"> Perfil</a> </li>
-                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/events-pets'"> Eventos</a> </li>
-                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/calendar-pets'"> Calendario</a> </li>
-                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/location-pets'"> Ubicacion</a> </li>
-                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/permissions-pets'"> Permisos</a> </li>
-                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/shopping-cart'"> Carrito Compras</a> </li>
+                <ul *ngIf="!Media.IsMobile && user.userState != 0" class="navbar-nav mr-auto">
+                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/profile-pets'"> <i class="fas fa-paw"></i> Perfil</a> </li>
+                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/events-pets'"> <i class="fas fa-calendar-alt"></i> Eventos</a> </li>
+                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/calendar-pets'"> <i class="fas fa-calendar"></i> Calendario</a> </li>
+                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/location-pets'"> <i class="fas fa-location-arrow"></i> Ubicacion</a> </li>
+                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/permissions-pets'"><i class="fas fa-lock"></i> Permisos</a> </li>
+                    <li class="nav-item"> <a class="nav-link-test" [routerLink]="'/shopping-cart'"> <i class="fas fa-cart-plus"></i> Carrito Compras</a> </li>
                 </ul>
           
                 <!-- Right -->
                 <ul class="navbar-nav nav-flex-icons">
                   <li class="nav-item">
                     <a (click)="isFoo = !isFoo" class="nav-link" target="_blank">
-                        <span *ngIf="isNewMsg > 0"  class="badge">{{isNewMsg}}</span>
+                        <span *ngIf="isNewMsg > 0"  class="badge badge-danger">{{isNewMsg}}</span>
                         <i class="fas fa-bell"></i>
                     </a>
                   </li>

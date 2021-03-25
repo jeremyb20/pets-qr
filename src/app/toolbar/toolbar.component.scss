@@ -169,16 +169,20 @@
     }
 
     .nav-link {
-        font-size: 22px;
+        font-size: 23px;
         padding: 0 0 0 0;
         margin-left: 15px;
     }
 
     .nav-link-test {
-        font-size: 18px;
+        font-size: 14px;
         padding: 0 0 0 0;
         margin-left: 15px;
         color: rgba(255, 255, 255, 0.5);
+    }
+
+    .nav-link-test:hover {
+        color: #f2f2f2;
     }
 
     .nav-link:hover {
@@ -186,7 +190,7 @@
     }
 
     .badge {
-        padding: 0px 3px 4px 0px;
+        padding: 2px 3px 1px 4px;
     }
 
     .button-data {

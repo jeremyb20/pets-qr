@@ -23,9 +23,9 @@
                                 <img class="pic-2" src="{{item.secondPhoto}}" alt="{{item.secondPhoto}}">
                             </a>
                             <ul class="social">
-                                <li><a  data-tip="Vista Rápida"><i class="fa fa-eye"></i></a></li>
-                                <li><a  data-tip="Añadir a Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
-                                <li><a  data-tip="Añadir al Carrito"><i class="fa fa-shopping-cart"></i></a></li>
+                                <li><a (click)="seeFoto(item)"  data-tip="Vista Rápida"><i class="fa fa-eye"></i></a></li>
+                                <!-- <li><a  data-tip="Añadir a Wishlist"><i class="fa fa-shopping-bag"></i></a></li> -->
+                                <li><a (click)="addToShoppingCart($event, item)" data-tip="Añadir al Carrito"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                             <a (click)="addToShoppingCart($event, item)" [ngClass]="{'btn-success': item.class == 'btn-success'}" class="add-to-cart">Añadir al Carrito</a>
                         </div>
@@ -382,4 +382,33 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="visualization" tabindex="-1" role="dialog" aria-labelledby="visualization" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+              <h5 class="modal-title">Visualizar producto</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body p-1 text-center">
+                <div [ngClass]="{'visualization': !Media.IsMobile}" class="product-grid2">
+                    <div [ngClass]="{'visualization': !Media.IsMobile}" class="product-image2">
+                        <a >
+                            <img class="pic-1" src="{{linkFirst}}">
+                            <img class="pic-2" src="{{linkSecond}}">
+                        </a>
+                        <!-- <ul class="social">
+                            <li><a  data-tip="Vista Rápida"><i class="fa fa-eye"></i></a></li>
+                            <li><a  data-tip="Añadir a Wishlist"><i class="fa fa-shopping-bag"></i></a></li>
+                            <li><a  data-tip="Añadir al Carrito"><i class="fa fa-shopping-cart"></i></a></li>
+                        </ul>
+                        <a class="add-to-cart" href="">Añadir al Carrito</a> -->
+                    </div>
+                </div> 
+            </div>
+          </div>
+        </div>
+      </div>   
   </div>

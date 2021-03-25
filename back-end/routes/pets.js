@@ -1507,7 +1507,7 @@ router.post('/reset-pets/', function(req, res) {
         context: {
           text: 'La contraseña de su correo ' + user.email + ' ha sido actualizada satisfactoriamente.\n',
           link: 'https://www.localpetsandfamily.com/login-pets',
-          textLink: 'Ir a iniciar sesion'
+          textLink: 'Ir a iniciar sesión'
         } 
       };
 
