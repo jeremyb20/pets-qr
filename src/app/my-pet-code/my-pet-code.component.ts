@@ -273,6 +273,10 @@ export class MyPetCodeComponent implements OnInit {
     });
   }
 
+  customerServicePopup(){
+    $('#customerServiceModal').modal('show');
+  }
+
   divScroll(e, isClicked) {
     if(isClicked){
       e.srcElement.scrollTop =0;
