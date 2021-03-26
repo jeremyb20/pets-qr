@@ -31,7 +31,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="https://mdbootstrap.com/bootstrap-tutorial/">Servicio al cliente</a>
+          <a class="nav-link" (click)="customerServicePopup()">Servicio al cliente</a>
         </li>
       </ul>
 
@@ -312,7 +312,7 @@
 
           <div class="row">
             <div class="col-1 mr-3">
-              <i class="fas fa-graduation-cap fa-2x cyan-text"></i>
+              <i class="fas fa-headphones fa-2x cyan-text"></i>
             </div>
             <div class="col-10">
               <h5 class="feature-title">Atención al cliente</h5>
@@ -680,8 +680,8 @@
       <i class="fab fa-twitter mr-3"></i>
     </a>
 
-    <a href="https://www.youtube.com/" target="_blank">
-      <i class="fab fa-youtube mr-3"></i>
+    <a href="https://wa.me/+50663050037?text=Estoy%20interesad@%20en%20sus%20productos%20necesito%20mas%20informacion" target="_blank">
+      <i class="fab fa-whatsapp"></i>
     </a>
   </div>
   <!-- Social icons -->
@@ -861,5 +861,33 @@
              </p>
           </div>
       </div>
-  </div>
+  </div>  
 </div>
+<div class="modal fade" id="customerServiceModal" tabindex="-1" role="dialog" aria-labelledby="customerServiceModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title">Servicio al cliente</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-3 text-center">
+        <p>
+          <i class="fas fa-envelope"></i> Correo: <a>soporte@localpetsandfamily.com</a>
+        </p>
+        <p><i class="fas fa-phone"></i> Telefono: +506 6305 0037</p>
+        <p>
+          <a href="https://wa.me/+50663050037?text=Estoy%20interesad@%20en%20sus%20productos%20necesito%20mas%20informacion" class="nav-link" target="_blank">
+            <i class="fab fa-whatsapp"></i> WhatsApp: +506 6305 0037
+          </a>
+        </p>
+        <p>
+          <a href="https://www.facebook.com/LocalPetsFamily-115795170546124" class="nav-link" target="_blank">
+            <i class="fab fa-facebook-f"></i> LocalPets&Family 
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div> 

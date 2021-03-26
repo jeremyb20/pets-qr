@@ -86,6 +86,10 @@ export class HomeComponent implements OnInit {
       $('#politicPrivacy').modal('show');
   }
 
+  customerServicePopup(){
+    $('#customerServiceModal').modal('show');
+  }
+
   onSubmit() {
     this.submitted = true;
     if (this.loginForm.invalid) {
