@@ -28,7 +28,7 @@
         </div>
         <div *ngIf="profile.phone" class="card">
             <div class="card-body">
-                <span class="card-title"><i class="fa fa-phone"></i> Telefono</span>
+                <span class="card-title"><i class="fa fa-phone"></i> Teléfono</span>
                 <p class="card-text">{{profile.phone}}</p>
             </div>
             <div class="card-footer">
@@ -57,7 +57,7 @@
         </div>
         <div *ngIf="profile.address" class="card">
             <div class="card-body">
-                <span class="card-title">Direcion de habitacion</span>
+                <span class="card-title">Direción de habitación</span>
                 <p class="card-text" >{{profile.address}}</p>
             </div>
             <div class="card-footer">
@@ -95,7 +95,7 @@
         </div>
         <div *ngIf="profile.phoneVeterinarian" class="card">
             <div class="card-body">
-                <span class="card-title"> Telefono Veterinario</span>
+                <span class="card-title"> Teléfono Veterinario</span>
                 <p class="card-text">{{profile.phoneVeterinarian}}</p>
             </div>
             <div class="card-footer">
@@ -132,7 +132,7 @@
     <div class="card-deck">
         <div  class="card">
             <div class="card-body">
-                <a class="btn"><i class="fas fa-location-arrow"></i> Location</a>
+                <a class="btn"><i class="fas fa-location-arrow"></i> Mi ubicación</a>
             </div>
             <div class="card-footer text-center">
                 <app-switch size="small" name="profile.showLocationInfo" (change)="changed(permissionData)" [(ngModel)]="permissionData.showLocationInfo"></app-switch>
