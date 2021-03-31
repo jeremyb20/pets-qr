@@ -71,6 +71,7 @@ export class RegisterPetComponent implements OnInit {
         draggable: false,
         photo: 'https://cdn.worldvectorlogo.com/logos/google-maps-2020-icon.svg'
       });
+      this.isSetPosition = true;
     }
     
   }
@@ -99,6 +100,7 @@ export class RegisterPetComponent implements OnInit {
       this.markers.shift();
     }
     this.showInfo = false;
+    this.isSetPosition = false;
   }
 
   // convenience getter for easy access to form fields
@@ -118,7 +120,7 @@ export class RegisterPetComponent implements OnInit {
       if (this.registerForm.invalid) {
           return;
       }
-      if(this.f.genderSelected.value  === 'Genero del Can'){
+      if(this.f.genderSelected.value  === 'Género del Can'){
         Swal.fire({
           title: 'Error de registro' ,
           html: "Seleccione el Genero del Can",
@@ -139,7 +141,7 @@ export class RegisterPetComponent implements OnInit {
       }else  if(!this.isSetPosition){
         Swal.fire({
           title: 'Error de registro' ,
-          html: "Seleccione en el mapa la posicion de vivienda del can",
+          html: "Seleccione en el mapa la posición de la vivienda del can",
           showCancelButton: false,
           allowEscapeKey: false,
           confirmButtonText: 'OK',
@@ -195,7 +197,7 @@ export class RegisterPetComponent implements OnInit {
               position: 'center',
               icon: 'success',
               title: 'Registro ' + newPet.petName+'',
-              html: "Su registro ha sido authenticado correctamente. Haz click en ok para iniciar sesión",
+              html: data.msg,
               confirmButtonText: 'OK',
             })
             .then((result) => {
@@ -205,10 +207,14 @@ export class RegisterPetComponent implements OnInit {
                   
             });
           } else {
-            this.hideMsg = true;
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Oops...',
+              text: data.msg,
+              confirmButtonText: 'OK',
+            })
             this.loading = false;
-            this.ShowMsg = data.msg;
-            setTimeout(() => { this.hideMsg = false }, this.timeSeconds);
           }
         },
         error => {

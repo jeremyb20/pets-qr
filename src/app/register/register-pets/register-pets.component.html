@@ -63,7 +63,7 @@
                                     <div class="input-group-prepend">
                                       <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
                                     </div>
-                                    <input type="text" formControlName="email" placeholder="Correo electronico" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                                    <input type="text" formControlName="email" placeholder="Correo electrónico" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
                                     <div *ngIf="submitted && f.email.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.email.errors }">
                                         <div *ngIf="f.email.errors.required">Email es requerido</div>
                                         <div *ngIf="f.email.errors.email">Email debe tener un correo válido</div>

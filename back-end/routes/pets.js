@@ -29,71 +29,57 @@ cloudinary.config({
 // Register aqui hay ebviar la foto
 router.post('/register/new-pet', async(req, res, next) => {
   const obj = JSON.parse(JSON.stringify(req.body));
-  
-  const result = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.image);
-  let newPet = new Pet ({
-    petName: obj.petName,
-    phone:obj.phone,
-    email: obj.email,
-    password: obj.password,
-    lat: obj.lat,
-    lng: obj.lng,
-    userState: obj.userState,
-    genderSelected:obj.genderSelected,
-    photo: result.secure_url == undefined ? obj.image : result.secure_url,
-    petStatus: obj.petStatus,
-    permissions : {
-      showPhoneInfo: true,
-      showEmailInfo: true,
-      showLinkTwitter: true,
-      showLinkFacebook: true,
-      showLinkInstagram: true,
-      showOwnerPetName: true,
-      showBirthDate: true,
-      showAddressInfo: true,
-      showAgeInfo: true,
-      showVeterinarianContact: true,
-      showPhoneVeterinarian: true,
-      showHealthAndRequirements: true,
-      showFavoriteActivities: true,
-      showLocationInfo: true
-    }
-  });
+  Pet.findOne({email: obj.email}, async function (err, myUser) {
+    
+    if (!err){
+      if(myUser){
+        res.json({ success: false, msg: 'El correo ya existe en el sistema' });
+      }else{
+          const result = await cloudinary.uploader.upload(req.file != undefined ? req.file.path : obj.image);
+          let newPet = new Pet({
+            petName: obj.petName,
+            phone: obj.phone,
+            email: obj.email,
+            password: obj.password,
+            lat: obj.lat,
+            lng: obj.lng,
+            userState: obj.userState,
+            genderSelected: obj.genderSelected,
+            photo: result.secure_url == undefined ? obj.image : result.secure_url,
+            petStatus: obj.petStatus,
+            permissions: {
+              showPhoneInfo: true,
+              showEmailInfo: true,
+              showLinkTwitter: true,
+              showLinkFacebook: true,
+              showLinkInstagram: true,
+              showOwnerPetName: true,
+              showBirthDate: true,
+              showAddressInfo: true,
+              showAgeInfo: true,
+              showVeterinarianContact: true,
+              showPhoneVeterinarian: true,
+              showHealthAndRequirements: true,
+              showFavoriteActivities: true,
+              showLocationInfo: true
+            }
+          });
 
-  Pet.addPet(newPet,async(user, done) => {
-    try {
-      // var smtpTransport = nodemailer.createTransport({
-      //   host: 'mail.ticowebmail.com',
-      //   port: 25,
-      //   secure: false,
-      //   logger: true,
-      //   debug: true,
-      //   ignoreTLS: true,
-      //   auth: {
-      //     user: 'marco@ticowebmail.com',
-      //     pass: 'NTRNTxplr12'
-      //   },
-      //   tls: {
-      //     // do not fail on invalid certs
-      //     rejectUnauthorized: false
-      //   }
-      // });
-      // var mailOptions = {
-      //   to: newUser.email,
-      //   from: 'marco@ticowebmail.com',
-      //   subject: 'Node.js Register User',
-      //   text: '¡Bienvenido a Yummy Eats! ' + obj.name + ' para iniciar sesion estos serian sus credenciales: correo: ' + obj.email + ' contraseña temporal:'+obj.password 
-      // };
-      // smtpTransport.sendMail(mailOptions, function (err) {
-      //   res.json({ success: true, msg: 'Compañia registrada exitosamente' });
-      // });
-      res.json({ success: true, msg: 'Compañia registrada exitosamente' });
-      } catch (err) {
-        res.json({success: false, msg: 'That Email or Username already exisits.!'});
-        next(err);
+        Pet.addPet(newPet, async (user, done) => {
+          try {
+              res.json({ success: true, msg: 'Su registro ha sido authenticado correctamente. Haz click en ok para iniciar sesión' });
+            } catch (err) {
+              res.json({ success: false, msg: 'Este Correo Ya existe.!' });
+              next(err);
+            }
+        });
       }
-  
-  });
+      
+    } else {
+      res.json({ success: false, msg: 'Ocurrió un problema favor de reportar al administrador' });
+    }
+      
+    })
 });
 
 router.post('/register/new-petByUserPet', async(req, res) => {

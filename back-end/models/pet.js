@@ -219,6 +219,10 @@ const PetSchema = mongoose.Schema ({
   resetPasswordExpires: {
     type: Date
   },
+  genderSelected: {
+    type: Number,
+    require: true
+  },
   userState: {
     type: Number,
     require: false
