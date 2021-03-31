@@ -67,7 +67,7 @@
       padding: 5%;
     }
     padding: 15px;
-    margin-top: 70px;
+    // margin-top: 70px;
   }
   .btnRegister{
     float: right;
@@ -87,10 +87,11 @@
     background: #0062cc;
     border-radius: 1.5rem;
     width: 28%;
-    @include media-breakpoint-down(sm) {
-      width: 66%;
+    @include media-breakpoint-down(md) {
+      width: 60%;
+      float: right;
     }
-    float: right;
+    
   }
   .register .nav-tabs .nav-link{
     padding: 2%;
@@ -105,7 +106,7 @@
   }
   .register .nav-tabs .nav-link.active{
     @include media-breakpoint-down(sm) {
-      width: 130px;
+      // width: 130px;
     }
     color: #0062cc;
     border: 2px solid #0062cc;

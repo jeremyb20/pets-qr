@@ -5,7 +5,7 @@
               <h5 class="page-heading"> <i class="fa fa-paw" aria-hidden="true"></i>  Bienvenido a tu perfil {{profile.petName}}!</h5>
               <div class="dropdown mb-3">
                 <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-plus mt-1 mr-3"></i> Mas
+                    <i class="fa fa-plus mt-1 mr-3"></i> Más
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item" (click)="newPetRegister()"><i class="fa fa-paw mt-1 mr-3"></i> Añadir Can</a>
@@ -63,7 +63,7 @@
                     </div>
                     <div *ngIf="profile.phone" class="card">
                         <div class="card-body">
-                            <span class="card-title"><i class="fa fa-phone"></i> Telefono</span>
+                            <span class="card-title"><i class="fa fa-phone"></i> Teléfono</span>
                             <p class="card-text">{{profile.phone}}</p>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                     </div>
                     <div *ngIf="profile.address" class="card">
                         <div class="card-body">
-                            <span class="card-title">Direcion de habitacion</span>
+                            <span class="card-title">Direción de habitación</span>
                             <p class="card-text" >{{profile.address}}</p>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                     </div>
                     <div *ngIf="profile.phoneVeterinarian" class="card">
                         <div class="card-body">
-                            <span class="card-title"> Telefono Veterinario</span>
+                            <span class="card-title"> Teléfono Veterinario</span>
                             <p class="card-text">{{profile.phoneVeterinarian}}</p>
                         </div>
                     </div>
@@ -193,21 +193,21 @@
             </div>
           <form class="form mt-3" *ngIf="showReportForm" [formGroup]="newLostPetForm" (ngSubmit)="sendPetStatusLost()" >
             <div class="form-group">
-                <label for="exampleInputEmail1">Ultimo lugar visto</label>
+                <label for="exampleInputEmail1">Último lugar visto</label>
                 <input type="text" formControlName="lastPlaceLost" class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && h.lastPlaceLost.errors }" />
                 <div *ngIf="submitted && h.lastPlaceLost.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && h.lastPlaceLost.errors }">
                     <div *ngIf="h.lastPlaceLost.errors.required">Nuevo titulo es requerido</div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1">Dia que se perdio</label>
+                <label for="exampleInputPassword1">Día que se perdió</label>
                 <input type="date" id="datefield" formControlName="date" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && h.date.errors }" />
                 <div *ngIf="submitted && h.date.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && h.date.errors }">
                     <div *ngIf="h.date.errors.required">Dia que se perdio es requerido</div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="exampleFormControlTextarea1">Describa como fue que se perdio</label>
+                <label for="exampleFormControlTextarea1">Describa como fué que se perdió</label>
                 <textarea class="form-control" formControlName="descriptionLost" placeholder="Esto nos ayudara para informar en el sitio" class="form-control" [ngClass]="{ 'is-invalid': submitted && h.descriptionLost.errors }"></textarea>
                 <div *ngIf="submitted && h.descriptionLost.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && h.descriptionLost.errors }">
                     <div *ngIf="h.descriptionLost.errors.required">Descripcion es requerido</div>
@@ -265,12 +265,12 @@
         <div class="modal-body">
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                 <div class="form-group input-group col-12">
-                    <span class="mr-3"> <i class="fa fa-paw" aria-hidden="true"></i>  Genero del can  </span>
+                    <span class="mr-3"> <i class="fa fa-paw" aria-hidden="true"></i>  Género del can  </span>
                     <ng-select [searchable]="false" formControlName="genderSelected" class=" form-control rounded-0 " id="inputGroupSelect01" [clearable]="false" [ngClass]="{ 'is-invalid': submitted && i.genderSelected.errors }">
                         <ng-option *ngFor="let item of bussinesType" [value]="item.Id">{{item.gender}}</ng-option>
                     </ng-select>
                     <div *ngIf="submitted && i.genderSelected.errors" class="invalid-feedback">
-                        <div *ngIf="i.genderSelected.errors.required">Tipo de genero es requerido</div>
+                        <div *ngIf="i.genderSelected.errors.required">Tipo de género es requerido</div>
                     </div>
                   </div>
                 <div class="form-group input-group col-12">
@@ -298,11 +298,11 @@
                 </div>
 
                 <div class="form-group input-group col-12">
-                    <span class="mr-3"><i class="fa fa-phone"></i> Telefono </span>
+                    <span class="mr-3"><i class="fa fa-phone"></i> Teléfono </span>
                     <input formControlName="phone" pattern="\d*" class="form-control" placeholder="Telefono " maxlength="8" [ngClass]="{ 'is-invalid': submitted && i.phone.errors }" />
                     <div *ngIf="submitted && i.phone.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.phone.errors }">
-                        <div *ngIf="i.phone.errors.required">Telefono es requerido</div>
-                        <div *ngIf="i.phone.errors.minlength">Telefono debe ser al menos 8 digitos</div>
+                        <div *ngIf="i.phone.errors.required">Teléfono es requerido</div>
+                        <div *ngIf="i.phone.errors.minlength">Teléfono debe ser al menos 8 digitos</div>
                         <div *ngIf="i.phone.errors.pattern">Solo se permiten numeros</div>
                     </div>
                 </div> 
@@ -332,11 +332,11 @@
                     </div>
                   </div>
                 <div class="form-group input-group col-12">
-                    <span class="mr-3"><i class="fa fa-phone"></i> Telefono Veterinario </span>
+                    <span class="mr-3"><i class="fa fa-phone"></i> Teléfono Veterinario </span>
                     <input formControlName="phoneVeterinarian" pattern="\d*" class="form-control" placeholder="Telefono Veterinario" maxlength="8" [ngClass]="{ 'is-invalid': submitted && i.phoneVeterinarian.errors }" />
                     <div *ngIf="submitted && i.phoneVeterinarian.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.phoneVeterinarian.errors }">
-                        <div *ngIf="i.phoneVeterinarian.errors.required">Telefono es requerido</div>
-                        <div *ngIf="i.phoneVeterinarian.errors.minlength">Telefono debe ser al menos 8 digitos</div>
+                        <div *ngIf="i.phoneVeterinarian.errors.required">Teléfono es requerido</div>
+                        <div *ngIf="i.phoneVeterinarian.errors.minlength">Teléfono debe ser al menos 8 digitos</div>
                         <div *ngIf="i.phoneVeterinarian.errors.pattern">Solo se permiten numeros</div>
                     </div>
                 </div> 
@@ -372,10 +372,10 @@
                 </div> -->
 
                 <div class="form-group">
-                    <label for="exampleFormControlTextarea1">Direccion exacta</label>
+                    <label for="exampleFormControlTextarea1">Dirección exacta</label>
                     <textarea class="form-control" formControlName="address" placeholder="" class="form-control" [ngClass]="{ 'is-invalid': submitted && i.address.errors }"></textarea>
                     <div *ngIf="submitted && i.address.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.address.errors }">
-                        <div *ngIf="i.address.errors.required">Direccion exacta es requerido</div>
+                        <div *ngIf="i.address.errors.required">Dirección exacta es requerido</div>
                     </div>
                 </div>
 

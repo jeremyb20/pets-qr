@@ -1,5 +1,5 @@
 <div *ngIf="profile" class="userActivities text-center m-3">
-    <h2 class="boxTitle">  <i class="fa fa-paw" aria-hidden="true"></i>  Informacion personal</h2>
+    <h2 class="boxTitle">  <i class="fa fa-paw" aria-hidden="true"></i>  Información personal</h2>
     <form  [formGroup]="newPetInfoForm" (ngSubmit)="addNewPetInfoSubmit()">
         <div class="form-group input-group">
             <span class="mr-3"> <i class="fa fa-paw" aria-hidden="true"></i>  Nombre del can  </span>
@@ -18,7 +18,7 @@
         </div>
 
         <div class="form-group input-group">
-            <span class="mr-3"><i class="fa fa-user" aria-hidden="true"></i> Nombre del Dueño </span>
+            <span class="mr-3"><i class="fa fa-user" aria-hidden="true"></i> Nombre del dueño </span>
             <input type="text" formControlName="ownerPetName" class="form-control" placeholder="Nombre del Dueño" [ngClass]="{ 'is-invalid': submitted && g.ownerPetName.errors }" />
             <div *ngIf="submitted && g.ownerPetName.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.ownerPetName.errors }">
                 <div *ngIf="g.ownerPetName.errors.required">Dueño del can es requerido</div>
@@ -26,12 +26,12 @@
         </div>
 
         <div class="form-group input-group">
-            <span class="mr-3"><i class="fa fa-phone"></i> Telefono </span>
-            <input formControlName="phone" pattern="\d*" class="form-control" placeholder="Telefono " maxlength="8" [ngClass]="{ 'is-invalid': submitted && g.phone.errors }" />
+            <span class="mr-3"><i class="fa fa-phone"></i> Teléfono </span>
+            <input formControlName="phone" pattern="\d*" class="form-control" placeholder="Teléfono " maxlength="8" [ngClass]="{ 'is-invalid': submitted && g.phone.errors }" />
             <div *ngIf="submitted && g.phone.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.phone.errors }">
-                <div *ngIf="g.phone.errors.required">Telefono es requerido</div>
-                <div *ngIf="g.phone.errors.minlength">Telefono debe ser al menos 8 digitos</div>
-                <div *ngIf="g.phone.errors.pattern">Solo se permiten numeros</div>
+                <div *ngIf="g.phone.errors.required">Teléfono es requerido</div>
+                <div *ngIf="g.phone.errors.minlength">Teléfono debe ser al menos 8 digitos</div>
+                <div *ngIf="g.phone.errors.pattern">Sólo se permiten números</div>
             </div>
         </div> 
 
@@ -60,12 +60,12 @@
             </div>
           </div>
         <div class="form-group input-group">
-            <span class="mr-3"><i class="fa fa-phone"></i> Telefono Veterinario </span>
-            <input formControlName="phoneVeterinarian" pattern="\d*" class="form-control" placeholder="Telefono Veterinario" maxlength="8" [ngClass]="{ 'is-invalid': submitted && g.phoneVeterinarian.errors }" />
+            <span class="mr-3"><i class="fa fa-phone"></i> Teléfono Veterinario </span>
+            <input formControlName="phoneVeterinarian" pattern="\d*" class="form-control" placeholder="Teléfono Veterinario" maxlength="8" [ngClass]="{ 'is-invalid': submitted && g.phoneVeterinarian.errors }" />
             <div *ngIf="submitted && g.phoneVeterinarian.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.phoneVeterinarian.errors }">
-                <div *ngIf="g.phoneVeterinarian.errors.required">Telefono es requerido</div>
-                <div *ngIf="g.phoneVeterinarian.errors.minlength">Telefono debe ser al menos 8 digitos</div>
-                <div *ngIf="g.phoneVeterinarian.errors.pattern">Solo se permiten numeros</div>
+                <div *ngIf="g.phoneVeterinarian.errors.required">Teléfono es requerido</div>
+                <div *ngIf="g.phoneVeterinarian.errors.minlength">Teléfono debe ser al menos 8 digitos</div>
+                <div *ngIf="g.phoneVeterinarian.errors.pattern">Solo se permiten números</div>
             </div>
         </div> 
 
@@ -100,7 +100,7 @@
         </div>
 
         <div class="form-group">
-            <label for="exampleFormControlTextarea1">Direccion exacta</label>
+            <label for="exampleFormControlTextarea1">Dirección exacta</label>
             <textarea class="form-control" formControlName="address" placeholder="" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.address.errors }"></textarea>
             <div *ngIf="submitted && g.address.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.address.errors }">
                 <div *ngIf="g.address.errors.required">Direccion exacta es requerido</div>

@@ -49,7 +49,7 @@ export class RegisterPetComponent implements OnInit {
   ngOnInit() {
       this.registerForm = this.formBuilder.group({
           petName: ['', Validators.required],
-          genderSelected: ['Genero del Can', Validators.required],
+          genderSelected: ['Género del Can', Validators.required],
           phone: ['', [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
           email: ['', [Validators.required, Validators.email]],
           password: ['', [Validators.required, Validators.minLength(6)]],
@@ -192,17 +192,11 @@ export class RegisterPetComponent implements OnInit {
           if(data.success) {
             this.loading = false;
             Swal.fire({
-              title: 'Registro ' + newPet.petName+'' ,
+              position: 'center',
+              icon: 'success',
+              title: 'Registro ' + newPet.petName+'',
               html: "Su registro ha sido authenticado correctamente. Haz click en ok para iniciar sesión",
-              showCancelButton: false,
-              allowEscapeKey: false,
               confirmButtonText: 'OK',
-              allowOutsideClick: false,
-              buttonsStyling: false,
-              reverseButtons: true,
-              position: 'top',
-              padding: 0,
-              customClass: { confirmButton: 'col-auto btn btn-info m-3' }
             })
             .then((result) => {
                 if (result.value){

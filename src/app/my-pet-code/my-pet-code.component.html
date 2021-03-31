@@ -88,7 +88,7 @@
                         <div *ngIf="permissionData.showPhoneInfo && profile.phone" class="card">
                             <div *ngIf="permissionData.showPhoneInfo">
                                 <div class="card-body">
-                                    <h6 class="card-title"><i class="fa fa-phone"></i> Telefono</h6>
+                                    <h6 class="card-title"><i class="fa fa-phone"></i> Teléfono</h6>
                                     <p class="card-text">{{profile.phone}}</p>
                                 </div>
                                 <div class="card-footer">
@@ -125,7 +125,7 @@
                         <div *ngIf=" permissionData.showAddressInfo && profile.address" class="card">
                             <div *ngIf="permissionData.showAddressInfo">
                                 <div class="card-body">
-                                    <h6 class="card-title">Direcion de habitacion</h6>
+                                    <h6 class="card-title">Direción de habitación</h6>
                                     
                                 </div>
                                 <div class="card-footer">
@@ -170,7 +170,7 @@
                         <div *ngIf="permissionData.showPhoneVeterinarian && profile.phoneVeterinarian" class="card">
                             <div *ngIf="permissionData.showPhoneVeterinarian">
                                 <div class="card-body">
-                                    <h6 class="card-title"> Telefono Veterinario</h6>
+                                    <h6 class="card-title"> Teléfono Veterinario</h6>
                                     <p class="card-text">{{profile.phoneVeterinarian}}</p>
                                 </div>
                                 <div class="card-footer">
@@ -182,14 +182,14 @@
                     <div class="card-deck m-2" >
                         <div *ngIf="permissionData.showLocationInfo" class="card">
                             <div  *ngIf="profile.petStatus === 'No-Perdido'" class="card-body">
-                                <h6 class="card-title"><i class="fas fa-map-marker-alt"></i>  Mi ubicacion</h6>
+                                <h6 class="card-title"><i class="fas fa-map-marker-alt"></i>  Mi ubicación</h6>
                                 <div class="map" style="width:100%;height:35vh" #map>
                                     <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [styles]="currentTimer" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [zoomControl]="true" [disableDefaultUI]="false">
                                   
                                       <agm-marker style="border-radius: 50%;" *ngFor="let m of markers; let i = index" [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [agmFitBounds]="true" [iconUrl]="{url:m.photo, scaledSize:{height:45, width:40, radius:5}}">
                                           
                                         <agm-info-window *ngIf="showInfo" #infowindow [isOpen]="showInfo" >
-                                          <h5>Esta es la ubicacion de {{profile.petName}}</h5>
+                                          <h5>Esta es la ubicación de {{profile.petName}}</h5>
                                         </agm-info-window>
                                         
                                       </agm-marker>
@@ -198,7 +198,7 @@
                             </div>
 
                             <div *ngIf="profile.petStatus === 'Perdido'" class="card-body">
-                                <h6 class="card-title"><i class="fas fa-map-marker-alt"></i>  Mi ubicacion</h6>
+                                <h6 class="card-title"><i class="fas fa-map-marker-alt"></i>  Mi ubicación</h6>
                                 <div class="map" style="width:100%;height:35vh" #map>
                                     <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [styles]="currentTimer" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [zoomControl]="true" [disableDefaultUI]="false">
                                   
