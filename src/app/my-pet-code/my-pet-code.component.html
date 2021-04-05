@@ -53,7 +53,7 @@
                     <div class="card hovercard">
                         <div class="cardheader" [ngStyle]="{'background-image': ' url(' + imageUrl  + ')','background-size': 'cover', 'background-color':'rgba(0, 0, 0, 0.452)', 'background-blend-mode':'multiply',  'height': '335px'}"></div>
                         <div class="avatar">
-                            <img style="object-fit: cover;" alt="{{profile.photo}}" src="{{profile.photo}}">
+                            <img style="object-fit: cover;" (click)="profileModal(profile.photo)" alt="{{profile.photo}}" src="{{profile.photo}}">
                         </div>
                         <div class="card-body">
                             <h4 class="card-title mt-3">Hola, me llamo {{profile.petName}}</h4>
@@ -219,6 +219,17 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="visualization" tabindex="-1" role="dialog" aria-labelledby="visualization" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body p-1 text-center">
+            <div class="image">
+              <img style="object-fit: cover;" class="img-thumbnail" alt="{{profileUrl}}" src="{{profileUrl}}">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
 </div>
 
 

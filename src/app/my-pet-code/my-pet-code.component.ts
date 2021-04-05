@@ -36,7 +36,7 @@ export class MyPetCodeComponent implements OnInit {
   hideMenu: boolean = false;
   currentTimer: any;
   permissionData: any;
-
+  profileUrl: String;
   // map 
   showInfoFinal: boolean = false;
   addDestiny: boolean = false;
@@ -211,6 +211,11 @@ export class MyPetCodeComponent implements OnInit {
   showPopupMapPetHome() {
     $('#showPopupMapPetHome').modal('show');
     this. setCurrentPosition();
+  }
+
+  profileModal(link){
+    $('#visualization').modal('show');
+    this.profileUrl = link
   }
 
   setCurrentPosition() {
