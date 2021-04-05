@@ -104,17 +104,47 @@ export class MyPetCodeComponent implements OnInit {
 
   getPetDataList() {
     this.petService.getPetDataList(this.getLinkIdParam,this.getLinkIdSecondaryParams).subscribe(data => {
-      this.profile = data;
-      this.imageUrl = this.profile.photo;
-      this.markers.push({
-        lat: this.profile.lat,
-        lng: this.profile.lng,
-        draggable: false,
-        isDestination: true,
-        photo: 'https://cdn.worldvectorlogo.com/logos/google-maps-2020-icon.svg'
-      });
-      this.getPermissionInfo();
-      this.showInfo = true;
+      if(data.success){
+        this.profile = data.pet;
+        this.imageUrl = this.profile.photo;
+        this.markers.push({
+          lat: this.profile.lat,
+          lng: this.profile.lng,
+          draggable: false,
+          isDestination: true,
+          photo: 'https://cdn.worldvectorlogo.com/logos/google-maps-2020-icon.svg'
+        });
+        this.getPermissionInfo();
+        this.showInfo = true;
+      }else{
+        let timerInterval
+        Swal.fire({
+          title: 'Error de enrutamiento!',
+          html: 'Prece que id que accediste esta roto o no existe. Se enviará al inicio en <b></b> millisegundos.',
+          timer: 4000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading()
+            timerInterval = setInterval(() => {
+              const content = Swal.getContent()
+              if (content) {
+                const b = content.querySelector('b')
+                if (b) {
+                  b.textContent = Swal.getTimerLeft()
+                }
+              }
+            }, 100)
+          },
+          willClose: () => {
+            clearInterval(timerInterval)
+          }
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.dismiss === Swal.DismissReason.timer) {
+            this.router.navigate(['/home']); 
+          }
+        })
+      }
     },
     error => {
       this.loading = false;

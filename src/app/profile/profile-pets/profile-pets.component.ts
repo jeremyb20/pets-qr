@@ -49,7 +49,8 @@ export class ProfilePetsComponent implements OnInit {
 
   getPetDataList() {
     this.petService.getPetDataList(this.pet.id, this.idSecondary).subscribe(data => {
-      this.profile = data;
+     if(data.success){
+      this.profile = data.pet;
       this.newPetInfoForm = this.formBuilder.group({
         petName: [this.profile.petName, Validators.required],
         ownerPetName: [this.profile.ownerPetName, Validators.required],
@@ -75,6 +76,9 @@ export class ProfilePetsComponent implements OnInit {
         userState: this.profile.userState
       }
       this.petService.setstoreUserData(objectStored)  
+     }else{
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+     }
     },
     error => {
       this.loading = false;

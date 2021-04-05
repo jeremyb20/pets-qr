@@ -35,8 +35,7 @@ export class RegisterPetComponent implements OnInit {
   photoSelected: String | ArrayBuffer;
   bussinesType = [
     {Id: 1, gender: 'Macho'},
-    {Id: 2, gender: 'Hembra'},
-    {Id: 2, gender: 'Otro'}
+    {Id: 2, gender: 'Hembra'}
   ];
 
   isSetPosition: boolean = false;
@@ -236,11 +235,21 @@ export class RegisterPetComponent implements OnInit {
 
     if(event.target.files && event.target.files[0]){
       this.file = <File>event.target.files[0];
+      if(this.file.type == String('image/png') || this.file.type == String('image/jpg') || this.file.type == String('image/jpeg') ){
+        const reader = new FileReader();
 
-      const reader = new FileReader();
-
-      reader.onload = e => this.photoSelected = reader.result;
-      reader.readAsDataURL(this.file);
+        reader.onload = e => this.photoSelected = reader.result;
+        reader.readAsDataURL(this.file);
+      }else{
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Solo se permite formatos JPG, PNG, JPEG',
+          confirmButtonText: 'OK',
+        })
+      }
+      
     }
   }
 

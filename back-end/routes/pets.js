@@ -361,64 +361,68 @@ router.get('/getPetDataList', function(req, res){
       res.json({ success: false, msg: err });
       return;
     }
-    if(idSecond == 0) {
-      var pet = {
-        petName: results.petName,
-        ownerPetName: results.ownerPetName,
-        phone: results.phone,
-        email: results.email,
-        photo: results.photo,
-        userState: results.userState,
-        lat: results.lat,
-        lng: results.lng,
-        birthDate: results.birthDate,
-        address: results.address,
-        age: results.age,
-        veterinarianContact: results.veterinarianContact,
-        phoneVeterinarian: results.phoneVeterinarian,
-        healthAndRequirements: results.healthAndRequirements,
-        favoriteActivities: results.favoriteActivities,
-        // calendar: results.calendar,
-        // code: results.code,
-        petStatus: results.petStatus,
-        linkTwitter: results.linkTwitter,
-        linkFacebook: results.linkFacebook,
-        linkInstagram: results.linkInstagram,
-        // newPetProfile: results.newPetProfile
-      }
-      res.json(pet)
-    }else {
-      if(results!= null) {
-          results.newPetProfile.forEach(element => {
-          if (element._id == idSecond) {
-            var pet = {
-              petName: element.petName,
-              ownerPetName: element.ownerPetName,
-              phone: element.phone,
-              email: element.email,
-              photo: element.photo,
-              userState: element.userState,
-              lat: element.lat,
-              lng: element.lng,
-              birthDate: element.birthDate,
-              address: element.address,
-              age: element.age,
-              veterinarianContact: element.veterinarianContact,
-              phoneVeterinarian: element.phoneVeterinarian,
-              healthAndRequirements: element.healthAndRequirements,
-              favoriteActivities: element.favoriteActivities,
-              // calendar: element.calendar,
-              // code: element.code,
-              petStatus: element.petStatus,
-              linkTwitter: element.linkTwitter,
-              linkFacebook: element.linkFacebook,
-              linkInstagram: element.linkInstagram
+    if(results != undefined){
+      if(idSecond == 0) {
+        var pet = {
+          petName: results.petName,
+          ownerPetName: results.ownerPetName,
+          phone: results.phone,
+          email: results.email,
+          photo: results.photo,
+          userState: results.userState,
+          lat: results.lat,
+          lng: results.lng,
+          birthDate: results.birthDate,
+          address: results.address,
+          age: results.age,
+          veterinarianContact: results.veterinarianContact,
+          phoneVeterinarian: results.phoneVeterinarian,
+          healthAndRequirements: results.healthAndRequirements,
+          favoriteActivities: results.favoriteActivities,
+          // calendar: results.calendar,
+          // code: results.code,
+          petStatus: results.petStatus,
+          linkTwitter: results.linkTwitter,
+          linkFacebook: results.linkFacebook,
+          linkInstagram: results.linkInstagram,
+          // newPetProfile: results.newPetProfile
+        }
+        res.json({ success: true, pet });
+      }else {
+        if(results!= null) {
+            results.newPetProfile.forEach(element => {
+            if (element._id == idSecond) {
+              var pet = {
+                petName: element.petName,
+                ownerPetName: element.ownerPetName,
+                phone: element.phone,
+                email: element.email,
+                photo: element.photo,
+                userState: element.userState,
+                lat: element.lat,
+                lng: element.lng,
+                birthDate: element.birthDate,
+                address: element.address,
+                age: element.age,
+                veterinarianContact: element.veterinarianContact,
+                phoneVeterinarian: element.phoneVeterinarian,
+                healthAndRequirements: element.healthAndRequirements,
+                favoriteActivities: element.favoriteActivities,
+                // calendar: element.calendar,
+                // code: element.code,
+                petStatus: element.petStatus,
+                linkTwitter: element.linkTwitter,
+                linkFacebook: element.linkFacebook,
+                linkInstagram: element.linkInstagram
+              }
+              res.json({ success: true, pet });
             }
-            res.json(pet)
-          }
-        })
+          })
+        }
+        
       }
-      
+    }else{
+      res.json({ success: false, msg: 'El usuario o id no existe en el sistema' });
     }
   });
 });

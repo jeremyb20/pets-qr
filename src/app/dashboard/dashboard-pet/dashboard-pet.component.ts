@@ -86,8 +86,7 @@ idEventUpdate: any;
   FilteredPetStatus: any;
   bussinesType = [
     {Id: 1, gender: 'Macho'},
-    {Id: 2, gender: 'Hembra'},
-    {Id: 2, gender: 'Otro'}
+    {Id: 2, gender: 'Hembra'}
   ];
   currentTimer: any;
   idSecondary: number = 0;
@@ -180,38 +179,43 @@ idEventUpdate: any;
 
   getPetDataList() {
     this.petService.getPetDataList(this.pet.id, this.idSecondary).subscribe(data => {
-      this.profile = data;
-      // this.seeAllProfile = data.newPetProfile;
-      // this.photoPrincipalPet = data.photo;
-      this.petStatusInfo = this.profile.petStatus;
-      this.showReportForm = (this.profile.petStatus == 'Perdido')? true: false;
-      this.newPetInfoForm = this.formBuilder.group({
-        petName: [this.profile.petName, Validators.required],
-        ownerPetName: [this.profile.ownerPetName, Validators.required],
-        birthDate: [this.profile.birthDate, [Validators.required]],
-        phone: [this.profile.phone, [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
-        address: [this.profile.address, [Validators.required]],
-        email: [this.profile.email, [Validators.required]],
-        age: [this.profile.age, [Validators.minLength(0),Validators.required,Validators.pattern(/\d/)]],
-        veterinarianContact: [this.profile.veterinarianContact, Validators.required],
-        phoneVeterinarian: [this.profile.phoneVeterinarian, [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
-        healthAndRequirements: [this.profile.healthAndRequirements, Validators.required],
-        favoriteActivities: [this.profile.favoriteActivities],
-        linkTwitter: [this.profile.linkTwitter = (this.profile.linkTwitter == 'null')? this.profile.linkTwitter = '': this.profile.linkTwitter],
-        linkFacebook: [this.profile.linkFacebook = (this.profile.linkFacebook == 'null')? this.profile.linkFacebook = '': this.profile.linkFacebook],
-        linkInstagram: [this.profile.linkInstagram = (this.profile.linkInstagram == 'null')? this.profile.linkInstagram = '': this.profile.linkInstagram],
-      });
+      if(data.success){
+        this.profile = data.pet;
+        // this.seeAllProfile = data.newPetProfile;
+        // this.photoPrincipalPet = data.photo;
+        this.petStatusInfo = this.profile.petStatus;
+        this.showReportForm = (this.profile.petStatus == 'Perdido')? true: false;
+        this.newPetInfoForm = this.formBuilder.group({
+          petName: [this.profile.petName, Validators.required],
+          ownerPetName: [this.profile.ownerPetName, Validators.required],
+          birthDate: [this.profile.birthDate, [Validators.required]],
+          phone: [this.profile.phone, [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
+          address: [this.profile.address, [Validators.required]],
+          email: [this.profile.email, [Validators.required]],
+          age: [this.profile.age, [Validators.minLength(0),Validators.required,Validators.pattern(/\d/)]],
+          veterinarianContact: [this.profile.veterinarianContact, Validators.required],
+          phoneVeterinarian: [this.profile.phoneVeterinarian, [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
+          healthAndRequirements: [this.profile.healthAndRequirements, Validators.required],
+          favoriteActivities: [this.profile.favoriteActivities],
+          linkTwitter: [this.profile.linkTwitter = (this.profile.linkTwitter == 'null')? this.profile.linkTwitter = '': this.profile.linkTwitter],
+          linkFacebook: [this.profile.linkFacebook = (this.profile.linkFacebook == 'null')? this.profile.linkFacebook = '': this.profile.linkFacebook],
+          linkInstagram: [this.profile.linkInstagram = (this.profile.linkInstagram == 'null')? this.profile.linkInstagram = '': this.profile.linkInstagram],
+        });
+  
+        let objectStored = {
+          id: this.pet.id,
+          idSecond: this.idSecondary,
+          petName: this.profile.petName,
+          photo: this.profile.photo,
+          userState: this.profile.userState
+        }
+        this.petService.setstoreUserData(objectStored);
+        this.showInfo = true;
+        this.getPetProfileList();
 
-      let objectStored = {
-        id: this.pet.id,
-        idSecond: this.idSecondary,
-        petName: this.profile.petName,
-        photo: this.profile.photo,
-        userState: this.profile.userState
+      }else{
+        this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
       }
-      this.petService.setstoreUserData(objectStored);
-      this.showInfo = true;
-      this.getPetProfileList();
     },
     error => {
       this.loading = false;
@@ -318,10 +322,20 @@ idEventUpdate: any;
     if(event.target.files && event.target.files[0]){
       this.file = <File>event.target.files[0];
 
-      const reader = new FileReader();
+      if(this.file.type == String('image/png') || this.file.type == String('image/jpg') || this.file.type == String('image/jpeg') ){
+        const reader = new FileReader();
 
-      reader.onload = e => this.photoSelected = reader.result;
-      reader.readAsDataURL(this.file);
+        reader.onload = e => this.photoSelected = reader.result;
+        reader.readAsDataURL(this.file);
+      }else{
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Solo se permite formatos JPG, PNG, JPEG',
+          confirmButtonText: 'OK',
+        })
+      }
     }
   }
 

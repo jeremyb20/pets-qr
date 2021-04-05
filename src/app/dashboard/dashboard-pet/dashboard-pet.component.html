@@ -263,6 +263,7 @@
           </button>
         </div>
         <div class="modal-body">
+          <p class="text-danger">En caso de no tener veterinario puede agregar "No tengo" y el teléfono "88888888"</p>
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
                 <div class="form-group input-group col-12">
                     <span class="mr-3"> <i class="fa fa-paw" aria-hidden="true"></i>  Género del can  </span>
@@ -325,15 +326,15 @@
                 </div>
 
                 <div class="form-group input-group col-12">
-                    <span class="mr-3"><i class="fas fa-address-book"></i> Nombre del veterinario </span>
-                    <input type="text" formControlName="veterinarianContact" placeholder="Nombre del veterinario" class="form-control" [ngClass]="{ 'is-invalid': submitted && i.veterinarianContact.errors }" />
+                    <span class="mr-3"><i class="fas fa-address-book"></i> Nombre del veterinario o local </span>
+                    <input type="text" formControlName="veterinarianContact" placeholder="Nombre del veterinario o local" class="form-control" [ngClass]="{ 'is-invalid': submitted && i.veterinarianContact.errors }" />
                     <div *ngIf="submitted && i.veterinarianContact.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.veterinarianContact.errors }">
-                        <div *ngIf="i.veterinarianContact.errors.required">Nombre del veterinario es requerido</div>
+                        <div *ngIf="i.veterinarianContact.errors.required">Nombre del veterinario o local es requerido</div>
                     </div>
                   </div>
                 <div class="form-group input-group col-12">
                     <span class="mr-3"><i class="fa fa-phone"></i> Teléfono Veterinario </span>
-                    <input formControlName="phoneVeterinarian" pattern="\d*" class="form-control" placeholder="Telefono Veterinario" maxlength="8" [ngClass]="{ 'is-invalid': submitted && i.phoneVeterinarian.errors }" />
+                    <input formControlName="phoneVeterinarian" pattern="\d*" class="form-control" placeholder="Teléfono Veterinario" maxlength="8" [ngClass]="{ 'is-invalid': submitted && i.phoneVeterinarian.errors }" />
                     <div *ngIf="submitted && i.phoneVeterinarian.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.phoneVeterinarian.errors }">
                         <div *ngIf="i.phoneVeterinarian.errors.required">Teléfono es requerido</div>
                         <div *ngIf="i.phoneVeterinarian.errors.minlength">Teléfono debe ser al menos 8 digitos</div>
@@ -403,7 +404,7 @@
                  </div>
                    <div class="form-group mb-1">
                        <div class="form-group text-center col">
-                           <label class="font-weight-bold ">Mostrar ubicacion exacta de la vivienda del can</label>
+                           <label class="font-weight-bold ">Mostrar ubicación exacta de la vivienda del can</label>
                            <div class="map" style="width:100%;height:35vh" #map>
                                <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [styles]="currentTimer" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [zoomControl]="true" (mapClick)="mapClickedNewPet($event)" [disableDefaultUI]="false">
                              
@@ -411,7 +412,7 @@
                                      
                                    <agm-info-window  #infowindow [isOpen]="showInfoNewPet" >
                                      <h6>Es tu ubicación actual?</h6>
-                                     <p>Si no es la Ubicacion puedes cambiarla haciendo click</p>
+                                     <p>Si no es la ubicación puedes cambiarla haciendo click</p>
                                      <button class="btn btn-info btn-sm mr-1" (click)="changePositionNewPet(m)" >Cambiar</button>
                                      <button class="btn btn-success btn-sm" (click)="savePositionNewPet()" >Guardar</button>
                                    </agm-info-window>
@@ -435,7 +436,7 @@
                          <circle class="loader__value" cx="12" cy="12" r="10" />
                          <circle class="loader__value" cx="12" cy="12" r="10" />
                        </svg>
-                       Crear nuevo Perfil
+                       Crear Perfil
                      </button>
                  </div>                                                                
                </form>

@@ -37,8 +37,12 @@ export class PermissionsPetsComponent implements OnInit {
 
   getPetDataList() {
     this.petService.getPetDataList(this.pet.id, this.idSecondary).subscribe(data => {
-      this.profile = data;
-      this.getPermissionInfo();
+      if(data.success){
+        this.profile = data.pet;
+        this.getPermissionInfo();
+      }else{
+        this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+      }
     },
     error => {
       this.loading = false;
