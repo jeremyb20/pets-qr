@@ -153,9 +153,9 @@ $loader-keyframe: 1 / (length($loader-colors) * 2) * 100;
     background: -webkit-linear-gradient(top, #007dff, #ffffff);
   }
   background: -webkit-linear-gradient(left, #3931af, #00c6ff);
-    height: 100vh;
+    overflow-x: hidden;
     @include media-breakpoint-down(sm) {
-      height: 130vh !important;
+      // height: 130vh !important;
     }
     @include media-breakpoint-up(lg) {
       .card{
@@ -218,7 +218,9 @@ $loader-keyframe: 1 / (length($loader-colors) * 2) * 100;
 
 .homeBody {
     color: #000;
-    overflow-x: hidden;
+    @include media-breakpoint-up(md) {
+      overflow-x: hidden;
+    }
     height: 100vh;
     // background-color: #81D4FA;
     background-repeat: no-repeat;
