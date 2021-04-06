@@ -67,7 +67,65 @@ router.post('/register/new-pet', async(req, res, next) => {
 
         Pet.addPet(newPet, async (user, done) => {
           try {
-              res.json({ success: true, msg: 'Su registro ha sido authenticado correctamente. Haz click en ok para iniciar sesión' });
+              var smtpTransport = nodemailer.createTransport({
+                host: process.env.ZOHO_HOST,
+                port: process.env.ZOHO_PORT,
+                secure: true,
+                logger: true,
+                debug: true,
+                auth: {
+                  user: process.env.ZOHO_USER,
+                  pass: process.env.ZOHO_PASSWORD
+                },
+                tls: {
+                  // do not fail on invalid certs
+                  rejectUnauthorized: false
+                }
+              });
+            
+              const handlebarOptions = {
+                viewEngine: {
+                  extName: ".handlebars",
+                  partialsDir: path.resolve(__dirname, "views"),
+                  defaultLayout: false,
+                },
+                viewPath: path.resolve(__dirname, "views"),
+                extName: ".handlebars",
+              };
+              
+              smtpTransport.use(
+                "compile",
+                hbs(handlebarOptions)
+              );
+            
+              smtpTransport.verify(function(error, success) {
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log("Server is ready to take our messages");
+                }
+              });
+            
+              var mailOptions = {
+                to: newPet.email,
+                from: 'soporte@localpetsandfamily.com',
+                subject: 'LocalPetsAndFamily registro realizado exitosamente',
+                attachments: [
+                  {filename: 'localpetslogo.jpg', path:'./src/assets/localpetslogo.jpg'}
+                ],
+                template: 'index',
+                context: {
+                  text: 'Recibe esto porque usted (u otra persona) se ha registrado dentro de nuestra plataforma .\n\n' +
+                  'Haga clic en el siguiente enlace en su navegador para poder iniciar sesion:\n\n' +
+                  'Si no lo solicitó, ignore este correo electrónico.\n',
+                  link: 'https://www.localpetsandfamily.com/login-pets',
+                  textLink: 'Ir a iniciar sesión'
+                } 
+              };
+            
+              smtpTransport.sendMail(mailOptions, function(err) {
+                res.json({ success: true, msg: 'Su registro ha sido authenticado correctamente. Haz click en ok para iniciar sesión' });
+              });
             } catch (err) {
               res.json({ success: false, msg: 'Este Correo Ya existe.!' });
               next(err);
@@ -127,15 +185,70 @@ router.post('/register/new-petByUserPet', async(req, res) => {
 
   var notifications = {
     message: 'El usuario con el correo '+ obj.email+ ' ha registrado un can bajo su dominio',
-    userPetName: obj.petName,
+    userPetName: newpet.petName,
     isNewMsg: true,
     dateMsg: new Date(),
-    photo: obj.photo,
+    photo: newpet.photo,
     idPet: obj._id
   }
 
   Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { newPetProfile: newpet }},{new: true}).then(function(data){
-    res.json({success:true,msg: 'Se ha registrado correctamente el can bajo su correo de perfil!'});
+    var smtpTransport = nodemailer.createTransport({
+      host: process.env.ZOHO_HOST,
+      port: process.env.ZOHO_PORT,
+      secure: true,
+      logger: true,
+      debug: true,
+      auth: {
+        user: process.env.ZOHO_USER,
+        pass: process.env.ZOHO_PASSWORD
+      },
+      tls: {
+        // do not fail on invalid certs
+        rejectUnauthorized: false
+      }
+    });
+  
+    const handlebarOptions = {
+      viewEngine: {
+        extName: ".handlebars",
+        partialsDir: path.resolve(__dirname, "views"),
+        defaultLayout: false,
+      },
+      viewPath: path.resolve(__dirname, "views"),
+      extName: ".handlebars",
+    };
+    
+    smtpTransport.use(
+      "compile",
+      hbs(handlebarOptions)
+    );
+  
+    smtpTransport.verify(function(error, success) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Server is ready to take our messages");
+      }
+    });
+  
+    var mailOptions = {
+      to: 'soporte@localpetsandfamily.com',
+      from: 'soporte@localpetsandfamily.com',
+      subject: 'LocalPetsAndFamily registro de nuevo can',
+      attachments: [
+        {filename: 'localpetslogo.jpg', path:'./src/assets/localpetslogo.jpg'}
+      ],
+      template: 'products',
+      context: {
+        text: 'El usuario con el correo '+ obj.email+ ' ha registrado un nuevo can \n',
+        photo: newpet.photo
+      } 
+    };
+  
+    smtpTransport.sendMail(mailOptions, function(err) {
+      res.json({success:true,msg: 'Se ha registrado correctamente el can bajo su correo de perfil!'});
+    });
   });
 
   Pet.findOneAndUpdate({ _id: id }, { $push: { notifications: notifications  }},{new: true}).then(function(data){
@@ -1203,6 +1316,36 @@ router.put('/update/updateNotificationsList', async(req, res, next) => {
 });
 
 
+router.put('/delete/deleteNotificationsList', async(req, res, next) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  var object = {
+    isNewMsg: obj.isNewMsg,
+    idItem: obj.idItem
+  }
+
+  await Pet.findOne({_id: req.body._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+     if(pet != null) {
+      for (var i =0; i < pet.notifications.length; i++){
+        if (pet.notifications[i]._id == object.idItem) {
+          pet.notifications.splice(i,1);
+          pet.save();
+          try {
+            res.json({ success: true, msg: 'Se ha eliminado correctamente..!' });
+          } catch (err) {
+            res.json({ success: false, msg: err });
+            next(err);
+          }
+          break;
+        }
+      }
+     }
+   });
+});
+
+
 
 //Notifications
 
@@ -1254,7 +1397,6 @@ router.post('/report/reportLostPetStatus', async(req, res) => {
       }else{
         pet.newPetProfile.forEach(element => {
           if(element._id == obj.idSecondary){
-            console.log('paso')
             element["petStatus"] = reportPetLost.petStatus;
             if (element["petStatusReport"].length > 0) {
               var indexToRemove = 0;

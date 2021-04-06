@@ -59,16 +59,19 @@
                 <div class="notify-icon col-3 p-1 text-center">
                     <img src="{{item.photo}}" style="height: 50px; width: 50px;" class="img-fluid rounded-circle" alt="{{item.photo}}">
                 </div>
-                <div class="col-6">
+                <div class="col-4">
                     <div class="row no-gutters">
-                        <p class="mb-0 mt-3"><small>{{item.message}}</small></p>
+                        <p class="mb-0 mt-2 mr-1"><small>{{item.message}}</small></p>
                         <div class="col-6">
                             <small>{{this.getDate(item.dateMsg)}}</small>
                         </div>
                     </div>
                 </div>
                 <div class="col-3 d-flex align-items-center text-center">
-                    <button *ngIf="item.isNewMsg" (click)="updateNotification(item)" class="btn btn-info btn-sm">Entendido</button>
+                    <button *ngIf="item.isNewMsg" (click)="updateNotification(item)" class="btn btn-info btn-sm ml-3">Entendido</button>
+                </div>
+                <div class="col-2 align-items-center text-center mt-4">
+                    <a data-toggle="tooltip"  class="mt-0" data-placement="top" title="Delete" (click)="deleteNotification(item)" data-original-title="Close"><i class="fas fa-trash color-danger"></i></a>
                 </div>
             </div>
             <!-- All-->
@@ -91,16 +94,19 @@
                         <div class="notify-icon col-3 p-1 text-center">
                             <img src="{{item.photo}}" style="height: 50px; width: 50px;" class="img-fluid rounded-circle" alt="{{item.photo}}">
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
                             <div class="row no-gutters">
-                                <p class="mb-0 mt-3"><small>{{item.message}}</small></p>
+                                <p class="mb-0 mt-2 mr-1"><small>{{item.message}}</small></p>
                                 <div class="col-6">
                                     <small>{{this.getDate(item.dateMsg)}}</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-3 d-flex align-items-center text-center">
-                            <button *ngIf="item.isNewMsg" (click)="updateNotification(item)" class="btn btn-info btn-sm">Entendido</button>
+                            <button *ngIf="item.isNewMsg" (click)="updateNotification(item)" class="btn btn-info btn-sm ml-3">Entendido</button>
+                        </div>
+                        <div class="col-2 align-items-center text-center mt-4">
+                            <a data-toggle="tooltip"  class="mt-0" data-placement="top" title="Delete" (click)="deleteNotification(item)" data-original-title="Close"><i class="fas fa-trash color-danger"></i></a>
                         </div>
                     </div>
                 </div>

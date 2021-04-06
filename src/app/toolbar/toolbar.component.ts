@@ -133,4 +133,22 @@ export class ToolbarComponent implements OnInit {
     });
   }
 
+  deleteNotification(item: any){
+    var object = {
+      id: this.user.id,
+      idItem: item._id
+    }
+
+    this.petService.deleteNotification(object).subscribe(data => {
+      if(data.success) {
+        this.getNotifications();
+      } else {
+        this._notificationSvc.warning('Hola '+this.user.petName+'', data.msg, 6000);
+      }
+    },
+    error => {
+      this._notificationSvc.warning('Hola '+this.user.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
+  }
+
 }

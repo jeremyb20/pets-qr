@@ -615,6 +615,17 @@ updateNotification(obj: any):Observable<any> {
   }
 }
 
+deleteNotification(obj: any):Observable<any> {
+  const fd = new FormData();
+  fd.append('_id', obj.id);
+  fd.append('idItem', obj.idItem);
+  if(this.isDev) {
+    return this.httpClient.put<any>('http://localhost:8080/pet/delete/deleteNotificationsList', fd);
+  }else{
+    return this.httpClient.put<any>('pet/delete/deleteNotificationsList', fd);
+  }
+}
+
 
 // Notifications
 
