@@ -54,6 +54,9 @@ import { EventsPetsComponent } from './events/events-pets/events-pets.component'
 import { CalendarPetsComponent } from './calendar/calendar-pets/calendar-pets.component';
 import { LocationPetsComponent } from './location/location-pets/location-pets.component';
 import { PermissionsPetsComponent } from './permissions/permissions-pets/permissions-pets.component';
+import { PetsRegisteredComponent } from './admin-master/pets-registered/pets-registered.component';
+import { PetsProductsComponent } from './admin-master/pets-products/pets-products.component';
+import { PetsOrdersComponent } from './admin-master/pets-orders/pets-orders.component';
 
 export function tokenGetter() {
   return localStorage.getItem("id_token");
@@ -98,6 +101,9 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     CalendarPetsComponent,
     LocationPetsComponent,
     PermissionsPetsComponent,
+    PetsRegisteredComponent,
+    PetsProductsComponent,
+    PetsOrdersComponent,
   ],
   imports: [
     BrowserModule,

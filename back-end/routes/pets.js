@@ -1139,6 +1139,21 @@ router.put('/register/registerPhotoPetProduct', async(req, res) => {
 
 });
 
+router.post('/delete/delete-pet', async(req, res) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+
+  Pet.findByIdAndDelete(obj._id, function (err, docs) {
+    if (err){
+      res.json({ success: false, msg: 'Problema favor de revisar..!' });
+    }
+    else{
+      res.json({ success: true, msg: 'Se ha eliminado correctamente..!' });
+
+    }
+  });
+
+});
+
 // admin
 
 //Notifications 

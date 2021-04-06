@@ -31,6 +31,9 @@ import { CalendarPetsComponent } from './calendar/calendar-pets/calendar-pets.co
 import { EventsPetsComponent } from './events/events-pets/events-pets.component';
 import { LocationPetsComponent } from './location/location-pets/location-pets.component';
 import { PermissionsPetsComponent } from './permissions/permissions-pets/permissions-pets.component';
+import { PetsOrdersComponent } from './admin-master/pets-orders/pets-orders.component';
+import { PetsProductsComponent } from './admin-master/pets-products/pets-products.component';
+import { PetsRegisteredComponent } from './admin-master/pets-registered/pets-registered.component';
 
 
 const routes: Routes = [
@@ -64,6 +67,9 @@ const routes: Routes = [
         { path: 'dashboard-pet', component: DashboardPetComponent,canActivate: [AdminGuard] },
         { path: 'myPetCode', component: MyPetCodeComponent },
         { path: 'shopping-cart', component: ShoppingCartComponent, canActivate: [AdminGuard]},
+        { path: 'pets-orders', component: PetsOrdersComponent, canActivate: [AdminGuard]},
+        { path: 'pets-products', component: PetsProductsComponent, canActivate: [AdminGuard]},
+        { path: 'pets-registered', component: PetsRegisteredComponent, canActivate: [AdminGuard]},
       
         { path: 'profile-user', component: ProfileUserComponent ,canActivate: [AdminGuard]},
         { path: 'profile-company', component: ProfileCompanyComponent ,canActivate: [AdminGuard]},

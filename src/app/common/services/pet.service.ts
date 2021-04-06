@@ -575,6 +575,16 @@ addPhotoFirstORSecond(obj:any):Observable<any> {
   }
 }
 
+deletePet(id:any):Observable<any> {
+  const fd = new FormData();
+  fd.append('_id',id);
+  if(this.isDev) {
+    return this.httpClient.post<any>('http://localhost:8080/pet/delete/delete-pet', fd);
+  }else{
+    return this.httpClient.post<any>('pet/delete/delete-pet', fd);
+  }
+}
+
 
 // admin
 

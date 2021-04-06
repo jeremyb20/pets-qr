@@ -143,6 +143,10 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         $('#wrapper').removeClass('toggled');
     }
 
+    hide(){
+        $('#wrapper').removeClass('toggled');
+    }
+
     detectWakeFromSleep() {
         let now = new Date().getTime();
         let delta = now - this.lastTick;
