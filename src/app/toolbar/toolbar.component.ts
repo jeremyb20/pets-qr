@@ -41,10 +41,13 @@ export class ToolbarComponent implements OnInit {
         this.userLogged = this.petService.getLocalPet();
     }
     this.user = JSON.parse(this.userLogged);
-    if(this.user.userState == 0 || this.Media.IsLandscape) {
-      $('#wrapper').removeClass('toggled')
+    if(this.user){
+      if (this.user.userState == 0 || this.Media.IsLandscape) {
+        $('#wrapper').removeClass('toggled')
+      }
+      this.getNotifications();
     }
-    this.getNotifications();
+   
   }
 
   ngAfterViewChecked(){

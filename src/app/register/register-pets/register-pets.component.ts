@@ -1,5 +1,5 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild,Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MustMatch } from '../../common/helpers/must-match.validator';
 import { MapsAPILoader } from '@agm/core';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
@@ -29,6 +29,9 @@ export class RegisterPetComponent implements OnInit {
   markers: marker[] = [];
   showInfo: boolean = true;
   hideMsg: boolean = false; 
+  getLinkIdParam: null;
+  getLinkIdSecondaryParams: null;
+  isActivated: boolean;
   ShowMsg: string;
   timeSeconds: number =  6000;
   file : File;
@@ -37,26 +40,51 @@ export class RegisterPetComponent implements OnInit {
     {Id: 1, gender: 'Macho'},
     {Id: 2, gender: 'Hembra'}
   ];
-
+  hideInputCode: boolean = false;
   isSetPosition: boolean = false;
 
   
-  constructor(private formBuilder: FormBuilder,private mapsAPILoader: MapsAPILoader,private ngZone: NgZone, private petService: PetService, private router: Router ) {
-    // this.setCurrentPosition();
+  constructor(private formBuilder: FormBuilder,private mapsAPILoader: MapsAPILoader,private ngZone: NgZone, private petService: PetService, private router: Router, private route: ActivatedRoute ) {
+
+    if(this.getLinkIdParam == undefined) {
+      //Este es cuando va ver perfil;
+      this.route.queryParams.subscribe(params => {
+        this.getLinkIdParam = params.id;
+        this.getLinkIdSecondaryParams = params.idSecond;
+        this.isActivated = Boolean(params.isActivated);
+        this.hideInputCode = (this.getLinkIdParam == undefined)? true:false;
+      });
+    }
+
    }
 
   ngOnInit() {
+    if(this.hideInputCode){
       this.registerForm = this.formBuilder.group({
-          petName: ['', Validators.required],
-          genderSelected: ['Género del Can', Validators.required],
-          phone: ['', [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
-          email: ['', [Validators.required, Validators.email]],
-          password: ['', [Validators.required, Validators.minLength(6)]],
-          confirmPassword: ['', Validators.required],
-          acceptTerms: [false, Validators.requiredTrue]
+        petName: ['', Validators.required],
+        genderSelected: ['Género del Can', Validators.required],
+        phone: ['', [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', Validators.required],
+        acceptTerms: [false, Validators.requiredTrue]
       }, {
         validator: MustMatch('password', 'confirmPassword')
       });
+    }else{
+      this.registerForm = this.formBuilder.group({
+        petName: ['', Validators.required],
+        genderSelected: ['Género del Can', Validators.required],
+        phone: ['', [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', Validators.required],
+        codeGenerator: ['', Validators.required],
+        acceptTerms: [false, Validators.requiredTrue]
+      }, {
+        validator: MustMatch('password', 'confirmPassword')
+      });
+    }
   }
 
   mapClicked($event: MouseEvent) {
@@ -176,52 +204,105 @@ export class RegisterPetComponent implements OnInit {
       } else {
         if(this.markers.length != 0) {
           this.loading = true;
-        var newPet = {
-          petName: this.f.petName.value,
-          phone: this.f.phone.value,
-          email: this.f.email.value,
-          password: this.f.password.value,
-          acceptTerms: this.f.acceptTerms.value,
-          lat: this.markers[0].lat,
-          lng: this.markers[0].lng,
-          genderSelected: this.f.genderSelected.value,
-          userState: 3,
-          petStatus: 'No-Perdido'
-        }
-  
-        this.petService.registerPet(newPet,this.file).subscribe(data => {
-          if(data.success) {
-            this.loading = false;
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Registro ' + newPet.petName+'',
-              html: data.msg,
-              confirmButtonText: 'OK',
-            })
-            .then((result) => {
-                if (result.value){
-                  this.router.navigate(['/login-pets']); 
-                }
-                  
+
+          if(this.hideInputCode){
+            var newPet = {
+              petName: this.f.petName.value,
+              phone: this.f.phone.value,
+              email: this.f.email.value,
+              password: this.f.password.value,
+              acceptTerms: this.f.acceptTerms.value,
+              lat: this.markers[0].lat,
+              lng: this.markers[0].lng,
+              genderSelected: this.f.genderSelected.value,
+              userState: 3,
+              petStatus: 'No-Perdido',
+            }
+    
+          this.petService.registerPet(newPet,this.file).subscribe(data => {
+            if(data.success) {
+              this.loading = false;
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Registro ' + newPet.petName+'',
+                html: data.msg,
+                confirmButtonText: 'OK',
+              })
+              .then((result) => {
+                  if (result.value){
+                    this.router.navigate(['/login-pets']); 
+                  }
+                    
+              });
+            } else {
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Oops...',
+                text: data.msg,
+                confirmButtonText: 'OK',
+              })
+              this.loading = false;
+            }
+          },
+            error => {
+              this.hideMsg = true;
+              this.loading = false;
+              this.ShowMsg = "Ocurrio un error favor contactar a soporte o al administrador del sitio";
+              setTimeout(() => { this.hideMsg = false }, this.timeSeconds);
             });
-          } else {
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: 'Oops...',
-              text: data.msg,
-              confirmButtonText: 'OK',
-            })
-            this.loading = false;
+          }else{
+            var updateNewPetCode = {
+              _id: this.getLinkIdParam,
+              idSecond: this.getLinkIdSecondaryParams,
+              petName: this.f.petName.value,
+              phone: this.f.phone.value,
+              email: this.f.email.value,
+              password: this.f.password.value,
+              acceptTerms: this.f.acceptTerms.value,
+              lat: this.markers[0].lat,
+              lng: this.markers[0].lng,
+              genderSelected: this.f.genderSelected.value,
+              userState: 3,
+              petStatus: 'No-Perdido',
+              codeGenerator: this.f.codeGenerator.value
+            }
+          this.petService.registerCodePet(updateNewPetCode,this.file).subscribe(data => {
+            if(data.success) {
+              this.loading = false;
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Registro ' + updateNewPetCode.petName+'',
+                html: data.msg,
+                confirmButtonText: 'OK',
+              })
+              .then((result) => {
+                  if (result.value){
+                    this.router.navigate(['/login-pets']); 
+                  }
+                    
+              });
+            } else {
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Oops...',
+                text: data.msg,
+                confirmButtonText: 'OK',
+              })
+              this.loading = false;
+            }
+          },
+            error => {
+              this.hideMsg = true;
+              this.loading = false;
+              this.ShowMsg = "Ocurrio un error favor contactar a soporte o al administrador del sitio";
+              setTimeout(() => { this.hideMsg = false }, this.timeSeconds);
+            });
           }
-        },
-        error => {
-          this.hideMsg = true;
-          this.loading = false;
-          this.ShowMsg = "Ocurrio un error favor contactar a soporte o al administrador del sitio";
-          setTimeout(() => { this.hideMsg = false }, this.timeSeconds);
-        });
+
         }
       }
   }

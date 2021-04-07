@@ -38,11 +38,35 @@ export class PetService {
     fd.append('image', photo);
     fd.append('petStatus',pet.petStatus);
     fd.append('genderSelected',pet.genderSelected);
-
     if(this.isDev) {
       return this.httpClient.post<any>('http://localhost:8080/pet/register/new-pet', fd);
     }else{
       return this.httpClient.post<any>('pet/register/new-pet', fd);
+    }
+  }
+
+  registerCodePet(pet,  photo:any):Observable<any> {
+    const fd = new FormData();
+    fd.append('petName',pet.petName);
+    fd.append('username',pet.username);
+    fd.append('phone',pet.phone);
+    fd.append('userState',pet.userState);
+    fd.append('email',pet.email);
+    fd.append('password',pet.password);
+    fd.append('lat',pet.lat);
+    fd.append('lng',pet.lng);
+    fd.append('bussinesSelected',pet.bussinesSelected);
+    fd.append('image', photo);
+    fd.append('petStatus',pet.petStatus);
+    fd.append('genderSelected',pet.genderSelected);
+    fd.append('_id',pet._id);
+    fd.append('idSecond',pet.idSecond);
+    fd.append('codeGenerator',pet.codeGenerator);
+
+    if(this.isDev) {
+      return this.httpClient.put<any>('http://localhost:8080/pet/register/new-pet-code-generator', fd);
+    }else{
+      return this.httpClient.put<any>('pet/register/new-pet-code-generator', fd);
     }
   }
 
@@ -477,6 +501,26 @@ getPetsList():Observable<any> {
     return this.httpClient.get<any>('http://localhost:8080/pet/getAllPets/');
   } else {
     return this.httpClient.get<any>('pet/getAllPets/');
+  }
+}
+
+getNewCodes():Observable<any> {
+  this.loadToken();
+  if (this.isDev) {
+    return this.httpClient.get<any>('http://localhost:8080/pet/getNewCodes/');
+  } else {
+    return this.httpClient.get<any>('pet/getNewCodes/');
+  }
+}
+
+registerNewCode(obj:any):Observable<any> {
+  const fd = new FormData();
+  fd.append('isActivated',obj.isActivated);
+  fd.append('randomCode',obj.randomCode);
+  if(this.isDev) {
+    return this.httpClient.post<any>('http://localhost:8080/pet/register/new-code-generator/', fd);
+  }else{
+    return this.httpClient.post<any>('pet/register/new-code-generator/', fd);
   }
 }
 

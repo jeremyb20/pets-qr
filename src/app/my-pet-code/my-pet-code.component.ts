@@ -105,6 +105,12 @@ export class MyPetCodeComponent implements OnInit {
   getPetDataList() {
     this.petService.getPetDataList(this.getLinkIdParam,this.getLinkIdSecondaryParams).subscribe(data => {
       if(data.success){
+        if(data.pet.isActivated){
+         // this.router.navigate(['/register-pets']); 
+         console.log(data);
+          this.router.navigate(['/register-pets/'],{ queryParams: {id: this.getLinkIdParam, idSecond: this.getLinkIdSecondaryParams, isActivated:data.pet.isActivated}}); 
+
+        }
         this.profile = data.pet;
         this.imageUrl = this.profile.photo;
         this.markers.push({
@@ -116,7 +122,7 @@ export class MyPetCodeComponent implements OnInit {
         });
         this.getPermissionInfo();
         this.showInfo = true;
-      }else{
+      }else {
         let timerInterval
         Swal.fire({
           title: 'Error de enrutamiento!',

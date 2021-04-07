@@ -93,6 +93,15 @@
                                     </div>
                                   </div> 
                               </div>
+                              <div *ngIf="!hideInputCode" class="form-group input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text"> <i class="fas fa-key"></i> </span>
+                                </div>
+                                <input type="text" formControlName="codeGenerator" placeholder="Ingrese el código" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.codeGenerator.errors }" />
+                                <div *ngIf="submitted && f.codeGenerator.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && f.codeGenerator.errors }">
+                                    <div *ngIf="f.codeGenerator.errors.required">Código es requerido</div>
+                                </div>
+                              </div>
   
                               <div class="d-none d-sm-none d-md-block d-lg-block">
                                 <div class="form-group mb-1 text-center">

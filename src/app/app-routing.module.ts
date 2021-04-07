@@ -34,6 +34,7 @@ import { PermissionsPetsComponent } from './permissions/permissions-pets/permiss
 import { PetsOrdersComponent } from './admin-master/pets-orders/pets-orders.component';
 import { PetsProductsComponent } from './admin-master/pets-products/pets-products.component';
 import { PetsRegisteredComponent } from './admin-master/pets-registered/pets-registered.component';
+import { NewQRPetsComponent } from './admin-master/new-qrpets/new-qrpets.component';
 
 
 const routes: Routes = [
@@ -44,7 +45,7 @@ const routes: Routes = [
           { path: '', redirectTo: 'home',  pathMatch: 'full' }, 
           { path: 'home', component: HomeComponent },
           { path: 'login-pets', component: LoginPetsComponent },
-          { path: 'register-pets', component: RegisterPetComponent },
+          { path: 'register-pets/:id/:idSecond/:isActivated', component: RegisterPetComponent },
           { path: 'forgot-company', component: ForgotCompanyComponent },
           { path: 'forgot-user', component: ForgotUserComponent },
           { path: 'forgot-pets', component: ForgotPetsComponent },
@@ -66,10 +67,12 @@ const routes: Routes = [
         { path: 'dashboard-company', component: DashboardCompanyComponent,canActivate: [AdminGuard] },
         { path: 'dashboard-pet', component: DashboardPetComponent,canActivate: [AdminGuard] },
         { path: 'myPetCode', component: MyPetCodeComponent },
+        { path: 'register-pets', component: RegisterPetComponent },
         { path: 'shopping-cart', component: ShoppingCartComponent, canActivate: [AdminGuard]},
         { path: 'pets-orders', component: PetsOrdersComponent, canActivate: [AdminGuard]},
         { path: 'pets-products', component: PetsProductsComponent, canActivate: [AdminGuard]},
         { path: 'pets-registered', component: PetsRegisteredComponent, canActivate: [AdminGuard]},
+        { path: 'pets-qrgenerator', component: NewQRPetsComponent, canActivate: [AdminGuard]},
       
         { path: 'profile-user', component: ProfileUserComponent ,canActivate: [AdminGuard]},
         { path: 'profile-company', component: ProfileCompanyComponent ,canActivate: [AdminGuard]},

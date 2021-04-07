@@ -219,6 +219,14 @@ const PetSchema = mongoose.Schema ({
   resetPasswordExpires: {
     type: Date
   },
+  randomCode:{
+    type: String,
+    require: true
+  }, 
+  isActivated: {
+    type: Boolean,
+    require: true
+  },
   genderSelected: {
     type: Number,
     require: true
@@ -496,6 +504,21 @@ module.exports.addPet = function(newPet, callback) {
       newPet.save(callback);
     });
   });
+}
+
+module.exports.newPetGeneratorCode = function(newPet, callback) {
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(newPet.password, salt, (err, hash) => {
+      if(err) throw err;
+      newPet.password = hash;
+      callback(newPet, newPet);
+    });
+  });
+}
+
+
+module.exports.addNewCode = function(newPet, callback) {
+  newPet.save(callback);
 }
 
 module.exports.getUsers = function(users, callback){

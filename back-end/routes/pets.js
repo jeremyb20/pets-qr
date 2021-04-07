@@ -47,6 +47,7 @@ router.post('/register/new-pet', async(req, res, next) => {
             genderSelected: obj.genderSelected,
             photo: result.secure_url == undefined ? obj.image : result.secure_url,
             petStatus: obj.petStatus,
+            isActivated: false,
             permissions: {
               showPhoneInfo: true,
               showEmailInfo: true,
@@ -376,6 +377,98 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
    });
 });
 
+
+router.put('/register/new-pet-code-generator', async(req, res, next) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  const result = await cloudinary.uploader.upload(req.file != undefined ? req.file.path : obj.image);
+  const petUpdate = {
+    petName: obj.petName,
+    phone: obj.phone,
+    email: obj.email,
+    password: obj.password,
+    lat: obj.lat,
+    lng: obj.lng,
+    userState: obj.userState,
+    genderSelected: obj.genderSelected,
+    photo: result.secure_url == undefined ? obj.image : result.secure_url,
+    petStatus: obj.petStatus,
+    isActivated: false,
+    password: obj.password
+  }
+
+  await Pet.findOne({_id: req.body._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Codigo no encontrado'});
+    }
+    if(pet != null) {
+
+      Pet.findOne({email: obj.email}, async function (err, myUser) {
+    
+        if (!err){
+          if(myUser){
+            res.json({ success: false, msg: 'El correo ya existe en el sistema' });
+          }else{
+            if(obj.codeGenerator == pet.randomCode){
+              if(pet.isActivated){
+                if(obj.idSecond == 0){
+                  Pet.newPetGeneratorCode(petUpdate, async (user, done) => {
+                    try {
+                      var arrayPet = [];
+                      arrayPet.push(pet);
+                      
+                      arrayPet.forEach(element => {
+                        var permissions = {
+                          showPhoneInfo: true,
+                          showEmailInfo: true,
+                          showLinkTwitter: true,
+                          showLinkFacebook: true,
+                          showLinkInstagram: true,
+                          showOwnerPetName: true,
+                          showBirthDate: true,
+                          showAddressInfo: true,
+                          showAgeInfo: true,
+                          showVeterinarianContact: true,
+                          showPhoneVeterinarian: true,
+                          showHealthAndRequirements: true,
+                          showFavoriteActivities: true,
+                          showLocationInfo: true
+                        }
+                        
+                        element["petName"] = user.petName;
+                        element["permissions"] = permissions;
+                        element["phone"] = user.phone;
+                        element["email"] = user.email;
+                        element["lat"] = user.lat;
+                        element["lng"] = user.lng;
+                        element["userState"] = user.userState;
+                        element["genderSelected"] = user.genderSelected;
+                        element["photo"] = user.photo;
+                        element["petStatus"] = user.petStatus;
+                        element["password"] = user.password;
+                        element["isActivated"] = false;
+                      })
+                      pet.save();
+
+                      res.json({ success: true, msg: 'Su registro ha sido authenticado correctamente. Haz click en ok para iniciar sesión' });
+                    } catch (err) {
+                      res.json({ success: false, msg: err });
+                      next(err);
+                    }
+                  })
+                }
+              }else{
+                res.json({ success: false, msg: 'Este codigo ya ha sido registrado' });
+              }
+            }else{
+              res.json({ success: false, msg: 'El codigo es el incorrecto' });
+            }
+          }
+        }
+      })
+     }
+   });
+});
+
 router.put('/update/updateLocationPet', async(req, res, next) => {
   const obj = JSON.parse(JSON.stringify(req.body));
 
@@ -488,6 +581,7 @@ router.get('/getPetDataList', function(req, res){
           birthDate: results.birthDate,
           address: results.address,
           age: results.age,
+          isActivated: results.isActivated,
           veterinarianContact: results.veterinarianContact,
           phoneVeterinarian: results.phoneVeterinarian,
           healthAndRequirements: results.healthAndRequirements,
@@ -952,63 +1046,95 @@ router.get('/getAllPets', function(req, res){
     }
     const object = [];
     pets.forEach(item => {
-      var newPetObject = [];
-      if(item.newPetProfile.length>0){
-        item.newPetProfile.forEach(element => {
-          var pet  = {
-            idPet: element._id,
-            petName: element.petName,
-            email: element.email,
-            phone: element.phone,
-            age: element.age,
-            birthDate: element.birthDate,
-            ownerPetName: element.ownerPetName,
-            petStatus: element.petStatus
-          }
-          newPetObject.push(pet);
-        })
+      if(!item.isActivated){
+        var newPetObject = [];
+        if(item.newPetProfile.length>0){
+          item.newPetProfile.forEach(element => {
+            var pet  = {
+              idPet: element._id,
+              petName: element.petName,
+              email: element.email,
+              phone: element.phone,
+              age: element.age,
+              birthDate: element.birthDate,
+              ownerPetName: element.ownerPetName,
+              petStatus: element.petStatus
+            }
+            newPetObject.push(pet);
+          })
+        }
+        
+        var test = {
+          idPet: item._id,
+          petName: item.petName,
+          email: item.email,
+          phone: item.phone,
+          age: item.age,
+          birthDate: item.birthDate,
+          ownerPetName: item.ownerPetName,
+          petStatus: item.petStatus,
+          newPetProfile: (newPetObject.length > 0)? newPetObject: null
+        }  
+        object.push(test);
       }
-      
-      var test = {
-        idPet: item._id,
-        petName: item.petName,
-        email: item.email,
-        phone: item.phone,
-        age: item.age,
-        birthDate: item.birthDate,
-        ownerPetName: item.ownerPetName,
-        petStatus: item.petStatus,
-        newPetProfile: (newPetObject.length > 0)? newPetObject: null
-      }  
-      object.push(test);
     })
     res.json(object)
   });
 });
 
-// router.get('/getAllPets', function(req, res){
-//   Pet.find({}, function(err, pets){
-//   if(err){
-//     res.json({ success: false, msg: err });
-//     next();
-//   }
-//   const object = [];
-//   pets.forEach(item => {
-//     var test = {
-//       idPet: item._id,
-//       petName: item.petName,
-//       email: item.email,
-//       phone: item.phone,
-//       age: item.age,
-//       birthDate: item.birthDate,
-//       ownerPetName: item.ownerPetName,
-//       petStatus: item.petStatus
-//     }  
-//     object.push(test);
-//   })
-//   res.json(object)
-// });
-// });
+
+router.get('/getNewCodes', function(req, res){
+  Pet.find({}, function(err, pets){
+  if(err){
+    res.json({ success: false, msg: err });
+    next();
+  }
+  const object = [];
+  pets.forEach(item => {
+    if(item.isActivated){
+      var test = {
+        idPet: item._id,
+        randomCode: item.randomCode,
+        isActivated: item.isActivated,
+        link: 'https://' + req.headers.host + '/myPetCode/' + item._id +'/'+ 0
+        // newPetProfile: (newPetObject.length > 0)? newPetObject: null
+      }
+      object.push(test);  
+    }
+  })
+  res.json(object)
+});
+});
+
+router.post('/register/new-code-generator', async(req, res, next) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  Pet.findOne({randomCode: obj.randomCode}, async function (err, myUser) {
+    
+    if (!err){
+      if(myUser){
+        res.json({ success: false, msg: 'El codigo ya existe en el sistema' });
+      }else{
+          let newPet = new Pet({
+            randomCode: obj.randomCode,
+            isActivated: obj.isActivated,
+          });
+
+        Pet.addNewCode(newPet, async (user, done) => {
+          try {
+              res.json({ success: true, msg: 'Se ha registrado el nuevo codigo' });
+            } catch (err) {
+              res.json({ success: false, msg: 'Este codigo ya existe.!' });
+              next(err);
+            }
+        });
+      }
+      
+    } else {
+      res.json({ success: false, msg: 'Ocurrió un problema favor de revisar' });
+    }
+      
+    })
+});
 
 router.get('/getAllCodePetsList', function(req, res){
   Pet.find({}, function(err, pets){
