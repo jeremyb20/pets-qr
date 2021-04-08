@@ -55,7 +55,7 @@
             </h5>
         </div>
 
-        <div class="notifications" style="width: 360; height: 250px;" >
+        <div class="notifications" [ngClass]="{'showNotify': notificationsData.length > 0, 'hideNotify': notificationsData.length == 0}" >
             <div *ngFor="let item of notificationsData.slice().reverse()" class="row no-gutters" style=" border-bottom: 1px solid #cbd1d7;" [ngClass]="{'isNewMsg': item.isNewMsg}">
                 <div class="notify-icon col-3 p-1 text-center">
                     <img src="{{item.photo}}" style="height: 50px; width: 50px;" class="img-fluid rounded-circle" alt="{{item.photo}}">
@@ -76,9 +76,12 @@
                 </div>
             </div>
             <!-- All-->
-            <a (click)="showAllNotificationsModal()" class="dropdown-item text-center text-primary notify-item view-all">
-                View All
+            <a *ngIf="notificationsData.length > 0" (click)="showAllNotificationsModal()" class="dropdown-item text-center text-primary notify-item view-all">
+                Ver todos
             </a>
+            <div *ngIf="notificationsData.length == 0" class="text-center mt-5">
+                <p><i class="fas fa-bell"></i> No tienes niguna notificación</p>
+            </div>
         </div>
     </div>
     <div class="modal modal-qr fade" tabindex="-1" role="dialog" id="showAllnotificationsModal">

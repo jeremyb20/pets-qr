@@ -66,6 +66,16 @@
         }
     }
 
+    .showNotify{
+        width: 360; 
+        height: 250px;
+    }
+
+    .hideNotify{
+        width: 360; 
+        height: 90px;
+    }
+
     @include media-breakpoint-up(md) {
         .button {
             background-color: transparent;

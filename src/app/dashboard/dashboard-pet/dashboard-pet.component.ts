@@ -420,27 +420,37 @@ idEventUpdate: any;
   // register pet
 
   newPetRegister(){
-    this.registerForm = this.formBuilder.group({
-      petName: ['', Validators.required],
-      genderSelected: ['Genero del Can', Validators.required],
-      ownerPetName: [this.profile.ownerPetName, Validators.required],
-      birthDate: ['', [Validators.required]],
-      phone: [this.profile.phone, [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
-      address: [this.profile.address, [Validators.required]],
-      email: [this.profile.email, [Validators.required]],
-      age: ['', [Validators.minLength(0),Validators.required,Validators.pattern(/\d/)]],
-      veterinarianContact: ['', Validators.required],
-      phoneVeterinarian: ['', [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
-      healthAndRequirements: ['', Validators.required],
-      favoriteActivities: ['', Validators.required],
-      // linkTwitter: [this.profile.linkTwitter = (this.profile.linkTwitter == 'null')? this.profile.linkTwitter = '': this.profile.linkTwitter],
-      // linkFacebook: [this.profile.linkFacebook = (this.profile.linkFacebook == 'null')? this.profile.linkFacebook = '': this.profile.linkFacebook],
-      // linkInstagram: [this.profile.linkInstagram = (this.profile.linkInstagram == 'null')? this.profile.linkInstagram = '': this.profile.linkInstagram],
-    });
-
-    this.setCurrentNewPosition();
-
-    $('#newPetModal').modal('show');
+    if(this.seeAllProfile.length <= 2){
+      this.registerForm = this.formBuilder.group({
+        petName: ['', Validators.required],
+        genderSelected: ['Genero del Can', Validators.required],
+        ownerPetName: [this.profile.ownerPetName, Validators.required],
+        birthDate: ['', [Validators.required]],
+        phone: [this.profile.phone, [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
+        address: [this.profile.address, [Validators.required]],
+        email: [this.profile.email, [Validators.required]],
+        age: ['', [Validators.minLength(0),Validators.required,Validators.pattern(/\d/)]],
+        veterinarianContact: ['', Validators.required],
+        phoneVeterinarian: ['', [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
+        healthAndRequirements: ['', Validators.required],
+        favoriteActivities: ['', Validators.required],
+        // linkTwitter: [this.profile.linkTwitter = (this.profile.linkTwitter == 'null')? this.profile.linkTwitter = '': this.profile.linkTwitter],
+        // linkFacebook: [this.profile.linkFacebook = (this.profile.linkFacebook == 'null')? this.profile.linkFacebook = '': this.profile.linkFacebook],
+        // linkInstagram: [this.profile.linkInstagram = (this.profile.linkInstagram == 'null')? this.profile.linkInstagram = '': this.profile.linkInstagram],
+      });
+  
+      this.setCurrentNewPosition();
+  
+      $('#newPetModal').modal('show');
+    }else{
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Lo sentimos, por el momento solo aceptamos 3 perritos por correo',
+        confirmButtonText: 'OK',
+      })
+    }
   }
 
   onSubmit() {
