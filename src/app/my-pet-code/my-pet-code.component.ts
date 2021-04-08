@@ -107,7 +107,6 @@ export class MyPetCodeComponent implements OnInit {
       if(data.success){
         if(data.pet.isActivated){
          // this.router.navigate(['/register-pets']); 
-         console.log(data);
           this.router.navigate(['/register-pets/'],{ queryParams: {id: this.getLinkIdParam, idSecond: this.getLinkIdSecondaryParams, isActivated:data.pet.isActivated}}); 
 
         }

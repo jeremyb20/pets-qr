@@ -449,7 +449,65 @@ router.put('/register/new-pet-code-generator', async(req, res, next) => {
                       })
                       pet.save();
 
-                      res.json({ success: true, msg: 'Su registro ha sido authenticado correctamente. Haz click en ok para iniciar sesión' });
+                      var smtpTransport = nodemailer.createTransport({
+                        host: process.env.ZOHO_HOST,
+                        port: process.env.ZOHO_PORT,
+                        secure: true,
+                        logger: true,
+                        debug: true,
+                        auth: {
+                          user: process.env.ZOHO_USER,
+                          pass: process.env.ZOHO_PASSWORD
+                        },
+                        tls: {
+                          // do not fail on invalid certs
+                          rejectUnauthorized: false
+                        }
+                      });
+                    
+                      const handlebarOptions = {
+                        viewEngine: {
+                          extName: ".handlebars",
+                          partialsDir: path.resolve(__dirname, "views"),
+                          defaultLayout: false,
+                        },
+                        viewPath: path.resolve(__dirname, "views"),
+                        extName: ".handlebars",
+                      };
+                      
+                      smtpTransport.use(
+                        "compile",
+                        hbs(handlebarOptions)
+                      );
+                    
+                      smtpTransport.verify(function(error, success) {
+                        if (error) {
+                          console.log(error);
+                        } else {
+                          console.log("Server is ready to take our messages");
+                        }
+                      });
+                    
+                      var mailOptions = {
+                        to: user.email,
+                        from: 'soporte@localpetsandfamily.com',
+                        subject: 'LocalPetsAndFamily registro realizado exitosamente',
+                        attachments: [
+                          {filename: 'localpetslogo.jpg', path:'./src/assets/localpetslogo.jpg'}
+                        ],
+                        template: 'index',
+                        context: {
+                          text: 'Recibe esto porque usted (u otra persona) se ha registrado dentro de nuestra plataforma .\n\n' +
+                          'Haga clic en el siguiente enlace en su navegador para poder iniciar sesion:\n\n' +
+                          'Si no lo solicitó, ignore este correo electrónico.\n',
+                          link: 'https://www.localpetsandfamily.com/login-pets',
+                          textLink: 'Ir a iniciar sesión'
+                        } 
+                      };
+                    
+                      smtpTransport.sendMail(mailOptions, function(err) {
+                        res.json({ success: true, msg: 'Su registro ha sido authenticado correctamente. Haz click en ok para iniciar sesión' });
+                      });
                     } catch (err) {
                       res.json({ success: false, msg: err });
                       next(err);
