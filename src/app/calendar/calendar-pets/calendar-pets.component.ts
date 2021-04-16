@@ -162,14 +162,13 @@ export class CalendarPetsComponent implements OnInit {
           description: ['', Validators.required],
         });
       }else{
-        var start = moment(arg.event._instance.range.start).format("YYYY-MM-DD");
-        var end = moment(arg.event._instance.range.end).format("YYYY-MM-DD");
-  
+        var start = moment(arg.event._instance.range.end).format("YYYY-MM-DD");
+        this.idEventUpdate = arg.event._def.extendedProps._id;
         this.newEventForm = this.formBuilder.group({
           title: [arg.event._def.title, Validators.required],
           date: [start, [Validators.required]],
-          enddate: [end, Validators.required],
-          description: ['', Validators.required],
+          enddate: [arg.event._def.extendedProps.enddate, Validators.required],
+          description: [arg.event._def.extendedProps.description, Validators.required],
         });
       }
       $('#newCalendarEventModal').modal('show');
@@ -181,7 +180,7 @@ export class CalendarPetsComponent implements OnInit {
   }
 
   showEvent(){
-    this.isNewEvent = true;
+    // this.isNewEvent = true;
     $('#newCalendarEventModal').modal('show');
   }
 
@@ -201,22 +200,36 @@ export class CalendarPetsComponent implements OnInit {
       idSecond: this.idSecondary
     } 
 
-    this.petService.registerNewPetEvent(newEvent).subscribe(data => {
-      if(data.success) {
-        $('#newCalendarEventModal').modal('hide');
-        this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
-        this.loading = false;
-        this.getCalendarInfo();
-      } else {
-        $('#newCalendarEventModal').modal('hide');
-        this.loading = false;
-        this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
-      }
-    },
-    error => {
+    if(newEvent.date>newEvent.enddate){
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Revise que las fechas esten correctamente seleccionadas',
+        confirmButtonText: 'OK',
+      })
+
       this.loading = false;
-      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
-    });
+
+      return;
+    }else{
+      this.petService.registerNewPetEvent(newEvent).subscribe(data => {
+        if(data.success) {
+          $('#newCalendarEventModal').modal('hide');
+          this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
+          this.loading = false;
+          this.getCalendarInfo();
+        } else {
+          $('#newCalendarEventModal').modal('hide');
+          this.loading = false;
+          this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
+        }
+      },
+      error => {
+        this.loading = false;
+        this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+      });
+    }
   }
 
 
@@ -560,22 +573,82 @@ export class CalendarPetsComponent implements OnInit {
       idSecond: this.idSecondary,
     } 
 
-    this.petService.updateNewPetEvent(updateEvent).subscribe(data => {
-      if(data.success) {
-        $('#newCalendarEventModal').modal('hide');
-        this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
-        this.loading = false;
-        location.reload();
-      } else {
-        $('#newCalendarEventModal').modal('hide');
-        this.loading = false;
-        this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
-      }
-    },
-    error => {
+    if(updateEvent.date>updateEvent.enddate){
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Revise que las fechas esten correctamente seleccionadas',
+        confirmButtonText: 'OK',
+      })
+
       this.loading = false;
-      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
-    });
+
+      return;
+    }else{
+      this.petService.updateNewPetEvent(updateEvent).subscribe(data => {
+        if (data.success) {
+          $('#newCalendarEventModal').modal('hide');
+          this._notificationSvc.success('Hola ' + this.pet.petName + '', data.msg, 6000);
+          this.loading = false;
+          location.reload();
+        } else {
+          $('#newCalendarEventModal').modal('hide');
+          this.loading = false;
+          this._notificationSvc.warning('Hola ' + this.pet.petName + '', data.msg, 6000);
+        }
+      },
+        error => {
+          this.loading = false;
+          this._notificationSvc.warning('Hola ' + this.pet.petName + '', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+        });
+    }
+   
+  }
+
+  deleteEvent(){
+
+    Swal.fire({
+      title: 'Estas seguro?',
+      text: "No seras capaz de revertir esta accion!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar Evento!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        var removeEvent = {
+          idEventUpdate: this.idEventUpdate,
+          _id: this.pet.id,
+        } 
+        this.petService.removeEvent(removeEvent).subscribe(data => {
+          if(data.success) {
+            this.loading = false;
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Genial',
+              text: data.msg,
+              confirmButtonText: 'OK',
+            })
+            this.getCalendarInfo();
+          } else {
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Oops...',
+              text: data.msg,
+              confirmButtonText: 'OK',
+            })
+          }
+        },
+        error => {
+          this.loading = false;
+          this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+        });
+      }
+    })
   }
 
 }

@@ -723,6 +723,17 @@ deleteNotification(obj: any):Observable<any> {
     }
   }
 
+  removeEvent(event:any){
+    const fd = new FormData();
+    fd.append('idEventUpdate', event.idEventUpdate);
+    fd.append('_id', event._id);
+    if(this.isDev) {
+      return this.httpClient.post<any>('http://localhost:8080/pet/delete/delete-calendar-event', fd);
+    }else{
+      return this.httpClient.post<any>('pet/delete/delete-calendar-event', fd);
+    }
+  }
+
 
   closeGoogleToken(token:any){
     const fd = new FormData();

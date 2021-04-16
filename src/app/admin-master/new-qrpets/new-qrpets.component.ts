@@ -21,7 +21,9 @@ export class NewQRPetsComponent implements OnInit {
   Media: MediaResponse;
   allNewCodes: any;
   filteredData: any;
-  query: string;
+  query: any;
+  query1: any;
+  query2: any;
   petLogged: any;
   pet : any;
   loading: boolean = false;
@@ -164,18 +166,38 @@ export class NewQRPetsComponent implements OnInit {
     
   }
 
-  filterData(query): any[] {
-    if (!query) {
+  filterData(query,query1,query2): any[] {
+    if (!query|| !query1 || !query2) {
       this.filteredData = this.allNewCodes;
     }
     
     if(this.filteredData != undefined){
+      if(query){
         this.filteredData = this.filteredData.filter(obj => {
             if (!query) {
                 return obj;
             }
             return obj.randomCode.toLowerCase().indexOf(query.toLowerCase()) !== -1;
         });
+      }
+
+      if(query1){
+        this.filteredData = this.filteredData.filter(obj => {
+            if (!query1) {
+                return obj;
+            }
+            return obj.link.toLowerCase().indexOf(query1.toLowerCase()) !== -1;
+        });
+      }
+
+      if(query2){
+        this.filteredData = this.filteredData.filter(obj => {
+            if (!query2) {
+                return obj;
+            }
+            return obj.idPet.toLowerCase().indexOf(query2.toLowerCase()) !== -1;
+        });
+      }
     }
     return this.filteredData;
   }

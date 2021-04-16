@@ -2,16 +2,16 @@
   <div class="col-4 text-center">
     <h5 >Mi calendario</h5>
   </div>
-  <div class="col-3">
+  <!-- <div class="col-3">
     <button *ngIf="!showtoken" (click)="showPopupGoogle()" class="btn btn-social-icon btn-google" >Iniciar sesion con <span class="fab fa-google"></span></button>
-  </div>
+  </div> -->
   <div class="col-2">
-    <button *ngIf="showtoken" (click)="showEventGoogle()" class="btn btn-primary">Crear evento</button>
+    <!-- <button *ngIf="showtoken" (click)="showEventGoogle()" class="btn btn-primary">Crear evento</button> -->
     <button *ngIf="!showtoken" (click)="showEvent()" class="btn btn-primary">Crear evento</button>
   </div>
-  <div class="col-2 text-right">
+  <!-- <div class="col-2 text-right">
     <button *ngIf="showtoken" (click)="closeSesion()" class="btn btn-danger" >Cerrar sesion </button>
-  </div>
+  </div> -->
 
 </div>
 <div *ngIf="calendarOptions" >
@@ -232,6 +232,7 @@
   
               <div class="modal-footer text-center">
                 <button type="button" class="btn btn-secondary float-left mr-auto" data-dismiss="modal">Cancelar</button>
+                <button type="button" (click)="deleteEvent()" class="btn btn-danger mr-auto" data-dismiss="modal">Eliminar Evento</button>
                 <button type="submit" class="btn btn-primary float-right">
                   <i *ngIf="!loading" class="fas fa-edit"></i>
                   <svg *ngIf="loading" class="loader" viewBox="0 0 24 24">

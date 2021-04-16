@@ -784,7 +784,7 @@ router.get('/getCalendarData/:id/:idSecond', function(req, res){
       results.newPetProfile.forEach(element => {
         if (element._id == idSecond) {
           var pet = {
-            calendar: element.calendar,
+            calendar: results.calendar,
             token: results.token
           }
           res.json(pet)
@@ -834,33 +834,38 @@ router.post('/register/newPetEvent', async(req, res) => {
     enddate: obj.enddate,
     description: obj.description
   };
-  if(obj.idSecond == 0) {
-    Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { calendar: newCalendarEvent } }, { new: true }).then(function (data) {
-      res.json({ success: true, msg: 'Evento registrado correctamente..!' });
-    });
-  }else {
-    Pet.findOne({_id: req.body._id }, (err, pet) => {
-      if (!pet) {
-        return res.json({success:false,msg: 'Usuario no encontrado'});
-      }
-      if(pet != null) {
-         var arrayPet = [];
-        arrayPet.push(pet);
-        arrayPet[0].newPetProfile.forEach(element => {
-          if (element._id == obj.idSecond) {
-             element["calendar"].push(newCalendarEvent);
-            pet.save();
-            try {
-              res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
-            } catch (err) {
-              res.json({ success: false, msg: err });
-              next(err);
-            }
-          }   
-        })
-      }
-    });
+  Pet.findOneAndUpdate({ _id: req.body._id }, { $push: { calendar: newCalendarEvent } }, { new: true }).then(function (data) {
+    res.json({ success: true, msg: 'Evento registrado correctamente..!' });
+  });
+});
+
+router.post('/delete/delete-calendar-event', async(req, res) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  var object = {
+    isNewMsg: obj.isNewMsg,
+    idEventUpdate: obj.idEventUpdate
   }
+
+  await Pet.findOne({_id: req.body._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+     if(pet != null) {
+      for (var i =0; i < pet.calendar.length; i++){
+        if (pet.calendar[i]._id == object.idEventUpdate) {
+          pet.calendar.splice(i,1);
+          pet.save();
+          try {
+            res.json({ success: true, msg: 'Se ha eliminado correctamente..!' });
+          } catch (err) {
+            res.json({ success: false, msg: err });
+            next(err);
+          }
+          break;
+        }
+      }
+     }
+   });
 });
 
 router.put('/update/updatePetEvent', async(req, res) => {
@@ -869,23 +874,24 @@ router.put('/update/updatePetEvent', async(req, res) => {
     title: obj.title,
     date: obj.date,
     enddate: obj.enddate,
-    description: obj.description
+    description: obj.description,
+    idEventUpdate: obj.idEventUpdate
   };
-  if(obj.idSecond == 0) {
-    Pet.findOne({_id: req.body._id }, (err, pet) => {
-      if (!pet) {
-        return res.json({success:false,msg: 'Usuario no encontrado'});
-      }
-      if(pet != null) {
-         var arrayPet = [];
-        arrayPet.push(pet);
-        arrayPet[0].calendar.forEach(element => {
-          if (element._id == obj.idEventUpdate) {
-            element["title"] = updateCalendarEvent.title;
-            element["date"] = updateCalendarEvent.date;
-            element["enddate"] = updateCalendarEvent.enddate;
-            element["description"] = updateCalendarEvent.description;
-            
+  Pet.findOne({_id: req.body._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+    if(pet != null) {
+       var arrayPet = [];
+      arrayPet.push(pet);
+      arrayPet.forEach(element => {
+        element["calendar"].forEach(item => {
+          if (item._id == obj.idEventUpdate) {
+            item["title"] = updateCalendarEvent.title;
+            item["date"] = updateCalendarEvent.date;
+            item["enddate"] = updateCalendarEvent.enddate;
+            item["description"] = updateCalendarEvent.description;
+          
             pet.save();
             try {
               res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
@@ -893,39 +899,11 @@ router.put('/update/updatePetEvent', async(req, res) => {
               res.json({ success: false, msg: err });
               next(err);
             }
-          }   
-        })
-      }
-    });
-  }else {
-    Pet.findOne({_id: req.body._id }, (err, pet) => {
-      if (!pet) {
-        return res.json({success:false,msg: 'Usuario no encontrado'});
-      }
-      if(pet != null) {
-         var arrayPet = [];
-        arrayPet.push(pet);
-        arrayPet[0].newPetProfile.forEach(element => {
-          if (element._id == obj.idSecond) {
-             element["calendar"].forEach(item => {
-              item["title"] = updateCalendarEvent.title;
-              item["date"] = updateCalendarEvent.date;
-              item["enddate"] = updateCalendarEvent.enddate;
-              item["description"] = updateCalendarEvent.description;
-              
-              pet.save();
-              try {
-                res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
-              } catch (err) {
-                res.json({ success: false, msg: err });
-                next(err);
-              }
-             })
-          }   
-        })
-      }
-    });
-  }
+          }  
+         }) 
+      })
+    }
+  });
 });
 
 router.post('/register/generateQrCodePet', async(req, res) => {
