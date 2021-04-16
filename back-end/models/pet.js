@@ -231,6 +231,10 @@ const PetSchema = mongoose.Schema ({
     type: Boolean,
     require: true
   },
+  stateActivation: {
+    type:  String,
+    require: true
+  },
   genderSelected: {
     type: Number,
     require: true

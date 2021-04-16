@@ -44,6 +44,7 @@ export class NewQRPetsComponent implements OnInit {
       this.Media = media;
     });
     this.AngularxQrCode = 'Initial QR code data string';
+    this.sortArr('randomCode');
     this.getNewCodes();
   }
 
@@ -164,6 +165,83 @@ export class NewQRPetsComponent implements OnInit {
         }
       })
     
+  }
+  sortDir = 1;//1= 'ASE' -1= DSC
+
+  onSortClick(event, sorter: string) {
+    let target = event.currentTarget,
+      classList = target.classList;
+
+    if (classList.contains('fa-chevron-up')) {
+      classList.remove('fa-chevron-up');
+      classList.add('fa-chevron-down');
+      this.sortDir=-1;
+    } else {
+      classList.add('fa-chevron-up');
+      classList.remove('fa-chevron-down');
+      this.sortDir=1;
+    }
+    this.sortArr(sorter);
+  }
+
+  sortArr(colName:any){
+    if(this.filteredData){
+      if(colName){
+        this.filteredData.sort((a, b) => {
+          a = a[colName].toLowerCase();
+          b = b[colName].toLowerCase();
+          return a.localeCompare(b) * this.sortDir;
+        });
+      }
+      
+    }
+  }
+
+  dropdowSelect(state: any,  item: any){
+    var title = 'Cambiar Status?'
+    Swal.fire({
+        title: title,
+        showDenyButton: false,
+        showCancelButton: true,
+        confirmButtonText: `Ok`,
+        denyButtonText: `No cambiar`,
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            var object = {
+                idPet: item.idPet,
+                status: state,
+              }
+          
+              this.petService.updateStateCodePet(object).subscribe(data => {
+                if(data.success) {
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Genial',
+                    text: data.msg,
+                    confirmButtonText: 'OK',
+                  })
+                    this.getNewCodes();
+                } else {
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: data.msg,
+                    confirmButtonText: 'OK',
+                  })
+                }
+              },
+              error => {
+                this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+              });
+
+          Swal.fire('Saved!', '', 'success')
+        } else if (result.isDenied) {
+          Swal.fire('Cambios no ha sido guardados', '', 'info')
+        }
+      })
   }
 
   filterData(query,query1,query2): any[] {

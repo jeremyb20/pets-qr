@@ -982,6 +982,33 @@ router.put('/update/updateStatusQrCodePet', async(req, res, next) => {
   });
 });
 
+router.put('/update/updateStateActivationCode', async(req, res, next) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  var object = {
+    status: obj.status
+  }
+
+  await Pet.findOne({_id: req.body._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+     if(pet != null) {
+       var arrayPet = [];
+      arrayPet.push(pet);
+      arrayPet.forEach(element => {
+        element["stateActivation"] = object.status;
+        pet.save();
+        try {
+          res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+        } catch (err) {
+          res.json({ success: false, msg: err });
+          next(err);
+        } 
+      })
+     }
+   });
+});
+
 
 // Permissions
 
@@ -1151,6 +1178,7 @@ router.get('/getNewCodes', function(req, res){
         idPet: item._id,
         randomCode: item.randomCode,
         isActivated: item.isActivated,
+        stateActivation: item.stateActivation,
         link: 'https://' + req.headers.host + '/myPetCode/' + item._id +'/'+ 0
         // newPetProfile: (newPetObject.length > 0)? newPetObject: null
       }

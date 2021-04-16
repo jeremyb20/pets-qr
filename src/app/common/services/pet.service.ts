@@ -267,6 +267,17 @@ export class PetService {
     }
   }
 
+  updateStateCodePet(obj: any):Observable<any> {
+    const fd = new FormData();
+    fd.append('_id', obj.idPet);
+    fd.append('status', obj.status);
+    if(this.isDev) {
+      return this.httpClient.put<any>('http://localhost:8080/pet/update/updateStateActivationCode', fd);
+    }else{
+      return this.httpClient.put<any>('pet/update/updateStateActivationCode', fd);
+    }
+  }
+
   getPetDataList(id, idSecondary: any):Observable<any> {    
     if (this.isDev) {
       return this.httpClient.get<any>('http://localhost:8080/pet/getPetDataList?id=' + id+'&idSecond='+ idSecondary);

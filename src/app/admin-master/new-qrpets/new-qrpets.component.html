@@ -41,24 +41,35 @@
             <table class="table table-hover verticle-middle table-responsive-lg mb-0">
                 <thead class="text-center thead-dark">
                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Random code</th>
-                        <th scope="col">Is Activated</th>
+                        <th scope="col">Position <i (click)="onSortClick($event,'')" class="my-icon fa fa-chevron-up"></i> </th>
+                        <th scope="col">ID <i (click)="onSortClick($event,'idPet')" class="my-icon fa fa-chevron-up"></i></th>
+                        <th scope="col">Random code <i (click)="onSortClick($event, 'randomCode')" class="my-icon fa fa-chevron-up"></i></th>
+                        <th scope="col">Estado <i (click)="onSortClick($event, 'stateActivation')" class="my-icon fa fa-chevron-up"></i></th>
                         <th scope="col">QR</th>
                         <th scope="col">Status</th>
                    
                     </tr>
                 </thead>
-                <tbody *ngFor="let item of filterData(query,query1,query2)" class="text-center">
-                    <tr>
+                <tbody *ngFor="let i=index; let item of filterData(query,query1,query2)" class="text-center">
+                    <tr [ngClass]="{'table-light': item.stateActivation == 'Ordenando','table-warning': item.stateActivation == 'Pendiente', 'table-primary': item.stateActivation == 'Preparando', 'table-success': item.stateActivation == 'Terminado'}">{{i}}
                         <td>{{item.idPet}}</td>
                         <td>{{item.randomCode}}</td>
-                        <td>{{item.isActivated}}</td>
-                        <td><button (click)="checkQrCode(item.link)" class="btn btn-primary btn-sm" > VER QR </button></td>
+                        <td> <button type="button" class="btn btn-sm dropdown-toggle mr-3"
+                            [ngClass]="{'btn-dark': item.stateActivation == 'Ordenando','btn-info': item.stateActivation == 'Pendiente', 'btn-primary': item.stateActivation == 'Preparando', 'btn-success': item.stateActivation == 'Terminado'}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{item.stateActivation}}
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" (click)="dropdowSelect('Ordenando',item)">Ordenando</a>
+                                <a class="dropdown-item" (click)="dropdowSelect('Pendiente',item)">Pendiente</a>
+                                <a class="dropdown-item" (click)="dropdowSelect('Preparando',item)">Preparando</a>
+                                <a class="dropdown-item" (click)="dropdowSelect('Terminado',item)">Terminado</a>
+                            </div>
+                        </td>
+                        <td><button (click)="checkQrCode(item.link)" class="btn btn-outline-success btn-sm" > VER QR </button></td>
                         <td>
-                            <span class="d-flex">
-                                <a class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a>
-                                <a data-toggle="tooltip" data-placement="top" title="Delete" (click)="deleteCode(item)" data-original-title="Close"><i class="fas fa-trash color-danger"></i></a>
+                            <span class=" text-center">
+                                <!-- <a class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a> -->
+                                <a data-toggle="tooltip" data-placement="top" title="Delete" (click)="deleteCode(item)" data-original-title="Close"><i class="fas fa-trash"></i></a>
                             </span>
                         </td>
                     </tr>
