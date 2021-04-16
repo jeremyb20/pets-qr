@@ -36,6 +36,10 @@ const PetSchema = mongoose.Schema ({
     type: String,
     require: false
   },
+  token: {
+    type: String,
+    require: false
+  },
   linkFacebook: {
     type: String,
     require: false

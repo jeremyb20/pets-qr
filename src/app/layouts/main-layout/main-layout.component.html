@@ -31,8 +31,6 @@
                 <li class="sidebar-brand"> <a href="#">ID: {{petNameLogged}} </a> </li>
                 <li> <a *ngIf="Media.IsMobile" (click)="goHome()"><i class="fas fa-home"></i> Inicio </a> </li>
                 <li> <a (click)="gotoSomewhere(3)" [routerLink]="'/profile-pets'"><i class="fas fa-paw"></i> Perfil</a> </li>
-                <li> <a (click)="gotoSomewhere(1)" [routerLink]="'/events-pets'"><i class="fas fa-calendar-alt"></i> Eventos</a> </li>
-                <li> <a (click)="gotoSomewhere(2)" [routerLink]="'/calendar-pets'"><i class="fas fa-calendar"></i> Calendario</a> </li>
                 <li> <a (click)="gotoSomewhere(4)" [routerLink]="'/location-pets'"><i class="fas fa-location-arrow"></i> Ubicación</a> </li>
                 <li> <a (click)="gotoSomewhere(5)" [routerLink]="'/permissions-pets'"><i class="fas fa-lock"></i> Permisos</a> </li>
                 <li> <a (click)="gotoSomewhere(6)" [routerLink]="'/shopping-cart'"><i class="fas fa-cart-plus"></i> Carrito Compras</a> </li>
@@ -43,6 +41,8 @@
                 <li class="sidebar-brand"> <a (click)="hide()" [routerLink]="'/admin'">ID: {{petNameLogged}} </a> </li>
                 <li class="nav-item"> <a (click)="hide()" class="nav-link-test" [routerLink]="'/pets-orders'"> <i class="fas fa-shopping-cart"></i> Ordenes</a> </li>
                 <li class="nav-item"> <a (click)="hide()" class="nav-link-test" [routerLink]="'/pets-products'"> <i class="fas fa-shopping-bag"></i> Productos</a> </li>
+                <li class="nav-item"> <a (click)="hide()" class="nav-link-test" [routerLink]="'/events-pets'"><i class="fas fa-calendar-alt"></i> Eventos</a> </li>
+                <li class="nav-item"> <a (click)="hide()" class="nav-link-test" [routerLink]="'/calendar-pets'"><i class="fas fa-calendar"></i> Calendario</a> </li>
                 <li class="nav-item"> <a (click)="hide()" class="nav-link-test" [routerLink]="'/pets-registered'"> <i class="fas fa-paw"></i> Pets Registrados</a> </li>
                 <li class="nav-item"> <a (click)="hide()" class="nav-link-test" [routerLink]="'/pets-qrgenerator'"> <i class="fas fa-qrcode"></i> Generar códigos</a> </li>
                

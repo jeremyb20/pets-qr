@@ -674,6 +674,68 @@ deleteNotification(obj: any):Observable<any> {
 // Notifications
 
 
+//---------------CALENDAR--------------//
+  authenticateGoogleToken(token:any):Observable<any> {
+    const fd = new FormData();
+    fd.append('token',token.token);
+    fd.append('_id', token._id);
+    if(this.isDev) {
+      return this.httpClient.post<any>('http://localhost:8080/pet/calendar/authentication', fd);
+    }else{
+      return this.httpClient.post<any>('pet/calendar/authentication', fd);
+    }
+  }
+
+  sendEventGoogleCalendar(event:any){
+    const fd = new FormData();
+    fd.append('title', event.title);
+    fd.append('date', event.date);
+    fd.append('enddate', event.enddate);
+    fd.append('description', event.description);
+    if(this.isDev) {
+      return this.httpClient.post<any>('http://localhost:8080/pet/calendar/send-new-event', fd);
+    }else{
+      return this.httpClient.post<any>('pet/calendar/send-new-event', fd);
+    }
+  }
+
+  editEventGoogleCalendar(event:any){
+    const fd = new FormData();
+    fd.append('title', event.title);
+    fd.append('date', event.date);
+    fd.append('enddate', event.enddate);
+    fd.append('description', event.description);
+    fd.append('eventId', event.eventId);
+    if(this.isDev) {
+      return this.httpClient.post<any>('http://localhost:8080/pet/calendar/edit-event', fd);
+    }else{
+      return this.httpClient.post<any>('pet/calendar/edit-event', fd);
+    }
+  }
+
+  removeGoogleEvent(event:any){
+    const fd = new FormData();
+    fd.append('eventId', event.eventId);
+    if(this.isDev) {
+      return this.httpClient.post<any>('http://localhost:8080/pet/calendar/delete-event', fd);
+    }else{
+      return this.httpClient.post<any>('pet/calendar/delete-event', fd);
+    }
+  }
+
+
+  closeGoogleToken(token:any){
+    const fd = new FormData();
+    fd.append('token',token.token);
+    fd.append('_id', token._id);
+    if(this.isDev) {
+      return this.httpClient.post<any>('http://localhost:8080/pet/calendar/close-sesion', fd);
+    }else{
+      return this.httpClient.post<any>('pet/calendar/close-sesion', fd);
+    }
+  }
+
+
   storeUserData(token, pet) {
     localStorage.setItem('id_token', token);
     localStorage.setItem('pet', JSON.stringify(pet));

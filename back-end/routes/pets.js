@@ -13,6 +13,23 @@ const hbs = require('nodemailer-express-handlebars');
 const path = require('path');
 require('dotenv').config();
 
+const { google } = require('googleapis')
+
+// Require oAuth2 from our google instance.
+const { OAuth2 } = google.auth
+
+// Create a new instance of oAuth and set our Client ID & Client Secret.
+const oAuth2Client = new OAuth2(
+  process.env.GOOGLE_CLIENT,process.env.GOOGLE_SECRET
+)
+
+// Call the setCredentials method on our oAuth2Client instance and set our refresh token.
+oAuth2Client.setCredentials({
+  refresh_token:process.env.GOOGLE_REFRESH_TOKEN,
+})
+
+
+
 var fileupload = require('express-fileupload');
 const pet = require('../models/pet');
 
@@ -759,14 +776,16 @@ router.get('/getCalendarData/:id/:idSecond', function(req, res){
 
     if(idSecond == 0) {
       var pet = {
-        calendar: results.calendar
+        calendar: results.calendar,
+        token: results.token
        }
        res.json(pet)
     }else {
       results.newPetProfile.forEach(element => {
         if (element._id == idSecond) {
           var pet = {
-            calendar: element.calendar
+            calendar: element.calendar,
+            token: results.token
           }
           res.json(pet)
         }
@@ -1390,7 +1409,7 @@ router.put('/update/new-product', async(req, res) => {
           }
       })
      }
-   });
+    });
 
 });
 
@@ -1852,6 +1871,331 @@ router.post('/reset-pets/', function(req, res) {
   });
 });
 
+//---------------CALENDAR--------------//
+
+router.post('/calendar/authentication', function(req, resp){
+  const fs = require('fs');
+  const { google } = require('googleapis')
+  const tkn = req.body.token;
+  // If modifying these scopes, delete token.json.
+  const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
+  // The file token.json stores the user's access and refresh tokens, and is
+  // created automatically when the authorization flow completes for the first
+  // time.
+  const TOKEN_PATH = 'token.json';
+
+  // Load client secrets from a local file.
+  fs.readFile('credentials.json', (err, content) => {
+    if (err) return authorize(content, listEvents); //console.log('Error loading client secret file:', err);
+    // Authorize a client with credentials, then call the Google Calendar API.
+    // authorize(JSON.parse(content), listEvents);
+  });
+
+  /**
+   * Create an OAuth2 client with the given credentials, and then execute the
+   * given callback function.
+   * @param {Object} credentials The authorization client credentials.
+   * @param {function} callback The callback to call with the authorized client.
+   */
+  function authorize(credentials, callback) {
+
+      credentials = process.env.GOOGLE_SECRET, process.env.GOOGLE_CLIENT, process.env.GOOGLE_REDIRECT_URIS; 
+
+      const oAuth2Client = new google.auth.OAuth2(process.env.GOOGLE_CLIENT, process.env.GOOGLE_SECRET, process.env.GOOGLE_REDIRECT_URIS);
+
+      // Check if we have previously stored a token.
+      fs.readFile(TOKEN_PATH, (err, token) => {
+          if(token == undefined){
+            Pet.findOne({_id: req.body._id }, (error, pet) => {
+              if (!pet) {
+                return res.json({success:false,msg: 'Usuario no encontrado'});
+              }
+               if(pet != null) {
+                 var arrayPet = [];
+                arrayPet.push(pet);
+                arrayPet.forEach(element => {
+                    element["token"] = '';
+                    pet.save();
+                    try {
+                      console.log('opppps');
+                    } catch (err) {
+                      console.log('token error' , err);
+                    }
+                })
+               }
+             });
+          }
+          if (err) return getAccessToken(oAuth2Client, callback);
+          oAuth2Client.setCredentials(JSON.parse(token));
+          callback(oAuth2Client);
+      });
+  }
+
+  /**
+   * Get and store new token after prompting for user authorization, and then
+   * execute the given callback with the authorized OAuth2 client.
+   * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
+   * @param {getEventsCallback} callback The callback for the authorized client.
+   */
+  function getAccessToken(oAuth2Client, callback) {
+      oAuth2Client.getToken(tkn, (err, token) => {
+        if(token != null){
+          if (err) return console.error('Error retrieving access token', err);
+          oAuth2Client.setCredentials(token);
+          // Store the token to disk for later program executions
+          fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+            if (err) return console.error(err);
+            resp.json({success:false,status: 200, msg: 'Se genero el token correctamente'});
+          });
+          callback(oAuth2Client);
+        }else{
+          resp.json({success:false, msg: 'Este token no sirve'});
+        }
+      });
+  }
+
+  /**
+   * Lists the next 10 events on the user's primary calendar.
+   * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+   */
+  function listEvents(auth) {
+    // async function fun(){
+    const calendar = google.calendar({version: 'v3', auth});
+    calendar.events.list({
+      calendarId: 'primary',
+      timeMin: (new Date()).toISOString(),
+      maxResults: 10,
+      singleEvents: true,
+      orderBy: 'startTime',
+    }, (err, res) => {
+      if (err){
+        const TOKEN_PATH = 'token.json';
+        console.log('The API returned an error: ' + err);
+        const fs = require('fs')
+        fs.readFile(TOKEN_PATH, (err, token) => {
+          if(token){
+            fs.unlinkSync(TOKEN_PATH)
+          }
+        })
+        Pet.findOne({_id: req.body._id }, (error, pet) => {
+          if (!pet) {
+            return res.json({success:false,msg: 'Usuario no encontrado'});
+          }
+           if(pet != null) {
+             var arrayPet = [];
+            arrayPet.push(pet);
+            arrayPet.forEach(element => {
+              element["token"] = '';
+                pet.save();
+                try {
+                  console.log('token eliminado');
+                } catch (err) {
+                  console.log('token error' , error);
+                }
+
+            })
+           }
+         });
+        return resp.json({success:false,status: 200, msg: 'Se cerro la sesion, por favor inicie sesion de nuevo'});
+      } 
+      const events = res.data.items;
+      if (events.length) {
+       var arrayEvents = [];
+        events.map((event, i) => {
+          arrayEvents.push(event);  
+        });
+        resp.json({success:true,events: arrayEvents});
+
+        Pet.findOne({_id: req.body._id }, (error, pet) => {
+          if (!pet) {
+            return res.json({success:false,msg: 'Usuario no encontrado'});
+          }
+           if(pet != null) {
+             var arrayPet = [];
+            arrayPet.push(pet);
+            arrayPet.forEach(element => {
+              element["token"] = req.body.token;
+                pet.save();
+                try {
+                  console.log('token hecho');
+                } catch (err) {
+                  console.log('token error' , error);
+                }
+
+            })
+           }
+         });
+      } else {
+        res.json({success:true,msg: 'No se han encontrado ningun evento'});
+        console.log('No upcoming events found.');
+      }
+    });
+  }
+  //fun();
+//  }
+});
+
+
+router.post('/calendar/close-sesion', async(req, res, next) => {
+  const TOKEN_PATH = 'token.json';
+  await Pet.findOne({_id: req.body._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+     if(pet != null) {
+        var arrayPet = [];
+          arrayPet.push(pet);
+          arrayPet.forEach(element => {
+            element["token"] = '';
+            pet.save();
+            try {
+              const fs = require('fs')
+              fs.readFile(TOKEN_PATH, (err, token) => {
+                if(token){
+                  fs.unlinkSync(TOKEN_PATH)
+                }
+              })
+              res.json({success:true,msg: 'Sesion terminada' });
+            } catch (err) {
+              console.log('token error' , err);
+            }
+        })
+     }
+   });
+});
+
+
+router.post('/calendar/send-new-event', function(req, resp) {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  // Create a new calender instance.
+  const calendar = google.calendar({ version: 'v3', auth: oAuth2Client });
+
+  // Create a new event start date instance for temp uses in our calendar.
+  const eventStartTime = new Date()
+  eventStartTime.setDate(eventStartTime.getDate()+ parseInt(obj.date))
+
+  // Create a new event end date instance for temp uses in our calendar.
+  const eventEndTime = new Date()
+  eventEndTime.setDate(eventEndTime.getDate()+ parseInt(obj.enddate))
+  eventEndTime.setMinutes(eventEndTime.getMinutes() + 45)
+
+  // Create a dummy event for temp uses in our calendar
+  const event = {
+    summary: obj.title,
+    // location: `3595 California St, San Francisco, CA 94118`,
+    description: obj.description,
+    colorId: 1,
+    start: {
+      dateTime: eventStartTime,
+      timeZone: 'America/Denver',
+    },
+    end: {
+      dateTime: eventEndTime,
+      timeZone: 'America/Denver',
+    },
+  }
+
+  // Check if we a busy and have an event on our calendar for the same time.
+  calendar.freebusy.query(
+    {
+      resource: {
+        timeMin: eventStartTime,
+        timeMax: eventEndTime,
+        timeZone: 'America/Denver',
+        items: [{ id: 'primary' }],
+      },
+    },
+    (err, res) => {
+      // Check for errors in our query and log them if they exist.
+      if (err) return console.error('Free Busy Query Error: ', err)
+
+      // Create an array of all events on our calendar during that time.
+      const eventArr = res.data.calendars.primary.busy
+
+      // Check if event array is empty which means we are not busy
+      if (eventArr.length === 0)
+        // If we are not busy create a new calendar event.
+        return calendar.events.insert(
+          { calendarId: 'primary', resource: event },
+          err => {
+            // Check for errors and log them if they exist.
+            if (err) return resp.json({success:false,msg: 'Error creando el mensaje: '+err+'.'});
+            // Else log that the event was created.
+            return  resp.json({success:true,msg: 'Evento creado exitosamente.'});
+          }
+        )
+
+      // If event array is not empty log that we are busy.
+      return resp.json({success:false,msg: 'Lo sentimos, el usuario tiene una cita pendiente a esa hora'});
+    }
+  )
+});
+
+
+router.post('/calendar/delete-event', (req, res, next) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  // Create a new calender instance.
+  const calendar = google.calendar({ version: 'v3', auth: oAuth2Client });
+
+  var params = {
+    calendarId: 'primary',
+    eventId: obj.eventId,
+  };
+
+  calendar.events.delete(params, function(err) {
+    if (err) {
+      console.log('The API returned an error delete: ' + err);
+      return;
+    }
+    res.json({success:true,msg: 'Evento eliminado exitosamente.'});
+  });
+});
+
+router.post('/calendar/edit-event', (req, res, next) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  // Create a new calender instance.
+  const calendar = google.calendar({ version: 'v3', auth: oAuth2Client });
+
+  const event = calendar.events.get({"calendarId": 'primary', "eventId": obj.eventId});
+
+
+  // Create a new event start date instance for temp uses in our calendar.
+  const eventStartTime = new Date()
+  eventStartTime.setDate(eventStartTime.getDate()+ parseInt(obj.date))
+
+  // Create a new event end date instance for temp uses in our calendar.
+  const eventEndTime = new Date()
+  eventEndTime.setDate(eventEndTime.getDate()+ parseInt(obj.enddate))
+  eventEndTime.setMinutes(eventEndTime.getMinutes() + 45)
+
+  // Create a dummy event for temp uses in our calendar
+  const eventObj = {
+    summary: obj.title,
+    // location: `3595 California St, San Francisco, CA 94118`,
+    description: obj.description,
+    colorId: 1,
+    start: {
+      dateTime: eventStartTime,
+      timeZone: 'America/Denver',
+    },
+    end: {
+      dateTime: eventEndTime,
+      timeZone: 'America/Denver',
+    },
+  }
+
+  calendar.events.patch({
+    'calendarId': 'primary',
+    'eventId': obj.eventId,
+    'resource': eventObj
+  }).then(function(err){
+    if (!err) {
+      console.log('The API returned an error edit: ' + err);
+      return;
+    }
+    res.json({success:true,msg: 'Evento actualizado exitosamente.'});
+  });
+});
 
 
 module.exports = router;
