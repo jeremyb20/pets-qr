@@ -51,7 +51,8 @@
                     </tr>
                 </thead>
                 <tbody *ngFor="let i=index; let item of filterData(query,query1,query2)" class="text-center">
-                    <tr [ngClass]="{'table-light': item.stateActivation == 'Ordenando','table-warning': item.stateActivation == 'Pendiente', 'table-primary': item.stateActivation == 'Preparando', 'table-success': item.stateActivation == 'Terminado'}">{{i}}
+                    <tr [ngClass]="{'table-light': item.stateActivation == 'Ordenando','table-warning': item.stateActivation == 'Pendiente', 'table-primary': item.stateActivation == 'Preparando', 'table-success': item.stateActivation == 'Terminado'}">
+                        <td>{{i}}</td>
                         <td>{{item.idPet}}</td>
                         <td>{{item.randomCode}}</td>
                         <td> <button type="button" class="btn btn-sm dropdown-toggle mr-3"
