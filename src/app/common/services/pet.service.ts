@@ -527,6 +527,7 @@ getNewCodes():Observable<any> {
 registerNewCode(obj:any):Observable<any> {
   const fd = new FormData();
   fd.append('isActivated',obj.isActivated);
+  fd.append('stateActivation',obj.stateActivation);
   fd.append('randomCode',obj.randomCode);
   if(this.isDev) {
     return this.httpClient.post<any>('http://localhost:8080/pet/register/new-code-generator/', fd);

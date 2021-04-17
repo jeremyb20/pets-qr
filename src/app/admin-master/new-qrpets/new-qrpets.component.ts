@@ -130,6 +130,7 @@ export class NewQRPetsComponent implements OnInit {
           this.loading = true;
           var newCode = {
             isActivated: true,
+            stateActivation: 'Ordenando',
             randomCode: this.makeid(6)
           }
           

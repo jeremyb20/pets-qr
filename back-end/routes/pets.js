@@ -1200,6 +1200,7 @@ router.post('/register/new-code-generator', async(req, res, next) => {
           let newPet = new Pet({
             randomCode: obj.randomCode,
             isActivated: obj.isActivated,
+            stateActivation: obj.stateActivation
           });
 
         Pet.addNewCode(newPet, async (user, done) => {
