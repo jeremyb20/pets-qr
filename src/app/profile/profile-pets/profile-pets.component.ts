@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { MediaResponse, MediaService } from 'src/app/common/services/media.service';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { PetService } from 'src/app/common/services/pet.service';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+
 declare var $: any;
 
 @Component({
@@ -48,7 +50,8 @@ export class ProfilePetsComponent implements OnInit {
   get g() { return this.newPetInfoForm.controls; }
 
   getPetDataList() {
-    this.petService.getPetDataList(this.pet.id, this.idSecondary).subscribe(data => {
+    var view = 1;
+    this.petService.getPetDataList(this.pet.id, this.idSecondary,view).subscribe(data => {
      if(data.success){
       this.profile = data.pet;
       this.newPetInfoForm = this.formBuilder.group({
@@ -103,7 +106,8 @@ export class ProfilePetsComponent implements OnInit {
       email: this.g.email.value,
       age: this.g.age.value,
       veterinarianContact: this.g.veterinarianContact.value,
-      phoneVeterinarian: this.g.phoneVeterinarian.value,
+      phone: this.g.phone.value,
+      phoneVeterinarian: parseInt(this.g.phoneVeterinarian.value),
       healthAndRequirements: this.g.healthAndRequirements.value,
       favoriteActivities: this.g.favoriteActivities.value,
       linkTwitter: this.g.linkTwitter.value,
@@ -113,10 +117,18 @@ export class ProfilePetsComponent implements OnInit {
 
     this.petService.updatePetProfile(pet).subscribe(data => {
       if(data.success) {
-        this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
         this.loading = false;
-        // this.getPetDataList();
-        setTimeout(() => {location.reload() }, 3000);
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Genial',
+          text: data.msg,
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.getPetDataList();
+          }
+        })
       } else {
         $('#newMenuModal').modal('hide');
         this.loading = false;

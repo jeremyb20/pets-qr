@@ -48,6 +48,7 @@ export class MyPetCodeComponent implements OnInit {
   isShow: boolean;
   topPosToStartShowing = 100;
   elementDiv :any
+  view = 0;
 
   @ViewChild("search")
   public searchElementRef: ElementRef;
@@ -71,6 +72,7 @@ export class MyPetCodeComponent implements OnInit {
       // este es cuando hace click en target_blank
       this.getLinkIdParam = params.id; 
       this.getLinkIdSecondaryParams = params.idSecond;
+      this.view = 3;
     });
 
     if(this.getLinkIdParam == undefined) {
@@ -79,6 +81,7 @@ export class MyPetCodeComponent implements OnInit {
         this.getLinkIdParam = params.id;
         this.getLinkIdSecondaryParams = params.idSecond;
         this.hideMenu = true;
+        this.view = 2;
       });
     }
     
@@ -103,7 +106,7 @@ export class MyPetCodeComponent implements OnInit {
   ngOnInit() {}
 
   getPetDataList() {
-    this.petService.getPetDataList(this.getLinkIdParam,this.getLinkIdSecondaryParams).subscribe(data => {
+    this.petService.getPetDataList(this.getLinkIdParam,this.getLinkIdSecondaryParams, this.view).subscribe(data => {
       if(data.success){
         if(data.pet.isActivated){
          // this.router.navigate(['/register-pets']); 

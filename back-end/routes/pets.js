@@ -52,10 +52,16 @@ router.post('/register/new-pet', async(req, res, next) => {
       if(myUser){
         res.json({ success: false, msg: 'El correo ya existe en el sistema' });
       }else{
+        const id1 = obj.phone;
+        const phoneExternal = id1.slice(id1.length - 2);
+
           const result = await cloudinary.uploader.upload(req.file != undefined ? req.file.path : obj.image);
           let newPet = new Pet({
             petName: obj.petName,
-            phone: obj.phone,
+            phone: {
+              phoneReal: obj.phone,
+              phoneExternal: '******'+ phoneExternal
+            },
             email: obj.email,
             password: obj.password,
             lat: obj.lat,
@@ -162,6 +168,12 @@ router.post('/register/new-petByUserPet', async(req, res) => {
   var id ='60219dea321aed00155e1659';
   const obj = JSON.parse(JSON.stringify(req.body));
   const result = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.image);
+
+  const id1 = obj.phone;
+  const id2 = obj.phoneVeterinarian;
+  const phoneExternal = id1.slice(id1.length - 2);
+  const phoneVeterinarianExternal = id2.slice(id2.length - 2);
+
   const newpet = {
     petName: obj.petName,
     ownerPetName: obj.ownerPetName,
@@ -170,18 +182,21 @@ router.post('/register/new-petByUserPet', async(req, res) => {
     email: obj.email,
     age: obj.age,
     veterinarianContact: obj.veterinarianContact,
-    phoneVeterinarian: obj.phoneVeterinarian,
+    phoneVeterinarian:{
+      phoneVeterinarianReal: obj.phoneVeterinarian,
+      phoneVeterinarianExt: '******'+ phoneVeterinarianExternal
+    }, 
     healthAndRequirements: obj.healthAndRequirements,
     favoriteActivities: obj.favoriteActivities,
-    // linkTwitter: obj.linkTwitter,
-    // linkFacebook: obj.linkFacebook,
-    // linkInstagram: obj.linkInstagram,
     lat: obj.lat,
     lng: obj.lng,
     userState: obj.userState,
     genderSelected:obj.genderSelected,
     photo: result.secure_url == undefined ? obj.image : result.secure_url,
-    phone: obj.phone,
+    phone: {
+      phoneReal: obj.phone,
+      phoneExt: '******'+ phoneExternal
+    },
     petStatus: obj.petStatus,
     permissions : {
       showPhoneInfo: true,
@@ -315,6 +330,11 @@ router.post('/authenticate', (req, res, next) => {
 router.put('/update/updateProfilePet', async(req, res, next) => {
   const obj = JSON.parse(JSON.stringify(req.body));
 
+  const id1 = obj.phone;
+  const id2 = obj.phoneVeterinarian;
+  const phoneExternal = id1.slice(id1.length - 2);
+  const phoneVeterinarianExternal = id2.slice(id2.length - 2);
+
   const petUpdate = {
     petName: obj.petName,
     ownerPetName: obj.ownerPetName,
@@ -322,14 +342,16 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
     address: obj.address,
     email: obj.email,
     age: obj.age,
+    phone: obj.phone,
+    phoneExt: '******' + phoneExternal,
     veterinarianContact: obj.veterinarianContact,
     phoneVeterinarian: obj.phoneVeterinarian,
+    phoneVeterinarianExternal: '******' + phoneVeterinarianExternal,
     healthAndRequirements: obj.healthAndRequirements,
     favoriteActivities: obj.favoriteActivities,
     linkTwitter: obj.linkTwitter,
     linkFacebook: obj.linkFacebook,
     linkInstagram: obj.linkInstagram,
-    showLocationInfo: obj.showLocationInfo
   }
 
   await Pet.findOne({_id: req.body._id }, (err, pet) => {
@@ -337,9 +359,9 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
       return res.json({success:false,msg: 'Usuario no encontrado'});
     }
     if(pet != null) {
-      var arrayPet = [];
-      arrayPet.push(pet);
       if(obj.idSecond == 0){
+        var arrayPet = [];
+        arrayPet.push(pet);
         arrayPet.forEach(element => {
           element["petName"] = petUpdate.petName;
           element["ownerPetName"] = petUpdate.ownerPetName;
@@ -348,13 +370,19 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
           element["email"] = petUpdate.email;
           element["age"] = petUpdate.age;
           element["veterinarianContact"] = petUpdate.veterinarianContact;
-          element["phoneVeterinarian"] = petUpdate.phoneVeterinarian;
+          element.phone.phoneReal = petUpdate.phone;
+          element.phone.phoneExt = petUpdate.phoneExt;
+          element.phoneVeterinarian.phoneVeterinarianReal = petUpdate.phoneVeterinarian;
+          element.phoneVeterinarian.phoneVeterinarianExt = petUpdate.phoneVeterinarianExternal;
+
+
+          // element["phone"] = petUpdate.phone.phoneReal;
+          // element["phoneVeterinarian"] = petUpdate.phoneVeterinarian;
           element["healthAndRequirements"] = petUpdate.healthAndRequirements;
           element["favoriteActivities"] = petUpdate.favoriteActivities;
           element["linkTwitter"] = petUpdate.linkTwitter;
           element["linkFacebook"] = petUpdate.linkFacebook;
           element["linkInstagram"] = petUpdate.linkInstagram;
-          element["showLocationInfo"] = petUpdate.showLocationInfo;
           pet.save();
           try {
             res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
@@ -364,30 +392,37 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
           }
         })
       }else {
-        arrayPet[0].newPetProfile.forEach(element => {
-          if(element._id == obj.idSecond){
-            element["petName"] = petUpdate.petName;
-            element["ownerPetName"] = petUpdate.ownerPetName;
-            element["birthDate"] = petUpdate.birthDate;
-            element["address"] = petUpdate.address;
-            element["email"] = petUpdate.email;
-            element["age"] = petUpdate.age;
-            element["veterinarianContact"] = petUpdate.veterinarianContact;
-            element["phoneVeterinarian"] = petUpdate.phoneVeterinarian;
-            element["healthAndRequirements"] = petUpdate.healthAndRequirements;
-            element["favoriteActivities"] = petUpdate.favoriteActivities;
-            element["linkTwitter"] = petUpdate.linkTwitter;
-            element["linkFacebook"] = petUpdate.linkFacebook;
-            element["linkInstagram"] = petUpdate.linkInstagram;
-            element["showLocationInfo"] = petUpdate.showLocationInfo;
-            pet.save();
-            try {
-              res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
-            } catch (err) {
-              res.json({ success: false, msg: err });
-              next(err);
+        var arrayPet = [];
+        arrayPet.push(pet.newPetProfile);
+        arrayPet.forEach(element => {
+          element.forEach(item => {
+            if(item._id == obj.idSecond){
+              item["petName"] = petUpdate.petName;
+              item["ownerPetName"] = petUpdate.ownerPetName;
+              item["birthDate"] = petUpdate.birthDate;
+              item["address"] = petUpdate.address;
+              item["email"] = petUpdate.email;
+              item["age"] = petUpdate.age;
+              item.phone.phoneReal = petUpdate.phone;
+              item.phone.phoneExt = petUpdate.phoneExt;
+              item.phoneVeterinarian.phoneVeterinarianReal = petUpdate.phoneVeterinarian;
+              item.phoneVeterinarian.phoneVeterinarianExt = petUpdate.phoneVeterinarianExternal;
+              item["veterinarianContact"] = petUpdate.veterinarianContact;
+              item["healthAndRequirements"] = petUpdate.healthAndRequirements;
+              item["favoriteActivities"] = petUpdate.favoriteActivities;
+              item["linkTwitter"] = petUpdate.linkTwitter;
+              item["linkFacebook"] = petUpdate.linkFacebook;
+              item["linkInstagram"] = petUpdate.linkInstagram;
+              item["showLocationInfo"] = petUpdate.showLocationInfo;
+              pet.save();
+              try {
+                res.json({ success: true, msg: 'Se ha actualizado correctamente..!' });
+              } catch (err) {
+                res.json({ success: false, msg: err });
+                next(err);
+              }
             }
-          }
+          })
         })
       }
      }
@@ -637,6 +672,7 @@ router.put('/update/updatePhotoPetProfile', async(req, res, next) => {
 router.get('/getPetDataList', function(req, res){
   var id = req.query.id;
   var idSecond = req.query.idSecond;
+  var view = req.query.view;
   Pet.findById(id, function(err, results){
     if(err){
       res.json({ success: false, msg: err });
@@ -647,7 +683,7 @@ router.get('/getPetDataList', function(req, res){
         var pet = {
           petName: results.petName,
           ownerPetName: results.ownerPetName,
-          phone: results.phone,
+          phone: (view == 1)? results.phone.phoneReal: (view == 2)? results.phone.phoneExt: 40004000,
           email: results.email,
           photo: results.photo,
           userState: results.userState,
@@ -658,16 +694,13 @@ router.get('/getPetDataList', function(req, res){
           age: results.age,
           isActivated: results.isActivated,
           veterinarianContact: results.veterinarianContact,
-          phoneVeterinarian: results.phoneVeterinarian,
+          phoneVeterinarian: (view == 1)? results.phoneVeterinarian.phoneVeterinarianReal: results.phoneVeterinarian.phoneVeterinarianExt,
           healthAndRequirements: results.healthAndRequirements,
           favoriteActivities: results.favoriteActivities,
-          // calendar: results.calendar,
-          // code: results.code,
           petStatus: results.petStatus,
           linkTwitter: results.linkTwitter,
           linkFacebook: results.linkFacebook,
           linkInstagram: results.linkInstagram,
-          // newPetProfile: results.newPetProfile
         }
         res.json({ success: true, pet });
       }else {
@@ -677,7 +710,7 @@ router.get('/getPetDataList', function(req, res){
               var pet = {
                 petName: element.petName,
                 ownerPetName: element.ownerPetName,
-                phone: element.phone,
+                phone:  (view == 1)? element.phone.phoneReal: (view == 2)? element.phone.phoneExt: 40004000,
                 email: element.email,
                 photo: element.photo,
                 userState: element.userState,
@@ -687,7 +720,7 @@ router.get('/getPetDataList', function(req, res){
                 address: element.address,
                 age: element.age,
                 veterinarianContact: element.veterinarianContact,
-                phoneVeterinarian: element.phoneVeterinarian,
+                phoneVeterinarian: (view == 1)? element.phoneVeterinarian.phoneVeterinarianReal: (view == 2)? element.phoneVeterinarian.phoneVeterinarianExt: 40004000,
                 healthAndRequirements: element.healthAndRequirements,
                 favoriteActivities: element.favoriteActivities,
                 // calendar: element.calendar,
@@ -1523,6 +1556,35 @@ router.put('/update/updateNotificationsList', async(req, res, next) => {
       })
      }
    });
+});
+
+router.post('/delete/delete-pet-profile', async(req, res) => {
+  const obj = JSON.parse(JSON.stringify(req.body));
+  var object = {
+    idItem: obj.idItem
+  }
+
+  await Pet.findOne({_id: req.body._id }, (err, pet) => {
+    if (!pet) {
+      return res.json({success:false,msg: 'Usuario no encontrado'});
+    }
+     if(pet != null) {
+      for (var i =0; i < pet.newPetProfile.length; i++){
+        if (pet.newPetProfile[i]._id == object.idItem) {
+          pet.newPetProfile.splice(i,1);
+          pet.save();
+          try {
+            res.json({ success: true, msg: 'Se ha eliminado correctamente..!' });
+          } catch (err) {
+            res.json({ success: false, msg: err });
+            next(err);
+          }
+          break;
+        }
+      }
+     }
+   });
+
 });
 
 

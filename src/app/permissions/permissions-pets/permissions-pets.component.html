@@ -19,7 +19,7 @@
         </div>
     </div>    
 
-    <div class="card-deck">
+    <div *ngIf="profile" class="card-deck">
         <div *ngIf="profile.ownerPetName" class="card">
             <div class="card-body">
                 <span class="card-title"><i class="fa fa-user"></i> Propietari@</span>
@@ -45,7 +45,7 @@
             </div>
         </div>
     </div> 
-    <div class="card-deck">
+    <div *ngIf="profile" class="card-deck">
         <div *ngIf="profile.age" class="card">
             <div class="card-body">
                 <span class="card-title"> Edad</span>
@@ -74,7 +74,7 @@
             </div>
         </div>
     </div>
-    <div class="card-deck">
+    <div *ngIf="profile" class="card-deck">
         <div *ngIf="profile.healthAndRequirements" class="card">
             <div class="card-body">
                 <span class="card-title">Salud y Cuidados</span>
@@ -103,7 +103,7 @@
             </div>
         </div>
     </div>
-    <div class="card-deck">
+    <div *ngIf="profile" class="card-deck">
         <div *ngIf="profile.linkTwitter" class="card">
             <div class="card-body">
                 <a *ngIf="profile.linkTwitter != ''" class="btn btn-block btn-twitter"> <i class="fab fa-twitter"></i> Twitter</a>
@@ -129,7 +129,7 @@
             </div>
         </div>
     </div>
-    <div class="card-deck">
+    <div *ngIf="profile" class="card-deck">
         <div  class="card">
             <div class="card-body">
                 <a class="btn"><i class="fas fa-location-arrow"></i> Mi ubicación</a>

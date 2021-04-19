@@ -121,6 +121,7 @@ export class PetService {
     fd.append('email',pet.email);
     fd.append('age',pet.age);
     fd.append('veterinarianContact',pet.veterinarianContact);
+    fd.append('phone',pet.phone);
     fd.append('phoneVeterinarian',pet.phoneVeterinarian);
     fd.append('healthAndRequirements',pet.healthAndRequirements);
     fd.append('favoriteActivities',pet.favoriteActivities);
@@ -278,11 +279,11 @@ export class PetService {
     }
   }
 
-  getPetDataList(id, idSecondary: any):Observable<any> {    
+  getPetDataList(id, idSecondary: any, view: any):Observable<any> {    
     if (this.isDev) {
-      return this.httpClient.get<any>('http://localhost:8080/pet/getPetDataList?id=' + id+'&idSecond='+ idSecondary);
+      return this.httpClient.get<any>('http://localhost:8080/pet/getPetDataList?id=' + id +'&idSecond='+ idSecondary + '&view='+view );
     } else {
-      return this.httpClient.get<any>('pet/getPetDataList?id=' + id+'&idSecond='+ idSecondary );
+      return this.httpClient.get<any>('pet/getPetDataList?id=' + id+'&idSecond='+ idSecondary + '&view='+view );
     }
   }
 
@@ -293,6 +294,19 @@ export class PetService {
       return this.httpClient.get<any>('pet/getAllProfileList/' + id);
     }
   }
+
+  deletePetProfile(item:any):Observable<any> {
+    const fd = new FormData();
+    fd.append('_id',item._id);
+    fd.append('idItem',item.idItem);
+
+    if(this.isDev) {
+      return this.httpClient.post<any>('http://localhost:8080/pet/delete/delete-pet-profile', fd);
+    }else{
+      return this.httpClient.post<any>('pet/delete/delete-pet-profile', fd);
+    }
+  }
+
 
   getCompanyMenuList(id):Observable<any> {
     let headers = new Headers();

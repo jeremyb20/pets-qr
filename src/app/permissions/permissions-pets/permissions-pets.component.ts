@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { PetService } from 'src/app/common/services/pet.service';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+
 
 @Component({
   selector: 'app-permissions-pets',
@@ -29,25 +31,10 @@ export class PermissionsPetsComponent implements OnInit {
     var idSelected = this.petService.getidTrack();
     this.id = parseInt(idSelected);
     this.petPrincipal = JSON.parse(petPrincipal);
-    this.getPetDataList();
+    this.getPermissionInfo();
   }
 
   ngOnInit(): void {
-  }
-
-  getPetDataList() {
-    this.petService.getPetDataList(this.pet.id, this.idSecondary).subscribe(data => {
-      if(data.success){
-        this.profile = data.pet;
-        this.getPermissionInfo();
-      }else{
-        this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
-      }
-    },
-    error => {
-      this.loading = false;
-      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
-    });
   }
 
   getPermissionInfo() {
@@ -74,12 +61,29 @@ export class PermissionsPetsComponent implements OnInit {
       }else{
         this.permissionData = data.permissions[0];
       }
+      this.getPetDataList();
     },
     error => {
       this.loading = false;
       this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
     });
   }
+
+  getPetDataList() {
+    var view = 1;
+    this.petService.getPetDataList(this.pet.id, this.idSecondary, view).subscribe(data => {
+      if(data.success){
+        this.profile = data.pet;
+      }else{
+        this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+      }
+    },
+    error => {
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+    });
+  }
+
 
   changed(item:any) {
     this.updatePermission = true;
@@ -108,8 +112,17 @@ export class PermissionsPetsComponent implements OnInit {
 
     this.petService.updatePetPermissionInfo(object).subscribe(data => {
       if(data.success){
-        this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
-        this.getPermissionInfo();
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Genial',
+          text: data.msg,
+          confirmButtonText: 'OK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            location.reload();
+          }
+        })
       }
       
     },

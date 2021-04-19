@@ -7,9 +7,15 @@ const PetSchema = mongoose.Schema ({
   petName: {
     type: String
   },
-  phone: {
-    type: Number,
-    require: false
+  phone:{
+    phoneExt: {
+      type: String,
+      require: true
+    },
+    phoneReal: {
+      type: Number,
+      require: true
+    },
   },
   email: {
     type: String,
@@ -259,9 +265,15 @@ const PetSchema = mongoose.Schema ({
     type: Number,
     require: true
   },
-  phoneVeterinarian: {
-    type: Number,
-    require: true
+  phoneVeterinarian:{
+    phoneVeterinarianExt: {
+      type: String,
+      require: true
+    },
+    phoneVeterinarianReal: {
+      type: Number,
+      require: true
+    },
   },
   veterinarianContact: {
     type: String,
@@ -320,9 +332,15 @@ const PetSchema = mongoose.Schema ({
       petName: {
         type: String
       },
-      phone: {
-        type: Number,
-        require: false
+      phone:{
+        phoneExt: {
+          type: String,
+          require: true
+        },
+        phoneReal: {
+          type: Number,
+          require: true
+        },
       },
       email: {
         type: String,
@@ -431,9 +449,15 @@ const PetSchema = mongoose.Schema ({
         type: Number,
         require: true
       },
-      phoneVeterinarian: {
-        type: Number,
-        require: true
+      phoneVeterinarian:{
+        phoneVeterinarianExt: {
+          type: String,
+          require: true
+        },
+        phoneVeterinarianReal: {
+          type: Number,
+          require: true
+        },
       },
       veterinarianContact: {
         type: String,

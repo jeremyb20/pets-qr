@@ -11,6 +11,8 @@
                   <a class="dropdown-item" (click)="newPetRegister()"><i class="fa fa-paw mt-1 mr-3"></i> Añadir Can</a>
                   <!-- <a class="dropdown-item" href="#"><i class="fa fa-user mt-1 mr-3"></i> Añadir Familiar</a> -->
                   <a class="dropdown-item" (click)="changeProfilePet()"><i class="fa fa-edit mt-1 mr-3"></i> Cambiar Perfil</a>
+                  <a class="dropdown-item" (click)="deleteProfilePet()"><i class="fa fa-trash mt-1 mr-3"></i> Eliminar Perfil</a>
+
                   <!-- <a class="dropdown-item" href="#"></a> -->
                 </div>
               </div>
@@ -488,4 +490,36 @@
       </div>
     </div>
 </div>
+
+<div class="modal fade" *ngIf="seeAllProfile" id="deleteProfileModal" tabindex="-1" role="dialog" aria-labelledby="deleteProfileModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="deleteProfileModal">Eliminar perfil</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="container">
+              <div class="row">
+                <div *ngFor="let item of seeAllProfile" class="col-6 col-sm-6 col-lg-6 col-xl-6 card-wrapper" style="width: 18rem;">
+                  <div class="card border-0">
+                    <div class="position-relative rounded-circle overflow-hidden mx-auto custom-circle-image">
+                      <img class="w-100 h-100" src="{{item.photo}}" alt="Card image cap">
+                    </div>
+                    <div class="card-body text-center mt-4">
+                      <a (click)="profileDeleteSelected(item)" class="btn btn-inverse btn-sm">Eliminar {{item.petName}}
+                          <i class="fas fa-trash ml-2"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>    
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
