@@ -560,18 +560,13 @@ idEventUpdate: any;
           this.petService.registerNewPetByUserPet(newPet,this.file).subscribe(data => {
             if(data.success) {
               this.loading = false;
+
               Swal.fire({
-                title: 'Registro ' + newPet.petName+'' ,
-                html: "Su registro ha sido authenticado correctamente.",
-                showCancelButton: false,
-                allowEscapeKey: false,
+                position: 'center',
+                icon: 'success',
+                title: 'Registro ' + newPet.petName+'',
+                html: data.msg,
                 confirmButtonText: 'OK',
-                allowOutsideClick: false,
-                buttonsStyling: false,
-                reverseButtons: true,
-                position: 'top',
-                padding: 0,
-                customClass: { confirmButton: 'col-auto btn btn-info m-3' }
               })
               .then((result) => {
                   if (result.value){

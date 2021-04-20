@@ -55,12 +55,15 @@ router.post('/register/new-pet', async(req, res, next) => {
         const id1 = obj.phone;
         const phoneExternal = id1.slice(id1.length - 2);
 
+        const id2 = '88888888';
+        const phoneVeterinarianExternal = id2.slice(id2.length - 2);
+
           const result = await cloudinary.uploader.upload(req.file != undefined ? req.file.path : obj.image);
           let newPet = new Pet({
             petName: obj.petName,
             phone: {
               phoneReal: obj.phone,
-              phoneExternal: '******'+ phoneExternal
+              phoneExt: '******'+ phoneExternal
             },
             email: obj.email,
             password: obj.password,
@@ -71,6 +74,10 @@ router.post('/register/new-pet', async(req, res, next) => {
             photo: result.secure_url == undefined ? obj.image : result.secure_url,
             petStatus: obj.petStatus,
             isActivated: false,
+            phoneVeterinarian: {
+              phoneVeterinarianReal: parseInt(id2),
+              phoneVeterinarianExt: '******'+ phoneVeterinarianExternal
+            },
             permissions: {
               showPhoneInfo: true,
               showEmailInfo: true,
@@ -88,7 +95,6 @@ router.post('/register/new-pet', async(req, res, next) => {
               showLocationInfo: true
             }
           });
-
         Pet.addPet(newPet, async (user, done) => {
           try {
               var smtpTransport = nodemailer.createTransport({
@@ -694,7 +700,7 @@ router.get('/getPetDataList', function(req, res){
           age: results.age,
           isActivated: results.isActivated,
           veterinarianContact: results.veterinarianContact,
-          phoneVeterinarian: (view == 1)? results.phoneVeterinarian.phoneVeterinarianReal: results.phoneVeterinarian.phoneVeterinarianExt,
+          phoneVeterinarian: (view == 1)? results.phoneVeterinarian.phoneVeterinarianReal: (view == 2)? results.phoneVeterinarian.phoneVeterinarianExt: 40004000,
           healthAndRequirements: results.healthAndRequirements,
           favoriteActivities: results.favoriteActivities,
           petStatus: results.petStatus,
@@ -1166,10 +1172,11 @@ router.get('/getAllPets', function(req, res){
         if(item.newPetProfile.length>0){
           item.newPetProfile.forEach(element => {
             var pet  = {
+              _id:item._id,
               idPet: element._id,
               petName: element.petName,
               email: element.email,
-              phone: element.phone,
+              phone: element.phone.phoneReal,
               age: element.age,
               birthDate: element.birthDate,
               ownerPetName: element.ownerPetName,
@@ -1183,7 +1190,7 @@ router.get('/getAllPets', function(req, res){
           idPet: item._id,
           petName: item.petName,
           email: item.email,
-          phone: item.phone,
+          phone: item.phone.phoneReal,
           age: item.age,
           birthDate: item.birthDate,
           ownerPetName: item.ownerPetName,

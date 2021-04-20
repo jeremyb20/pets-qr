@@ -99,6 +99,49 @@ export class PetsRegisteredComponent implements OnInit {
     })
   }
 
+  deleteSecondPet(item:any){
+    Swal.fire({
+      title: 'Estás seguro?',
+      text: "No serás capaz de revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        var remove = {
+          _id: item._id,
+          idItem: item.idPet
+        }
+
+        this.petService.deletePetProfile(remove).subscribe(data => {
+          if(data.success) {
+              Swal.fire(
+                'Eliminado!',
+                'Este usuario ha sido eliminado.',
+                'success'
+              )
+              $('#showPetModal').modal('hide');
+              this.getAllUsers();
+              this.loading = false;
+          } else {
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Ha ocurrido un problema, favor de revisar',
+              confirmButtonText: 'OK',
+            })
+          }
+        },
+        error => {
+          this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+        });
+      }
+    })
+  }
+
   filterData(query): any[] {
     if (!query) {
       this.filteredData = this.allUsersData;
