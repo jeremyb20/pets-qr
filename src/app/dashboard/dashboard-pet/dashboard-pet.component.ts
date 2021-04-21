@@ -429,15 +429,12 @@ idEventUpdate: any;
         birthDate: ['', [Validators.required]],
         phone: ['', [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
         address: [this.profile.address, [Validators.required]],
-        email: [this.profile.email, [Validators.required]],
+        // email: [{value:this.profile.email, disabled: true}, [Validators.required]],
         age: ['', [Validators.minLength(0),Validators.required,Validators.pattern(/\d/)]],
         veterinarianContact: ['', Validators.required],
         phoneVeterinarian: ['', [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
         healthAndRequirements: ['', Validators.required],
         favoriteActivities: ['', Validators.required],
-        // linkTwitter: [this.profile.linkTwitter = (this.profile.linkTwitter == 'null')? this.profile.linkTwitter = '': this.profile.linkTwitter],
-        // linkFacebook: [this.profile.linkFacebook = (this.profile.linkFacebook == 'null')? this.profile.linkFacebook = '': this.profile.linkFacebook],
-        // linkInstagram: [this.profile.linkInstagram = (this.profile.linkInstagram == 'null')? this.profile.linkInstagram = '': this.profile.linkInstagram],
       });
   
       this.setCurrentNewPosition();
@@ -517,78 +514,58 @@ idEventUpdate: any;
     } else {
       if(this.markersNewPet.length != 0) {
 
-        if(this.i.email.value != this.petPrincipal.email){
-          Swal.fire({
-            title: 'Error de registro',
-            html: "El email es distinto por favor seleccione al que se registró anteriormente",
-            showCancelButton: false,
-            allowEscapeKey: false,
-            confirmButtonText: 'OK',
-            allowOutsideClick: false,
-            buttonsStyling: false,
-            reverseButtons: true,
-            position: 'top',
-            padding: 0,
-            customClass: { confirmButton: 'col-auto btn btn-info m-3' }
-          })
-            .then((result) => {
-              this.isSetPosition = true;
-            });
-          return;
-        }else{
-          this.loading = true;
-          var newPet = {
-            petName: this.i.petName.value,
-            phone: this.i.phone.value,
-            email: this.i.email.value,
-            lat: this.markersNewPet[0].lat,
-            lng: this.markersNewPet[0].lng,
-            genderSelected: this.i.genderSelected.value,
-            userState: 3,
-            petStatus: 'No-Perdido',
-            ownerPetName: this.i.ownerPetName.value,
-            birthDate: this.i.birthDate.value,
-            address: this.i.address.value,
-            age: this.i.age.value,
-            veterinarianContact: this.i.veterinarianContact.value,
-            phoneVeterinarian: this.i.phoneVeterinarian.value,
-            healthAndRequirements: this.i.healthAndRequirements.value,
-            favoriteActivities: this.i.favoriteActivities.value,
-            _id: this.pet.id,
-          }
-    
-          this.petService.registerNewPetByUserPet(newPet,this.file).subscribe(data => {
-            if(data.success) {
-              this.loading = false;
+        this.loading = true;
+        var newPet = {
+          petName: this.i.petName.value,
+          phone: this.i.phone.value,
+          email: this.petPrincipal.email,
+          lat: this.markersNewPet[0].lat,
+          lng: this.markersNewPet[0].lng,
+          genderSelected: this.i.genderSelected.value,
+          userState: 3,
+          petStatus: 'No-Perdido',
+          ownerPetName: this.i.ownerPetName.value,
+          birthDate: this.i.birthDate.value,
+          address: this.i.address.value,
+          age: this.i.age.value,
+          veterinarianContact: this.i.veterinarianContact.value,
+          phoneVeterinarian: this.i.phoneVeterinarian.value,
+          healthAndRequirements: this.i.healthAndRequirements.value,
+          favoriteActivities: this.i.favoriteActivities.value,
+          _id: this.pet.id,
+        }
+  
+        this.petService.registerNewPetByUserPet(newPet,this.file).subscribe(data => {
+          if(data.success) {
+            this.loading = false;
 
-              Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Registro ' + newPet.petName+'',
-                html: data.msg,
-                confirmButtonText: 'OK',
-              })
-              .then((result) => {
-                  if (result.value){
-                    $('#newPetModal').modal('hide');
-                    location.reload();
-                  }
-                    
-              });
-            } else {
-              this.hideMsg = true;
-              this.loading = false;
-              this.ShowMsg = data.msg;
-              setTimeout(() => { this.hideMsg = false }, this.timeSeconds);
-            }
-          },
-          error => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Registro ' + newPet.petName+'',
+              html: data.msg,
+              confirmButtonText: 'OK',
+            })
+            .then((result) => {
+                if (result.value){
+                  $('#newPetModal').modal('hide');
+                  location.reload();
+                }
+                  
+            });
+          } else {
             this.hideMsg = true;
             this.loading = false;
-            this.ShowMsg = "Ocurrio un error favor contactar a soporte o al administrador del sitio";
+            this.ShowMsg = data.msg;
             setTimeout(() => { this.hideMsg = false }, this.timeSeconds);
-          });
-        }
+          }
+        },
+        error => {
+          this.hideMsg = true;
+          this.loading = false;
+          this.ShowMsg = "Ocurrio un error favor contactar a soporte o al administrador del sitio";
+          setTimeout(() => { this.hideMsg = false }, this.timeSeconds);
+        });
       }
     }
   }

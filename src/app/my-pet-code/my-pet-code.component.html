@@ -1,4 +1,4 @@
-<div *ngIf="profile" id="myPetProfile" class="scroll" (scroll)="divScroll($event, false)">
+<div *ngIf="profile" id="myPetProfile" class="scroll" [ngClass]="{'bg-red':profile.petStatus ==  'Perdido', 'bg-normal': profile.petStatus !=  'Perdido' }" (scroll)="divScroll($event, false)">
       <nav *ngIf="!hideMenu" class="navbar fixed-top navbar-expand-lg navbar-dark mb-5" [ngClass]="{'scrolled': !isShow, 'scrolling-navbar': isShow, 'top-nav-collapse': isShow}">
         <div class="container">
       
@@ -49,7 +49,7 @@
     <div class="container-fluid mx-auto test" [ngClass]="{'margin': !hideMenu}" id="myPetProfile">
         <div *ngIf="profile">
             <div class="row no-gutters ">
-                <div class="col-12 col-sm-4 col-md-4 col-lg-4 mb-4">
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4 mb-4" [ngClass]="{'mt-4': Media.IsMobile, 'mt-2': !Media.IsMobile}">
                     <div class="card hovercard">
                         <div class="cardheader" [ngStyle]="{'background-image': ' url(' + imageUrl  + ')','background-size': 'cover', 'background-color':'rgba(0, 0, 0, 0.452)', 'background-blend-mode':'multiply',  'height': '335px'}"></div>
                         <div class="avatar">
@@ -91,7 +91,7 @@
                                     <h6 class="card-title"><i class="fa fa-phone"></i> Teléfono</h6>
                                     <p class="card-text">{{profile.phone}}</p>
                                 </div>
-                                <div class="card-footer">
+                                <div *ngIf="profile.petStatus === 'Perdido'" class="card-footer">
                                     <p class="card-text"><button (click)="copyInputMessage(profile.phone)" class="btn btn-info btn-sm">Copiar</button>
                                     </p>
                                 </div>
@@ -104,7 +104,7 @@
                                     <h6 class="card-title"><i class="fa fa-envelope"></i> Email</h6>
                                     <p class="card-text">{{profile.email}}</p>
                                 </div>
-                                <div class="card-footer">
+                                <div *ngIf="profile.petStatus === 'Perdido'" class="card-footer">
                                     <p class="card-text"><button (click)="copyInputMessage(profile.email)" class="btn btn-info btn-sm">Copiar</button>
                                     </p>
                                 </div>
@@ -173,7 +173,7 @@
                                     <h6 class="card-title"> Teléfono Veterinario</h6>
                                     <p class="card-text">{{profile.phoneVeterinarian}}</p>
                                 </div>
-                                <div class="card-footer">
+                                <div *ngIf="profile.petStatus === 'Perdido'" class="card-footer">
                                     <p class="card-text"><button (click)="copyInputMessage(profile.phoneVeterinarian)" class="btn btn-info btn-sm">Copiar</button></p>
                                 </div>
                             </div>

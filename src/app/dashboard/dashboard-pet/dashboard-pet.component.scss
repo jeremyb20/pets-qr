@@ -1,6 +1,11 @@
 #dashboard-pet{
-    .userProfileInfo{
+    .userProfileInfobg-normal{
         background-color: #e6e7ed;
+    }
+
+    .userProfileInfobg-red{
+        border-radius: 5px;
+        background: rgba(253, 59, 46, 0.342);
     }
     
     .userProfileInfo .image {

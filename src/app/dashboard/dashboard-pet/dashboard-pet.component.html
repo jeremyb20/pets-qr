@@ -41,14 +41,14 @@
           </div>
         <div class="row no-gutters">
             <div class="col-xs-12 col-12 col-sm-4 col-md-4 col-lg-4">
-                <div class="userProfileInfo p-2" [ngClass]="{'p-4': Media.IsMobile }">
+                <div class="userProfileInfo p-2" [ngClass]="{'p-4': Media.IsMobile, 'userProfileInfobg-normal': profile.petStatus != 'Perdido', 'userProfileInfobg-red': profile.petStatus == 'Perdido' }">
                     <div class="image text-center">
                         <img class="w-100 h-100" style="border-radius: 15px; max-height: 700px; max-width: 500px;" src="{{profile.photo}}" alt="{{profile.photo}}">
                         <a (click)="updatePhoto()" class="editImage">
                             <i class="fa fa-camera"></i>
                         </a>
                     </div>
-                    <div class="box p-1 mt-5">
+                    <div class="box mt-5">
                         <div>
                             <button (click)="reportProfile()" class="btn w-100 btn-danger"><img style="height: 30px; width: 30px;" alt="{{profile.photo}}" src="https://cdn2.iconfinder.com/data/icons/cute-husky-emoticon/512/husky_emoji_sad-512.png"> Reportar perfil de {{profile.petName}} </button>
                         </div>
@@ -284,13 +284,13 @@
                     </div>
                 </div>
 
-                <div class="form-group input-group col-12">
+                <!-- <div class="form-group input-group col-12">
                     <span class="mr-3"><i class="fa fa-envelope"></i> Correo </span>
                     <input  type="text" formControlName="email" class="form-control" placeholder="Email del can" [ngClass]="{ 'is-invalid': submitted && i.email.errors }" />
                     <div *ngIf="submitted && i.email.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.email.errors }">
                         <div *ngIf="i.email.errors.required">Nombre del can es requerido</div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="form-group input-group col-12">
                     <span class="mr-3"><i class="fa fa-user" aria-hidden="true"></i> Nombre del Dueño </span>

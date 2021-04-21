@@ -52,19 +52,10 @@ router.post('/register/new-pet', async(req, res, next) => {
       if(myUser){
         res.json({ success: false, msg: 'El correo ya existe en el sistema' });
       }else{
-        const id1 = obj.phone;
-        const phoneExternal = id1.slice(id1.length - 2);
-
-        const id2 = '88888888';
-        const phoneVeterinarianExternal = id2.slice(id2.length - 2);
-
           const result = await cloudinary.uploader.upload(req.file != undefined ? req.file.path : obj.image);
           let newPet = new Pet({
             petName: obj.petName,
-            phone: {
-              phoneReal: obj.phone,
-              phoneExt: '******'+ phoneExternal
-            },
+            phone: obj.phone,
             email: obj.email,
             password: obj.password,
             lat: obj.lat,
@@ -74,10 +65,7 @@ router.post('/register/new-pet', async(req, res, next) => {
             photo: result.secure_url == undefined ? obj.image : result.secure_url,
             petStatus: obj.petStatus,
             isActivated: false,
-            phoneVeterinarian: {
-              phoneVeterinarianReal: parseInt(id2),
-              phoneVeterinarianExt: '******'+ phoneVeterinarianExternal
-            },
+            phoneVeterinarian: 00000000,
             permissions: {
               showPhoneInfo: true,
               showEmailInfo: true,
@@ -175,11 +163,6 @@ router.post('/register/new-petByUserPet', async(req, res) => {
   const obj = JSON.parse(JSON.stringify(req.body));
   const result = await cloudinary.uploader.upload(req.file != undefined? req.file.path: obj.image);
 
-  const id1 = obj.phone;
-  const id2 = obj.phoneVeterinarian;
-  const phoneExternal = id1.slice(id1.length - 2);
-  const phoneVeterinarianExternal = id2.slice(id2.length - 2);
-
   const newpet = {
     petName: obj.petName,
     ownerPetName: obj.ownerPetName,
@@ -188,10 +171,7 @@ router.post('/register/new-petByUserPet', async(req, res) => {
     email: obj.email,
     age: obj.age,
     veterinarianContact: obj.veterinarianContact,
-    phoneVeterinarian:{
-      phoneVeterinarianReal: obj.phoneVeterinarian,
-      phoneVeterinarianExt: '******'+ phoneVeterinarianExternal
-    }, 
+    phoneVeterinarian:obj.phoneVeterinarian,
     healthAndRequirements: obj.healthAndRequirements,
     favoriteActivities: obj.favoriteActivities,
     lat: obj.lat,
@@ -199,10 +179,7 @@ router.post('/register/new-petByUserPet', async(req, res) => {
     userState: obj.userState,
     genderSelected:obj.genderSelected,
     photo: result.secure_url == undefined ? obj.image : result.secure_url,
-    phone: {
-      phoneReal: obj.phone,
-      phoneExt: '******'+ phoneExternal
-    },
+    phone: obj.phone,
     petStatus: obj.petStatus,
     permissions : {
       showPhoneInfo: true,
@@ -336,11 +313,6 @@ router.post('/authenticate', (req, res, next) => {
 router.put('/update/updateProfilePet', async(req, res, next) => {
   const obj = JSON.parse(JSON.stringify(req.body));
 
-  const id1 = obj.phone;
-  const id2 = obj.phoneVeterinarian;
-  const phoneExternal = id1.slice(id1.length - 2);
-  const phoneVeterinarianExternal = id2.slice(id2.length - 2);
-
   const petUpdate = {
     petName: obj.petName,
     ownerPetName: obj.ownerPetName,
@@ -349,10 +321,8 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
     email: obj.email,
     age: obj.age,
     phone: obj.phone,
-    phoneExt: '******' + phoneExternal,
     veterinarianContact: obj.veterinarianContact,
     phoneVeterinarian: obj.phoneVeterinarian,
-    phoneVeterinarianExternal: '******' + phoneVeterinarianExternal,
     healthAndRequirements: obj.healthAndRequirements,
     favoriteActivities: obj.favoriteActivities,
     linkTwitter: obj.linkTwitter,
@@ -376,14 +346,8 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
           element["email"] = petUpdate.email;
           element["age"] = petUpdate.age;
           element["veterinarianContact"] = petUpdate.veterinarianContact;
-          element.phone.phoneReal = petUpdate.phone;
-          element.phone.phoneExt = petUpdate.phoneExt;
-          element.phoneVeterinarian.phoneVeterinarianReal = petUpdate.phoneVeterinarian;
-          element.phoneVeterinarian.phoneVeterinarianExt = petUpdate.phoneVeterinarianExternal;
-
-
-          // element["phone"] = petUpdate.phone.phoneReal;
-          // element["phoneVeterinarian"] = petUpdate.phoneVeterinarian;
+          element["phone"] = petUpdate.phone;
+          element["phoneVeterinarian"] = petUpdate.phoneVeterinarian;
           element["healthAndRequirements"] = petUpdate.healthAndRequirements;
           element["favoriteActivities"] = petUpdate.favoriteActivities;
           element["linkTwitter"] = petUpdate.linkTwitter;
@@ -409,10 +373,8 @@ router.put('/update/updateProfilePet', async(req, res, next) => {
               item["address"] = petUpdate.address;
               item["email"] = petUpdate.email;
               item["age"] = petUpdate.age;
-              item.phone.phoneReal = petUpdate.phone;
-              item.phone.phoneExt = petUpdate.phoneExt;
-              item.phoneVeterinarian.phoneVeterinarianReal = petUpdate.phoneVeterinarian;
-              item.phoneVeterinarian.phoneVeterinarianExt = petUpdate.phoneVeterinarianExternal;
+              item["phone"] = petUpdate.phone;
+              item["phoneVeterinarian"] = petUpdate.phoneVeterinarian;
               item["veterinarianContact"] = petUpdate.veterinarianContact;
               item["healthAndRequirements"] = petUpdate.healthAndRequirements;
               item["favoriteActivities"] = petUpdate.favoriteActivities;
@@ -688,9 +650,14 @@ router.get('/getPetDataList', function(req, res){
       if(idSecond == 0) {
         var firstLetters = results.email;
         var lastLetters = results.email;
+        var phone = results.phone;
+        var phoneVetrinarian = results.phoneVeterinarian;
+        const test5 = phoneVetrinarian.toString().slice(phoneVetrinarian.toString().length - 2);
         let test = firstLetters.slice(0,5);
         const test2 = lastLetters.slice(lastLetters.length - 4);
         const test3 = Math.floor(Math.random() * (12 - 5 + 1)) + 5;
+        const test4 = phone.toString().slice(phone.toString().length - 2);
+       
 
         function makeid(length) {
           var result = [];
@@ -707,8 +674,8 @@ router.get('/getPetDataList', function(req, res){
         var pet = {
           petName: results.petName,
           ownerPetName: results.ownerPetName,
-          phone: (view == 1)? results.phone.phoneReal: (view == 2)? results.phone.phoneExt: 40004000,
-          email:(view == 1)? results.email: test+ makeid(test3) +test2,
+          phone: (view == 1)? results.phone: (view == 2 && results.petStatus == 'Perdido' )? 40004000: '******'+test4 ,
+          email:(view == 1)? results.email: (view == 2 && results.petStatus == 'Perdido' )? test+ makeid(test3) +test2: results.email,
           photo: results.photo,
           userState: results.userState,
           lat: results.lat,
@@ -718,7 +685,7 @@ router.get('/getPetDataList', function(req, res){
           age: results.age,
           isActivated: results.isActivated,
           veterinarianContact: results.veterinarianContact,
-          phoneVeterinarian: (view == 1)? results.phoneVeterinarian.phoneVeterinarianReal: (view == 2)? results.phoneVeterinarian.phoneVeterinarianExt: 40004000,
+          phoneVeterinarian: (view == 1)? results.phoneVeterinarian: (view == 2 && results.petStatus == 'Perdido')? 40004000: '******'+test5,
           healthAndRequirements: results.healthAndRequirements,
           favoriteActivities: results.favoriteActivities,
           petStatus: results.petStatus,
@@ -731,11 +698,26 @@ router.get('/getPetDataList', function(req, res){
         if(results!= null) {
             results.newPetProfile.forEach(element => {
             if (element._id == idSecond) {
+              const test4 = element.phone.toString().slice(element.phone.toString().length - 2);
+              const test5 = element.phoneVeterinarian.toString().slice(element.phoneVeterinarian.toString().length - 2);
+              let test = element.email.slice(0,5);
+              const test2 = element.email.slice(element.email.length - 4);
+              const test3 = Math.floor(Math.random() * (12 - 5 + 1)) + 5;
+              function makeid(length) {
+                var result = [];
+                var characters = '*******************************';
+                var charactersLength = characters.length;
+                for (var i = 0; i < length; i++) {
+                  result.push(characters.charAt(Math.floor(Math.random() *
+                    charactersLength)));
+                }
+                return result.join('');
+              }
               var pet = {
                 petName: element.petName,
                 ownerPetName: element.ownerPetName,
-                phone:  (view == 1)? element.phone.phoneReal: (view == 2)? element.phone.phoneExt: 40004000,
-                email: element.email,
+                phone:  (view == 1)? element.phone: (view == 2 && element.petStatus == 'Perdido' )? 40004000: '******'+test4,
+                email:(view == 1)? element.email:(view == 2 && element.petStatus == 'Perdido' )?element.email: test+ makeid(test3) +test2,
                 photo: element.photo,
                 userState: element.userState,
                 lat: element.lat,
@@ -744,7 +726,7 @@ router.get('/getPetDataList', function(req, res){
                 address: element.address,
                 age: element.age,
                 veterinarianContact: element.veterinarianContact,
-                phoneVeterinarian: (view == 1)? element.phoneVeterinarian.phoneVeterinarianReal: (view == 2)? element.phoneVeterinarian.phoneVeterinarianExt: 40004000,
+                phoneVeterinarian: (view == 1)? element.phoneVeterinarian: (view == 2 && element.petStatus == 'Perdido')? 40004000 : '******'+test5 ,
                 healthAndRequirements: element.healthAndRequirements,
                 favoriteActivities: element.favoriteActivities,
                 // calendar: element.calendar,
@@ -1194,7 +1176,7 @@ router.get('/getAllPets', function(req, res){
               idPet: element._id,
               petName: element.petName,
               email: element.email,
-              phone: element.phone.phoneReal,
+              phone: element.phone,
               age: element.age,
               birthDate: element.birthDate,
               ownerPetName: element.ownerPetName,
@@ -1208,7 +1190,7 @@ router.get('/getAllPets', function(req, res){
           idPet: item._id,
           petName: item.petName,
           email: item.email,
-          phone: item.phone.phoneReal,
+          phone: item.phone,
           age: item.age,
           birthDate: item.birthDate,
           ownerPetName: item.ownerPetName,

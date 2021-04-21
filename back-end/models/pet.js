@@ -8,14 +8,8 @@ const PetSchema = mongoose.Schema ({
     type: String
   },
   phone:{
-    phoneExt: {
-      type: String,
-      require: true
-    },
-    phoneReal: {
-      type: Number,
-      require: true
-    },
+    type: Number,
+    require: true
   },
   email: {
     type: String,
@@ -266,14 +260,8 @@ const PetSchema = mongoose.Schema ({
     require: true
   },
   phoneVeterinarian:{
-    phoneVeterinarianExt: {
-      type: String,
-      require: true
-    },
-    phoneVeterinarianReal: {
-      type: Number,
-      require: true
-    },
+    type: Number,
+    require: true
   },
   veterinarianContact: {
     type: String,
@@ -333,14 +321,8 @@ const PetSchema = mongoose.Schema ({
         type: String
       },
       phone:{
-        phoneExt: {
-          type: String,
-          require: true
-        },
-        phoneReal: {
-          type: Number,
-          require: true
-        },
+        type: Number,
+        require: true
       },
       email: {
         type: String,
@@ -450,14 +432,8 @@ const PetSchema = mongoose.Schema ({
         require: true
       },
       phoneVeterinarian:{
-        phoneVeterinarianExt: {
-          type: String,
-          require: true
-        },
-        phoneVeterinarianReal: {
-          type: Number,
-          require: true
-        },
+        type: Number,
+        require: true
       },
       veterinarianContact: {
         type: String,

@@ -1,4 +1,6 @@
 #myPetProfile{
+    border-radius: 5px;
+
         html,
     body,
     header,
@@ -95,7 +97,6 @@
         background-color:#1C2331
         }
     }
-    background: rgba(182, 228, 255, 0.342);
     .card{
         border-radius: 4px;
         background: #fff;
@@ -490,4 +491,12 @@
         margin-bottom: 17px;
     }
     
+}
+
+.bg-red{
+    background: rgba(255, 73, 73, 0.342);
+}
+
+.bg-normal{
+    background: rgba(182, 228, 255, 0.342);
 }
