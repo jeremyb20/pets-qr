@@ -675,7 +675,7 @@ router.get('/getPetDataList', function(req, res){
           petName: results.petName,
           ownerPetName: results.ownerPetName,
           phone: (view == 1)? results.phone: (view == 2 && results.petStatus == 'Perdido' )? 40004000: '******'+test4 ,
-          email:(view == 1)? results.email: (view == 2 && results.petStatus == 'Perdido' )? test+ makeid(test3) +test2: results.email,
+          email:(view == 1)? results.email: (view == 2 && results.petStatus == 'Perdido' )? results.email: test+ makeid(test3) +test2,
           photo: results.photo,
           userState: results.userState,
           lat: results.lat,
