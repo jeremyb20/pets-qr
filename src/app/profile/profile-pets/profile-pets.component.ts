@@ -61,6 +61,7 @@ export class ProfilePetsComponent implements OnInit {
         phone: [this.profile.phone, [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],
         address: [this.profile.address, [Validators.required]],
         email: [this.profile.email, [Validators.required]],
+        // email: [{value:this.profile.email, disabled: true}, [Validators.required]],
         age: [this.profile.age, [Validators.minLength(0),Validators.required,Validators.pattern(/\d/)]],
         veterinarianContact: [this.profile.veterinarianContact, Validators.required],
         phoneVeterinarian: [this.profile.phoneVeterinarian, [Validators.minLength(8),Validators.required,Validators.pattern(/\d/)]],

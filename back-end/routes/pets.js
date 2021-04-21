@@ -686,11 +686,29 @@ router.get('/getPetDataList', function(req, res){
     }
     if(results != undefined){
       if(idSecond == 0) {
+        var firstLetters = results.email;
+        var lastLetters = results.email;
+        let test = firstLetters.slice(0,5);
+        const test2 = lastLetters.slice(lastLetters.length - 4);
+        const test3 = Math.floor(Math.random() * (12 - 5 + 1)) + 5;
+
+        function makeid(length) {
+          var result = [];
+          var characters = '*******************************';
+          var charactersLength = characters.length;
+          for (var i = 0; i < length; i++) {
+            result.push(characters.charAt(Math.floor(Math.random() *
+              charactersLength)));
+          }
+          return result.join('');
+        }
+        
+
         var pet = {
           petName: results.petName,
           ownerPetName: results.ownerPetName,
           phone: (view == 1)? results.phone.phoneReal: (view == 2)? results.phone.phoneExt: 40004000,
-          email: results.email,
+          email:(view == 1)? results.email: test+ makeid(test3) +test2,
           photo: results.photo,
           userState: results.userState,
           lat: results.lat,
