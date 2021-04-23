@@ -56,7 +56,7 @@ router.post('/register/new-pet', async(req, res, next) => {
           let newPet = new Pet({
             petName: obj.petName,
             phone: obj.phone,
-            email: obj.email,
+            email: obj.email.toLowerCase(),
             password: obj.password,
             lat: obj.lat,
             lng: obj.lng,
@@ -813,23 +813,28 @@ router.get('/getCalendarData/:id/:idSecond', function(req, res){
       return;
     }
 
-    if(idSecond == 0) {
-      var pet = {
-        calendar: results.calendar,
-        token: results.token
-       }
-       res.json(pet)
-    }else {
-      results.newPetProfile.forEach(element => {
-        if (element._id == idSecond) {
-          var pet = {
-            calendar: results.calendar,
-            token: results.token
-          }
-          res.json(pet)
-        }
-      })
-    }
+    // if(idSecond == 0) {
+    //   var pet = {
+    //     calendar: results.calendar,
+    //     token: results.token
+    //    }
+    //    res.json(pet)
+    // }else {
+    //   results.newPetProfile.forEach(element => {
+    //     if (element._id == idSecond) {
+    //       var pet = {
+    //         calendar: results.calendar,
+    //         token: results.token
+    //       }
+    //       res.json(pet)
+    //     }
+    //   })
+    // }
+    var pet = {
+      calendar: results.calendar,
+      token: results.token
+     }
+     res.json(pet)
   });
 });
 
