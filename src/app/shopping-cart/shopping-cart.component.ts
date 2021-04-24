@@ -83,14 +83,19 @@ export class ShoppingCartComponent implements OnInit {
 
   getAllMyProduct(){
     this.petService.getAllShopProductList().subscribe(data => {
-      this.allProductsData = data.productsList;
-      this.filteredProductData = this.allProductsData;
-
-      this.getHistory();
+      if(data){
+        this.allProductsData = data.productsList;
+        this.filteredProductData = this.allProductsData;
+        
+        this.getHistory();
+      }else{
+        console.log(data);
+      }
+      
     },
     error => {
     this.loading = false;
-    this._notificationSvc.warning('Hola '+this.user.petName+'', 'Ocurrio un error favor Contactar al administrador', 6000);
+    this._notificationSvc.warning('Hola '+'Lo sentimos.'+'', 'Ocurrio un error favor Contactar al administrador', 6000);
     });
   }
 

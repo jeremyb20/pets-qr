@@ -404,7 +404,7 @@ router.put('/register/new-pet-code-generator', async(req, res, next) => {
   const petUpdate = {
     petName: obj.petName,
     phone: obj.phone,
-    email: obj.email,
+    email: obj.email.toLowerCase(),
     password: obj.password,
     lat: obj.lat,
     lng: obj.lng,
@@ -413,7 +413,8 @@ router.put('/register/new-pet-code-generator', async(req, res, next) => {
     photo: result.secure_url == undefined ? obj.image : result.secure_url,
     petStatus: obj.petStatus,
     isActivated: false,
-    password: obj.password
+    password: obj.password,
+    phoneVeterinarian: 00000000,
   }
 
   await Pet.findOne({_id: req.body._id }, (err, pet) => {
@@ -428,46 +429,13 @@ router.put('/register/new-pet-code-generator', async(req, res, next) => {
           if(myUser){
             res.json({ success: false, msg: 'El correo ya existe en el sistema' });
           }else{
-            if(obj.codeGenerator == pet.randomCode){
+            if(obj.codeGenerator === pet.randomCode){
               if(pet.isActivated){
                 if(obj.idSecond == 0){
                   Pet.newPetGeneratorCode(petUpdate, async (user, done) => {
                     try {
                       var arrayPet = [];
                       arrayPet.push(pet);
-                      
-                      arrayPet.forEach(element => {
-                        var permissions = {
-                          showPhoneInfo: true,
-                          showEmailInfo: true,
-                          showLinkTwitter: true,
-                          showLinkFacebook: true,
-                          showLinkInstagram: true,
-                          showOwnerPetName: true,
-                          showBirthDate: true,
-                          showAddressInfo: true,
-                          showAgeInfo: true,
-                          showVeterinarianContact: true,
-                          showPhoneVeterinarian: true,
-                          showHealthAndRequirements: true,
-                          showFavoriteActivities: true,
-                          showLocationInfo: true
-                        }
-                        
-                        element["petName"] = user.petName;
-                        element["permissions"] = permissions;
-                        element["phone"] = user.phone;
-                        element["email"] = user.email;
-                        element["lat"] = user.lat;
-                        element["lng"] = user.lng;
-                        element["userState"] = user.userState;
-                        element["genderSelected"] = user.genderSelected;
-                        element["photo"] = user.photo;
-                        element["petStatus"] = user.petStatus;
-                        element["password"] = user.password;
-                        element["isActivated"] = false;
-                      })
-                      pet.save();
 
                       var smtpTransport = nodemailer.createTransport({
                         host: process.env.ZOHO_HOST,
@@ -501,33 +469,69 @@ router.put('/register/new-pet-code-generator', async(req, res, next) => {
                       );
                     
                       smtpTransport.verify(function(error, success) {
+                        console.log(success,'que trae');
+                        console.log(error,'que trae dos');
                         if (error) {
                           console.log(error);
+                          res.json({ success: false, msg: 'El correo no existe favor verifique que las letras sean las correctas no se aceptan mayusculas' });
                         } else {
-                          console.log("Server is ready to take our messages");
+                          arrayPet.forEach(element => {
+                            var permissions = {
+                              showPhoneInfo: true,
+                              showEmailInfo: true,
+                              showLinkTwitter: true,
+                              showLinkFacebook: true,
+                              showLinkInstagram: true,
+                              showOwnerPetName: true,
+                              showBirthDate: true,
+                              showAddressInfo: true,
+                              showAgeInfo: true,
+                              showVeterinarianContact: true,
+                              showPhoneVeterinarian: true,
+                              showHealthAndRequirements: true,
+                              showFavoriteActivities: true,
+                              showLocationInfo: true
+                            }
+                            
+                            element["petName"] = user.petName;
+                            element["permissions"] = permissions;
+                            element["phone"] = user.phone;
+                            element["email"] = user.email;
+                            element["lat"] = user.lat;
+                            element["lng"] = user.lng;
+                            element["userState"] = user.userState;
+                            element["genderSelected"] = user.genderSelected;
+                            element["photo"] = user.photo;
+                            element["phoneVeterinarian"] = user.phoneVeterinarian;
+                            element["petStatus"] = user.petStatus;
+                            element["password"] = user.password;
+                            element["isActivated"] = false;
+                          })
+                          pet.save();
+                          var mailOptions = {
+                            to: user.email,
+                            from: 'soporte@localpetsandfamily.com',
+                            subject: 'LocalPetsAndFamily registro realizado exitosamente',
+                            attachments: [
+                              {filename: 'localpetslogo.jpg', path:'./src/assets/localpetslogo.jpg'}
+                            ],
+                            template: 'index',
+                            context: {
+                              text: 'Recibe esto porque usted (u otra persona) se ha registrado dentro de nuestra plataforma .\n\n' +
+                              'Haga clic en el siguiente enlace en su navegador para poder iniciar sesion:\n\n' +
+                              'Si no lo solicitó, ignore este correo electrónico.\n',
+                              link: 'https://www.localpetsandfamily.com/login-pets',
+                              textLink: 'Ir a iniciar sesión'
+                            } 
+                          };
+                        
+                          smtpTransport.sendMail(mailOptions, function(err) {
+                            res.json({ success: true, msg: 'Su registro ha sido authenticado correctamente. Haz click en ok para iniciar sesión' });
+                          });
                         }
                       });
                     
-                      var mailOptions = {
-                        to: user.email,
-                        from: 'soporte@localpetsandfamily.com',
-                        subject: 'LocalPetsAndFamily registro realizado exitosamente',
-                        attachments: [
-                          {filename: 'localpetslogo.jpg', path:'./src/assets/localpetslogo.jpg'}
-                        ],
-                        template: 'index',
-                        context: {
-                          text: 'Recibe esto porque usted (u otra persona) se ha registrado dentro de nuestra plataforma .\n\n' +
-                          'Haga clic en el siguiente enlace en su navegador para poder iniciar sesion:\n\n' +
-                          'Si no lo solicitó, ignore este correo electrónico.\n',
-                          link: 'https://www.localpetsandfamily.com/login-pets',
-                          textLink: 'Ir a iniciar sesión'
-                        } 
-                      };
-                    
-                      smtpTransport.sendMail(mailOptions, function(err) {
-                        res.json({ success: true, msg: 'Su registro ha sido authenticado correctamente. Haz click en ok para iniciar sesión' });
-                      });
+                     
                     } catch (err) {
                       res.json({ success: false, msg: err });
                       next(err);
@@ -538,7 +542,7 @@ router.put('/register/new-pet-code-generator', async(req, res, next) => {
                 res.json({ success: false, msg: 'Este codigo ya ha sido registrado' });
               }
             }else{
-              res.json({ success: false, msg: 'El codigo es el incorrecto' });
+              res.json({ success: false, msg: 'El codigo es el incorrecto verifique que las letras sean minuscula y mayuscula' });
             }
           }
         }
@@ -648,52 +652,59 @@ router.get('/getPetDataList', function(req, res){
     }
     if(results != undefined){
       if(idSecond == 0) {
-        var firstLetters = results.email;
-        var lastLetters = results.email;
-        var phone = results.phone;
-        var phoneVetrinarian = results.phoneVeterinarian;
-        const test5 = phoneVetrinarian.toString().slice(phoneVetrinarian.toString().length - 2);
-        let test = firstLetters.slice(0,5);
-        const test2 = lastLetters.slice(lastLetters.length - 4);
-        const test3 = Math.floor(Math.random() * (12 - 5 + 1)) + 5;
-        const test4 = phone.toString().slice(phone.toString().length - 2);
-       
-
-        function makeid(length) {
-          var result = [];
-          var characters = '*******************************';
-          var charactersLength = characters.length;
-          for (var i = 0; i < length; i++) {
-            result.push(characters.charAt(Math.floor(Math.random() *
-              charactersLength)));
+        if(results.isActivated){
+          var pet = {
+            isActivated: results.isActivated,
           }
-          return result.join('');
-        }
+          res.json({ success: true, pet });
+        }else{
+          var firstLetters = results.email;
+          var lastLetters = results.email;
+          var phone = results.phone;
+          var phoneVetrinarian = results.phoneVeterinarian;
+          const test5 = phoneVetrinarian.toString().slice(phoneVetrinarian.toString().length - 2);
+          let test = firstLetters.slice(0,5);
+          const test2 = lastLetters.slice(lastLetters.length - 4);
+          const test3 = Math.floor(Math.random() * (12 - 5 + 1)) + 5;
+          const test4 = phone.toString().slice(phone.toString().length - 2);
         
 
-        var pet = {
-          petName: results.petName,
-          ownerPetName: results.ownerPetName,
-          phone: (view == 1)? results.phone: (view == 2 && results.petStatus == 'Perdido' )? 40004000: '******'+test4 ,
-          email:(view == 1)? results.email: (view == 2 && results.petStatus == 'Perdido' )? results.email: test+ makeid(test3) +test2,
-          photo: results.photo,
-          userState: results.userState,
-          lat: results.lat,
-          lng: results.lng,
-          birthDate: results.birthDate,
-          address: results.address,
-          age: results.age,
-          isActivated: results.isActivated,
-          veterinarianContact: results.veterinarianContact,
-          phoneVeterinarian: (view == 1)? results.phoneVeterinarian: (view == 2 && results.petStatus == 'Perdido')? 40004000: '******'+test5,
-          healthAndRequirements: results.healthAndRequirements,
-          favoriteActivities: results.favoriteActivities,
-          petStatus: results.petStatus,
-          linkTwitter: results.linkTwitter,
-          linkFacebook: results.linkFacebook,
-          linkInstagram: results.linkInstagram,
+          function makeid(length) {
+            var result = [];
+            var characters = '*******************************';
+            var charactersLength = characters.length;
+            for (var i = 0; i < length; i++) {
+              result.push(characters.charAt(Math.floor(Math.random() *
+                charactersLength)));
+            }
+            return result.join('');
+          }
+          
+
+          var pet = {
+            petName: results.petName,
+            ownerPetName: results.ownerPetName,
+            phone: (view == 1)? results.phone: (view == 2 && results.petStatus == 'Perdido' )? 40004000: '******'+test4 ,
+            email:(view == 1)? results.email: (view == 2 && results.petStatus == 'Perdido' )? results.email: test+ makeid(test3) +test2,
+            photo: results.photo,
+            userState: results.userState,
+            lat: results.lat,
+            lng: results.lng,
+            birthDate: results.birthDate,
+            address: results.address,
+            age: results.age,
+            isActivated: results.isActivated,
+            veterinarianContact: results.veterinarianContact,
+            phoneVeterinarian: (view == 1)? results.phoneVeterinarian: (view == 2 && results.petStatus == 'Perdido')? 40004000: '******'+test5,
+            healthAndRequirements: results.healthAndRequirements,
+            favoriteActivities: results.favoriteActivities,
+            petStatus: results.petStatus,
+            linkTwitter: results.linkTwitter,
+            linkFacebook: results.linkFacebook,
+            linkInstagram: results.linkInstagram,
+          }
+          res.json({ success: true, pet });
         }
-        res.json({ success: true, pet });
       }else {
         if(results!= null) {
             results.newPetProfile.forEach(element => {

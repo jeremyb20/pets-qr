@@ -112,18 +112,19 @@ export class MyPetCodeComponent implements OnInit {
          // this.router.navigate(['/register-pets']); 
           this.router.navigate(['/register-pets/'],{ queryParams: {id: this.getLinkIdParam, idSecond: this.getLinkIdSecondaryParams, isActivated:data.pet.isActivated}}); 
 
+        }else{
+          this.profile = data.pet;
+          this.imageUrl = this.profile.photo;
+          this.markers.push({
+            lat: this.profile.lat,
+            lng: this.profile.lng,
+            draggable: false,
+            isDestination: true,
+            photo: 'https://cdn.worldvectorlogo.com/logos/google-maps-2020-icon.svg'
+          });
+          this.getPermissionInfo();
+          this.showInfo = true;
         }
-        this.profile = data.pet;
-        this.imageUrl = this.profile.photo;
-        this.markers.push({
-          lat: this.profile.lat,
-          lng: this.profile.lng,
-          draggable: false,
-          isDestination: true,
-          photo: 'https://cdn.worldvectorlogo.com/logos/google-maps-2020-icon.svg'
-        });
-        this.getPermissionInfo();
-        this.showInfo = true;
       }else {
         let timerInterval
         Swal.fire({
@@ -156,7 +157,34 @@ export class MyPetCodeComponent implements OnInit {
     },
     error => {
       this.loading = false;
-      this._notificationSvc.warning('Hola '+this.profile.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+      let timerInterval
+      Swal.fire({
+        title: 'Error de enrutamiento!',
+        html: 'Prece que el link no está disponible. Se enviará al inicio en <b></b> millisegundos.',
+        timer: 4000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading()
+          timerInterval = setInterval(() => {
+            const content = Swal.getContent()
+            if (content) {
+              const b = content.querySelector('b')
+              if (b) {
+                b.textContent = Swal.getTimerLeft()
+              }
+            }
+          }, 100)
+        },
+        willClose: () => {
+          clearInterval(timerInterval)
+        }
+      }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+          this.router.navigate(['/home']); 
+        }
+      })
+    
     });
   }
 
