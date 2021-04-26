@@ -26,7 +26,7 @@
         </div>
 
         <div class="form-group input-group">
-            <span class="mr-3"><i class="fa fa-phone"></i> Teléfono </span>
+            <span class="mr-3"><i class="fa fa-phone fa-flip-horizontal"></i> Teléfono </span>
             <input formControlName="phone" pattern="\d*" class="form-control" placeholder="Teléfono " maxlength="8" [ngClass]="{ 'is-invalid': submitted && g.phone.errors }" />
             <div *ngIf="submitted && g.phone.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.phone.errors }">
                 <div *ngIf="g.phone.errors.required">Teléfono es requerido</div>
@@ -60,7 +60,7 @@
             </div>
           </div>
         <div class="form-group input-group">
-            <span class="mr-3"><i class="fa fa-phone"></i> Teléfono Veterinario </span>
+            <span class="mr-3"><i class="fa fa-phone fa-flip-horizontal"></i> Teléfono Veterinario </span>
             <input formControlName="phoneVeterinarian" pattern="\d*" class="form-control" placeholder="Teléfono Veterinario" maxlength="8" [ngClass]="{ 'is-invalid': submitted && g.phoneVeterinarian.errors }" />
             <div *ngIf="submitted && g.phoneVeterinarian.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.phoneVeterinarian.errors }">
                 <div *ngIf="g.phoneVeterinarian.errors.required">Teléfono es requerido</div>

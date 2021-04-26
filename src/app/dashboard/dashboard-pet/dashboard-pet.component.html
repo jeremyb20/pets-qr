@@ -65,7 +65,7 @@
                     </div>
                     <div *ngIf="profile.phone" class="card">
                         <div class="card-body">
-                            <span class="card-title"><i class="fa fa-phone"></i> Teléfono</span>
+                            <span class="card-title"><i class="fa fa-phone fa-flip-horizontal"></i> Teléfono</span>
                             <p class="card-text">{{profile.phone}}</p>
                         </div>
                     </div>
@@ -301,7 +301,7 @@
                 </div>
 
                 <div class="form-group input-group col-12">
-                    <span class="mr-3"><i class="fa fa-phone"></i> Teléfono </span>
+                    <span class="mr-3"><i class="fa fa-phone fa-flip-horizontal"></i> Teléfono </span>
                     <input formControlName="phone" pattern="\d*" class="form-control" placeholder="Telefono " maxlength="8" [ngClass]="{ 'is-invalid': submitted && i.phone.errors }" />
                     <div *ngIf="submitted && i.phone.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.phone.errors }">
                         <div *ngIf="i.phone.errors.required">Teléfono es requerido</div>
@@ -335,7 +335,7 @@
                     </div>
                   </div>
                 <div class="form-group input-group col-12">
-                    <span class="mr-3"><i class="fa fa-phone"></i> Teléfono Veterinario </span>
+                    <span class="mr-3"><i class="fa fa-phone fa-flip-horizontal"></i> Teléfono Veterinario </span>
                     <input formControlName="phoneVeterinarian" pattern="\d*" class="form-control" placeholder="Teléfono Veterinario" maxlength="8" [ngClass]="{ 'is-invalid': submitted && i.phoneVeterinarian.errors }" />
                     <div *ngIf="submitted && i.phoneVeterinarian.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && i.phoneVeterinarian.errors }">
                         <div *ngIf="i.phoneVeterinarian.errors.required">Teléfono es requerido</div>
