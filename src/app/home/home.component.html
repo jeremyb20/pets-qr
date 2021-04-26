@@ -39,12 +39,12 @@
       <ul class="navbar-nav nav-flex-icons">
         <li class="nav-item">
           <a href="https://www.facebook.com/LocalPetsFamily-115795170546124" class="nav-link" target="_blank">
-            <i class="fab fa-facebook-f"></i>
+            <i class="fab fa-facebook-f"></i> <span *ngIf="Media.IsMobile">  LocalPets&Family</span>
           </a>
         </li>
         <li class="nav-item">
           <a href="https://wa.me/+50663050037?text=Estoy%20interesad@%20en%20sus%20productos%20necesito%20mas%20informacion" class="nav-link" target="_blank">
-            <i class="fab fa-whatsapp"></i>
+            <i class="fab fa-whatsapp"></i> <span *ngIf="Media.IsMobile">  Whatsapp</span>
           </a>
         </li>
         <li class="nav-item">
@@ -163,8 +163,9 @@
               <strong>LocalPets&Family también se ha diversificado con la incorporación de la plaquita personal para advertir a otros de algún padecimiento en caso de emergencias.</strong>
             </p>
 
-            <a target="_blank" href="https://mdbootstrap.com/bootstrap-tutorial/" class="btn btn-inverse btn-lg">Registrar Familiar
-            </a>
+            <button class="m-1 btn-lg btn btn-inverse" [disabled]="true" role="button">Registrar Familiar
+              <i *ngIf="!Media.IsMobile" class="fas fa-user ml-2"></i>
+            </button>
           </div>
           <!-- Content -->
 
