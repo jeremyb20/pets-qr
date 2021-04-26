@@ -53,6 +53,37 @@ export class RegisterPetComponent implements OnInit {
         this.getLinkIdSecondaryParams = params.idSecond;
         this.isActivated = Boolean(params.isActivated);
         this.hideInputCode = (this.getLinkIdParam == undefined)? true:false;
+
+        if(this.getLinkIdParam == undefined){
+          let timerInterval
+          Swal.fire({
+            title: 'Lo sentimos!',
+            html: 'Prece que la ruta que accediste no esta disponible por el momento si tienes alguna duda puedes contactarse con el administrador del sitio. Se enviará al inicio en <b></b> millisegundos.',
+            timer: 8000,
+            timerProgressBar: true,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading()
+              timerInterval = setInterval(() => {
+                const content = Swal.getContent()
+                if (content) {
+                  const b = content.querySelector('b')
+                  if (b) {
+                    b.textContent = Swal.getTimerLeft()
+                  }
+                }
+              }, 100)
+            },
+            willClose: () => {
+              clearInterval(timerInterval)
+            }
+          }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+              this.router.navigate(['/home']); 
+            }
+          })
+        }
       });
     }
 
