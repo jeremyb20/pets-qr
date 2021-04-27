@@ -36,7 +36,8 @@
                 <li> <a (click)="gotoSomewhere(4)" [routerLink]="'/location-pets'"><i class="fas fa-location-arrow"></i> Ubicación</a> </li>
                 <li> <a (click)="gotoSomewhere(5)" [routerLink]="'/permissions-pets'"><i class="fas fa-lock"></i> Permisos</a> </li>
                 <!-- <li> <a (click)="gotoSomewhere(6)" [routerLink]="'/shopping-cart'"><i class="fas fa-cart-plus"></i> Carrito Compras</a> </li> -->
-                <li> <a href="https://wa.me/+50663050037?text=Quiero%20reportar%20un%20problema%20en%20la%20aplicacion" target="_blank"><i class="fab fa-whatsapp"></i> Reportar un problema</a> </li>
+                <li><a href="https://m.me/115795170546124" (click)="hide()" target="_blank"><i class="fab fa-facebook-messenger"></i> <span *ngIf="Media.IsMobile">  Messenger</span></a></li>
+                <li> <a href="https://wa.me/+50663050037?text=Quiero%20reportar%20un%20problema%20en%20la%20aplicacion" (click)="hide()" target="_blank"><i class="fab fa-whatsapp"></i> Reportar un problema</a> </li>
             </ul>
 
             <ul *ngIf="user.userState === 0" class="sidebar-nav">

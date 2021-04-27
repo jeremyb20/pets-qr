@@ -12,6 +12,10 @@
         transition: all .5s ease
     }
 
+    .social a:hover{
+      color: #fff;
+    }
+
         /* Add the below transitions to allow a smooth color change similar to lyft */
     .navbar {
         -webkit-transition: all 0.6s ease-out;
