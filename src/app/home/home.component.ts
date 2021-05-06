@@ -72,11 +72,14 @@ export class HomeComponent implements OnInit {
 
   // TODO: Cross browsing
   gotoTop() {
-    this.elementDiv.srcElement.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
+    if(this.elementDiv){
+      this.elementDiv.srcElement.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }
+    
   }
 
   showPoliticPrivacy(val) {

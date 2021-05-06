@@ -695,7 +695,7 @@ router.get('/getPetDataList', function(req, res){
             age: results.age,
             isActivated: results.isActivated,
             veterinarianContact: results.veterinarianContact,
-            phoneVeterinarian: (view == 1)? results.phoneVeterinarian: (view == 2 && results.petStatus == 'Perdido')? 63050037: (view == 3 && results.petStatus == 'Perdido' )?results.email:  '******'+test5,
+            phoneVeterinarian: (view == 1)? results.phoneVeterinarian: (view == 2 && results.petStatus == 'Perdido')? 63050037: (view == 3 && results.petStatus == 'Perdido' )?63050037:  '******'+test5,
             healthAndRequirements: results.healthAndRequirements,
             favoriteActivities: results.favoriteActivities,
             petStatus: results.petStatus,
