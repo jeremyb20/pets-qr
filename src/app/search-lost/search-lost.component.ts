@@ -5,6 +5,7 @@ import { NotificationService } from '../common/services/notification.service';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+declare var $: any;
 
 @Component({
   selector: 'app-search-lost',
@@ -24,6 +25,7 @@ export class SearchLostComponent implements OnInit {
   showPetLost: boolean = false;
   showFamilyLost: boolean = false;
   showSelect: boolean = true;
+  infoPet: any;
   
   constructor(
     private petService: PetService,
@@ -50,6 +52,11 @@ export class SearchLostComponent implements OnInit {
     this.loading = false;
     this._notificationSvc.warning('Hola'+',', 'Ocurrio un error favor DE REVISAR', 6000);
     });
+  }
+
+  showMoreInfo(item:any){
+    this.infoPet = item;
+    $('#showDataProfile').modal('show');
   }
 
   divScroll(e, isClicked) {

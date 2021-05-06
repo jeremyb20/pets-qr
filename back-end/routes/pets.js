@@ -1329,31 +1329,24 @@ router.get('/lost/getAllLostPets', function(req, res){
   var arrayObj = []
   pets.forEach((item)=> {
     if(item.petStatus == 'Perdido'){
-      item.code.forEach(val=> {
-        if(item._id == val.idCan){
-          var object = {
-            link : val.link,
-            photo:val.petPhoto,
-            petName: val.petName
-          }
-          arrayObj.push(object);
-        }
-        
-      });
+      var object = {
+        link :'https://' + req.headers.host + '/myPetCode/' + item._id +'/'+ 0,
+        photo: item.photo,
+        petName: item.petName,
+        petStatusReport: item.petStatusReport
+      }
+      arrayObj.push(object);
     }
     if(item.newPetProfile.length>0) {
       item.newPetProfile.forEach(value => {
         if(value.petStatus == 'Perdido'){
-          item.code.forEach(f=> {
-            if(value._id == f.idCan){
-              var object = {
-                link : f.link,
-                photo: f.petPhoto,
-                petName: f.petName
-              }
-              arrayObj.push(object);
-            }
-          })
+          var object = {
+            link : 'https://' + req.headers.host + '/myPetCode/' + item._id +'/'+ value._id,
+            photo: value.photo,
+            petName: value.petName,
+            petStatusReport: value.petStatusReport
+          }
+          arrayObj.push(object);
         }
       })
     }

@@ -74,7 +74,7 @@
             </div>
         </div>
 
-        <div *ngIf="showPetLost" class="container">
+        <div *ngIf="showPetLost" class="container-fluid">
             <div class="form-row">
                 <div class="form-group input-group row justify-content-center">
                     <div class="col-4 col-sm-6 text-left">
@@ -95,25 +95,25 @@
                 </div>
             </div>
             <div class="row test">
-                <div class="col-12 col-sm-4 col-lg-4 col-xl-4 mb-2" *ngFor="let item of filterData(query)">
+                <div class="col-6 col-sm-3 col-lg-3 col-xl-3 mb-2" *ngFor="let item of filterData(query)">
                   <div *ngIf="item.petName != 'Admin'">
                     <div class="card hovercard ">
                         <div class="cardheader"
                             [ngStyle]="{'background-image': ' url(' + item.photo  + ')','background-size': 'cover', 'background-color':'rgba(0, 0, 0, 0.452)', 'background-blend-mode':'multiply',  'height': '155px'}">
                         </div>
-                        <div class="avatar">
+                        <div (click)="showMoreInfo(item)" class="avatar">
                             <img alt="{{item.photo}}" src="{{item.photo}}">
                         </div>
                         <div class="card-body">
-                            <h4 class="card-title mt-3">Hola, me llamo {{item.petName}}</h4>
+                            <h6 class="card-title mt-3">Hola, me llamo {{item.petName}}</h6>
                         </div>
                         <div class="card-footer">
-                            <a class="btn btn-inverse" target="_blank" href="{{item.link}}" type="submit">Ver perfil de {{item.petName}}</a>
+                            <a class="btn btn-inverse" target="_blank" href="{{item.link}}" type="submit"><span *ngIf="!Media.IsMobile">Ver perfil de {{item.petName}}</span> <span *ngIf="Media.IsMobile">Ir al perfil</span> </a>
                         </div>
                     </div>
                   </div>
                 </div>
-                <div *ngIf="filteredData">
+                <div class="col-12 text-center" *ngIf="filteredData">
                     <p *ngIf="filteredData.length == 0">No se ha encontrado lo que buscas</p>
                 </div>
             </div>
@@ -140,7 +140,7 @@
                 </div>
             </div>
             <div class="row test justify-content-center">
-                <div class="col-12 col-sm-4 col-lg-4 col-xl-4 mb-2" *ngFor="let item of filterData(query)">
+                <!-- <div class="col-12 col-sm-4 col-lg-4 col-xl-4 mb-2" *ngFor="let item of filterData(query)">
                     <div class="card hovercard ">
                         <div class="cardheader"
                             [ngStyle]="{'background-image': ' url(' + item.photo  + ')','background-size': 'cover', 'background-color':'rgba(0, 0, 0, 0.452)', 'background-blend-mode':'multiply',  'height': '235px'}">
@@ -149,14 +149,52 @@
                             <img alt="{{item.photo}}" src="{{item.photo}}">
                         </div>
                         <div class="card-body">
-                            <h4 class="card-title mt-3">Hola, me llamo {{item.petName}}</h4>
+                            <h6 class="card-title mt-3">Hola, me llamo {{item.petName}}</h6>
                         </div>
                     </div>
                 </div>
                 <div *ngIf="filteredData">
                     <p *ngIf="filteredData.length == 0">No se ha encontrado lo que buscas</p>
-                </div>
+                </div> -->
             </div>
+        </div>
+        <div class="modal fade" *ngIf="infoPet" id="showDataProfile" tabindex="-1" role="dialog" aria-labelledby="showDataProfile" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="showDataProfile">{{infoPet.petName}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+
+                  <div class="test" *ngFor="let item of infoPet.petStatusReport">
+                    <div *ngIf="item.petName != 'Admin'">
+                      <div class="card hovercard ">
+                          <div class="cardheader"
+                              [ngStyle]="{'background-image': ' url(' + infoPet.photo  + ')','background-size': 'cover', 'background-color':'rgba(0, 0, 0, 0.452)', 'background-blend-mode':'multiply',  'height': '155px'}">
+                          </div>
+                          <div class="avatar" style="margin-bottom: -81px;">
+                              <img alt="{{infoPet.photo}}" src="{{infoPet.photo}}">
+                          </div>
+                          <div  class="card-body">
+                            <p>Dia que se perdio: {{item.date}}</p>
+                            <p>Ultimo lugar visto: {{item.lastPlaceLost}}</p>
+                            <p>Extras: {{item.descriptionLost}}</p> 
+                          </div>
+                          <div class="card-footer">
+                              <a class="btn btn-inverse" target="_blank" href="{{infoPet.link}}" type="submit"><span *ngIf="!Media.IsMobile">Ver perfil de {{item.petName}}</span> <span *ngIf="Media.IsMobile">Ir al perfil</span> </a>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="modal-body text-center" *ngIf="infoPet.petStatusReport.length == 0">
+                No hay mas datos para mostrar
+              </div>
+            </div>
+          </div>
         </div>
     </main>
     <div id="back-to-top" class="btn btn-inverse isShow scroll" *ngIf="isShow" (click)="gotoTop()" (scroll)="divScroll($event, true)"> 👆</div>

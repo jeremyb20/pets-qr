@@ -334,6 +334,31 @@
             top: -95px;
             margin-bottom: -122px;
         }
+
+        @include media-breakpoint-down(sm) {
+            .card.hovercard .avatar img {
+                width: 100px !important;
+                height: 100px !important;
+                max-width: 200px;
+                max-height: 200px;
+                object-fit: cover;
+                -webkit-border-radius: 50%;
+                -moz-border-radius: 50%;
+                border-radius: 50%;
+                border: 5px solid rgba(255,255,255,0.5);
+            }
+
+            .card.hovercard .avatar {
+                position: relative;
+                top: -51px;
+                margin-bottom: -103px;
+            }
+
+            .card .card-body {
+                padding: 0 20px;
+                margin-top: 37px !important;
+            }
+        }
         
         .card.hovercard .avatar img {
             width: 200px;
