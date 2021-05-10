@@ -234,9 +234,9 @@ export class RegisterPetComponent implements OnInit {
         return;
       } else {
         if(this.markers.length != 0) {
-          this.loading = true;
-
           if(this.hideInputCode){
+            this.loading = true;
+
             var newPet = {
               petName: this.f.petName.value,
               phone: this.f.phone.value,
@@ -284,6 +284,7 @@ export class RegisterPetComponent implements OnInit {
               setTimeout(() => { this.hideMsg = false }, this.timeSeconds);
             });
           }else{
+            this.loading = true;
             var updateNewPetCode = {
               _id: this.getLinkIdParam,
               idSecond: this.getLinkIdSecondaryParams,

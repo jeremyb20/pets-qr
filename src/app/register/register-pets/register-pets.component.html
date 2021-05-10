@@ -118,7 +118,7 @@
                                   <div *ngIf="submitted && f.acceptTerms.errors" class="invalid-feedback">Acceptar Ts & Cs Es requerido</div>
                                 </div>
                                 <div class="form-group">
-                                  <button type="submit" class="btn btn-yellow btn-block"> <i *ngIf="!loading" class="fas fa-plus-circle"></i>
+                                  <button type="submit" [disabled]="loading" class="btn btn-yellow btn-block"> <i *ngIf="!loading" class="fas fa-plus-circle"></i>
                                     <svg *ngIf="loading" class="loader" viewBox="0 0 24 24">
                                       <circle class="loader__value" cx="12" cy="12" r="10" />
                                       <circle class="loader__value" cx="12" cy="12" r="10" />
@@ -172,7 +172,7 @@
                                   <div *ngIf="submitted && f.acceptTerms.errors" class="invalid-feedback">Acceptar Ts & Cs Es requerido</div>
                                 </div>
                                 <div class="form-group">
-                                  <button type="submit" class="btn btn-yellow btn-block"> <i *ngIf="!loading" class="fas fa-plus-circle"></i>
+                                  <button type="submit" [disabled]="loading" class="btn btn-yellow btn-block"> <i *ngIf="!loading" class="fas fa-plus-circle"></i>
                                     <svg *ngIf="loading" class="loader" viewBox="0 0 24 24">
                                       <circle class="loader__value" cx="12" cy="12" r="10" />
                                       <circle class="loader__value" cx="12" cy="12" r="10" />
