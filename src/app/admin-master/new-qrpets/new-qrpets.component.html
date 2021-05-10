@@ -4,11 +4,19 @@
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
                 <h4 class="card-title">Nuevos Códigos</h4>
             </div>
-            <div class="col-12 col-sm-6 col-md-6 ">
-                <span *ngIf="filteredData" >Codigo creados: {{filteredData.length}}</span>
+            <div class="col-12 col-sm-4 col-md-4 ">
+                <span *ngIf="filteredData" >Codigo creados: {{filteredData.length}}</span><br>
+                <span *ngIf="filteredData" >Total Preparando: {{isPreparing}}</span><br>
+                <span *ngIf="filteredData" >Total Terminados: {{isEnding}}</span><br>
+                <span *ngIf="filteredData" >Total Pendientes: {{isPending}}</span><br>
+                <span *ngIf="filteredData" >Total Ordenando: {{isOrdering}}</span><br>
+
             </div>
-            <div class="col-12 col-sm-6 col-md-6 ">
+            <div class="col-12 col-sm-4 col-md-4 ">
                 <button (click)="generateCode()"  class="btn btn-block btn-yellow btn-sm">Generar código</button>
+            </div>
+            <div class="col-12 col-sm-4 col-md-4 ">
+                <button (click)="personalizeCode()"  class="btn btn-block btn-inverse btn-sm">Personalizar código</button>
             </div>
         </div>
         <div class="form-row">
@@ -100,7 +108,32 @@
                         <div *ngIf="AngularxQrCode!= ''" class="my-4">
                             <qrcode [qrdata]="AngularxQrCode" [width]="256" [level]="'H'"></qrcode>
                         </div>
+                        <div *ngIf="textValue!= ''" class="content">
+                            <qrcode [qrdata]="textValue" [width]="256" [level]="'H'" [size]="500" level="H" canvas="true" #qrCode></qrcode><br/>
+                            <button class="btn btn-info" (click)="createQRWithImage()" >Descargar Qr</button>
+                          </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-qr fade" tabindex="-1" role="dialog" id="qrCodePersonalizedDialog">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center header-modal" id="exampleModalLabel">
+                    <h5 class="text-center modal-title"><i class="fas fa-qrcode"></i> Qr Code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body ">
+                    <div *ngIf="textValue!= ''" class="content">
+                        <input type="text" class="form-control" [(ngModel)]="imgURL" placeholder="URL to some Image"/><br/>
+                        <input type="text" class="form-control" [(ngModel)]="textValue" placeholder="Data for QR-Code" /><br/>
+                        <qrcode [qrdata]="textValue" [size]="500" level="H" canvas="true" #qrCode></qrcode><br/>
+                        <button class="btn btn-info" (click)="createQRWithImage()" [disabled]="imgURL == '' || textValue == ''">Generate QR & Downlaod</button>
+                      </div>
                 </div>
             </div>
         </div>

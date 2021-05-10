@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { saveAs } from 'file-saver';
 import { Subscription } from 'rxjs';
 import { MediaResponse, MediaService } from 'src/app/common/services/media.service';
 import { NotificationService } from 'src/app/common/services/notification.service';
@@ -17,6 +18,7 @@ declare var $: any;
 })
 export class NewQRPetsComponent implements OnInit {
   public AngularxQrCode: string = null;
+  public textValue: string = null;
   private mediaSubscription: Subscription;
   Media: MediaResponse;
   allNewCodes: any;
@@ -29,6 +31,16 @@ export class NewQRPetsComponent implements OnInit {
   loading: boolean = false;
   submitted = false;
   showPetSecondArray: any;
+  isPreparing: any = 0;
+  isEnding: any = 0;
+  isPending: any = 0;
+  isOrdering: any = 0;
+
+  title = 'qr-code-test';
+  imgURL = "";
+  elem: any;
+
+  @ViewChild('qrCode', {static : false}) qrCode:any;
 
   constructor(private petService: PetService, private media: MediaService,private _notificationSvc: NotificationService, private router: Router, private formBuilder: FormBuilder) {
     this.petLogged = this.petService.getLocalPet()
@@ -44,6 +56,7 @@ export class NewQRPetsComponent implements OnInit {
       this.Media = media;
     });
     this.AngularxQrCode = 'Initial QR code data string';
+    this.textValue = 'Initial QR code data string';
     this.sortArr('randomCode');
     this.getNewCodes();
   }
@@ -55,7 +68,26 @@ export class NewQRPetsComponent implements OnInit {
 
   getNewCodes() {
     this.petService.getNewCodes().subscribe(data => {
+        this.isPreparing = 0;
+        this.isEnding = 0;
+        this.isPending = 0;
+        this.isOrdering = 0;
+        
         this.allNewCodes = data;
+        this.allNewCodes.forEach(element => {
+          if(element.stateActivation == 'Preparando'){
+            this.isPreparing ++;
+          }
+          if(element.stateActivation == 'Terminado'){
+            this.isEnding ++;
+          }
+          if(element.stateActivation == 'Pendiente'){
+            this.isPending ++;
+          }
+          if(element.stateActivation == 'Ordenando'){
+            this.isOrdering ++;
+          }
+        });
         this.filteredData = this.allNewCodes;
     },
     error => {
@@ -67,6 +99,28 @@ export class NewQRPetsComponent implements OnInit {
   checkQrCode(link:any){
     $('#qrCodeInfoDialog').modal('show');
     this.AngularxQrCode = link;
+    this.textValue = link;
+
+    setTimeout(() => { this.elem =  this.qrCode.qrcElement.nativeElement.children[0]; 
+      let context = this.elem.getContext("2d");
+  
+      // create image
+      let img = new Image();
+      img.crossOrigin="anonymous";
+      // img.src = this.imgURL;
+      img.src = 'https://res.cloudinary.com/ensamble/image/upload/v1619212083/mihxx1tmm5bgjiukmw7r.png'
+  
+      // fixed sizes
+      let iWidth = 70;
+      let iHeight = 70;
+      
+      let _that = this; 
+      img.onload = () => {
+        context.drawImage(img, (this.elem.width/2) - (iWidth/2),(this.elem.height/2) - (iHeight/2), iWidth, iHeight);    
+        // saveAs(_that.canvasToBlob(this.elem), "file.png");
+      }
+    }, 100);
+    // this.createQRWithImage();
   }
 
   deleteCode(item:any){
@@ -243,6 +297,46 @@ export class NewQRPetsComponent implements OnInit {
           Swal.fire('Cambios no ha sido guardados', '', 'info')
         }
       })
+  }
+
+  createQRWithImage(){
+    // get canvas dom element
+    setTimeout(() => { this.elem =  this.qrCode.qrcElement.nativeElement.children[0]; 
+      let context = this.elem.getContext("2d");
+
+      // create image
+      let img = new Image();
+      img.crossOrigin="anonymous";
+      // img.src = this.imgURL;
+      img.src = 'https://res.cloudinary.com/ensamble/image/upload/v1619212083/mihxx1tmm5bgjiukmw7r.png'
+
+      // fixed sizes
+      let iWidth = 70;
+      let iHeight = 70;
+      
+      let _that = this; 
+      img.onload = () => {
+        context.drawImage(img, (this.elem.width/2) - (iWidth/2),(this.elem.height/2) - (iHeight/2), iWidth, iHeight);    
+        saveAs(_that.canvasToBlob(this.elem), "file.png");
+      }
+    }, 100);
+    // convert to canvas type
+  }
+
+  // adapted from: https://medium.com/better-programming/convert-a-base64-url-to-image-file-in-angular-4-5796a19fdc21
+  canvasToBlob(canvas){
+    let dataurl = canvas.toDataURL("image/png");
+    let byteString = window.atob(dataurl.replace(/^data:image\/(png|jpg);base64,/, ""));
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([int8Array], { type: 'image/jpeg' });
+  }
+
+  personalizeCode(){
+    $('#qrCodePersonalizedDialog').modal('show');
   }
 
   filterData(query,query1,query2): any[] {
