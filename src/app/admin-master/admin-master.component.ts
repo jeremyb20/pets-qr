@@ -41,76 +41,45 @@ const DEFAULT_DURATION = 300;
 })
 export class AdminMasterComponent implements OnInit {
   private mediaSubscription: Subscription;
-  public AngularxQrCode: string = null;
-  newProductPetForm: FormGroup;
   id: number = 1;
-  idTab: number = 1;
-  query: string;
-  query2: string;
 
   petLogged: any;
   pet : any;
-  adminProfileData: any;
+  users: any;
   Media: MediaResponse;
   loading: boolean = false;
-  showCardMsgOrderList: boolean = false;
-  showCardMsgOrderHistoryList: boolean = false;
-  allUsersData: any;
-  filteredData: any;
-  allProductsData: any;
-  filteredProductData: any;
-  submitted = false;
-  // order
-  file : File;
-  fileSecond : File;
-
-  photoSelectedSecond: String | ArrayBuffer;
-  photoSelected: String | ArrayBuffer;
-  isfirstPhoto: boolean = false;
-  itemProductSelected: any;
-  linkPhoto: String;
-  linkFirst: String;
-  linkSecond: String;
-  isNewProduct: boolean = false;
-  idItemProduct: number;
-  order: any;
-  orderHistory: any;
-  showPetSecondArray: any;
+  zoom: number = 12;
+  lat: number = 9.93040049002793;
+  lng: number = -84.09062837772197;
 
     constructor(private petService: PetService, private media: MediaService,private _notificationSvc: NotificationService, private router: Router, private formBuilder: FormBuilder) {
         this.petLogged = this.petService.getLocalPet()
         this.pet = JSON.parse(this.petLogged);
         if(this.pet != null){
-          // switch (this.pet.userState) {
-          //   case 0:
-          //     this.router.navigate(['/admin']);
-          //     break;
-          //   case 3:
-          //     this.router.navigate(['/dashboard-pet']);
-          //     break;
-    
-          //   default:
-          //     break;
-          // }
         }else{
           this.router.navigate(['/home']);
           localStorage.clear();
           return;
         }
 
-        this.AngularxQrCode = 'Initial QR code data string';
-
         this.mediaSubscription = this.media.subscribeMedia().subscribe(media => {
           this.Media = media;
         });
-    
+        
+        this.getAllUsers();
     
     }    
 
-    get f() { return this.newProductPetForm.controls; }
-
-    collapsed = false;
-
     ngOnInit() {
+    }
+
+    getAllUsers() {
+      this.petService.getLocationPetsList().subscribe(data => {
+          this.users = data;
+      },
+      error => {
+        this.loading = false;
+        this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor de revisar get all users', 6000);
+      });
     }
 }

@@ -1220,6 +1220,49 @@ router.get('/getAllPets', function(req, res){
   });
 });
 
+router.get('/getLocationAllPets', function(req, res){
+  Pet.find({}, function(err, pets){
+  if(err){
+    res.json({ success: false, msg: err });
+    next();
+  }
+  const object = [];
+  pets.forEach(item => {
+    if(!item.isActivated){
+      var newPetObject = [];
+      if(item.newPetProfile.length>0){
+        item.newPetProfile.forEach(element => {
+          var pet  = {
+            _id:item._id,
+            idPet: element._id,
+            petName: element.petName,
+            email: element.email,
+            lat:element.lat,
+            lng:element.lng,
+            photo:element.photo,
+            petStatus: element.petStatus
+          }
+          newPetObject.push(pet);
+        })
+      }
+      
+      var test = {
+        idPet: item._id,
+        petName: item.petName,
+        email: item.email,
+        lat:item.lat,
+        lng:item.lng,
+        petStatus: item.petStatus,
+        photo:item.photo,
+        newPetProfile: (newPetObject.length > 0)? newPetObject: null
+      }  
+      object.push(test);
+    }
+  })
+  res.json(object)
+});
+});
+
 
 router.get('/getNewCodes', function(req, res){
   Pet.find({}, function(err, pets){

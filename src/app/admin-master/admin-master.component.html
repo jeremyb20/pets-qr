@@ -1,8 +1,23 @@
 <div id="admin-master" class="p-1 no-gutters justify-content-between mb-4 align-items-center mt-3">
-    <div class="row no-gutters">
-      <div class="col-xl-3 text-left">
-        <h2 class="page-heading">Bienvenido Administrador!</h2>
-      </div>
+    <div class="row no-gutters" *ngIf="users">
+      <p>Total de perritos registrados: {{users.length}}</p>
+        <div class="map col-12" [ngClass]="{'IsMobile': Media.IsMobile, 'IsDesktop': !Media.IsMobile}" #map>
+            <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [fitBounds]="true" [zoomControl]="true" [disableDefaultUI]="false">
+    
+                <agm-marker style="border-radius: 50%;" *ngFor="let m of users; let i = index" [latitude]="m.lat" [longitude]="m.lng" [agmFitBounds]="true" [iconUrl]="{url:m.photo, scaledSize:{height:45, width:40, radius:5}}">
+                    <agm-info-window>
+                        <h3> <i class="fa fa-paw" aria-hidden="true"></i>  {{m.petName}}</h3>
+                        <p><b>Estatus:</b> {{m.petStatus}}</p>
+                        <div>
+                            <img style="height: 200px;" src="{{m.photo}}" alt="m.photo">
+                        </div>
+                    </agm-info-window>
+                </agm-marker>
+              
+              </agm-map>
+        </div>
+
+
       <!-- <div class="col-xl-9 mt-3 mt-xl-0 mb-3">
         <div class="card mb-0">
             <div class="card-body p-2">
