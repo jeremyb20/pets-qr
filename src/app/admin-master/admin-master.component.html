@@ -6,10 +6,43 @@
     
                 <agm-marker style="border-radius: 50%;" *ngFor="let m of users; let i = index" [latitude]="m.lat" [longitude]="m.lng" [agmFitBounds]="true" [iconUrl]="{url:m.photo, scaledSize:{height:45, width:40, radius:5}}">
                     <agm-info-window>
-                        <h3> <i class="fa fa-paw" aria-hidden="true"></i>  {{m.petName}}</h3>
-                        <p><b>Estatus:</b> {{m.petStatus}}</p>
-                        <div>
-                            <img style="height: 200px;" src="{{m.photo}}" alt="m.photo">
+                        <div class="row">
+                            <div class="col-12 col-sm-6">
+                                <h3> <i class="fa fa-paw" aria-hidden="true"></i> {{m.petName}}</h3>
+                                <p><span class="font-weight-bold">Estatus:</span> {{m.petStatus}}</p>
+                                <div class="mb-3">
+                                    <img style="height: 200px;" src="{{m.photo}}" alt="m.photo">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <p class="font-weight-bold" *ngIf="m.newPetProfile">
+                                    <span>Hermanos: {{m.newPetProfile.length}}</span>
+                                </p>
+                                <div *ngFor="let n of m.newPetProfile; let i = index" class="mb-2">
+                                    <div id="accordion">
+                                        <div class="card">
+        
+                                            <div class="card-header" (click)="showPanel(n)" role="tab" id="headingTwo">
+                                                <h5 class="mb-0">
+                                                    <a aria-expanded="false">
+                                                        <div style="font-size: 13px;">
+                                                            <span><i class="fas fa-paw"></i> {{n.petName}}</span>
+                                                        </div>
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="{{n._id}}" class="collapsible" [@collapse]="n.showPanel" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <p><span class="font-weight-bold">Estatus:</span> {{n.petStatus}}</p>
+                                                    <div>
+                                                        <img style="width: 100%;" src="{{n.photo}}" alt="{{n.photo}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                </div>
+                            </div>
                         </div>
                     </agm-info-window>
                 </agm-marker>

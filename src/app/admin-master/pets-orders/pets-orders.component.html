@@ -18,13 +18,13 @@
                                     <div id="accordion">
                                     <div *ngFor="let item of order" class="card mb-3">
                                         <div class="card-header" (click)="showPanel(item)" role="tab" id="headingTwo">
-                                        <h5 class="mb-0">
-                                            <a aria-expanded="false">
-                                                <div style="font-size: 13px;" class="row">
-                                                    <span class="col-6"><i class="fas fa-envelope"></i> {{item.email}}</span> <span class="col-6 text-center">Costo: {{item.cost | currency:"₡"}}</span>
-                                                </div>
-                                            </a>
-                                        </h5>
+                                            <h5 class="mb-0">
+                                                <a aria-expanded="false">
+                                                    <div style="font-size: 13px;" class="row">
+                                                        <span class="col-6"><i class="fas fa-envelope"></i> {{item.email}}</span> <span class="col-6 text-center">Costo: {{item.cost | currency:"₡"}}</span>
+                                                    </div>
+                                                </a>
+                                            </h5>
                                         </div>
                                         <div id="{{item._id}}" class="collapsible" [@collapse]="item.showPanel" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
                                             <div class="card-body p-1" style="background-color: #dde5ec;">

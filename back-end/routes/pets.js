@@ -1240,6 +1240,7 @@ router.get('/getLocationAllPets', function(req, res){
             lat:element.lat,
             lng:element.lng,
             photo:element.photo,
+            showPanel: true,
             petStatus: element.petStatus
           }
           newPetObject.push(pet);

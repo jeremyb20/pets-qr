@@ -82,4 +82,8 @@ export class AdminMasterComponent implements OnInit {
         this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor de revisar get all users', 6000);
       });
     }
+
+    showPanel(item: any) {
+      item.showPanel = !item.showPanel;
+    }  
 }

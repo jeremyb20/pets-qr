@@ -1,7 +1,7 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { saveAs } from 'file-saver';
+import { saveAs } from 'file-saver-es';
 import { Subscription } from 'rxjs';
 import { MediaResponse, MediaService } from 'src/app/common/services/media.service';
 import { NotificationService } from 'src/app/common/services/notification.service';
