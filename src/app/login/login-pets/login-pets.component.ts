@@ -10,6 +10,7 @@ import { PetService } from 'src/app/common/services/pet.service';
   styleUrls: ['./login-pets.component.scss']
 })
 export class LoginPetsComponent implements OnInit {
+  public showPassword: boolean;
   loginForm: FormGroup;
   email: string;
   password: string;
