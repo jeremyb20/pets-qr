@@ -105,7 +105,7 @@ export class PetService {
     if(this.isDev){
       return this.httpClient.post('http://localhost:8080/pet/authenticate', pet, { headers: this.headers});
     }else{
-      return this.httpClient.post('pet/authenticate', pet, { headers: this.headers});
+      return this.httpClient.post('https://localpetsandfamilyapp.herokuapp.com/pet/authenticate', pet, { headers: this.headers});
     }
   }
 
