@@ -19,7 +19,7 @@ export class AuthServices {
   authState: any;
 
   constructor(private httpClient: HttpClient, private jwtHelper: JwtHelperService) {
-      this.isDev = true;  // Change to false when you're gonna deploy your app, true when is on develop 
+      this.isDev = false;  // Change to false when you're gonna deploy your app, true when is on develop 
   }
 
   registerUser(user,  photo:any):Observable<any> {
