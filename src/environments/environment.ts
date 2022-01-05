@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   environmentName: 'dev',
-  //ws: 'https://localpetsandfamilyapp.herokuapp.com'
-  ws: 'http://localhost:8080'
+  ws: 'https://localpetsandfamilyapp.herokuapp.com'
+  //ws: 'http://localhost:8080'
 
 };
 
