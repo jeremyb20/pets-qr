@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  environmentName: 'dev',
+  ws: 'https://localpetsandfamilyapp.herokuapp.com'
 };
