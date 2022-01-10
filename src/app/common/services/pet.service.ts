@@ -111,12 +111,12 @@ export class PetService {
   }
 
   authenticatePet(pet:any): Observable<any> {
-    // if(this.isDev){
-    //   return this.httpClient.post('http://localhost:8080/pet/authenticate', pet, { headers: this.headers});
-    // }else{
-    //   return this.httpClient.post('https://localpetsandfamilyapp.herokuapp.com/pet/authenticate', pet);
-    // }
-    return this.httpClient.post(`${environment.ws}/pet/authenticate`, pet, { headers: this.headers });
+    if(this.isDev){
+      return this.httpClient.post('http://localhost:8080/pet/authenticate', pet, { headers: this.headers});
+    }else{
+      return this.httpClient.post('/pet/authenticate', pet);
+    }
+    //return this.httpClient.post(`${environment.ws}/pet/authenticate`, pet, { headers: this.headers });
 
   }
 
