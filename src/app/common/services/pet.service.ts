@@ -106,7 +106,7 @@ export class PetService {
     // }else{
     //   return this.httpClient.post<any>('pet/register/new-petByUserPet', fd);
     // }
-    return this.httpClient.put(`${environment.ws}/pet/register/new-petByUserPet`, fd);
+    return this.httpClient.post(`${environment.ws}/pet/register/new-petByUserPet`, fd);
 
   }
 
