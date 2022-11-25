@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  environmentName: 'dev',
-  ws: 'https://www.localpetsandfamily.com'
+  environmentName: 'prod',
+  ws: 'https://localpetsandfamily.onrender.com'
 };
