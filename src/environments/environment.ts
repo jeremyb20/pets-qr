@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   environmentName: 'dev',
-  ws: 'https://www.localpetsandfamily.com'
-  //ws: 'http://localhost:8080'
+ // ws: 'https://www.localpetsandfamily.com'
+  ws: 'http://localhost:8080'
 
 };
 

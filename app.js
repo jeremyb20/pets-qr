@@ -1,6 +1,5 @@
 const express = require('express');
 const path = require('path');
-// const express = require('body-parser');
 const cors = require('cors');
 const logger = require('morgan');
 const passport = require('passport');
@@ -84,7 +83,7 @@ app.use(compression({
 }));
 
 app.use(function (req, res, next) {
-  var origin = (req.headers.host == 'localhost:8080')? '*' : 'https://www.localpetsandfamily.com/';
+  const origin = (req.headers.host == 'localhost:8080')? '*' : 'https://pets-qr.vercel.app/';
   res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization');
@@ -94,7 +93,6 @@ app.use(function (req, res, next) {
 });
 app.use(session({      secret: 'session secret key',     resave: false,     saveUninitialized: false }));
 app.set('views', path.join(__dirname, 'public'));
-app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(logger('dev'));
 
@@ -130,7 +128,7 @@ http.createServer(function(req, res){
   }).listen(8080);
 })
 
-var server =  app.listen(port, function() {
+const server =  app.listen(port, function() {
   console.log("App is running on port " + port);
 });
 
