@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   environmentName: 'dev',
  // ws: 'https://www.localpetsandfamily.com'
-  ws: 'https://pets-qr.vercel.app'
+  ws: 'https://www.localpetsandfamily.com'
 
 };
 
