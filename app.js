@@ -83,7 +83,7 @@ app.use(compression({
 }));
 
 app.use(function (req, res, next) {
-  const origin = (req.headers.host == 'localhost:8080')? '*' : 'https://petsqrbackend.fly.dev/';
+  const origin = (req.headers.host == 'localhost:8080')? '*' : 'https://pets-qr-production.up.railway.app/';
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization');
