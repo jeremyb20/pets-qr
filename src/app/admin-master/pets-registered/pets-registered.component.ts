@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -6,6 +6,7 @@ import { MediaResponse, MediaService } from 'src/app/common/services/media.servi
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { PetService } from 'src/app/common/services/pet.service';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { saveAs } from 'file-saver-es';
 
 declare var $: any;
 
@@ -17,6 +18,12 @@ declare var $: any;
 })
 export class PetsRegisteredComponent implements OnInit {
   private mediaSubscription: Subscription;
+  public textValue: string = null;
+  public AngularxQrCode: string = null;
+  title = 'qr-code-test';
+  imgURL = "";
+  elem: any;
+
   Media: MediaResponse;
   allUsersData: any;
   filteredData: any;
@@ -25,6 +32,8 @@ export class PetsRegisteredComponent implements OnInit {
   pet : any;
   loading: boolean = false;
   showPetSecondArray: any;
+
+  @ViewChild('qrCode', {static : false}) qrCode:any;
 
   constructor(private petService: PetService, private media: MediaService,private _notificationSvc: NotificationService, private router: Router, private formBuilder: FormBuilder) {
     this.petLogged = this.petService.getLocalPet()
@@ -39,6 +48,9 @@ export class PetsRegisteredComponent implements OnInit {
     this.mediaSubscription = this.media.subscribeMedia().subscribe(media => {
       this.Media = media;
     });
+
+    this.AngularxQrCode = 'Initial QR code data string';
+    this.textValue = 'Initial QR code data string';
 
     this.getAllUsers();
   }
@@ -156,6 +168,70 @@ export class PetsRegisteredComponent implements OnInit {
         });
     }
     return this.filteredData;
+  }
+
+  checkQrCode(link:any, idSecond:Number){
+    $('#qrCodeInfoDialog').modal('show');
+    const urlLink = `https://www.localpetsandfamily.com/myPetCode/${link}/${idSecond}`
+    this.AngularxQrCode = urlLink;
+    this.textValue = urlLink;
+
+    setTimeout(() => { this.elem =  this.qrCode.qrcElement.nativeElement.children[0]; 
+      let context = this.elem.getContext("2d");
+  
+      // create image
+      let img = new Image();
+      img.crossOrigin="anonymous";
+      // img.src = this.imgURL;
+      img.src = 'https://res.cloudinary.com/ensamble/image/upload/v1619212083/mihxx1tmm5bgjiukmw7r.png'
+  
+      // fixed sizes
+      let iWidth = 70;
+      let iHeight = 70;
+      
+      let _that = this; 
+      img.onload = () => {
+        context.drawImage(img, (this.elem.width/2) - (iWidth/2),(this.elem.height/2) - (iHeight/2), iWidth, iHeight);    
+        // saveAs(_that.canvasToBlob(this.elem), "file.png");
+      }
+    }, 100);
+    // this.createQRWithImage();
+  }
+
+  createQRWithImage(){
+    // get canvas dom element
+    setTimeout(() => { this.elem =  this.qrCode.qrcElement.nativeElement.children[0]; 
+      let context = this.elem.getContext("2d");
+
+      // create image
+      let img = new Image();
+      img.crossOrigin="anonymous";
+      // img.src = this.imgURL;
+      img.src = 'https://res.cloudinary.com/ensamble/image/upload/v1619212083/mihxx1tmm5bgjiukmw7r.png'
+
+      // fixed sizes
+      let iWidth = 70;
+      let iHeight = 70;
+      
+      let _that = this; 
+      img.onload = () => {
+        context.drawImage(img, (this.elem.width/2) - (iWidth/2),(this.elem.height/2) - (iHeight/2), iWidth, iHeight);    
+        saveAs(_that.canvasToBlob(this.elem), "file.png");
+      }
+    }, 100);
+    // convert to canvas type
+  }
+
+   // adapted from: https://medium.com/better-programming/convert-a-base64-url-to-image-file-in-angular-4-5796a19fdc21
+   canvasToBlob(canvas){
+    let dataurl = canvas.toDataURL("image/png");
+    let byteString = window.atob(dataurl.replace(/^data:image\/(png|jpg);base64,/, ""));
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([int8Array], { type: 'image/jpeg' });
   }
 
 }
