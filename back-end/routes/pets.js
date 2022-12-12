@@ -1374,7 +1374,7 @@ router.get('/lost/getAllLostPets', function(req, res){
   pets.forEach((item)=> {
     if(item.petStatus == 'Perdido'){
       var object = {
-        link :'https://' + req.headers.host + '/myPetCode/' + item._id +'/'+ 0,
+        link :'https://www.localpetsandfamily.com/myPetCode/' + item._id +'/'+ 0,
         photo: item.photo,
         petName: item.petName,
         petStatusReport: item.petStatusReport
@@ -1385,7 +1385,7 @@ router.get('/lost/getAllLostPets', function(req, res){
       item.newPetProfile.forEach(value => {
         if(value.petStatus == 'Perdido'){
           var object = {
-            link : 'https://' + req.headers.host + '/myPetCode/' + item._id +'/'+ value._id,
+            link : 'https://www.localpetsandfamily.com/myPetCode/' + item._id +'/'+ value._id,
             photo: value.photo,
             petName: value.petName,
             petStatusReport: value.petStatusReport
