@@ -30,7 +30,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/webfonts"
+              "src/webfonts",
+              "src/_redirects"
             ],
             "styles": [
                 { "input": "node_modules/bootstrap/scss/bootstrap.scss", "bundleName": "styles/vendor" },
