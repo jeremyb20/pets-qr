@@ -124,8 +124,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     NgIdleModule.forRoot(),
     JwtModule.forRoot({
       config: {
-        tokenGetter: tokenGetter,
-        allowedDomains: ["localhos:8080","foo.com", "bar.com"],
+        tokenGetter: tokenGetter
       },
     }),
     AgmCoreModule.forRoot({

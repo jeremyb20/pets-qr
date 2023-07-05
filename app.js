@@ -17,20 +17,21 @@ const http = require("http");
 // Port Number
 const port = process.env.PORT || 8080;
  
-mongoose.set('useCreateIndex', true);
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
-mongoose.set('useUnifiedTopology', true);
+// mongoose.set('useCreateIndex', true);
+// mongoose.set('useNewUrlParser', true);
+// mongoose.set('useFindAndModify', false);
+// mongoose.set('useUnifiedTopology', true);
 
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
-
+mongoose.set('strictQuery', false);
 mongoose.connect(process.env.BD_URL, {
   useUnifiedTopology: true,
   useNewUrlParser: true
 })
 .then(() => 
-  console.log('DB Connected!'))
+  console.log('DB Connected to ', mongoose.connection.name)
+)
 .catch(err => {
   console.log(err.message);
 });
@@ -39,6 +40,7 @@ const app = express();
 
 const users = require('./back-end/routes/users');
 const pets = require('./back-end/routes/pets');
+const catalog = require('./back-end/routes/catalog');
 
 app.use(express.urlencoded({
   extended: false,
@@ -48,8 +50,6 @@ app.use(express.json({limit: "50mb"}));
 app.use(express.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 app.use(cookieParser());
 
-app.use(express.json());
-app.use(express.urlencoded({ extended:false}));
 const storage = multer.diskStorage({
   destination: path.join(__dirname, 'public/uploads'),
   filename: (req, file, cd) => {
@@ -113,7 +113,7 @@ require('./back-end/config/passport')(passport);
 app.use(flash());
 app.use('/users', users);
 app.use('/pet', pets);
-app.use("/catalog", require('./back-end/routes/catalog'));
+app.use("/catalog", catalog);
 
 
 // Start Server

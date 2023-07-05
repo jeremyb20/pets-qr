@@ -2,7 +2,6 @@ const catalogCtl = {}
 
 const Catalog = require('../models/catalog');
 const cloudinary = require('cloudinary').v2;
-const fs = require('fs-extra');
 
 catalogCtl.getAllCatalog = async (_req, res) => {
     const catalog = await Catalog.find();

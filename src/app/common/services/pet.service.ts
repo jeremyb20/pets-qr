@@ -591,11 +591,6 @@ export class PetService {
 
 getPetsList():Observable<any> {
   this.loadToken();
-  // if (this.isDev) {
-  //   return this.httpClient.get<any>('http://localhost:8080/pet/getAllPets/');
-  // } else {
-  //   return this.httpClient.get<any>('pet/getAllPets/');
-  // }
 
   return this.httpClient.get(`${environment.ws}/pet/getAllPets/`);
 
@@ -603,23 +598,12 @@ getPetsList():Observable<any> {
 
 getLocationPetsList():Observable<any> {
   this.loadToken();
-  // if (this.isDev) {
-  //   return this.httpClient.get<any>('http://localhost:8080/pet/getLocationAllPets/');
-  // } else {
-  //   return this.httpClient.get<any>('pet/getLocationAllPets/');
-  // }
-
   return this.httpClient.get(`${environment.ws}/pet/getLocationAllPets/`);
 
 }
 
 getNewCodes():Observable<any> {
   this.loadToken();
-  // if (this.isDev) {
-  //   return this.httpClient.get<any>('http://localhost:8080/pet/getNewCodes/');
-  // } else {
-  //   return this.httpClient.get<any>('pet/getNewCodes/');
-  // }
 
   return this.httpClient.get(`${environment.ws}/pet/getNewCodes/`);
 
@@ -630,23 +614,12 @@ registerNewCode(obj:any):Observable<any> {
   fd.append('isActivated',obj.isActivated);
   fd.append('stateActivation',obj.stateActivation);
   fd.append('randomCode',obj.randomCode);
-  // if(this.isDev) {
-  //   return this.httpClient.post<any>('http://localhost:8080/pet/register/new-code-generator/', fd);
-  // }else{
-  //   return this.httpClient.post<any>('pet/register/new-code-generator/', fd);
-  // }
-
   return this.httpClient.post(`${environment.ws}/pet/register/new-code-generator/`,fd);
 
 }
 
 getAllCodeList():Observable<any> {
   this.loadToken();
-  // if (this.isDev) {
-  //   return this.httpClient.get<any>('http://localhost:8080/pet/getAllCodePetsList/');
-  // } else {
-  //   return this.httpClient.get<any>('pet/getAllCodePetsList/');
-  // }
 
   return this.httpClient.get(`${environment.ws}/pet/getAllCodePetsList/`);
 
@@ -654,35 +627,18 @@ getAllCodeList():Observable<any> {
 
 getPetsLostList():Observable<any> {
   this.loadToken();
-  // if (this.isDev) {
-  //   return this.httpClient.get<any>('http://localhost:8080/pet/lost/getAllLostPets/');
-  // } else {
-  //   return this.httpClient.get<any>('pet/lost/getAllLostPets/');
-  // }
-
   return this.httpClient.get(`${environment.ws}/pet/lost/getAllLostPets/`);
 
 }
 
 
-geDataList():Observable<any> {
-  // if (this.isDev) {
-  //   return this.httpClient.get<any>('http://localhost:8080/pet/getAdminDataList/');
-  // } else {
-  //   return this.httpClient.get<any>('pet/getAdminDataList/');
-  //}
-  return this.httpClient.get(`${environment.ws}/pet/getAdminDataList/`);
-}
+  geDataList():Observable<any> {
+    return this.httpClient.get(`${environment.ws}/pet/getAdminDataList/`);
+  }
 
-getAllShopProductList():Observable<any> {
-  // if (this.isDev) {
-  //return this.httpClient.get<any>('http://localhost:8080/catalog/getAllCatalog/');
-  // } else {
-  //   return this.httpClient.get<any>('pet/getAllProductShopList/');
-  // }
-  return this.httpClient.get<any>(`${environment.ws}/catalog/getAllCatalog/`);
-
-}
+  getAllShopProductList(): Observable<any> {
+    return this.httpClient.get<any>(`${environment.ws}/catalog/getAllCatalog`, { headers: this.headers });
+  }
 
 getHistoryList(id:any):Observable<any> {
   // if (this.isDev) {
