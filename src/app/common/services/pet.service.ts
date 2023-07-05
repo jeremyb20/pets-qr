@@ -707,9 +707,8 @@ addPhotoFirstORSecond(obj:any):Observable<any> {
     fd.append('_id', id);
     fd.append('idImage', obj._id);
     fd.append('imageCloudID', obj.imageID);
-
-    //return this.httpClient.post<any>('http://localhost:8080/catalog/deleteImageCatalog', fd);
-    return this.httpClient.put(`${environment.ws}/catalog/deleteImageCatalog`, fd);
+    
+    return this.httpClient.post(`${environment.ws}/catalog/deleteImageCatalog`, fd);
   }
 
 deletePet(id:any):Observable<any> {
