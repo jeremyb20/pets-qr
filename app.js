@@ -113,6 +113,7 @@ require('./back-end/config/passport')(passport);
 app.use(flash());
 app.use('/users', users);
 app.use('/pet', pets);
+app.use("/catalog", require('./back-end/routes/catalog'));
 
 
 // Start Server

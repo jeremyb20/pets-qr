@@ -65,7 +65,7 @@ router.post('/register/new-pet', async(req, res, next) => {
             photo: result.secure_url == undefined ? obj.image : result.secure_url,
             petStatus: obj.petStatus,
             isActivated: false,
-            phoneVeterinarian: 00000000,
+            phoneVeterinarian: '00000000',
             permissions: {
               showPhoneInfo: true,
               showEmailInfo: true,
@@ -414,7 +414,7 @@ router.put('/register/new-pet-code-generator', async(req, res, next) => {
     petStatus: obj.petStatus,
     isActivated: false,
     password: obj.password,
-    phoneVeterinarian: 00000000,
+    phoneVeterinarian: '00000000',
   }
 
   await Pet.findOne({_id: req.body._id }, (err, pet) => {

@@ -35,6 +35,7 @@ import { PetsOrdersComponent } from './admin-master/pets-orders/pets-orders.comp
 import { PetsProductsComponent } from './admin-master/pets-products/pets-products.component';
 import { PetsRegisteredComponent } from './admin-master/pets-registered/pets-registered.component';
 import { NewQRPetsComponent } from './admin-master/new-qrpets/new-qrpets.component';
+import { CatalogComponent } from './catalog/catalog.component';
 
 
 const routes: Routes = [
@@ -54,6 +55,7 @@ const routes: Routes = [
           { path: 'reset-user/:token', component: ResetUserComponent },
           { path: 'reset-pets/:token', component: ResetPetsComponent },
           { path: 'myPetCode/:id/:idSecond', component: MyPetCodeComponent },
+          { path: 'catalog', component: CatalogComponent }
 
           // { path: 'maintenance', component: MaintenanceComponent },
       ]

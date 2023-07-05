@@ -676,11 +676,11 @@ geDataList():Observable<any> {
 
 getAllShopProductList():Observable<any> {
   // if (this.isDev) {
-  //   return this.httpClient.get<any>('http://localhost:8080/pet/getAllProductShopList/');
+  //return this.httpClient.get<any>('http://localhost:8080/catalog/getAllCatalog/');
   // } else {
   //   return this.httpClient.get<any>('pet/getAllProductShopList/');
   // }
-  return this.httpClient.get(`${environment.ws}/pet/getAllProductShopList/`);
+  return this.httpClient.get<any>(`${environment.ws}/catalog/getAllCatalog/`);
 
 }
 
@@ -704,16 +704,15 @@ sendNewProduct(obj):Observable<any> {
   fd.append('cost',obj.cost);
   fd.append('quantity',obj.quantity);
   fd.append('description',obj.description);
-  fd.append('_id',obj.id);
   
   
   // if(this.isDev) {
-  //   return this.httpClient.post<any>('http://localhost:8080/pet/register/new-product/', fd);
+  //return this.httpClient.post<any>('http://localhost:8080/catalog/createCatalog', fd);
   // }else{
   //   return this.httpClient.post<any>('pet/register/new-product/', fd);
   // }
-
-  return this.httpClient.post(`${environment.ws}/pet/register/new-product/`, fd);
+// console.log(obj)
+  return this.httpClient.post<any>(`${environment.ws}/catalog/createCatalog`, fd);
 
 }
 
@@ -725,36 +724,37 @@ updateNewProduct(obj):Observable<any> {
   fd.append('cost',obj.cost);
   fd.append('quantity',obj.quantity);
   fd.append('description',obj.description);
-  fd.append('_id',obj.id);
-  fd.append('idProduct',obj.idProduct);
+  fd.append('_id',obj._id);
   
   
   // if(this.isDev) {
-  //   return this.httpClient.put<any>('http://localhost:8080/pet/update/new-product/', fd);
+  //return this.httpClient.put<any>('http://localhost:8080/catalog/editCatalog/', fd);
   // }else{
   //   return this.httpClient.put<any>('pet/update/new-product/', fd);
   // }
 
-  return this.httpClient.put(`${environment.ws}/pet/update/new-product/`, fd);
+  return this.httpClient.put<any>(`${environment.ws}/catalog/editCatalog/`, fd);
 
 }
 
 addPhotoFirstORSecond(obj:any):Observable<any> { 
   const fd = new FormData();
+  fd.append('_id', obj._id);
   fd.append('image', obj.image);
-  fd.append('idProduct', obj.idProduct);
-  fd.append('isFistPhoto', obj.isFistPhoto);
-  fd.append('_id',obj.id);
 
-  // if(this.isDev) {
-  //   return this.httpClient.put<any>('http://localhost:8080/pet/register/registerPhotoPetProduct', fd);
-  // }else{
-  //   return this.httpClient.put<any>('pet/register/registerPhotoPetProduct', fd);
-  // }
-
-  return this.httpClient.put(`${environment.ws}/pet/register/registerPhotoPetProduct`, fd);
-
+  //return this.httpClient.post<any>('http://localhost:8080/catalog/addCatalogImages', fd);
+  return this.httpClient.put(`${environment.ws}/catalog/addCatalogImages`, fd);
 }
+  
+  deleteImageCatalog(obj: any, id:string): Observable<any> {
+    const fd = new FormData();
+    fd.append('_id', id);
+    fd.append('idImage', obj._id);
+    fd.append('imageCloudID', obj.imageID);
+
+    //return this.httpClient.post<any>('http://localhost:8080/catalog/deleteImageCatalog', fd);
+    return this.httpClient.put(`${environment.ws}/catalog/deleteImageCatalog`, fd);
+  }
 
 deletePet(id:any):Observable<any> {
   const fd = new FormData();

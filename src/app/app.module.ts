@@ -58,6 +58,7 @@ import { PetsRegisteredComponent } from './admin-master/pets-registered/pets-reg
 import { PetsProductsComponent } from './admin-master/pets-products/pets-products.component';
 import { PetsOrdersComponent } from './admin-master/pets-orders/pets-orders.component';
 import { NewQRPetsComponent } from './admin-master/new-qrpets/new-qrpets.component';
+import { CatalogComponent } from './catalog/catalog.component';
 
 export function tokenGetter() {
   return localStorage.getItem("id_token");
@@ -106,6 +107,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     PetsProductsComponent,
     PetsOrdersComponent,
     NewQRPetsComponent,
+    CatalogComponent,
   ],
   imports: [
     BrowserModule,

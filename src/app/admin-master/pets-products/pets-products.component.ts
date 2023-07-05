@@ -43,7 +43,8 @@ export class PetsProductsComponent implements OnInit {
   fileSecond : File;
   photoSelectedSecond: String | ArrayBuffer = null;
   photoSelected: String | ArrayBuffer = null;
-
+  imageCarrousel: any = [];
+  idcatalog: any;
 
   constructor(private petService: PetService, private media: MediaService,private _notificationSvc: NotificationService, private router: Router, private formBuilder: FormBuilder) {
     this.petLogged = this.petService.getLocalPet()
@@ -78,7 +79,7 @@ export class PetsProductsComponent implements OnInit {
 
   getAllProductList() {
     this.petService.getAllShopProductList().subscribe(data => {
-        this.allProductsData = data.productsList;
+      this.allProductsData = data.listaCatalogos;
         this.filteredProductData = this.allProductsData;
     },
     error => {
@@ -124,101 +125,101 @@ export class PetsProductsComponent implements OnInit {
     }
     
     if(isNewProduct){
-      var title = 'Agregar Nuevo Producto?'
-      Swal.fire({
-          title: title,
-          showCancelButton: true,
-          confirmButtonText: `Ok`,
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            this.loading = true;
-            var newProduct = {
-              productName: this.f.productName.value,
-              size: this.f.size.value,
-              color: this.f.color.value,
-              cost: this.f.cost.value,
-              description: this.f.description.value,
-              quantity: this.f.quantity.value,
-              id: this.pet.id
-            }
-            
-            this.petService.sendNewProduct(newProduct).subscribe(data => {
-              if(data.success) {
-                  Swal.fire('Saved!', '', 'success');
-                  this.loading = false;
-                  $('#addNewProductModal').modal('hide');
-                  this.getAllProductList();
-              } else {
-                $('#addNewProductModal').modal('hide');
-                this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
-              }
-            },
-            error => {
-              this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
-            });
+      this.loading = true;
+      var newProduct = {
+        productName: this.f.productName.value,
+        size: this.f.size.value,
+        color: this.f.color.value,
+        cost: this.f.cost.value,
+        description: this.f.description.value,
+        quantity: this.f.quantity.value,
+        id: this.pet.id
+      }
 
-            Swal.fire('Saved!', '', 'success')
-          } else if (result.isDenied) {
-            Swal.fire('Cambios no ha sido guardados', '', 'info')
-          }
-        })
+      this.petService.sendNewProduct(newProduct).subscribe(data => {
+        if (data.success) {
+          Swal.fire('Se agrego el producto correctamente!', '', 'success');
+          this.loading = false;
+          $('#addNewProductModal').modal('hide');
+          this.getAllProductList();
+        } else {
+          $('#addNewProductModal').modal('hide');
+          this._notificationSvc.warning('Hola ' + this.pet.petName + '', data.msg, 6000);
+        }
+      },
+      error => {
+        this._notificationSvc.warning('Hola ' + this.pet.petName + '', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+      });
     }else{
-      var title = 'Editar Producto?'
-      Swal.fire({
-          title: title,
-          showCancelButton: true,
-          confirmButtonText: `Ok`,
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            this.loading = true;
-            var updateProduct = {
-              productName: this.f.productName.value,
-              size: this.f.size.value,
-              color: this.f.color.value,
-              cost: this.f.cost.value,
-              description: this.f.description.value,
-              quantity: this.f.quantity.value,
-              id: this.pet.id,
-              idProduct: this.idItemProduct
-            }
-            this.petService.updateNewProduct(updateProduct).subscribe(data => {
-              if(data.success) {
-                  Swal.fire('Saved!', '', 'success');
-                  this.loading = false;
-                  $('#addNewProductModal').modal('hide');
-                  this.getAllProductList();
-              } else {
-                $('#addNewProductModal').modal('hide');
-                this._notificationSvc.warning('Hola '+this.pet.petName+'', data.msg, 6000);
-              }
-            },
-            error => {
-              this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
-            });
-
-            Swal.fire('Saved!', '', 'success')
-          } else if (result.isDenied) {
-            Swal.fire('Cambios no ha sido guardados', '', 'info')
-          }
-        })
+      this.loading = true;
+      var updateProduct = {
+        productName: this.f.productName.value,
+        size: this.f.size.value,
+        color: this.f.color.value,
+        cost: this.f.cost.value,
+        description: this.f.description.value,
+        quantity: this.f.quantity.value,
+        id: this.pet.id,
+        _id: this.idItemProduct
+      }
+      this.petService.updateNewProduct(updateProduct).subscribe(data => {
+        if (data.success) {
+          Swal.fire('Actualizado!', '', 'success');
+          this.loading = false;
+          $('#addNewProductModal').modal('hide');
+          this.getAllProductList();
+        } else {
+          $('#addNewProductModal').modal('hide');
+          this._notificationSvc.warning('Hola ' + this.pet.petName + '', data.msg, 6000);
+        }
+      },
+      error => {
+        this._notificationSvc.warning('Hola ' + this.pet.petName + '', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+      });
     }
+  }
+
+  deleteImage(item:any) {
+    Swal.fire({
+      title: 'Estás seguro?',
+      text: "No serás capaz de revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.petService.deleteImageCatalog(item, this.idcatalog).subscribe(data => {
+          if (data.success) {
+            Swal.fire(
+              'Eliminado!',
+              'Imagen eliminada correctamente.',
+              'success'
+            )
+            this.getAllProductList();;
+            this.loading = false;
+          } else {
+            this._notificationSvc.warning('Hola ' + this.pet.petName + '', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+          }
+        },
+        error => {
+          this._notificationSvc.warning('Hola ' + this.pet.petName + '', 'Ocurrio un error favor contactar a soporte o al administrador del sitio', 6000);
+        });
+      }
+    })
   }
 
   sendPhotoSubmit(){
     this.loading = true;
     var object = {
-      idProduct:this.itemProductSelected._id,
-      isFistPhoto: this.isfirstPhoto,
+      _id : this.itemProductSelected._id,
       image: (this.isfirstPhoto)?this.file:this.fileSecond,
-      id: this.pet.id
     }
 
     this.petService.addPhotoFirstORSecond(object).subscribe(data => {
       if(data.success) {
-        $('#addNewFistorSecondPhotoModal').modal('hide');
-        this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
+        Swal.fire('Se agrego la imagen correctamente!', '', 'success');
         this.getAllProductList();
         this.loading = false;
       } else {
@@ -241,8 +242,8 @@ export class PetsProductsComponent implements OnInit {
   }
 
   seeFoto(item:any){
-    this.linkFirst = item.firstPhoto;
-    this.linkSecond = item.secondPhoto;
+    this.imageCarrousel = item;
+    this.idcatalog = item._id;
     $('#visualization').modal('show');
   }
 
