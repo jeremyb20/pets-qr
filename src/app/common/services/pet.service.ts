@@ -699,7 +699,7 @@ addPhotoFirstORSecond(obj:any):Observable<any> {
   fd.append('image', obj.image);
 
   //return this.httpClient.post<any>('http://localhost:8080/catalog/addCatalogImages', fd);
-  return this.httpClient.put(`${environment.ws}/catalog/addCatalogImages`, fd);
+  return this.httpClient.post(`${environment.ws}/catalog/addCatalogImages`, fd);
 }
   
   deleteImageCatalog(obj: any, id:string): Observable<any> {
