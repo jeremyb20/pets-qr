@@ -74,6 +74,7 @@ export class PetsProductsComponent implements OnInit {
       cost: ['', Validators.required],
       quantity:['', Validators.required],
       description: ['', Validators.required],
+      tagType: ['', Validators.required],
     });
   }
 
@@ -83,8 +84,8 @@ export class PetsProductsComponent implements OnInit {
         this.filteredProductData = this.allProductsData;
     },
     error => {
-    this.loading = false;
-    this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor de revisar All products list', 6000);
+      this.loading = false;
+      this._notificationSvc.warning('Hola '+this.pet.petName+'', 'Ocurrio un error favor de revisar All products list', 6000);
     });
   }
 
@@ -98,6 +99,7 @@ export class PetsProductsComponent implements OnInit {
         cost: ['', Validators.required],
         quantity:['', Validators.required],
         description: ['', Validators.required],
+        tagType: ['', Validators.required],
       });
        $('#addNewProductModal').modal('show');
        this.isNewProduct = true;
@@ -112,6 +114,7 @@ export class PetsProductsComponent implements OnInit {
         cost: [item.cost, Validators.required],
         quantity:[item.quantity, Validators.required],
         description: [item.description, Validators.required],
+        tagType: [item.tagType, Validators.required],
       });
     }
    
@@ -133,6 +136,7 @@ export class PetsProductsComponent implements OnInit {
         cost: this.f.cost.value,
         description: this.f.description.value,
         quantity: this.f.quantity.value,
+        tagType: this.f.tagType.value,
         id: this.pet.id
       }
 
@@ -159,6 +163,7 @@ export class PetsProductsComponent implements OnInit {
         cost: this.f.cost.value,
         description: this.f.description.value,
         quantity: this.f.quantity.value,
+        tagType: this.f.tagType.value,
         id: this.pet.id,
         _id: this.idItemProduct
       }

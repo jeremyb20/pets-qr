@@ -24,9 +24,8 @@ catalogCtl.createCatalog = async (req, res, next) => {
             description,
             cost,
             quantity,
-            images:[]
-            // image: result.secure_url,
-            // image_id: result.public_id
+            tagType,
+            images:[],
         });
         await catalog.save();
         // await fs.unlink(req.file.path);
@@ -88,6 +87,7 @@ catalogCtl.addCatalogImages = async (req, res) => {
         await Catalog.findOneAndUpdate({ _id: req.body._id }, { $push: { images: dataImage } }).then(function (data) {
             res.send({ message: 'Imagenes agregadas exitosamente', success: true });
         });
+        await fs.unlink(req.file.path);
     } catch (err) {
         res.json({ success: false, message: 'Hubo un error en el registro, intentelo mas tarde..!' });
         next(err);

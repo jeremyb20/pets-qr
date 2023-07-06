@@ -27,6 +27,7 @@
                         <th scope="col">Color</th>
                         <th scope="col">Descripción</th>
                         <th scope="col">Costo</th>
+                        <th scope="col">Tipo de Plaquita</th>
                         <!-- <th scope="col">1era Foto</th>
                         <th scope="col">2da Foto</th> -->
                         <th scope="col">Visualizar</th>
@@ -40,6 +41,7 @@
                         <td>{{item.color}}</td>
                         <td>{{item.description}}</td>
                         <td>{{item.cost | currency:"₡"}}</td>
+                        <td>{{item.tagType}}</td>
                         <!-- <td><button (click)="checkFoto(item,1)" class="btn btn-info btn-sm"> <i class="fas fa-camera"></i> 1.ª <span *ngIf="!Media.IsMobile"></span></button></td>
                         <td><button (click)="checkFoto(item,2)" class="btn btn-info btn-sm"> <i class="fas fa-camera"></i> 2.ª <span *ngIf="!Media.IsMobile"></span></button></td> -->
                         <td> 
@@ -90,6 +92,16 @@
                         <div *ngIf="f.color.errors.required">Nuevo titulo es requerido</div>
                     </div>
                 </div>
+
+                <div class="form-group mb-2">
+                  <label class="mb-2 d-block fw-bold">Tipo de plaquita</label>
+                  <select formControlName="tagType" class="form-select custom-select-lg ml-1 mb-3 w-100">
+                    <option value="simple">Plaquita Sencilla</option>
+                    <option value="neon">Plaquita Neon</option>
+                    <option value="metal">Plaquita Metalica</option>
+                  </select>
+                </div>
+
                 <div class="form-group">
                     <label for="exampleInputEmail1">Costo</label>
                     <input type="text" formControlName="cost" class="form-control" placeholder="" [ngClass]="{ 'is-invalid': submitted && f.cost.errors }" />

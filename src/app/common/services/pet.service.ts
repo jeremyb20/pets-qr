@@ -659,7 +659,8 @@ sendNewProduct(obj):Observable<any> {
   fd.append('color',obj.color);
   fd.append('cost',obj.cost);
   fd.append('quantity',obj.quantity);
-  fd.append('description',obj.description);
+  fd.append('description', obj.description);
+  fd.append('tagType', obj.tagType);
   
   
   // if(this.isDev) {
@@ -679,7 +680,8 @@ updateNewProduct(obj):Observable<any> {
   fd.append('color',obj.color);
   fd.append('cost',obj.cost);
   fd.append('quantity',obj.quantity);
-  fd.append('description',obj.description);
+  fd.append('description', obj.description);
+  fd.append('tagType', obj.tagType);
   fd.append('_id',obj._id);
   
   
