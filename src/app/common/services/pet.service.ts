@@ -641,12 +641,6 @@ getPetsLostList():Observable<any> {
   }
 
 getHistoryList(id:any):Observable<any> {
-  // if (this.isDev) {
-  //   return this.httpClient.get<any>('http://localhost:8080/pet/getHistoryShopList/'+ id);
-  // } else {
-  //   return this.httpClient.get<any>('pet/getHistoryShopList/'+ id);
-  // }
-
   return this.httpClient.get(`${environment.ws}/pet/getHistoryShopList/`+ id);
 
 }
@@ -661,14 +655,6 @@ sendNewProduct(obj):Observable<any> {
   fd.append('quantity',obj.quantity);
   fd.append('description', obj.description);
   fd.append('tagType', obj.tagType);
-  
-  
-  // if(this.isDev) {
-  //return this.httpClient.post<any>('http://localhost:8080/catalog/createCatalog', fd);
-  // }else{
-  //   return this.httpClient.post<any>('pet/register/new-product/', fd);
-  // }
-// console.log(obj)
   return this.httpClient.post<any>(`${environment.ws}/catalog/createCatalog`, fd);
 
 }
@@ -683,13 +669,6 @@ updateNewProduct(obj):Observable<any> {
   fd.append('description', obj.description);
   fd.append('tagType', obj.tagType);
   fd.append('_id',obj._id);
-  
-  
-  // if(this.isDev) {
-  //return this.httpClient.put<any>('http://localhost:8080/catalog/editCatalog/', fd);
-  // }else{
-  //   return this.httpClient.put<any>('pet/update/new-product/', fd);
-  // }
 
   return this.httpClient.put<any>(`${environment.ws}/catalog/editCatalog/`, fd);
 
@@ -716,11 +695,6 @@ addPhotoFirstORSecond(obj:any):Observable<any> {
 deletePet(id:any):Observable<any> {
   const fd = new FormData();
   fd.append('_id',id);
-  // if(this.isDev) {
-  //   return this.httpClient.post<any>('http://localhost:8080/pet/delete/delete-pet', fd);
-  // }else{
-  //   return this.httpClient.post<any>('pet/delete/delete-pet', fd);
- //  }
   return this.httpClient.post(`${environment.ws}/pet/delete/delete-pet`, fd);
 
 }
@@ -732,11 +706,6 @@ deletePet(id:any):Observable<any> {
 // Notifications
 
 getNotificationsService(id):Observable<any> {
-  // if (this.isDev) {
-  //   return this.httpClient.get<any>('http://localhost:8080/pet/notifications/getNotificationsList/'+ id);
-  // } else {
-  //   return this.httpClient.get<any>('pet/notifications/getNotificationsList/'+ id);
-  // }
   return this.httpClient.get(`${environment.ws}/pet/notifications/getNotificationsList/`+ id);
 
 }
@@ -746,11 +715,6 @@ updateNotification(obj: any):Observable<any> {
   fd.append('_id', obj.id);
   fd.append('isNewMsg', obj.isNewMsg);
   fd.append('idItem', obj.idItem);
-  // if(this.isDev) {
-  //   return this.httpClient.put<any>('http://localhost:8080/pet/update/updateNotificationsList', fd);
-  // }else{
-  //   return this.httpClient.put<any>('pet/update/updateNotificationsList', fd);
-  // }
   return this.httpClient.put(`${environment.ws}/pet/update/updateNotificationsList`, fd);
 
 }
@@ -759,11 +723,6 @@ deleteNotification(obj: any):Observable<any> {
   const fd = new FormData();
   fd.append('_id', obj.id);
   fd.append('idItem', obj.idItem);
-  // if(this.isDev) {
-  //   return this.httpClient.put<any>('http://localhost:8080/pet/delete/deleteNotificationsList', fd);
-  // }else{
-  //   return this.httpClient.put<any>('pet/delete/deleteNotificationsList', fd);
-  // }
 
   return this.httpClient.put(`${environment.ws}/pet/delete/deleteNotificationsList`, fd);
 
@@ -778,11 +737,6 @@ deleteNotification(obj: any):Observable<any> {
     const fd = new FormData();
     fd.append('token',token.token);
     fd.append('_id', token._id);
-    // if(this.isDev) {
-    //   return this.httpClient.post<any>('http://localhost:8080/pet/calendar/authentication', fd);
-    // }else{
-    //   return this.httpClient.post<any>('pet/calendar/authentication', fd);
-    // }
 
     return this.httpClient.post(`${environment.ws}/pet/calendar/authentication`, fd);
 
@@ -794,11 +748,6 @@ deleteNotification(obj: any):Observable<any> {
     fd.append('date', event.date);
     fd.append('enddate', event.enddate);
     fd.append('description', event.description);
-    // if(this.isDev) {
-    //   return this.httpClient.post<any>('http://localhost:8080/pet/calendar/send-new-event', fd);
-    // }else{
-    //   return this.httpClient.post<any>('pet/calendar/send-new-event', fd);
-    // }
 
     return this.httpClient.post<any>(`${environment.ws}/pet/calendar/send-new-event`, fd);
 
@@ -811,11 +760,6 @@ deleteNotification(obj: any):Observable<any> {
     fd.append('enddate', event.enddate);
     fd.append('description', event.description);
     fd.append('eventId', event.eventId);
-    // if(this.isDev) {
-    //   return this.httpClient.post<any>('http://localhost:8080/pet/calendar/edit-event', fd);
-    // }else{
-    //   return this.httpClient.post<any>('pet/calendar/edit-event', fd);
-    // }
     return this.httpClient.post<any>(`${environment.ws}/pet/calendar/edit-event`, fd);
 
   }
@@ -823,12 +767,6 @@ deleteNotification(obj: any):Observable<any> {
   removeGoogleEvent(event:any){
     const fd = new FormData();
     fd.append('eventId', event.eventId);
-    // if(this.isDev) {
-    //   return this.httpClient.post<any>('http://localhost:8080/pet/calendar/delete-event', fd);
-    // }else{
-    //   return this.httpClient.post<any>('pet/calendar/delete-event', fd);
-    // }
-
     return this.httpClient.post<any>(`${environment.ws}/pet/calendar/delete-event`, fd);
 
   }
@@ -837,11 +775,6 @@ deleteNotification(obj: any):Observable<any> {
     const fd = new FormData();
     fd.append('idEventUpdate', event.idEventUpdate);
     fd.append('_id', event._id);
-    // if(this.isDev) {
-    //   return this.httpClient.post<any>('http://localhost:8080/pet/delete/delete-calendar-event', fd);
-    // }else{
-    //   return this.httpClient.post<any>('pet/delete/delete-calendar-event', fd);
-    // }
 
     return this.httpClient.post<any>(`${environment.ws}/pet/delete/delete-calendar-event`, fd);
 
@@ -852,11 +785,6 @@ deleteNotification(obj: any):Observable<any> {
     const fd = new FormData();
     fd.append('token',token.token);
     fd.append('_id', token._id);
-    // if(this.isDev) {
-    //   return this.httpClient.post<any>('http://localhost:8080/pet/calendar/close-sesion', fd);
-    // }else{
-    //   return this.httpClient.post<any>('pet/calendar/close-sesion', fd);
-    // }
 
     return this.httpClient.post<any>(`${environment.ws}/pet/calendar/close-sesion`, fd);
 

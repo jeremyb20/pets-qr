@@ -17,10 +17,10 @@ const http = require("http");
 // Port Number
 const port = process.env.PORT || 8080;
  
-// mongoose.set('useCreateIndex', true);
-// mongoose.set('useNewUrlParser', true);
-// mongoose.set('useFindAndModify', false);
-// mongoose.set('useUnifiedTopology', true);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useUnifiedTopology', true);
 
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;

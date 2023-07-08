@@ -184,7 +184,7 @@ export class PetsProductsComponent implements OnInit {
     }
   }
 
-  deleteImage(item:any) {
+  deleteImage(item: any) {
     Swal.fire({
       title: 'Estás seguro?',
       text: "No serás capaz de revertir esto!",
@@ -197,6 +197,13 @@ export class PetsProductsComponent implements OnInit {
       if (result.isConfirmed) {
         this.petService.deleteImageCatalog(item, this.idcatalog).subscribe(data => {
           if (data.success) {
+            $('#visualization').modal('hide');
+
+            // this.allProductsData.forEach(value => {
+            //   value.images.splice(value.images.findIndex(function (i) {
+            //     return i._id === item._id;
+            //   }), 1);
+            // });
             Swal.fire(
               'Eliminado!',
               'Imagen eliminada correctamente.',
