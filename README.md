@@ -35,3 +35,5 @@ fly auth login
 // para subir a prod
 
 fly launch --now
+
+// ojo solamente funciona el back end desde una carpeta aparte

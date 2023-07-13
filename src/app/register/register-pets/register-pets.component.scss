@@ -4,9 +4,7 @@
     padding: 3%;
   }
   .test {
-    @include media-breakpoint-up(md) {
-      background: -webkit-linear-gradient(left, #ffffff, #e4e4e4);
-    }
+    background: -webkit-linear-gradient(left, #ffffff, #e4e4e4);
     border-top-left-radius: 10% 50%;
     border-bottom-left-radius: 10% 50%;
   }
@@ -32,10 +30,6 @@
   }
   .register-right{
     background: #f8f9fa;
-    @include media-breakpoint-down(sm) {
-      border-top-left-radius: 10% 50%;
-      border-bottom-left-radius: 10% 50%;
-    }
     // border-top-left-radius: 10% 50%;
     // border-bottom-left-radius: 10% 50%;
   }
@@ -43,7 +37,7 @@
     margin-top: 15%;
     margin-bottom: 5%;
     @include media-breakpoint-down(sm) {
-      width: 100%;
+      width: 50%;
     }
     width: 70%;
     -webkit-animation: mover 2s infinite  alternate;
