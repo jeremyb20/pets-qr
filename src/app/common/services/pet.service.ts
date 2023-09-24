@@ -808,11 +808,11 @@ deleteNotification(obj: any):Observable<any> {
   }
 
   getidTrack(){
-    return localStorage.getItem('idSelected');
+    return localStorage.getItem('idSelected')!;
   }
   
   getPrincipalUserData() {
-    return localStorage.getItem("petPrincipal");
+    return localStorage.getItem("petPrincipal")!;
   }
 
   getLocalPet(){
@@ -825,12 +825,12 @@ deleteNotification(obj: any):Observable<any> {
   }
 
   loadToken() {
-    const token = localStorage.getItem('id_token');
+    const token = localStorage.getItem('id_token')!;
     this.authToken = token;
   }
 
   loggedIn() {
-    const token: string = localStorage.getItem('id_token');
+    const token: string = localStorage.getItem('id_token')!;
     return token != null && !this.jwtHelper.isTokenExpired(token);
   }
 

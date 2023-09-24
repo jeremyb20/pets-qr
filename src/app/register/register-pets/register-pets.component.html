@@ -1,6 +1,6 @@
 <div id="register-pets" class="test homeBody">
   <div class="container-fluid register">
-    <div class="row no-gutters">
+    <div class="row g-0">
         <div class="d-none col-12 col-md-3 col-lg-3 register-left mb-3">
             <img src="https://res.cloudinary.com/ensamble/image/upload/v1613167406/6f34a0248653a5483ac7d7950fc13ce4_2_shgyuj.png" alt="PetLogo"/>
             <!-- <h3>Bienvenido</h3>
@@ -11,7 +11,7 @@
             <div class="d-block d-md-none register-left">
              <img src="https://res.cloudinary.com/ensamble/image/upload/v1613167406/6f34a0248653a5483ac7d7950fc13ce4_2_shgyuj.png" alt="PetLogo"/>
             </div>
-            <div class="row no-gutters justify-content-end">
+            <div class="row g-0 justify-content-end">
            
 
               <ul class="d-none nav nav-tabs nav-justified" id="myTab" role="tablist">
@@ -148,7 +148,7 @@
                                 <div class="form-group text-center col p-0">
                                     <label class="font-weight-bold ">Mostrar ubicación exacta de la vivienda del can</label>
                                     <div class="map" style="width:100%;height:60vh" #map>
-                                        <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [zoomControl]="true" (mapClick)="mapClicked($event)" [disableDefaultUI]="false">
+                                        <!-- <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [zoomControl]="true" (mapClick)="mapClicked($event)" [disableDefaultUI]="false">
                                       
                                           <agm-marker style="border-radius: 50%;" *ngFor="let m of markers; let i = index" [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [agmFitBounds]="true" [iconUrl]="{url:m.photo, scaledSize:{height:45, width:40, radius:5}}">
                                               
@@ -159,7 +159,7 @@
                                               <button class="btn btn-success btn-sm" (click)="savePosition()" >Guardar</button>
                                             </agm-info-window>
                                           </agm-marker>
-                                        </agm-map>
+                                        </agm-map> -->
                                       </div>
                                       <div class="container">
                                         <div class="text-center well">
@@ -258,7 +258,7 @@
       <div class="modal-content">
           <div class="modal-header bg-dark text-white text-center header-modal" id="exampleModalLabel">
               <h5 class="text-center modal-title"><i class="fas fa-paw"></i> TÉRMINOS Y CONDICIONES</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
               </button>
           </div>

@@ -1,10 +1,10 @@
 <div *ngIf="permissionData" class="panelProfileContent card-custom p-5 my-3 mx-4">
-    <div class="row no-gutters">
+    <div class="row g-0">
         <div class="col-sm">
             <h4>  <i class="fa fa-paw" aria-hidden="true"></i> Panel de control</h4>
         </div>
         <div class="col-sm">
-            <button [disabled]="!updatePermission" (click)="updatePermissionList()" type="submit" class="btn btn-yellow btn-sm col-12 float-right mb-2">
+            <button [disabled]="!updatePermission" (click)="updatePermissionList()" type="submit" class="btn btn-yellow btn-sm col-12 float-end mb-2">
                 <i *ngIf="!loadingQr" class="fa fa-paw" aria-hidden="true"></i>
                 <svg *ngIf="loadingQr" class="loader" viewBox="0 0 24 24">
                     <circle class="loader__value" cx="12" cy="12" r="10" />

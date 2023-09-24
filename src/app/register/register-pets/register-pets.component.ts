@@ -1,8 +1,7 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild,Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MustMatch } from '../../common/helpers/must-match.validator';
-import { MapsAPILoader } from '@agm/core';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { PetService } from 'src/app/common/services/pet.service';
 declare var $: any;
@@ -35,7 +34,7 @@ export class RegisterPetComponent implements OnInit {
   ShowMsg: string;
   timeSeconds: number =  6000;
   file : File;
-  photoSelected: String | ArrayBuffer;
+  photoSelected: any | ArrayBuffer;
   bussinesType = [
     {Id: 1, gender: 'Macho'},
     {Id: 2, gender: 'Hembra'}
@@ -44,7 +43,7 @@ export class RegisterPetComponent implements OnInit {
   isSetPosition: boolean = false;
 
   
-  constructor(private formBuilder: FormBuilder,private mapsAPILoader: MapsAPILoader,private ngZone: NgZone, private petService: PetService, private router: Router, private route: ActivatedRoute ) {
+  constructor(private formBuilder: FormBuilder,private ngZone: NgZone, private petService: PetService, private router: Router, private route: ActivatedRoute ) {
 
     if(this.getLinkIdParam == undefined) {
       //Este es cuando va ver perfil;
@@ -64,15 +63,7 @@ export class RegisterPetComponent implements OnInit {
             allowOutsideClick: false,
             didOpen: () => {
               Swal.showLoading()
-              timerInterval = setInterval(() => {
-                const content = Swal.getContent()
-                if (content) {
-                  const b = content.querySelector('b')
-                  if (b) {
-                    b.textContent = Swal.getTimerLeft()
-                  }
-                }
-              }, 100)
+              
             },
             willClose: () => {
               clearInterval(timerInterval)
@@ -344,7 +335,7 @@ export class RegisterPetComponent implements OnInit {
       this.registerForm.reset();
   }
 
-  processFile(event: HtmlInputEvent): void {
+  processFile(event: any): void {
 
     if(event.target.files && event.target.files[0]){
       this.file = <File>event.target.files[0];

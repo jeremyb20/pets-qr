@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { MediaResponse, MediaService } from 'src/app/common/services/media.service';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { PetService } from 'src/app/common/services/pet.service';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import Swal from 'sweetalert2';
 import { saveAs } from 'file-saver-es';
 
 declare var $: any;
@@ -18,8 +18,8 @@ declare var $: any;
 })
 export class PetsRegisteredComponent implements OnInit {
   private mediaSubscription: Subscription;
-  public textValue: string = null;
-  public AngularxQrCode: string = null;
+  public textValue: string = '';
+  public AngularxQrCode: string = '';
   title = 'qr-code-test';
   imgURL = "";
   elem: any;

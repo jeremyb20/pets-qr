@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Subscription, interval } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
-import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { TimeoutSeconds } from '../../common/constants/constants';
 import { NotificationService } from '../../common/services/notification.service';
 import { TokensService } from '../../common/services/tokens.service';
@@ -36,7 +35,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     user:any;
     petNameLogged: string;
 
-  	constructor(private router: Router, private authService: AuthServices, private petService: PetService, private idle: Idle, private media: MediaService, private notification: NotificationService, private tokenSvc: TokensService) { 
+  	constructor(private router: Router, private authService: AuthServices, private petService: PetService,  private media: MediaService, private notification: NotificationService, private tokenSvc: TokensService) { 
         this.httpSubscription = this.notification.onHttpError().subscribe((result) => {
 			  this.onAuthRequired(result);
         });
@@ -65,41 +64,15 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           });
         });
 
-        setInterval(() => { this.detectWakeFromSleep(), 800 });
-        idle.setIdle(TimeoutSeconds);        
-        idle.setTimeout(30);        
-        idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+        setInterval(() => { this.detectWakeFromSleep(), 800 });    
+        //idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
         this.countPct = 100;
 
         /*this.idleStartSubscription = idle.onIdleStart.subscribe(() => {
             console.log('You\'ve gone idle!');
         });*/
 
-        this.idleEndSubscription = idle.onIdleEnd.subscribe(() => {
-            this.isWarning = false;
-            this.countPct = 100;
-            $('#TimeOut-Modal').modal('hide');
-            //console.log('No longer idle.');
-        });
-
-        this.warningSubscription = idle.onTimeoutWarning.subscribe((countTimer) => {
-            this.countdown = countTimer;
-            this.isWarning = true;
-            if (countTimer == this.idle.getTimeout())
-                this.barPercentage();
-            $('#TimeOut-Modal').modal('show');
-            //console.log('You will time out in ' + countdown + ' seconds!');
-        });
-        
-        this.timeoutSubscription = idle.onTimeout.subscribe(() => {
-            $('#TimeOut-Modal').modal('hide');
-            $('.modal').modal('hide');
-            this.isWarning = false;
-            //console.log('Timed out!');
-            this.logout();
-        });
-
-        this.idle.watch();
+       
     }
 
   	ngOnInit() { 
@@ -153,21 +126,12 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         if (delta > 60 * 1000) {
             $('#TimeOut-Modal').modal('hide');
             $('.modal').modal('hide');
-            this.idle.stop();
+            //this.idle.stop();
             this.tokenSvc.processToken(true);
         }
         this.lastTick = now;
     }
-    
-    private barPercentage() {
-        let count = this.idle.getTimeout();
-        interval(500)
-        .pipe(takeWhile(() => this.isWarning))
-        .subscribe(() => {
-            count -= .5;
-            this.countPct = (100 * count) / this.idle.getTimeout();
-        });
-    }
+
 
     logout(){
       this.authService.logout();
@@ -175,7 +139,6 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.idle.stop();
         if (this.httpSubscription)
             this.httpSubscription.unsubscribe();        
         if (this.idleEndSubscription)

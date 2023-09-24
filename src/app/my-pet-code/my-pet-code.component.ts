@@ -6,8 +6,7 @@ import { NotificationService } from 'src/app/common/services/notification.servic
 import { Router,ActivatedRoute } from '@angular/router';
 import { MediaResponse, MediaService } from '../common/services/media.service';
 import { darkStyle, lightStyle } from '../common/constants/map-theme';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
-import { MapsAPILoader } from '@agm/core';
+import Swal from 'sweetalert2';
 import {Location} from '@angular/common';
 import { Subscription } from 'rxjs';
 
@@ -67,7 +66,7 @@ export class MyPetCodeComponent implements OnInit {
     },
   }
 
-  constructor(private formBuilder: FormBuilder, private media: MediaService, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone,  private petService: PetService,private _notificationSvc: NotificationService, private route: ActivatedRoute , private router: Router) {
+  constructor(private formBuilder: FormBuilder, private media: MediaService, private ngZone: NgZone,  private petService: PetService,private _notificationSvc: NotificationService, private route: ActivatedRoute , private router: Router) {
     this.route.params.subscribe(params => {
       // este es cuando hace click en target_blank
       this.getLinkIdParam = params.id; 
@@ -134,15 +133,7 @@ export class MyPetCodeComponent implements OnInit {
           timerProgressBar: true,
           didOpen: () => {
             Swal.showLoading()
-            timerInterval = setInterval(() => {
-              const content = Swal.getContent()
-              if (content) {
-                const b = content.querySelector('b')
-                if (b) {
-                  b.textContent = Swal.getTimerLeft()
-                }
-              }
-            }, 100)
+            
           },
           willClose: () => {
             clearInterval(timerInterval)
@@ -165,15 +156,7 @@ export class MyPetCodeComponent implements OnInit {
         timerProgressBar: true,
         didOpen: () => {
           Swal.showLoading()
-          timerInterval = setInterval(() => {
-            const content = Swal.getContent()
-            if (content) {
-              const b = content.querySelector('b')
-              if (b) {
-                b.textContent = Swal.getTimerLeft()
-              }
-            }
-          }, 100)
+         
         },
         willClose: () => {
           clearInterval(timerInterval)

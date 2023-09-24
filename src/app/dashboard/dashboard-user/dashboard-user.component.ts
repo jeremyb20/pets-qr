@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthServices } from 'src/app/common/services/auth.service';
 import { FormControl } from "@angular/forms";
 import { Subscription } from 'rxjs';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import Swal from 'sweetalert2';
 import { MediaResponse, MediaService } from '../../common/services/media.service';
-import * as moment from 'moment';
+
 import { Router } from '@angular/router';
 
 @Component({

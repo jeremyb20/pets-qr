@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { PetService } from 'src/app/common/services/pet.service';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import Swal from 'sweetalert2';
 
 
 @Component({

@@ -63,7 +63,7 @@
             <div class="modal-content">
                 <div class="modal-header bg-dark text-white text-center header-modal" id="exampleModalLabel">
                     <h5 class="text-center modal-title"><i class="fas fa-paw"></i> Ver info</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -117,7 +117,7 @@
             <div class="modal-content">
                 <div class="modal-header text-center header-modal" id="exampleModalLabel">
                     <h5 class="text-center modal-title"><i class="fas fa-qrcode"></i> Qr Code</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -127,10 +127,10 @@
                     </div>
                     <div *ngIf="!loading" class="mt-3 text-center">
                         <div *ngIf="AngularxQrCode!= ''" class="my-4">
-                            <qrcode [qrdata]="AngularxQrCode" [width]="256" [level]="'H'"></qrcode>
+                            <qrcode [qrdata]="AngularxQrCode" [width]="256" [errorCorrectionLevel]="'H'"></qrcode>
                         </div>
                         <div *ngIf="textValue!= ''" class="content">
-                            <qrcode [qrdata]="textValue" [width]="256" [level]="'H'" [size]="500" level="H" canvas="true" #qrCode></qrcode><br/>
+                            <qrcode [qrdata]="textValue" [width]="256" [errorCorrectionLevel]="'H'" size="500" level="H" canvas="true" #qrCode></qrcode><br/>
                             <button class="btn btn-info" (click)="createQRWithImage()" >Descargar Qr</button>
                           </div>
                     </div>

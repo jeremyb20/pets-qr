@@ -8,7 +8,7 @@
           </a>
       
           <!-- Collapse -->
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -48,7 +48,7 @@
       </nav>
     <div class="container-fluid mx-auto test" [ngClass]="{'margin': !hideMenu}" id="myPetProfile">
         <div *ngIf="profile">
-            <div class="row no-gutters ">
+            <div class="row g-0 ">
                 <div class="col-12 col-sm-4 col-md-4 col-lg-4 mb-4" [ngClass]="{'mt-4': Media.IsMobile, 'mt-2': !Media.IsMobile}">
                     <div class="card hovercard">
                         <div class="cardheader" [ngStyle]="{'background-image': ' url(' + imageUrl  + ')','background-size': 'cover', 'background-color':'rgba(0, 0, 0, 0.452)', 'background-blend-mode':'multiply',  'height': '335px'}"></div>
@@ -184,7 +184,7 @@
                             <div  *ngIf="profile.petStatus === 'No-Perdido'" class="card-body">
                                 <h6 class="card-title"><i class="fas fa-map-marker-alt"></i>  Mi ubicación</h6>
                                 <div class="map" style="width:100%;height:35vh" #map>
-                                    <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [styles]="currentTimer" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [zoomControl]="true" [disableDefaultUI]="false">
+                                    <!-- <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [styles]="currentTimer" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [zoomControl]="true" [disableDefaultUI]="false">
                                   
                                       <agm-marker style="border-radius: 50%;" *ngFor="let m of markers; let i = index" [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [agmFitBounds]="true" [iconUrl]="{url:m.photo, scaledSize:{height:45, width:40, radius:5}}">
                                           
@@ -193,14 +193,14 @@
                                         </agm-info-window>
                                         
                                       </agm-marker>
-                                    </agm-map>
+                                    </agm-map> -->
                                 </div>
                             </div>
 
                             <div *ngIf="profile.petStatus === 'Perdido'" class="card-body">
                                 <h6 class="card-title"><i class="fas fa-map-marker-alt"></i>  Mi ubicación</h6>
                                 <div class="map" style="width:100%;height:35vh" #map>
-                                    <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [styles]="currentTimer" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [zoomControl]="true" [disableDefaultUI]="false">
+                                    <!-- <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [styles]="currentTimer" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [zoomControl]="true" [disableDefaultUI]="false">
                                   
                                       <agm-marker style="border-radius: 50%;" *ngFor="let m of markers; let i = index" [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [agmFitBounds]="true" [iconUrl]="{url:m.photo, scaledSize:{height:45, width:40, radius:5}}">
                                           
@@ -210,7 +210,7 @@
                                         </agm-info-window>
                                         
                                       </agm-marker>
-                                    </agm-map>
+                                    </agm-map> -->
                                 </div>
                             </div>
                         </div>
@@ -238,14 +238,14 @@
       <div class="modal-content">
         <div class="modal-header bg-dark text-white">
           <h5 class="modal-title" id="showPopupMapPetHome">Ir a casa</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-            <div class="row no-gutters">
+            <div class="row g-0">
                 <div class="map col-12" style="width:100%;height:65vh" #map>
-                  <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [styles]="currentTimer" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [zoomControl]="true" (mapClick)="mapClicked($event)" [disableDefaultUI]="false">
+                  <!-- <agm-map [style.height.px]="map.offsetHeight" [latitude]="lat" [styles]="currentTimer" [longitude]="lng" [zoom]="zoom" [scrollwheel]="true" [zoomControl]="true" (mapClick)="mapClicked($event)" [disableDefaultUI]="false">
                 
                     <agm-marker style="border-radius: 50%;" *ngFor="let m of gomarkers; let i = index" [latitude]="m.lat" [longitude]="m.lng" [label]="m.label" [agmFitBounds]="true" [iconUrl]="{url:m.photo, scaledSize:{height:45, width:40, radius:5}}">
                   
@@ -259,7 +259,7 @@
                     </agm-marker>
                   
                     <agm-direction *ngIf="generate" [renderOptions]="renderOptions" [markerOptions]="markerOptions" [origin]="origin" [destination]="destination"></agm-direction>
-                  </agm-map>
+                  </agm-map> -->
                 </div>
             </div>
         </div>
@@ -272,7 +272,7 @@
       <div class="modal-content">
         <div class="modal-header bg-dark text-white">
           <h5 class="modal-title">Servicio al cliente</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>

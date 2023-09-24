@@ -33,7 +33,7 @@ export class TokensService {
         if (this.container.TimerRef)
             this.container.TimerRef.unsubscribe();
         this.container = new TokenContainer();
-		this.saveToken(null, null);
+		this.saveToken('', 0);
 	}
 
 	getToken() {
@@ -41,7 +41,7 @@ export class TokensService {
 			if (sessionStorage.getItem("access_token") === null)
                 window.location.href = "/";
             else
-				this.setToken(sessionStorage.getItem("access_token"), Number(sessionStorage.getItem("access_expire")));
+				this.setToken(sessionStorage.getItem("access_token")!, Number(sessionStorage.getItem("access_expire")));
 		}
 		return this.container;
 	};
@@ -92,7 +92,7 @@ export class TokensService {
 
 export class TokenContainer {    
     Expire: number;
-    TimerRef: Subscription;
+    TimerRef?: Subscription;
     Token: string;
 
     constructor() {

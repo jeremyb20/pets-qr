@@ -21,7 +21,7 @@
         </div>
         <div class="form-row">
 
-            <div class="form-group input-group row " [ngClass]="{'no-gutters': Media.IsMobile}">
+            <div class="form-group input-group row " [ngClass]="{'g-0': Media.IsMobile}">
                 <div class="input-group mb-3 col-12 col-sm-4 col-md-4 col-lg-4">
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="basic-addon3"><i class="fas fa-search"></i></span>
@@ -96,7 +96,7 @@
             <div class="modal-content">
                 <div class="modal-header text-center header-modal" id="exampleModalLabel">
                     <h5 class="text-center modal-title"><i class="fas fa-qrcode"></i> Qr Code</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -106,10 +106,10 @@
                     </div>
                     <div *ngIf="!loading" class="mt-3 text-center">
                         <div *ngIf="AngularxQrCode!= ''" class="my-4">
-                            <qrcode [qrdata]="AngularxQrCode" [width]="256" [level]="'H'"></qrcode>
+                            <qrcode [qrdata]="AngularxQrCode" [width]="256" [errorCorrectionLevel]="'H'"></qrcode>
                         </div>
                         <div *ngIf="textValue!= ''" class="content">
-                            <qrcode [qrdata]="textValue" [width]="256" [level]="'H'" [size]="500" level="H" canvas="true" #qrCode></qrcode><br/>
+                            <qrcode [qrdata]="textValue" [width]="256" [errorCorrectionLevel]="'H'" level="H" canvas="true" #qrCode></qrcode><br/>
                             <button class="btn btn-info" (click)="createQRWithImage()" >Descargar Qr</button>
                           </div>
                     </div>
@@ -123,7 +123,7 @@
             <div class="modal-content">
                 <div class="modal-header text-center header-modal" id="exampleModalLabel">
                     <h5 class="text-center modal-title"><i class="fas fa-qrcode"></i> Qr Code</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -131,7 +131,7 @@
                     <div *ngIf="textValue!= ''" class="content">
                         <input type="text" class="form-control" [(ngModel)]="imgURL" placeholder="URL to some Image"/><br/>
                         <input type="text" class="form-control" [(ngModel)]="textValue" placeholder="Data for QR-Code" /><br/>
-                        <qrcode [qrdata]="textValue" [size]="500" level="H" canvas="true" #qrCode></qrcode><br/>
+                        <qrcode [qrdata]="textValue" level="H" canvas="true" #qrCode></qrcode><br/>
                         <button class="btn btn-info" (click)="createQRWithImage()" [disabled]="imgURL == '' || textValue == ''">Generate QR & Downlaod</button>
                       </div>
                 </div>

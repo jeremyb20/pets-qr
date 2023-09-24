@@ -1,18 +1,13 @@
 import { Component, ElementRef, NgZone, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { CalendarOptions } from '@fullcalendar/angular'; // useful for typechecking
 import { Subscription, from } from 'rxjs';
-import Swal from 'sweetalert2/dist/sweetalert2.js';
+import Swal from 'sweetalert2';
 import { MediaResponse, MediaService } from '../../common/services/media.service';
 import { darkStyle, lightStyle } from '../../common/constants/map-theme';
-import * as moment from 'moment';
+
 import { PetService } from 'src/app/common/services/pet.service';
 import { NotificationService } from 'src/app/common/services/notification.service';
 import { Router } from '@angular/router';
-import esLocale from '@fullcalendar/core/locales/es';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import { MapsAPILoader } from '@agm/core';
 import {Location} from '@angular/common';
 
 declare var $: any;
@@ -41,7 +36,7 @@ export class DashboardPetComponent implements OnInit {
   loading: boolean = false;
   loadingQr: boolean = false;
   file : File;
-  photoSelected: String | ArrayBuffer;
+  photoSelected: any | ArrayBuffer;
   hideMsg: boolean = true;
   ShowMsg: string = 'hola';
   code: any;
@@ -93,7 +88,7 @@ idEventUpdate: any;
   seeAllProfile: any;
   petPrincipal: any;
   
-  constructor(private petService: PetService, private media: MediaService, private formBuilder: FormBuilder, private mapsAPILoader: MapsAPILoader, private ngZone: NgZone, private _location: Location, private _notificationSvc: NotificationService, private router: Router) {
+  constructor(private petService: PetService, private media: MediaService, private formBuilder: FormBuilder, private ngZone: NgZone, private _location: Location, private _notificationSvc: NotificationService, private router: Router) {
     this.petLogged = this.petService.getLocalPet()
     this.pet = JSON.parse(this.petLogged);
     this.idSecondary = this.pet.idSecond;
@@ -318,7 +313,7 @@ idEventUpdate: any;
     });
   }
 
-  processFile(event: HtmlInputEvent): void {
+  processFile(event: any): void {
 
     if(event.target.files && event.target.files[0]){
       this.file = <File>event.target.files[0];
