@@ -28,7 +28,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/assets/fonts"
+              "src/assets/fonts",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
@@ -49,7 +50,9 @@
               "qrcode",
               "lodash",
               "moment"
-            ]
+            ],
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
             "production": {
@@ -107,7 +110,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "src/styles.scss"

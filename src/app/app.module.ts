@@ -43,6 +43,9 @@ import { PetsRegisteredComponent } from './admin-master/pets-registered/pets-reg
 import { PetsOrdersComponent } from './admin-master/pets-orders/pets-orders.component';
 import { NewQRPetsComponent } from './admin-master/new-qrpets/new-qrpets.component';
 import { CatalogComponent } from './catalog/catalog.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from 'src/environments/environment';
+import { TokenInterceptor } from './common/services/token.interceptor';
 
 export function tokenGetter() {
   return localStorage.getItem("id_token");
@@ -94,9 +97,23 @@ export function tokenGetter() {
         tokenGetter: tokenGetter
       },
     }),
-    GoogleMapsModule
+    GoogleMapsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
-  providers: [NotificationService,AuthServices],
+  providers: [
+    NotificationService,
+    AuthServices,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 
   //AIzaSyC6XvMo8SNV30Pylr97UwPP6EPi1LGn_9A   key para google maps
