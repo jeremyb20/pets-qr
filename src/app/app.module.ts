@@ -46,6 +46,29 @@ import { CatalogComponent } from './catalog/catalog.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from 'src/environments/environment';
 import { TokenInterceptor } from './common/services/token.interceptor';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+
+/**
+  PRIME MODULES
+*/ 
+
+import { TableModule } from 'primeng/table';
+import { CalendarModule } from 'primeng/calendar';
+import { SliderModule } from 'primeng/slider';
+import { DialogModule } from 'primeng/dialog';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { DropdownModule } from 'primeng/dropdown';
+import { CardModule } from 'primeng/card';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { TabViewModule } from 'primeng/tabview';
+import { TagModule } from 'primeng/tag';
+import { CheckboxModule } from 'primeng/checkbox';
+
 
 export function tokenGetter() {
   return localStorage.getItem("id_token");
@@ -92,6 +115,22 @@ export function tokenGetter() {
     CommonModule,
     QRCodeModule,
     BrowserAnimationsModule,
+    NgbModule,
+    TableModule,
+    CalendarModule,
+    SliderModule,
+    DialogModule,
+    MultiSelectModule,
+    ContextMenuModule,
+    DropdownModule,
+    ButtonModule,
+    CardModule,
+    InputTextModule,
+    InputSwitchModule,
+    ProgressBarModule,
+    TabViewModule,
+    CheckboxModule,
+    TagModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter
@@ -108,11 +147,11 @@ export function tokenGetter() {
   providers: [
     NotificationService,
     AuthServices,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
-    }
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: TokenInterceptor,
+    //   multi: true
+    // }
   ],
   bootstrap: [AppComponent]
 
