@@ -8,7 +8,7 @@
           </a>
       
           <!-- Collapse -->
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -161,10 +161,10 @@
         <div class="modal fade" *ngIf="infoPet" id="showDataProfile" tabindex="-1" role="dialog" aria-labelledby="showDataProfile" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header bg-dark text-white">
+              <div class="modal-header custom-header-modal  text-white">
                 <h5 class="modal-title" id="showDataProfile">{{infoPet.petName}}</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                  
                 </button>
               </div>
               <div class="modal-body">

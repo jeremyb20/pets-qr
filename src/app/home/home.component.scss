@@ -707,7 +707,7 @@
   }
   
   .carousel .carousel-inner,.carousel .carousel-inner .active,.carousel .carousel-inner .carousel-item{
-    height:98%
+    height:100%
   }
 
   @media (min-width:776px){
@@ -735,6 +735,9 @@
     .navbar{
       background-color:#1C2331
     }
+    // .carousel-indicators {
+    //   bottom: 20px !important;
+    // }
   }
 
 }

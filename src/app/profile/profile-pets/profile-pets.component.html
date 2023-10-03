@@ -38,7 +38,7 @@
         <div class="form-group input-group">
             <span *ngIf="Media.IsMobile" class="mr-3"><i class="fa fa-calendar"></i> Nacimiento can </span>
             <span *ngIf="!Media.IsMobile" class="mr-3"><i class="fa fa-calendar"></i> Fecha de nacimiento del can </span>
-            <input type="date" rel="txtTooltip" title="Fecha de nacimiento del can" data-toggle="tooltip" data-placement="top" formControlName="birthDate" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.birthDate.errors }" />
+            <input type="date" rel="txtTooltip" title="Fecha de nacimiento del can" data-bs-toggle="tooltip" data-placement="top" formControlName="birthDate" min="today" class="form-control" [ngClass]="{ 'is-invalid': submitted && g.birthDate.errors }" />
             <div *ngIf="submitted && g.birthDate.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.birthDate.errors }">
                 <div *ngIf="g.birthDate.errors.required">Fecha de cumpleaños es requerido</div>
             </div>
@@ -46,7 +46,7 @@
 
         <div class="form-group input-group">
             <span class="mr-3"><i class="fas fa-birthday-cake"></i> Edad del can </span>
-            <input type="text" rel="txtTooltip" title="Edad del can" data-toggle="tooltip" data-placement="top" formControlName="age" class="form-control" placeholder="Edad del can" [ngClass]="{ 'is-invalid': submitted && g.age.errors }" />
+            <input type="text" rel="txtTooltip" title="Edad del can" data-bs-toggle="tooltip" data-placement="top" formControlName="age" class="form-control" placeholder="Edad del can" [ngClass]="{ 'is-invalid': submitted && g.age.errors }" />
             <div *ngIf="submitted && g.age.errors" class="invalid-feedback" [ngClass]="{ 'remove-margin text-center': submitted && g.age.errors }">
                 <div *ngIf="g.age.errors.required">Edad del can es requerido</div>
             </div>

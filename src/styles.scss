@@ -2,10 +2,13 @@
 
 @import "scss/partials/bootstrap-breakpoints";
 @import 'scss/custom-variables.scss';
-@import 'scss/fontawesome5/fontawesome';
-@import 'scss/fontawesome5/regular';
-@import 'scss/fontawesome5/solid';
-@import 'scss/fontawesome5/brands';
+@import './assets/fonts/fontawesome5/fontawesome';
+@import './assets/fonts/fontawesome5/regular';
+@import './assets/fonts/fontawesome5/solid';
+@import './assets/fonts/fontawesome5/brands';
+
+@import './assets/fonts/theme-font';
+@import './assets/fonts/feather';
 :root {
 	--bg: #fffdf2;
 	--tst: #d1e8ff;
@@ -14,6 +17,7 @@
 	--icolor2: #ffb370;
 	--icolor3: #d65ae8;
 	--icolor4: #63c8ff;
+  --bg-secondary: #709199;
 }
 
 body {
@@ -86,6 +90,9 @@ body {
    background:#fff;
 }
 
+.custom-header-modal {
+  background-color: var(--bg-secondary);
+}
 
   /* Estilos de la tarjeta */
   .card-custom {

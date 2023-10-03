@@ -48,8 +48,8 @@
                         </td>
                         <td>
                             <span class="d-flex">
-                                <a class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a>
-                                <a data-toggle="tooltip" data-placement="top" title="Delete" (click)="deleteUser(item)" data-original-title="Close"><i class="fas fa-trash color-danger"></i></a>
+                                <a class="mr-4" data-bs-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a>
+                                <a data-bs-toggle="tooltip" data-placement="top" title="Delete" (click)="deleteUser(item)" data-original-title="Close"><i class="fas fa-trash color-danger"></i></a>
                             </span>
                         </td>
                     </tr>
@@ -61,10 +61,10 @@
     <div class="modal modal-qr fade" tabindex="-1" role="dialog" id="showPetModal">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-dark text-white text-center header-modal" id="exampleModalLabel">
+                <div class="modal-header custom-header-modal  text-white text-center header-modal" id="exampleModalLabel">
                     <h5 class="text-center modal-title"><i class="fas fa-paw"></i> Ver info</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        
                     </button>
                 </div>
                 <div class="modal-body ">
@@ -100,8 +100,8 @@
                                 </td>
                                 <td>
                                     <span class="d-flex">
-                                        <a class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a>
-                                        <a data-toggle="tooltip" data-placement="top" title="Delete" (click)="deleteSecondPet(item)" data-original-title="Close"><i class="fas fa-trash color-danger"></i></a>
+                                        <a class="mr-4" data-bs-toggle="tooltip" data-placement="top" title="Edit" data-original-title="Edit"><i class="fas fa-pencil-alt color-muted"></i> </a>
+                                        <a data-bs-toggle="tooltip" data-placement="top" title="Delete" (click)="deleteSecondPet(item)" data-original-title="Close"><i class="fas fa-trash color-danger"></i></a>
                                     </span>
                                 </td>
                             </tr>
@@ -115,10 +115,10 @@
     <div class="modal modal-qr fade" tabindex="-1" role="dialog" id="qrCodeInfoDialog">
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
-                <div class="modal-header text-center header-modal" id="exampleModalLabel">
+                <div class="modal-header custom-header-modal text-center header-modal" id="exampleModalLabel">
                     <h5 class="text-center modal-title"><i class="fas fa-qrcode"></i> Qr Code</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        
                     </button>
                 </div>
                 <div class="modal-body ">

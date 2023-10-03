@@ -4,7 +4,7 @@
             <span class="navbar-toggler-icon"></span>
         </a>
         <div *ngIf="!Media.IsMobile" class="button mail" (click)="goHome()" [routerLink]="['/dashboard-pet']" ><i class="fas fa-home"></i></div>
-        <button *ngIf="Media.IsMobile" class="navbar-toggler" type="button" data-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation"> 
+        <button *ngIf="Media.IsMobile" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation"> 
             <span class="navbar-toggler-icon"></span> 
         </button>
       
@@ -74,7 +74,7 @@
                     <button *ngIf="item.isNewMsg" (click)="updateNotification(item)" class="btn btn-info btn-sm ml-3">Entendido</button>
                 </div>
                 <div class="col-2 align-items-center text-center mt-4">
-                    <a data-toggle="tooltip"  class="mt-0" data-placement="top" title="Delete" (click)="deleteNotification(item)" data-original-title="Close"><i class="fas fa-trash color-danger"></i></a>
+                    <a data-bs-toggle="tooltip"  class="mt-0" data-placement="top" title="Delete" (click)="deleteNotification(item)" data-original-title="Close"><i class="fas fa-trash color-danger"></i></a>
                 </div>
             </div>
             <!-- All-->
@@ -89,10 +89,10 @@
     <div class="modal modal-qr fade" tabindex="-1" role="dialog" id="showAllnotificationsModal">
         <div *ngIf="showAllNotifications" class="modal-dialog modal-md" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-dark text-white text-center header-modal" id="exampleModalLabel">
+                <div class="modal-header custom-header-modal  text-white text-center header-modal" id="exampleModalLabel">
                     <h5 class="text-center modal-title"><i class="fas fa-paw"></i> Notificaciones totales: ({{showAllNotifications.length}})</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        
                     </button>
                 </div>
                 <div class="modal-body p-0">
@@ -112,7 +112,7 @@
                             <button *ngIf="item.isNewMsg" (click)="updateNotification(item)" class="btn btn-info btn-sm ml-3">Entendido</button>
                         </div>
                         <div class="col-2 align-items-center text-center mt-4">
-                            <a data-toggle="tooltip"  class="mt-0" data-placement="top" title="Delete" (click)="deleteNotification(item)" data-original-title="Close"><i class="fas fa-trash color-danger"></i></a>
+                            <a data-bs-toggle="tooltip"  class="mt-0" data-placement="top" title="Delete" (click)="deleteNotification(item)" data-original-title="Close"><i class="fas fa-trash color-danger"></i></a>
                         </div>
                     </div>
                 </div>
