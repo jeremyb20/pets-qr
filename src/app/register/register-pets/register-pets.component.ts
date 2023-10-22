@@ -60,7 +60,7 @@ export class RegisterPetComponent implements OnInit {
             html: 'Prece que la ruta que accediste no esta disponible por el momento si tienes alguna duda puedes contactarse con el administrador del sitio. Se enviará al inicio en <b></b> millisegundos.',
             timer: 8000,
             timerProgressBar: true,
-            allowOutsideClick: false,
+            allowOutsideClick: true,
             didOpen: () => {
               Swal.showLoading()
               
@@ -71,7 +71,7 @@ export class RegisterPetComponent implements OnInit {
           }).then((result) => {
             /* Read more about handling dismissals below */
             if (result.dismiss === Swal.DismissReason.timer) {
-              this.router.navigate(['/home']); 
+             // this.router.navigate(['/home']); 
             }
           })
         }

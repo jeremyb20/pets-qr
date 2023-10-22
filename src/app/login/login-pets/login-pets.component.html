@@ -13,7 +13,7 @@
             </div>
             <div class="forms-inputs mb-4">
                 <span class="span-login" [ngClass]="{ 'text-danger': submitted && f.password.errors }">Contraseña</span>  
-                <i style="cursor: pointer; position: relative; top: 29px; right: -145px;"  (click)="showPassword = !showPassword" ngbTooltip="{{showPassword ? 'Show password': 'Hide password'}}" class="{{showPassword ? 'far fa-eye eye-show' : 'far fa-eye-slash eye-hide'}} px-3 py-1" ></i>
+                <i style="cursor: pointer; position: relative; top: 29px; right: -145px;"  (click)="showPassword = !showPassword" ngbTooltip="{{!showPassword ? 'Show password': 'Hide password'}}" class="{{!showPassword ? 'far fa-eye eye-show' : 'far fa-eye-slash eye-hide'}} px-3 py-1" ></i>
                 <input type="{{showPassword ? 'text': 'password'}}" pInputText class="w-100" formControlName="password" [ngClass]="{ 'is-invalid invalid': submitted && f.password.errors }" />
                 <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                     <div *ngIf="f.password.errors.required">Contraseña es requerido</div>
