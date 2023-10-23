@@ -6,6 +6,7 @@
 @import './assets/fonts/fontawesome5/regular';
 @import './assets/fonts/fontawesome5/solid';
 @import './assets/fonts/fontawesome5/brands';
+@import "primeicons/primeicons.css";
 
 @import './assets/fonts/theme-font';
 @import './assets/fonts/feather';
@@ -92,6 +93,10 @@ body {
 
 .custom-header-modal {
   background-color: var(--bg-secondary);
+}
+
+.btn-close {
+  color: #fff;
 }
 
   /* Estilos de la tarjeta */
@@ -316,6 +321,86 @@ body {
   }
 }
 
+.custom-register-width {
+  width: 595px;
+  @include media-breakpoint-down(md) {
+    width: 100%;
+  }
+}
+
+  .p-fileupload-content .p-fileupload-highlight:hover {
+    background-color: #00c6ff !important;
+    background: #00c6ff !important;
+  }
+
+   /* The container */
+   .container-custom {
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+ /* Hide the browser's default checkbox */
+ .container-custom input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  left: 0;
+  top: -6px;
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 2px solid #1abc9c;
+  border-radius: 0.125rem;
+}
+
+/* On mouse-over, add a grey background color */
+.container-custom:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container-custom input:checked ~ .checkmark {
+  background-color: #1abc9c;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container-custom input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container-custom .checkmark:after {
+  left: 7px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
 .reset,
 .forgot {
   @include media-breakpoint-down(sm) {
@@ -405,13 +490,6 @@ body {
         padding-right: 30px;
         box-shadow: none;
     }
-    
-    // .card1 {
-    //     background: linear-gradient(rgba(255, 255, 255, .2), rgba(255, 255, 255, .2)), url(./assets/empresarial-account.jpg);
-    //     background-position: center center;
-    //     background-repeat: no-repeat;
-    //     min-height: 600px;
-    // }
     
     .btn-yellow {
         border: 2px solid #F9A825;

@@ -28,7 +28,7 @@ export class SearchLostComponent implements OnInit {
   infoPet: any;
   
   constructor(
-    private petService: PetService,
+    private _petService: PetService,
     private media: MediaService,
     private _notificationSvc: NotificationService,
     private formBuilder: FormBuilder,
@@ -43,7 +43,7 @@ export class SearchLostComponent implements OnInit {
   }
 
   getAllUsers() {
-    this.petService.getPetsLostList().subscribe(data => {
+    this._petService.getPetsLostList().subscribe(data => {
         this.allUsersData = data;
         this.filteredData = this.allUsersData;
         // this.imageUrl = this.profile.photo;

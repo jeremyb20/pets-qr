@@ -1,0 +1,47 @@
+<div style="height: 100vh;" class="homeBody homeInit container-fluid px-4 px-md-4 py-5 mx-auto">
+  <div class="row d-flex justify-content-center">
+    <div class="card-custom pt-4 custom-width">
+      <div class="text-center py-2">
+        <h3><i class="fa fa-lock fa-4x"></i></h3>
+        <h4 class="text-center mb-4">Restablecer Contraseña</h4>
+      </div>
+      <div class="actions">
+        <form [formGroup]="resetCompanyForm" (ngSubmit)="onResetPasswordSubmit()">
+
+          <div class="mb-4">
+            <label htmlFor="password" [ngClass]="{ 'text-danger': submitted && f.password.errors }"><i class="feather icon-lock"></i> Ingrese nueva contraseña</label>
+            <input type="password" class="w-100" id="password" aria-describedby="password-help" pInputText formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <small *ngIf="f.password.errors.required">Contraseña es requerido</small>
+              <small *ngIf="f.password.errors.minlength">Contraseña debe ser al menos 6 caracteres</small>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label htmlFor="confirm-password" [ngClass]="{ 'text-danger': submitted && f.confirm.errors }"><i class="feather icon-lock"></i> Confirmar nueva contraseña</label>
+            <input type="password" class="w-100" id="confirm-password" aria-describedby="confirm-password-help" pInputText formControlName="confirm" [ngClass]="{ 'is-invalid': submitted && f.confirm.errors }" />
+            <div *ngIf="submitted && f.confirm.errors" class="invalid-feedback">
+              <small *ngIf="f.confirm.errors.required">Confirmar nueva contraseña es requerido</small>
+            </div>
+          </div>
+
+          <div *ngIf="hideMsg" class="row g-0 alert alert-warning error-message text-center mt-2" role="alert">
+            <strong class="text-center"><i class="fa fa-envelope"></i> {{ ShowMsg }}</strong>
+          </div>
+          <div class="follow-btn" type="submit">
+            <button [disabled]="loading" class="btn btn-primary">
+              <div class="spinner-border spinner-border-sm" *ngIf="loading" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              Restablecer Contraseña
+            </button>
+          </div>                                                                    
+        </form>
+        <div class="col-12 mt-4 d-flex justify-content-between"> 
+          <a [routerLink]="['/login-pets']" class="text-sm ml-auto text-decoration-none text-dim">Iniciar sesión</a><br>
+          <a [routerLink]="['/home']" class="text-sm ml-auto text-decoration-none text-dim">Ir a inicio</a> 
+        </div>
+      </div>
+    </div>
+  </div> 
+</div>

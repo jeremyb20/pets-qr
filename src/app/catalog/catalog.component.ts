@@ -21,7 +21,7 @@ export class CatalogComponent implements OnInit {
   showMetal: boolean = false;
 
   
-  constructor(@Inject(DOCUMENT) private document: any, private petService: PetService, private _notificationSvc: NotificationService) {}
+  constructor(@Inject(DOCUMENT) private document: any, private _petService: PetService, private _notificationSvc: NotificationService) {}
 
   ngOnInit(): void {
     this.getAllProductList();
@@ -29,7 +29,7 @@ export class CatalogComponent implements OnInit {
 
 
   getAllProductList() {
-    this.petService.getAllShopProductList().subscribe(data => {
+    this._petService.getAllShopProductList().subscribe(data => {
       this.allProductsData = data.listaCatalogos;
       this.allProductsData.forEach(element => {
         if (element.tagType === 'simple') {

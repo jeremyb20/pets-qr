@@ -1,0 +1,43 @@
+<div class="homeBody homeInit container-fluid px-4 px-md-4 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+        <div class="card-custom mb-4 custom-width">
+          <img class="rounded-circle mx-auto my-3" style="object-fit: cover; height: 150px; width: 150px;" src="https://res.cloudinary.com/ensamble/image/upload/v1613167406/6f34a0248653a5483ac7d7950fc13ce4_2_shgyuj.png" alt="logo">
+          <div class="actions">
+            <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <div class="forms-inputs mb-4">
+                <span class="span-login" [ngClass]="{ 'text-danger': submitted && f.email.errors }">Correo</span>
+                <input type="email" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" class="form-control">
+                <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.required">Correo es requerido</div>
+                </div>
+              </div>
+            <div class="forms-inputs mb-4">
+                <span class="span-login" [ngClass]="{ 'text-danger': submitted && f.password.errors }">Contraseña</span>  
+                <i style="cursor: pointer; position: relative; top: 29px; right: -145px;"  (click)="showPassword = !showPassword" ngbTooltip="{{!showPassword ? 'Show password': 'Hide password'}}" class="{{!showPassword ? 'far fa-eye eye-show' : 'far fa-eye-slash eye-hide'}} px-3 py-1" ></i>
+                <input type="{{showPassword ? 'text': 'password'}}" pInputText class="w-100" formControlName="password" [ngClass]="{ 'is-invalid invalid': submitted && f.password.errors }" />
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Contraseña es requerido</div>
+                </div>
+            </div>
+              
+              <div *ngIf="hideMsg" class="row g-0 alert alert-warning error-message text-center mt-2" role="alert">
+                <strong class="text-center"><i class="fas fa-times-circle mt-1 mr-3"></i> {{ ShowMsg }}</strong>
+              </div>
+              <div class="follow-btn" type="submit">
+                <button [disabled]="loading" class="btn btn-primary">
+                  <div class="spinner-border spinner-border-sm" *ngIf="loading" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  Iniciar Sesión
+                </button>
+              </div>
+            </form>
+
+            <div class="col-12 mt-4 d-flex justify-content-between"> 
+              <a [routerLink]="['/forgot-pets']" class="text-sm ml-auto text-decoration-none text-dim">Olvidó contraseña?</a><br>
+              <a [routerLink]="['/home']" class="text-sm ml-auto text-decoration-none text-dim">Ir a inicio</a> 
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

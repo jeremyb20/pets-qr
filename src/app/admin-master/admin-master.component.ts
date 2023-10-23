@@ -72,8 +72,8 @@ export class AdminMasterComponent implements OnInit {
   markerPositions: google.maps.LatLngLiteral[] = [];
 
 
-  constructor(private petService: PetService, private media: MediaService,private _notificationSvc: NotificationService, private router: Router, private formBuilder: FormBuilder) {
-      this.petLogged = this.petService.getLocalPet()
+  constructor(private _petService: PetService, private media: MediaService,private _notificationSvc: NotificationService, private router: Router, private formBuilder: FormBuilder) {
+      this.petLogged = this._petService.getLocalPet()
       this.pet = JSON.parse(this.petLogged);
       if(this.pet != null){
       }else{
@@ -88,7 +88,7 @@ export class AdminMasterComponent implements OnInit {
     }
 
     getAllUsers() {
-      this.petService.getLocationPetsList().subscribe(data => {
+      this._petService.getLocationPetsList().subscribe(data => {
           this.users = data;
 
           const dataoptions: any = []

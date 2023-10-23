@@ -9,8 +9,8 @@ export const environment = {
   //ws: 'https://localpetsandfamily.onrender.com'
    //ws: 'https://pets-qr-production.up.railway.app'
   //ws: 'https://pets-qr.vercel.app'
-  ws: 'https://petsqrbackend.fly.dev'
-  //ws: 'http://localhost:8080'
+  //ws: 'https://petsqrbackend.fly.dev'
+  ws: 'http://localhost:8080'
 };
 
 /*

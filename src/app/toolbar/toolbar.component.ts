@@ -24,7 +24,7 @@ export class ToolbarComponent implements OnInit {
   isFoo:boolean = false;
   showAllNotifications: any;
 
-  constructor(public authService: AuthServices, public petService: PetService, private _notificationSvc: NotificationService, private media: MediaService,private route: Router, private cdRef:ChangeDetectorRef) { 
+  constructor(public authService: AuthServices, private _petService: PetService, private _notificationSvc: NotificationService, private media: MediaService,private route: Router, private cdRef:ChangeDetectorRef) { 
     this.mediaSubscription = this.media.subscribeMedia().subscribe(result => {
       this.Media = result;
       if(this.Media.IsLandscape) {
@@ -38,7 +38,7 @@ export class ToolbarComponent implements OnInit {
     });
     this.userLogged = this.authService.getLocalUser();
     if(this.userLogged == null ){
-        this.userLogged = this.petService.getLocalPet();
+        this.userLogged = this._petService.getLocalPet();
     }
     this.user = JSON.parse(this.userLogged);
     if(this.user){
@@ -51,9 +51,9 @@ export class ToolbarComponent implements OnInit {
   }
 
   ngAfterViewChecked(){
-    var test = this.petService.loggedIn();
+    var test = this._petService.loggedIn();
     if(!test){
-      this.petService.logout();
+      this._petService.logout();
       this.cdRef.detectChanges();
     }
   }
@@ -62,32 +62,32 @@ export class ToolbarComponent implements OnInit {
   }
 
   logout() {
-    this.petService.logout();
+    this._petService.logout();
     this.route.navigate(['/home'])
   }
 
   getNotifications() {
     this.notificationsData = [];
     this.isNewMsg = 0;
-    this.petService.getNotificationsService(this.user.id).subscribe(data => {
-        // this.notificationsData = data;
-        data.map((item, index)=> {
-          if(index<= 5){
-            this.notificationsData.push(item);
-          }
+    // this._petService.getNotificationsService(this.user.id).subscribe(data => {
+    //     // this.notificationsData = data;
+    //     data.map((item, index)=> {
+    //       if(index<= 5){
+    //         this.notificationsData.push(item);
+    //       }
           
-        });
-        this.showAllNotifications = data;
-        this.notificationsData.forEach(element => {
-            if(element.isNewMsg){
-                this.isNewMsg ++;
-            }
-        });
-      },
-      error => {
-        this.loading = false;
-        this._notificationSvc.warning('Hola '+this.user.petName+'', 'Ocurrio un error favor de contactar a soporte', 6000);
-      });
+    //     });
+    //     this.showAllNotifications = data;
+    //     this.notificationsData.forEach(element => {
+    //         if(element.isNewMsg){
+    //             this.isNewMsg ++;
+    //         }
+    //     });
+    //   },
+    //   error => {
+    //     this.loading = false;
+    //     this._notificationSvc.warning('Hola '+this.user.petName+'', 'Ocurrio un error favor de contactar a soporte', 6000);
+    //   });
   }
 
   showAllNotificationsModal(){
@@ -123,7 +123,7 @@ export class ToolbarComponent implements OnInit {
       idItem: item._id
     }
 
-    this.petService.updateNotification(object).subscribe(data => {
+    this._petService.updateNotification(object).subscribe(data => {
       if(data.success) {
         this.isNewMsg --;
         this.getNotifications();
@@ -142,7 +142,7 @@ export class ToolbarComponent implements OnInit {
       idItem: item._id
     }
 
-    this.petService.deleteNotification(object).subscribe(data => {
+    this._petService.deleteNotification(object).subscribe(data => {
       if(data.success) {
         this.getNotifications();
       } else {

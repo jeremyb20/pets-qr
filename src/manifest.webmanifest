@@ -1,8 +1,8 @@
 {
   "name": "Plaquitas CR",
   "short_name": "Plaquitas CR",
-  "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "theme_color": "#ff9eaa",
+  "background_color": "#ff9eaa",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",

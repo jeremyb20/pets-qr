@@ -53,7 +53,7 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <div class="d-flex justify-content-between p-3 bg-white mb-3 align-items-center"> <span
-                                class="font-weight-bold text-uppercase">Plaquitas Simples</span>
+                                class="fw-bold text-uppercase">Plaquitas Simples</span>
                             
                         </div>
                         <div class="row g-3">
@@ -63,9 +63,9 @@
                                         <ng-container *ngIf="j === 0">
                                             <img alt="{{val.imageID}}" style="height: 300px; object-fit: cover;" src="{{val.imageURL}}" class="card-img-top">
                                             <div class="card-body">
-                                                <div class="d-flex justify-content-between"> <span class="font-weight-bold">Palquita
+                                                <div class="d-flex justify-content-between"> <span class="fw-bold">Palquita
                                                         {{item.productName}}</span>
-                                                    <span class="font-weight-bold">{{ item.cost | currency:"₡"}}</span>
+                                                    <span class="fw-bold">{{ item.cost | currency:"₡"}}</span>
                                                 </div>
                                                 <p class="card-text mb-1 mt-1 text-left">
                                                     {{item.description}}
@@ -106,7 +106,7 @@
                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                         <!--Chairs-->
                         <div class="d-flex justify-content-between p-3 bg-white mb-3 align-items-center"> <span
-                                class="font-weight-bold text-uppercase">Plaquitas Neón</span>
+                                class="fw-bold text-uppercase">Plaquitas Neón</span>
                         </div>
                         <div class="row g-3">
                             <div class="col-12 col-md-4" [ngClass]="{'d-none': item.tagType !== 'neon'}" *ngFor="let item of allProductsData let i = index">
@@ -115,9 +115,9 @@
                                         <ng-container *ngIf="j === 0">
                                             <img alt="{{val.imageID}}" style="height: 300px; object-fit: cover;" src="{{val.imageURL}}" class="card-img-top">
                                             <div class="card-body">
-                                                <div class="d-flex justify-content-between"> <span class="font-weight-bold">Palquita
+                                                <div class="d-flex justify-content-between"> <span class="fw-bold">Palquita
                                                         {{item.productName}}</span>
-                                                    <span class="font-weight-bold">{{ item.cost | currency:"₡"}}</span>
+                                                    <span class="fw-bold">{{ item.cost | currency:"₡"}}</span>
                                                 </div>
                                                 <p class="card-text mb-1 mt-1 text-left">
                                                     {{item.description}}
@@ -159,7 +159,7 @@
                     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                         <!--Dining-->
                         <div class="d-flex justify-content-between p-3 bg-white mb-3 align-items-center"> <span
-                                class="font-weight-bold text-uppercase">Plaquitas metálicas</span>
+                                class="fw-bold text-uppercase">Plaquitas metálicas</span>
                             
                         </div>
                         <div class="row g-3">
@@ -169,9 +169,9 @@
                                         <ng-container *ngIf="j === 0">
                                             <img alt="{{val.imageID}}" style="height: 300px; object-fit: cover;" src="{{val.imageURL}}" class="card-img-top">
                                             <div class="card-body">
-                                                <div class="d-flex justify-content-between"> <span class="font-weight-bold">Palquita
+                                                <div class="d-flex justify-content-between"> <span class="fw-bold">Palquita
                                                         {{item.productName}}</span>
-                                                    <span class="font-weight-bold">{{ item.cost | currency:"₡"}}</span>
+                                                    <span class="fw-bold">{{ item.cost | currency:"₡"}}</span>
                                                 </div>
                                                 <p class="card-text mb-1 mt-1 text-left">
                                                     {{item.description}}

@@ -42,8 +42,8 @@ export class NewQRPetsComponent implements OnInit {
 
   @ViewChild('qrCode', {static : false}) qrCode:any;
 
-  constructor(private petService: PetService, private media: MediaService,private _notificationSvc: NotificationService, private router: Router, private formBuilder: FormBuilder) {
-    this.petLogged = this.petService.getLocalPet()
+  constructor(private _petService: PetService, private media: MediaService,private _notificationSvc: NotificationService, private router: Router, private formBuilder: FormBuilder) {
+    this.petLogged = this._petService.getLocalPet()
     this.pet = JSON.parse(this.petLogged);
     if(this.pet != null){
       //console.log('Se cayo el sistema')
@@ -67,7 +67,7 @@ export class NewQRPetsComponent implements OnInit {
 
 
   getNewCodes() {
-    this.petService.getNewCodes().subscribe(data => {
+    this._petService.getNewCodes().subscribe(data => {
         this.isPreparing = 0;
         this.isEnding = 0;
         this.isPending = 0;
@@ -134,7 +134,7 @@ export class NewQRPetsComponent implements OnInit {
       confirmButtonText: 'Si, eliminar!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.petService.deletePet(item.idPet).subscribe(data => {
+        this._petService.deletePet(item.idPet).subscribe(data => {
           if(data.success) {
               Swal.fire(
                 'Eliminado!',
@@ -188,7 +188,7 @@ export class NewQRPetsComponent implements OnInit {
             randomCode: this.makeid(6)
           }
           
-          this.petService.registerNewCode(newCode).subscribe(data => {
+          this._petService.registerNewCode(newCode).subscribe(data => {
             if(data.success) {
                 Swal.fire(
                   'Resgistrado!',
@@ -268,7 +268,7 @@ export class NewQRPetsComponent implements OnInit {
                 status: state,
               }
           
-              this.petService.updateStateCodePet(object).subscribe(data => {
+              this._petService.updateStateCodePet(object).subscribe(data => {
                 if(data.success) {
                   Swal.fire({
                     position: 'center',

@@ -23,12 +23,12 @@ export class EventsPetsComponent implements OnInit {
   submitted = false;
   idEventUpdate: any;
 
-  constructor(private petService: PetService,private _notificationSvc: NotificationService,private formBuilder: FormBuilder,) {
-    this.petLogged = this.petService.getLocalPet()
+  constructor(private _petService: PetService,private _notificationSvc: NotificationService,private formBuilder: FormBuilder,) {
+    this.petLogged = this._petService.getLocalPet()
     this.pet = JSON.parse(this.petLogged);
     this.idSecondary = this.pet.idSecond;
-    var petPrincipal = this.petService.getPrincipalUserData();
-    var idSelected = this.petService.getidTrack();
+    var petPrincipal = this._petService.getPrincipalUserData();
+    var idSelected = this._petService.getidTrack();
     this.id = parseInt(idSelected);
     this.petPrincipal = JSON.parse(petPrincipal);
     this.getCalendarInfo();
@@ -47,7 +47,7 @@ export class EventsPetsComponent implements OnInit {
 
 
   getCalendarInfo() {
-    this.petService.getCalendarInfoService(this.pet.id, this.idSecondary).subscribe(data => {
+    this._petService.getCalendarInfoService(this.pet.id, this.idSecondary).subscribe(data => {
       this.eventsCalendar = data.calendar;
     },
     error => {
@@ -85,7 +85,7 @@ export class EventsPetsComponent implements OnInit {
       idSecond: this.idSecondary
     } 
 
-    this.petService.registerNewPetEvent(newEvent).subscribe(data => {
+    this._petService.registerNewPetEvent(newEvent).subscribe(data => {
       if(data.success) {
         $('#newCalendarEventModal').modal('hide');
         this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);
@@ -120,7 +120,7 @@ export class EventsPetsComponent implements OnInit {
       idSecond: this.idSecondary,
     } 
 
-    this.petService.updateNewPetEvent(updateEvent).subscribe(data => {
+    this._petService.updateNewPetEvent(updateEvent).subscribe(data => {
       if(data.success) {
         $('#newCalendarEventModal').modal('hide');
         this._notificationSvc.success('Hola '+this.pet.petName+'', data.msg, 6000);

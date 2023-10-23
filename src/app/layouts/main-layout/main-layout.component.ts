@@ -35,7 +35,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     user:any;
     petNameLogged: string;
 
-  	constructor(private router: Router, private authService: AuthServices, private petService: PetService,  private media: MediaService, private notification: NotificationService, private tokenSvc: TokensService) { 
+  	constructor(private router: Router, private authService: AuthServices, private _petService: PetService,  private media: MediaService, private notification: NotificationService, private tokenSvc: TokensService) { 
         this.httpSubscription = this.notification.onHttpError().subscribe((result) => {
 			  this.onAuthRequired(result);
         });
@@ -51,7 +51,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         });
         this.userLogged = this.authService.getLocalUser();
         if(this.userLogged == null ){
-            this.userLogged = this.petService.getLocalPet();
+            this.userLogged = this._petService.getLocalPet();
         }
         this.user = JSON.parse(this.userLogged);
         if(this.user!= null)
@@ -108,7 +108,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     }
 
     gotoSomewhere(val){
-        this.petService.setidTrack(val);
+        this._petService.setidTrack(val);
         if(val == 2){
             this.router.navigate(['/calendar-pets']);
             setTimeout(() => { location.reload(); }, 500);

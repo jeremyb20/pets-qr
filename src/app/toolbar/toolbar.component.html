@@ -91,9 +91,7 @@
             <div class="modal-content">
                 <div class="modal-header custom-header-modal  text-white text-center header-modal" id="exampleModalLabel">
                     <h5 class="text-center modal-title"><i class="fas fa-paw"></i> Notificaciones totales: ({{showAllNotifications.length}})</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        
-                    </button>
+                    <a type="button" class="modal-title px-0" data-bs-dismiss="modal" aria-label="Close"> <i class="fas fa-times text-light fs-3"></i> </a>
                 </div>
                 <div class="modal-body p-0">
                     <div *ngFor="let item of showAllNotifications.slice().reverse()" class="row g-0" style=" border-bottom: 1px solid #cbd1d7;" [ngClass]="{'isNewMsg': item.isNewMsg}">

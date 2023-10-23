@@ -26,30 +26,22 @@ export class PetService {
       this.isDev = false;  // Change to false when you're gonna deploy your app, true when is on develop 
   }
 
-  registerPet(pet,  photo:any):Observable<any> {
+  registerPet(pet: any ):Observable<any> {
     const fd = new FormData();
     fd.append('petName',pet.petName);
-    fd.append('username',pet.username);
     fd.append('phone',pet.phone);
     fd.append('userState',pet.userState);
     fd.append('email',pet.email);
     fd.append('password',pet.password);
-    fd.append('lat',pet.lat);
-    fd.append('lng',pet.lng);
-    fd.append('bussinesSelected',pet.bussinesSelected);
-    fd.append('image', photo);
+    fd.append('image', pet.photo);
     fd.append('petStatus',pet.petStatus);
     fd.append('genderSelected',pet.genderSelected);
-    // if(this.isDev) {
-    //   return this.httpClient.post<any>('http://localhost:8080/pet/register/new-pet', fd);
-    // }else{
-    //   return this.httpClient.post<any>('pet/register/new-pet', fd);
-    // }
+    fd.append('isActivated',pet.isActivated);
     return this.httpClient.post(`${environment.ws}/pet/register/new-pet`, fd);
 
   }
 
-  registerCodePet(pet,  photo:any):Observable<any> {
+  registerCodePet(pet):Observable<any> {
     const fd = new FormData();
     fd.append('petName',pet.petName);
     fd.append('username',pet.username);
@@ -60,18 +52,12 @@ export class PetService {
     fd.append('lat',pet.lat);
     fd.append('lng',pet.lng);
     fd.append('bussinesSelected',pet.bussinesSelected);
-    fd.append('image', photo);
+    fd.append('image', pet.photo);
     fd.append('petStatus',pet.petStatus);
     fd.append('genderSelected',pet.genderSelected);
     fd.append('_id',pet._id);
     fd.append('idSecond',pet.idSecond);
     fd.append('codeGenerator',pet.codeGenerator);
-
-    // if(this.isDev) {
-    //   return this.httpClient.put<any>('http://localhost:8080/pet/register/new-pet-code-generator', fd);
-    // }else{
-    //   return this.httpClient.put<any>('pet/register/new-pet-code-generator', fd);
-    // }
 
     return this.httpClient.put(`${environment.ws}/pet/register/new-pet-code-generator`, fd);
 
@@ -417,7 +403,7 @@ export class PetService {
     //   return this.httpClient.post<any>('pet/forgot/', fd);
     // }
 
-    return this.httpClient.post(`${environment.ws}/pet/forgot/`,fd);
+    return this.httpClient.post(`${environment.ws}/pet/forgot`,fd);
 
   }
 

@@ -6,4 +6,5 @@ export const environment = {
   //ws: 'https://petsqrbackend.fly.dev'
   //ws: 'https://pets-qr-production.up.railway.app'
   ws: 'https://petsqrbackend.fly.dev'
+  //ws: 'http://localhost:8080'
 };

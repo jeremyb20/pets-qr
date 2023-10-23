@@ -1,0 +1,39 @@
+<div style="height: 100vh;" class="homeBody homeInit container-fluid px-4 px-md-4 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+      <div class="card-custom pt-4 custom-width">
+        <div class="text-center py-2">
+          <h3><i class="fa fa-lock fa-4x"></i></h3>
+          <h4 class="text-center mb-4">Olvidaste tu Contraseña?</h4>
+          <p>Para restablecer tu contraseña, por favor ingresa tu dirección de correo electrónico y sigue las instrucciones que te enviaremos a tu bandeja de entrada. </p>
+        </div>
+        <div class="actions">
+          <form [formGroup]="forgotCompanyForm" (ngSubmit)="onForgotPasswordCompanySubmit()">
+
+            <div class="mb-4">
+              <label htmlFor="username" [ngClass]="{ 'text-danger': submitted && f.email.errors }"><i class="feather icon-mail"></i> Correo</label>
+              <input pInputText class="w-100" id="username" aria-describedby="username-help" placeholder="@example.com" pInputText formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+              <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                <small *ngIf="f.email.errors.email">Email debe tener un correo valido</small>  
+                <small *ngIf="f.email.errors.required">Correo es requerido</small>
+              </div>
+            </div>
+            <div *ngIf="hideMsg" class="row g-0 alert alert-warning error-message text-center mt-2" role="alert">
+              <strong class="text-center"><i class="fa fa-envelope"></i> {{ ShowMsg }}</strong>
+            </div>
+            <div class="follow-btn" type="submit">
+              <button [disabled]="loading" class="btn btn-primary">
+                <div class="spinner-border spinner-border-sm" *ngIf="loading" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                Restablecer Contraseña
+              </button>
+            </div>                                                                    
+          </form>
+          <div class="col-12 mt-4 d-flex justify-content-between"> 
+            <a [routerLink]="['/login-pets']" class="text-sm ml-auto text-decoration-none text-dim">Iniciar sesión</a><br>
+            <a [routerLink]="['/home']" class="text-sm ml-auto text-decoration-none text-dim">Ir a inicio</a> 
+          </div>
+        </div>
+      </div>
+    </div> 
+</div>

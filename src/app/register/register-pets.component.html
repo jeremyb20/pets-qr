@@ -1,0 +1,156 @@
+<div style="height: 100vh;" class="homeBody homeInit container-fluid px-4 px-md-4 py-5 mx-auto">
+  <div class="row d-flex justify-content-center">
+    <div class="card-custom pt-4 custom-register-width mb-5">
+      <div class="text-center py-2">
+        <h4 class="text-center mb-4"><i class="fa fa-paw" aria-hidden="true"></i>  Crear cuenta</h4>
+        <p>Para registrar a tu mascota por favor ingresa los campos requeridos.</p>
+      </div>
+      <div class="actions">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+          <div class="mb-4">
+            <label htmlFor="petName" [ngClass]="{ 'text-danger': submitted && f.petName.errors }"><i class="feather icon-edit-2"></i> Ingrese el nombre de tu mascota</label>
+            <input pInputText class="w-100" id="petName" aria-describedby="petName-help" pInputText formControlName="petName" [ngClass]="{ 'is-invalid': submitted && f.petName.errors }" />
+            <div *ngIf="submitted && f.petName.errors" class="invalid-feedback">
+              <small *ngIf="f.petName.errors.required">Nombre de tu mascota es requerido</small>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label htmlFor="username" [ngClass]="{ 'text-danger': submitted && f.genderSelected.errors }">
+              <i class="fa fa-paw"></i> {{ ( f.petName.value == '') ? 'Género de tu mascota' : 'Cuál es el género de ' + f.petName.value }}
+            </label>
+            <p-dropdown  
+                styleClass="d-flex w-100" 
+                [options]="genderType" 
+                placeholder="Selecciona un género"
+                optionLabel="gender"
+                formControlName="genderSelected"
+                [ngClass]="{ 'is-invalid dropdown-invalid': submitted && f.genderSelected.errors }"
+                optionValue="Id">
+            </p-dropdown>
+            <div *ngIf="submitted && f.genderSelected.errors" class="invalid-feedback">
+              <div *ngIf="f.genderSelected.errors.required">Género de tu mascota es requerido</div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label htmlFor="phone" [ngClass]="{ 'text-danger': submitted && f.phone.errors }"><i class="feather icon-hash"></i> Ingrese un número telefónico {{ ( f.petName.value == '') ? ' ' : 'para ' + f.petName.value }}</label>
+            <input pInputText class="w-100" id="phone" pattern="\d*" maxlength="8" aria-describedby="phone-help" formControlName="phone" [ngClass]="{ 'is-invalid': submitted && f.phone.errors }"/>
+            <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+              <small *ngIf="f.phone.errors.required">Teléfono es requerido</small>
+              <small *ngIf="f.phone.errors.minlength">Teléfono debe ser al menos 8 digitos</small>
+              <small *ngIf="f.phone.errors.pattern">Solo se permiten números</small>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label htmlFor="email" [ngClass]="{ 'text-danger': submitted && f.email.errors }"><i class="feather icon-mail"></i> Ingrese un correo {{ ( f.petName.value == '') ? ' ' : 'para ' + f.petName.value }}</label>
+            <input pInputText class="w-100" id="email" aria-describedby="email-help" placeholder="@example.com" pInputText formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+              <small *ngIf="f.email.errors.email">Email debe tener un correo valido</small>  
+              <small *ngIf="f.email.errors.required">Correo es requerido</small>
+            </div>
+          </div>
+
+          <div class="forms-inputs mb-4">
+            <label htmlFor="password" [ngClass]="{ 'text-danger': submitted && f.password.errors }"><i class="fa fa-lock"></i> Contraseña</label>  
+            <i style="cursor: pointer; position: relative; top: 37px; float: right;"  (click)="showPassword = !showPassword" ngbTooltip="{{!showPassword ? 'Mostrar Contraseña': 'Ocultar Contraseña'}}" class="{{!showPassword ? 'far fa-eye eye-show' : 'far fa-eye-slash eye-hide'}} px-3 py-1" ></i>
+            <input type="{{showPassword ? 'text': 'password'}}" pInputText class="w-100" formControlName="password" [ngClass]="{ 'is-invalid invalid': submitted && f.password.errors }" />
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+              <small *ngIf="f.password.errors.required">Contraseña es requerida</small>
+              <small *ngIf="f.password.errors?.minlength">Contraseña debe ser al menos 6 caracteres</small>
+            </div>
+          </div>
+
+          <div class="forms-inputs mb-4">
+            <label htmlFor="confirmPassword" [ngClass]="{ 'text-danger': submitted && f.confirmPassword.errors }"><i class="fa fa-lock"></i> Confirmar contraseña</label>  
+            <i style="cursor: pointer; position: relative; top: 37px; float: right;"  (click)="showPassword2 = !showPassword2" ngbTooltip="{{!showPassword2 ? 'Mostrar Contraseña': 'Ocultar Contraseña'}}" class="{{!showPassword2 ? 'far fa-eye eye-show' : 'far fa-eye-slash eye-hide'}} px-3 py-1" ></i>
+            <input type="{{showPassword2 ? 'text': 'password'}}" pInputText class="w-100" formControlName="confirmPassword" [ngClass]="{ 'is-invalid invalid': submitted && f.confirmPassword.errors }" />
+            <div *ngIf="submitted && f.confirmPassword.errors" class="invalid-feedback">
+              <small *ngIf="f.confirmPassword.errors">Contraseña no son iguales</small>
+              <small *ngIf="f.confirmPassword.errors.required">Confirmar Contraseña es requerida</small>
+              <small *ngIf="f.confirmPassword.errors.mustMatch">Contraseña no son iguales</small>
+            </div>
+          </div>
+
+          <div *ngIf="showInputCode" class="mb-4">
+            <label htmlFor="codeGenerator" [ngClass]="{ 'text-danger': submitted && f.codeGenerator.errors }"><i class="feather icon-edit-2"></i> Ingrese el codigo de registro</label>
+            <input pInputText class="w-100" id="codeGenerator" aria-describedby="codeGenerator-help" pInputText formControlName="codeGenerator" [ngClass]="{ 'is-invalid': submitted && f.codeGenerator.errors }" />
+            <div *ngIf="submitted && f.codeGenerator.errors" class="invalid-feedback">
+              <small *ngIf="f.codeGenerator.errors.required">Nombre de tu mascota es requerido</small>
+            </div>
+          </div>
+
+          <div class="forms-inputs mb-4">
+            <label htmlFor="confirmPassword" [ngClass]="{ 'text-danger': submitted && f.confirmPassword.errors }">
+              <i class="feather icon-image"></i> Seleccione una foto de {{ ( f.petName.value == '') ? 'tu mascota' : f.petName.value }}
+            </label>  
+
+            <p-fileUpload name="myfile[]" (onSelect)="processFile($event)" [multiple]="false" 
+              [showUploadButton]="false" 
+              [chooseLabel]="(Media.IsMobile) ? 'Subir' : 'Subir Imagen'" 
+              [chooseIcon]="'feather icon-image'"
+              [chooseStyleClass]="'p-1'"
+              [cancelLabel]="'Cancelar'"
+              [cancelStyleClass]="'p-1'"
+              accept="image/*">
+
+            <ng-template pTemplate="toolbar">
+                <div *ngIf="!Media.IsMobile" class="py-3">Arrastra y suelta la imagen a esta zona <i class="feather icon-arrow-down"></i> </div>
+                </ng-template>
+                <ng-template pTemplate="content">
+                  <ng-template pTemplate="content">
+                      <ul *ngIf="uploadedFiles.length">
+                          <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                      </ul>
+                    </ng-template>
+                </ng-template>
+            </p-fileUpload>
+
+          </div>
+
+          <div class="form-group mb-4 text-center">
+            <label class="container-custom me-5">
+              <input type="checkbox" formControlName="acceptTerms" id="acceptTermss" class="form-check-input" [ngClass]="{ 'is-invalid': submitted && f.acceptTerms.errors }" />
+              <span class="checkmark"></span>
+            </label>
+            <label for="acceptTerms" class="fw-bold">Accepto términos & condiciones </label> <br>
+            <small *ngIf="submitted && f.acceptTerms.errors" class="text-danger ms-4">Acceptar Ts & Cs es requerido</small>
+          </div>
+
+          <div *ngIf="hideMsg" class="row g-0 alert alert-warning error-message text-center mt-2" role="alert">
+            <strong class="text-center"><i class="fa fa-envelope"></i> {{ ShowMsg }}</strong>
+          </div>
+          <div class="follow-btn" type="submit">
+            <button [disabled]="loading" class="btn btn-primary">
+              <div class="spinner-border spinner-border-sm" *ngIf="loading" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              Registrar a {{ ( f.petName.value == '') ? 'mi mascota' : f.petName.value }}
+            </button>
+          </div>                                                                    
+        </form>
+        <div class="col-12 mt-4 d-flex justify-content-between"> 
+          <a [routerLink]="['/login-pets']" class="text-sm ml-auto text-decoration-none text-dim">Iniciar sesión</a><br>
+          <a class="text-sm mx-auto text-decoration-none text-dim" (click)="showPoliticPrivacy()">Términos y condiciones</a>
+          <a [routerLink]="['/home']" class="text-sm ml-auto text-decoration-none text-dim">Ir a inicio</a> 
+        </div>
+      </div>
+    </div>
+  </div> 
+</div>
+
+<div class="modal modal-qr fade" tabindex="-1" role="dialog" id="termsandcondition">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+          <div class="modal-header custom-header-modal  text-white text-center header-modal" id="exampleModalLabel">
+              <h5 class="text-center modal-title"><i class="fas fa-paw"></i> TÉRMINOS Y CONDICIONES</h5>
+              <a type="button" class="modal-title px-0" data-bs-dismiss="modal" aria-label="Close"> <i class="fas fa-times text-light fs-3"></i> </a>
+          </div>
+          <div class="modal-body">
+            <app-term-and-conditions></app-term-and-conditions>
+          </div>
+      </div>
+  </div>
+</div>

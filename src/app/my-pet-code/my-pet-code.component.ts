@@ -66,7 +66,7 @@ export class MyPetCodeComponent implements OnInit {
     },
   }
 
-  constructor(private formBuilder: FormBuilder, private media: MediaService, private ngZone: NgZone,  private petService: PetService,private _notificationSvc: NotificationService, private route: ActivatedRoute , private router: Router) {
+  constructor(private formBuilder: FormBuilder, private media: MediaService, private ngZone: NgZone,  private _petService: PetService,private _notificationSvc: NotificationService, private route: ActivatedRoute , private router: Router) {
     this.route.params.subscribe(params => {
       // este es cuando hace click en target_blank
       this.getLinkIdParam = params.id; 
@@ -105,7 +105,7 @@ export class MyPetCodeComponent implements OnInit {
   ngOnInit() {}
 
   getPetDataList() {
-    this.petService.getPetDataList(this.getLinkIdParam,this.getLinkIdSecondaryParams, this.view).subscribe(data => {
+    this._petService.getPetDataList(this.getLinkIdParam,this.getLinkIdSecondaryParams, this.view).subscribe(data => {
       if(data.success){
         if(data.pet.isActivated){
          // this.router.navigate(['/register-pets']); 
@@ -172,7 +172,7 @@ export class MyPetCodeComponent implements OnInit {
   }
 
   getPermissionInfo() {
-    this.petService.getPetPermissionsDataList(this.getLinkIdParam, this.getLinkIdSecondaryParams).subscribe(data => {
+    this._petService.getPetPermissionsDataList(this.getLinkIdParam, this.getLinkIdSecondaryParams).subscribe(data => {
       this.permissionData = data.permissions[0];
       if(this.permissionData == undefined || this.permissionData.length<=0){
         this.permissionData = {

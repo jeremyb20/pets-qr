@@ -48,8 +48,8 @@ export class PetsOrdersComponent implements OnInit {
   loading: boolean = false;
 
 
-  constructor(private petService: PetService, private media: MediaService,private _notificationSvc: NotificationService, private router: Router, private formBuilder: FormBuilder) {
-    this.petLogged = this.petService.getLocalPet()
+  constructor(private _petService: PetService, private media: MediaService,private _notificationSvc: NotificationService, private router: Router, private formBuilder: FormBuilder) {
+    this.petLogged = this._petService.getLocalPet()
     this.pet = JSON.parse(this.petLogged);
     if(this.pet != null){
       //console.log('Se cayo el sistema')
@@ -71,7 +71,7 @@ export class PetsOrdersComponent implements OnInit {
   collapsed = false;
   
   getAllCode(){
-    this.petService.getAllCodeList().subscribe(data => {
+    this._petService.getAllCodeList().subscribe(data => {
       this.order = [];
       this.orderHistory = [];
       
@@ -128,7 +128,7 @@ export class PetsOrdersComponent implements OnInit {
                 photo: this.pet.photo
               }
           
-              this.petService.updateStatusCodePet(object).subscribe(data => {
+              this._petService.updateStatusCodePet(object).subscribe(data => {
                 if(data.success) {
                     Swal.fire('Saved!', '', 'success');
                     setTimeout(() => { location.reload(); }, 3000);

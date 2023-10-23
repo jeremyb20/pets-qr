@@ -19,32 +19,30 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { LoginLayoutComponent } from './layouts/login-layout/login-layout.component';
 import { NotificationComponent } from './notification/notification.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { LoginPetsComponent } from './login/login-pets/login-pets.component';
-import { RegisterPetComponent } from './register/register-pets/register-pets.component';
-import { ForgotUserComponent } from './forgot/forgot-user/forgot-user.component';
-import { ResetUserComponent } from './reset/reset-user/reset-user.component';
+import { LoginPetsComponent } from './login/login-pets.component';
+import { RegisterPetComponent } from './register/register-pets.component';
 
 import { NotFoundComponent } from './not-found/not-found.component';
 
-import { DashboardUserComponent } from './dashboard/dashboard-user/dashboard-user.component';
-import { ProfileUserComponent } from './profile/profile-user/profile-user.component';
 import { AdminMasterComponent } from './admin-master/admin-master.component';
-import { DashboardPetComponent } from './dashboard/dashboard-pet/dashboard-pet.component';
+import { DashboardPetComponent } from './dashboard/dashboard-pet.component';
 import { MyPetCodeComponent } from './my-pet-code/my-pet-code.component';
 import { SwitchComponent } from './common/directives/switch/switch.component';
 import { SearchLostComponent } from './search-lost/search-lost.component';
-import { ForgotPetsComponent } from './forgot/forgot-pets/forgot-pets.component';
-import { ResetPetsComponent } from './reset/reset-pets/reset-pets.component';
-import { ProfilePetsComponent } from './profile/profile-pets/profile-pets.component';
+import { ForgotPetsComponent } from './forgot/forgot-pets.component';
+import { ResetPetsComponent } from './reset/reset-pets.component';
+import { ProfilePetsComponent } from './profile/profile-pets.component';
 import { EventsPetsComponent } from './events/events-pets/events-pets.component';
-import { LocationPetsComponent } from './location/location-pets/location-pets.component';
-import { PermissionsPetsComponent } from './permissions/permissions-pets/permissions-pets.component';
+import { LocationPetsComponent } from './location/location-pets.component';
+import { PermissionsPetsComponent } from './permissions/permissions-pets.component';
 import { PetsRegisteredComponent } from './admin-master/pets-registered/pets-registered.component';
 import { PetsOrdersComponent } from './admin-master/pets-orders/pets-orders.component';
 import { NewQRPetsComponent } from './admin-master/new-qrpets/new-qrpets.component';
 import { CatalogComponent } from './catalog/catalog.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from 'src/environments/environment';
+import { TermAndConditionsComponent } from './term-and-conditions/term-and-conditions.component';
+import { PetsProductsComponent } from './admin-master/pets-products/pets-products.component';
 import { TokenInterceptor } from './common/services/token.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -68,6 +66,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { TabViewModule } from 'primeng/tabview';
 import { TagModule } from 'primeng/tag';
 import { CheckboxModule } from 'primeng/checkbox';
+import { FileUploadModule } from 'primeng/fileupload';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 
 export function tokenGetter() {
@@ -84,11 +84,7 @@ export function tokenGetter() {
     ToolbarComponent,
     LoginPetsComponent,
     RegisterPetComponent,
-    ForgotUserComponent,
-    ResetUserComponent,
     NotFoundComponent,
-    DashboardUserComponent,
-    ProfileUserComponent,
     AdminMasterComponent,
     DashboardPetComponent,
     MyPetCodeComponent,
@@ -104,6 +100,8 @@ export function tokenGetter() {
     PetsOrdersComponent,
     NewQRPetsComponent,
     CatalogComponent,
+    TermAndConditionsComponent,
+    PetsProductsComponent
   ],
   imports: [
     BrowserModule,
@@ -130,6 +128,8 @@ export function tokenGetter() {
     ProgressBarModule,
     TabViewModule,
     CheckboxModule,
+    FileUploadModule,
+    InputNumberModule,
     TagModule,
     JwtModule.forRoot({
       config: {

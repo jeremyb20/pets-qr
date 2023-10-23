@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
   year: any;
 
   constructor(
-    private petService: PetService,
+    private _petService: PetService,
     private media: MediaService,
     private _notificationSvc: NotificationService,
     private formBuilder: FormBuilder,
@@ -104,7 +104,7 @@ export class HomeComponent implements OnInit {
       password: this.f.password.value
     }
 
-    this.petService.authenticatePet(pet).subscribe(data => {
+    this._petService.authenticatePet(pet).subscribe(data => {
         if(data.success) {
         this.loading = false;
           switch (data.pet.userState) {
@@ -118,7 +118,7 @@ export class HomeComponent implements OnInit {
             default:
               break;
           }
-          this.petService.storeUserData(data.token, data.pet);
+          this._petService.storeUserData(data.token, data.pet);
         } else {
           this.hideMsg = true;
           this.ShowMsg = data.msg;

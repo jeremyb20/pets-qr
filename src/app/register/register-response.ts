@@ -5,3 +5,8 @@ export interface RegisterResponse {
     password: string;
     photo: string;
 }
+
+export interface UploadEvent {
+    originalEvent: Event;
+    files: File[];
+}

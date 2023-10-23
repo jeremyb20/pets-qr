@@ -38,9 +38,7 @@
         <div class="modal-header custom-header-modal  text-white">
           <h5 *ngIf="isNewEvent" class="modal-title" id="newCalendarEventModal">Nuevo Evento</h5>
           <h5 *ngIf="!isNewEvent" class="modal-title" id="newCalendarEventModal">Editar Evento</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-            
-          </button>
+          <a type="button" class="modal-title px-0" data-bs-dismiss="modal" aria-label="Close"> <i class="fas fa-times text-light fs-3"></i> </a>
         </div>
         <div class="modal-body">
           <form *ngIf="isNewEvent" [formGroup]="newEventForm" (ngSubmit)="newEventCalendarSubmit()">
